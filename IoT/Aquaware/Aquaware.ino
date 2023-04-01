@@ -51,9 +51,6 @@ void setup() {
   
   // Initialize serial communication
   Serial.begin(9600);  
-  while (!Serial) {
-    delay(30);
-  }
 
   // Initialize temperature sensor
   sensors.begin();
