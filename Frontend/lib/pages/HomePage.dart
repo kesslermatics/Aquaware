@@ -1,3 +1,6 @@
+import 'dart:collection';
+import 'dart:convert';
+
 import 'package:aquaware/pages/CyanobacteriaPage.dart';
 import 'package:aquaware/pages/InfoPage.dart';
 import 'package:aquaware/pages/MeasurementsPage.dart';
@@ -8,8 +11,10 @@ import 'package:flutter/material.dart';
 
 import '../model/DrawerItem.dart';
 import '../model/DrawerItems.dart';
+import '../model/SingleMeasurement.dart';
 import '../widgets/DrawerWidget.dart';
 import 'DashboardPage.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    openDrawer();
+    closeDrawer();
   }
 
   void openDrawer() => setState(() {
@@ -106,11 +111,10 @@ class _HomePageState extends State<HomePage> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(isDrawerOpen ? 20 : 0),
               child: Container(
-                color: isDrawerOpen
-                    ? Colors.white12
-                    : Theme.of(context).primaryColor,
-                child: getCurrentPage(),
-              ),
+                  color: isDrawerOpen
+                      ? Colors.white12
+                      : Theme.of(context).primaryColor,
+                  child: getCurrentPage()),
             ),
           ),
         ),
