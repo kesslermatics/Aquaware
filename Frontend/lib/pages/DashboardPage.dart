@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:aquaware/model/ChannelInfo.dart';
+import 'package:aquaware/widgets/dashboard/DashboardWidget.dart';
 import 'package:flutter/material.dart';
 import '../model/SingleMeasurement.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +17,38 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  late StreamBuilder streamBuilder;
+  @override
+  void initState() {
+    streamBuilder = StreamBuilder<List>(
+      stream: fetchMeasurements(),
+      builder: ((context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          default:
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Some error occured"),
+              );
+            }
+            final List<SingleMeasurement> data = snapshot.data![0];
+            final ChannelInfo info = snapshot.data![1];
+            if (data == null) {
+              return Text("Some error occured");
+            } else {
+              return DashboardWidget(
+                data: data,
+                info: info,
+              );
+            }
+        }
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,64 +61,50 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         title: Text("Dashboard"),
       ),
-      body: StreamBuilder<List<SingleMeasurement>>(
-        stream: fetchMeasurements(),
-        builder: ((context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            default:
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Some error occured"),
-                );
-              }
-              final List<SingleMeasurement>? data = snapshot.data;
-              if (data == null) {
-                return Text("Some error occured");
-              } else {
-                return Text(data.first.tds.toString());
-              }
-          }
-        }),
-      ),
+      body: streamBuilder,
     );
   }
 
-  Stream<List<SingleMeasurement>> fetchMeasurements() =>
-      Stream.periodic(Duration(seconds: 2)).asyncMap(
-        (event) => getData(),
+  Stream<List> fetchMeasurements() =>
+      Stream.periodic(Duration(seconds: 1)).asyncMap(
+        (event) async {
+          final response = await http.get(Uri.parse(
+              'https://api.thingspeak.com/channels/2081657/feeds.json?api_key=KB25YBZI8HQJS3XS&results=10'));
+
+          if (response.statusCode == 200) {
+            // If the server did return a 200 OK response,
+            // then parse the JSON.
+            return getData(jsonDecode(response.body));
+          } else {
+            // If the server did not return a 200 OK response,
+            // then throw an exception.
+            throw Exception('Failed to load data');
+          }
+        },
       );
 
-  Future<List<SingleMeasurement>> getData() async {
-    final response = await http.get(Uri.parse(
-        'https://api.thingspeak.com/channels/2081657/feeds.json?api_key=KB25YBZI8HQJS3XS&results=1'));
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return fetchMesswert(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load data');
-    }
-  }
-
-  List<SingleMeasurement> fetchMesswert(Map<String, dynamic> json) {
+  List getData(Map<String, dynamic> json) {
     List<dynamic> feeds = json['feeds'];
     List<SingleMeasurement> data = <SingleMeasurement>[];
+    ChannelInfo info = ChannelInfo(
+        json["channel"]["name"],
+        json["channel"]["created_at"],
+        json["channel"]["updated_at"],
+        json["channel"]["last_entry_id"]);
     for (Map map in feeds) {
       data.add(
         SingleMeasurement(
           int.parse(map["field1"]),
           int.parse(map["field2"]),
           double.parse(map["field3"]),
+          map["created_at"],
+          map["entry_id"],
         ),
       );
     }
-    return data;
+    return [
+      data,
+      info,
+    ];
   }
 }
