@@ -94,8 +94,8 @@ class _DashboardPageState extends State<DashboardPage> {
     for (Map map in feeds) {
       data.add(
         SingleMeasurement(
-          int.parse(map["field1"]),
-          int.parse(map["field2"]),
+          double.parse(map["field1"]),
+          double.parse(map["field2"]),
           double.parse(map["field3"]),
           map["created_at"],
           map["entry_id"],

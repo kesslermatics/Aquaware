@@ -1,6 +1,6 @@
 class SingleMeasurement {
-  int temperature;
-  int tds;
+  double temperature;
+  double tds;
   double ph;
   String createdAt;
   int entryID;
