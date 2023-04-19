@@ -44,7 +44,7 @@ float temp[READINGSCOUNT];
 // Timer to calculate the intervall to read data and sending them
 // Keep in mind, that ThingSpeak only accepts data in intervalls of 20 seconds or more (free plan).
 long timer = 0;
-long timeOut = 30000;
+long timeOut = 1800000;
 
 // This method is called once when the Arduino board is powered on or reset.
 void setup() {

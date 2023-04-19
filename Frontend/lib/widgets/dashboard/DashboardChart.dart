@@ -4,17 +4,22 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class DashboardChart extends StatelessWidget {
-  DashboardChart(
-      {super.key, required this.dataParameter, required this.color}) {
+  late List<dynamic> dataParameter;
+  final Color color;
+  final double deviation;
+  late List<Color> gradientColors = [];
+
+  DashboardChart({
+    super.key,
+    required this.dataParameter,
+    required this.color,
+    required this.deviation,
+  }) {
     gradientColors = [
       Colors.white,
       color,
     ];
   }
-  late List<dynamic> dataParameter;
-  final Color color;
-
-  late List<Color> gradientColors = [];
 
   @override
   Widget build(BuildContext context) {
@@ -40,24 +45,12 @@ class DashboardChart extends StatelessWidget {
           double.parse(dataParameter[i].toString())));
     }
     return LineChartData(
+      clipData: FlClipData.all(),
       gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: Colors.blue,
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: Colors.blueAccent,
-            strokeWidth: 1,
-          );
-        },
+        show: false,
       ),
+      minY: dataParameter[dataParameter.length - 1] - deviation,
+      maxY: dataParameter[dataParameter.length - 1] + deviation,
       titlesData: FlTitlesData(
         show: true,
         rightTitles: AxisTitles(
@@ -75,7 +68,7 @@ class DashboardChart extends StatelessWidget {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        border: Border.all(color: Colors.transparent),
       ),
       lineBarsData: [
         LineChartBarData(
@@ -90,7 +83,7 @@ class DashboardChart extends StatelessWidget {
             show: false,
           ),
           belowBarData: BarAreaData(
-            show: true,
+            show: false,
             gradient: LinearGradient(
               colors: gradientColors
                   .map((color) => color.withOpacity(0.3))

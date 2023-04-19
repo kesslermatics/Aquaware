@@ -22,10 +22,10 @@ class DashboardLastUpdatedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int secondsDifference = DateTime.now()
+    int minutesDifference = DateTime.now()
         .difference(DateTime.parse(data.createdAt).toLocal())
-        .inSeconds;
-    if (secondsDifference > 200) {
+        .inMinutes;
+    if (minutesDifference > 30) {
       flashingCircle.color = Colors.red;
     }
     return Card(
@@ -35,7 +35,7 @@ class DashboardLastUpdatedWidget extends StatelessWidget {
         children: [
           flashingCircle,
           Text(
-            "Last updated: ${DateTime.now().difference(DateTime.parse(data.createdAt).toLocal()).inSeconds} seconds ago",
+            "Last updated: ${DateTime.now().difference(DateTime.parse(data.createdAt).toLocal()).inMinutes} minutes ago",
             style: TextStyle(color: Colors.white),
           ),
         ],
@@ -46,7 +46,7 @@ class DashboardLastUpdatedWidget extends StatelessWidget {
 
 class FlashingCircle extends StatefulWidget {
   final Duration? duration;
-  late final Color? color;
+  Color? color;
   FlashingCircle({Key? key, this.duration, this.color}) : super(key: key);
   @override
   _FlashingIconState createState() => _FlashingIconState();
