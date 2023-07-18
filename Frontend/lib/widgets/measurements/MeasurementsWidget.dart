@@ -24,7 +24,9 @@ class MeasurementsWidget extends StatelessWidget {
             dates:
                 data.map((dataParameter) => dataParameter.createdAt).toList(),
             deviation: 2,
+            boxPlotDeviation: 1,
             yInterval: 1,
+            boxPlotInterval: 1,
           ),
         ),
         Center(
@@ -33,7 +35,9 @@ class MeasurementsWidget extends StatelessWidget {
             dates:
                 data.map((dataParameter) => dataParameter.createdAt).toList(),
             deviation: 0.3,
+            boxPlotDeviation: 0.1,
             yInterval: 0.2,
+            boxPlotInterval: 0.1,
           ),
         ),
         Center(
@@ -42,7 +46,9 @@ class MeasurementsWidget extends StatelessWidget {
             dates:
                 data.map((dataParameter) => dataParameter.createdAt).toList(),
             deviation: 100,
+            boxPlotDeviation: 10,
             yInterval: 40,
+            boxPlotInterval: 10,
           ),
         ),
       ],

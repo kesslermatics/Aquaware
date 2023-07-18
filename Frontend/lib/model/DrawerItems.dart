@@ -1,5 +1,4 @@
 import 'package:aquaware/model/DrawerItem.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerItems {
@@ -11,9 +10,9 @@ class DrawerItems {
     "Measurements",
     FontAwesomeIcons.chartLine,
   );
-  static const cyanobacteria = DrawerItem(
-    "Cyanobacteria",
-    FontAwesomeIcons.bacteria,
+  static const chlorophyllA = DrawerItem(
+    "Chlorophyll-A",
+    FontAwesomeIcons.leaf,
   );
   static const info = DrawerItem(
     "Info",
@@ -31,7 +30,7 @@ class DrawerItems {
   static final List<DrawerItem> all = [
     dashboard,
     measurements,
-    cyanobacteria,
+    chlorophyllA,
     info,
     notifications,
     settings
