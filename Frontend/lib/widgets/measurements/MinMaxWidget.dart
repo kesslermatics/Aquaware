@@ -13,34 +13,30 @@ class MinMaxWidget extends StatefulWidget {
 class _MinMaxWidgetState extends State<MinMaxWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          margin: EdgeInsets.fromLTRB(14, 14, 14, 0),
-          color: Colors.white12,
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Min: " +
-                      widget.data
-                          .reduce((current, next) =>
-                              current < next ? current : next)
-                          .toString() +
-                      " | " +
-                      "Max: " +
-                      widget.data
-                          .reduce((current, next) =>
-                              current > next ? current : next)
-                          .toString(),
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+    return Card(
+      margin: EdgeInsets.fromLTRB(14, 14, 14, 0),
+      color: Colors.white12,
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Min: " +
+                  widget.data
+                      .reduce(
+                          (current, next) => current < next ? current : next)
+                      .toString() +
+                  " | " +
+                  "Max: " +
+                  widget.data
+                      .reduce(
+                          (current, next) => current > next ? current : next)
+                      .toString(),
+              style: TextStyle(color: Colors.white),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

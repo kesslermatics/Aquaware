@@ -25,19 +25,19 @@ class _DashboardPageState extends State<DashboardPage> {
       builder: ((context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           default:
             if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text("Some error occured"),
               );
             }
             final List<SingleMeasurement> data = snapshot.data![0];
             final ChannelInfo info = snapshot.data![1];
             if (data == null) {
-              return Text("Some error occured");
+              return const Text("Some error occured");
             } else {
               return DashboardWidget(
                 data: data,
@@ -59,14 +59,14 @@ class _DashboardPageState extends State<DashboardPage> {
         leading: DrawerMenuWidget(
           onClicked: widget.openDrawer,
         ),
-        title: Text("Dashboard"),
+        title: const Text("Dashboard"),
       ),
       body: streamBuilder,
     );
   }
 
   Stream<List> fetchMeasurements() =>
-      Stream.periodic(Duration(seconds: 1)).asyncMap(
+      Stream.periodic(const Duration(seconds: 1)).asyncMap(
         (event) async {
           final response = await http.get(Uri.parse(
               'https://api.thingspeak.com/channels/2081657/feeds.json?api_key=KB25YBZI8HQJS3XS&results=10'));
