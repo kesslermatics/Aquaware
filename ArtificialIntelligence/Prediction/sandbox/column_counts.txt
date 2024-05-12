@@ -1,0 +1,87 @@
+,0
+Datum / Uhrzeit,1072
+Sauerstoff-Gehalt,955
+Wassertemperatur,952
+pH-Wert,948
+Nitrat-Stickstoff,936
+Ammonium-Stickstoff,918
+ortho-Phosphat-Phosphor ,913
+Gesamt-Phosphor (P) gesamt,854
+Nitrit-Stickstoff,804
+Leitf�higkeit,779
+Abfiltrierbare Stoffe,767
+Chlorid,765
+Sulfat,585
+"S�urekapazitat pH 4,3",550
+Sichttiefe,511
+Chlorophyll-a,445
+DOC (Gel�ster organischer Kohlenstoff),441
+Kaliumpermanganatverbrauch als O2,436
+Lufttemperatur,434
+Magnesium,416
+TOC (Organischer Kohlenstoff),404
+Silicium gel�st,403
+Calcium,396
+Gesamt-Stickstoff (N) gesamt,391
+Eisen gesamt,385
+Coliforme B.,367
+E.Coli,366
+Phaeophytin,345
+Spektraler Absorptionskoeffizient (SAK) 254nm,328
+Gl�hverlust der abfiltrierbaren Stoffe,259
+"BSB1 (Biochem. Sauerstoffbedarf, 24h)",258
+Intestinale Enterokokken,188
+Kupfer gesamt,185
+Zink gesamt,184
+Hydrogencarbonat,169
+Natrium,152
+Kalium,151
+"BSB5 (Biochem. Sauerstoffbedarf, 5d)",149
+AOX (Adsorbierbare organ. Halogenverbindungen),138
+Gesamt-Stickstoff (N) gel�st,120
+Blei gesamt,118
+Bor gesamt,104
+Eisen gel�st,99
+Chrom gesamt,91
+Cadmium gesamt,91
+Arsen gesamt,90
+CSB (Chem. Sauerstoffbedarf),76
+Kupfer gel�st,54
+Gesamt-Phosphor (P) gel�st,42
+Zink gel�st,23
+Benzo[k]fluoranthen,13
+Pyren,13
+Phenanthren,13
+Naphthalin,13
+"Indeno[1,2,3-cd]pyren",13
+Fluoren,13
+Fluoranthen,13
+"Dibenzo[a,h]anthracen",13
+Chrysen,13
+"Benzo[g,h,i]perylen",13
+Benzo[a]pyren,13
+Benzo[a]anthracen,13
+Anthracen,13
+Acenaphthylen,13
+Acenaphthen,13
+Benzo[b]fluoranthen,13
+Methylenblau-aktive Substanz (MBAS),11
+Valsartans�ure,10
+Diclofenac,10
+Gabapentin,10
+Mangan gesamt,10
+Nicosulfuron,10
+Carbamazepin,10
+Ibuprofen,10
+Oxipurinol,10
+Nickel gesamt,9
+Phenole,8
+Quecksilber gesamt,6
+Dibutylzinn-Kation,6
+Tributylzinn-Kation,5
+Triphenylzinn-Kation,5
+Cyanid gesamt,5
+Chrom gel�st,1
+Cadmium gel�st,1
+Blei gel�st,1
+Quecksilber gel�st,1
