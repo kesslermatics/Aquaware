@@ -5,3 +5,5 @@
 .vscode/ipch
 /ArtificialIntelligence/Prediction/Lib/site-packages
 /ArtificialIntelligence/.idea
+/ArtificialIntelligence/aquaware-env
+/ArtificialIntelligence/sandbox/__pycache__
