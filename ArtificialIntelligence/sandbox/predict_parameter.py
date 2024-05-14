@@ -33,11 +33,26 @@ class PredictParameter:
         self.model.add(tf.keras.layers.Dense(1))
         self.model.compile(optimizer='adam', loss='mean_squared_error', metrics=["mae"])
 
-    def train_model(self, epochs=2000):
+    def train_model(self, patience=10):
+        early_stopping = tf.keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=patience,
+            restore_best_weights=True)
+
         self.history = self.model.fit(
-            self.x_train, self.y_train, epochs=epochs, validation_data=(self.x_test, self.y_test))
+            self.x_train,
+            self.y_train,
+            epochs=20000,
+            validation_data=(self.x_test, self.y_test),
+            callbacks=[early_stopping])
 
     def evaluate_model(self):
         loss, mae = self.model.evaluate(self.x_test, self.y_test)
         print(f"Loss: {loss}, MAE: {mae}")
 
+        range_value = self.labels.max() - self.labels.min()
+        print(f"Spannweite der Spalte '{self.label_column}': {range_value}")
+
+        # Berechnen Sie den Prozentsatz des MAE relativ zur Spannweite der Spalte
+        mae_prozent = (mae / range_value) * 100
+        print(f"Prozentsatz des MAE relativ zur Spannweite der Spalte '{self.label_column}': {mae_prozent:.2f}%")
