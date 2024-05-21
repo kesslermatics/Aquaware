@@ -1,8 +1,48 @@
-POST http://127.0.0.1:8000/signup
+
+POST http://127.0.0.1:8000/users/login
+Content-Type: application/json
+
+{
+    "username": "robertkessler",
+    "password": "Fulkano_9903"
+}
+
+###
+
+POST http://127.0.0.1:8000/users/signup
 Content-Type: application/json
 
 {
     "username": "test",
-    "password": "test"
+    "password": "test",
+    "email": "test@test.de"
 }
 
+###
+
+GET http://127.0.0.1:8000/users/test
+Content-Type: application/json
+Authorization: Token a1ad885f05c56ec51fc87acfec694e4944cdce38
+
+{
+}
+
+###
+
+POST http://127.0.0.1:8000/entries/add_entry
+Content-Type: application/json
+Authorization: Token 4e2431d5a05343fb64924d54f9637523b1022464
+
+{
+  "temperature": "{{$random.float(10, 30)}}",
+  "ph": "{{$random.float(3, 10)}}",
+  "co2" : "{{$random.float(0, 100)}}"
+}
+
+###
+
+GET http://127.0.0.1:8000/entries/get_all_entries
+Content-Type: application/json
+Authorization: Token 4e2431d5a05343fb64924d54f9637523b1022464
+
+{}
