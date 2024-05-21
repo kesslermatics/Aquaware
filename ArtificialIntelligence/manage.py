@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aquaware.settings')
+django.setup()
 import sys
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 
 def main():
-    """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'prediction.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
