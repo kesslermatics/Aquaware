@@ -3,8 +3,8 @@ POST http://127.0.0.1:8000/users/login
 Content-Type: application/json
 
 {
-    "username": "robertkessler",
-    "password": "Fulkano_9903"
+    "username": "test",
+    "password": "test"
 }
 
 ###
