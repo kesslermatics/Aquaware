@@ -46,3 +46,15 @@ Content-Type: application/json
 Authorization: Token 4e2431d5a05343fb64924d54f9637523b1022464
 
 {}
+
+###
+
+POST http://aquaware-production.up.railway.app/users/signup
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test",
+    "email": "test@test.de"
+}
+
