@@ -15,3 +15,4 @@ ArtificialIntelligence/db_credentials.py
 /ArtificialIntelligence/aquaware/views/__pycache__
 Backend/db_credentials.py
 Backend/requirements.txt
+Backend/aquaware/credentials.py
