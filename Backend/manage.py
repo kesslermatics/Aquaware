@@ -4,8 +4,6 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aquaware.settings')
 django.setup()
 import sys
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
 
 
 def main():
