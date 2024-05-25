@@ -13,7 +13,6 @@ WORKDIR /app
 
 COPY requirements.txt ./
 
-RUN .\backend-venv\Scripts\activate
 RUN pip install -r requirements.txt
 
 COPY . ./
