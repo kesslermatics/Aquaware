@@ -9,9 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
-import db_credentials
+
+from . import credentials
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,13 +86,10 @@ WSGI_APPLICATION = 'aquaware.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': db_credentials.name,
-        'USER': db_credentials.user,
-        'PASSWORD': db_credentials.password,
-        'HOST': db_credentials.host,
-        'PORT': db_credentials.port,
     }
 }
+
+DATABASES["default"] = dj_database_url.parse(credentials.DATABASE_URL)
 
 
 # Password validation
