@@ -3,12 +3,12 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from pathlib import Path
 
-from aquaware.models import WaterParameter
-from aquaware.serializers import UserSerializer, WaterParameterSerializer
-from rest_framework.authtoken.models import Token
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from ..models import WaterParameter
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+from ..serializers import WaterParameterSerializer
 
 
 @api_view(['POST'])
