@@ -1,0 +1,21 @@
+
+POST http://aquaware-production.up.railway.app/user/login
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+###
+
+POST http://aquaware-production.up.railway.app/user/signup
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test",
+    "email": "test@test.de"
+}
+
+
