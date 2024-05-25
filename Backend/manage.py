@@ -7,6 +7,7 @@ import sys
 
 
 def main():
+    print("usdagzzzzzzzzzzzzzzz")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
