@@ -24,7 +24,7 @@ urlpatterns = [
     re_path("admin/", admin.site.urls),
     re_path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     re_path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    re_path("user/login/", user_views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    re_path("user/login/", user_views.login),
     re_path("user/signup/", user_views.signup),
     re_path("user/profile/", user_views.get_user_profile),
     re_path("user/profile/update/", user_views.update_user_profile),
