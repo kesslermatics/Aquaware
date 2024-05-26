@@ -13,9 +13,9 @@ POST http://aquaware-production.up.railway.app/user/signup
 Content-Type: application/json
 
 {
-    "username": "test",
-    "password": "test",
-    "email": "test@test.de"
+    "username": "test2",
+    "password": "test2",
+    "email": "test2@test.de"
 }
 
 
