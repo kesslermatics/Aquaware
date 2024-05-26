@@ -8,6 +8,7 @@ class WaterParameter(models.Model):
     ph = models.FloatField()
     temperature = models.FloatField()
     co2 = models.FloatField()
+    tds = models.FloatField()
 
     class Meta:
         unique_together = ('user', 'timestamp')

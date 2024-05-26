@@ -24,13 +24,16 @@ urlpatterns = [
     re_path("admin/", admin.site.urls),
     re_path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     re_path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
     re_path("user/login/", user_views.login),
     re_path("user/signup/", user_views.signup),
     re_path("user/profile/", user_views.get_user_profile),
     re_path("user/profile/update/", user_views.update_user_profile),
     re_path("user/change_password/", user_views.change_password),
     re_path("user/delete_account/", user_views.delete_user_account),
+
     re_path("entries/add_entry/", entries_views.add_entry),
     re_path("entries/get_all_entries/", entries_views.get_all_entries),
+
     re_path("__debug__/", include("debug_toolbar.urls")),
 ]
