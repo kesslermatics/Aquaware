@@ -1,6 +1,6 @@
-GET http://127.0.0.1:8000/user/test
+GET http://aquaware-production.up.railway.app/user/test
 Content-Type: application/json
-Authorization: Token fce755bf14f24067f225746935edbe7f0507c5ae
+Authorization: Token e5b71f9fb7697936ea3a8b02559e2b4f10dbc40d
 
 {
 }
