@@ -13,5 +13,5 @@ class UserSerializer(serializers.ModelSerializer):
 class WaterParameterSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaterParameter
-        fields = ['ph', 'temperature', 'co2']
+        fields = ['ph', 'temperature', 'co2', "tds"]
         read_only_fields = ['id', 'timestamp', 'user']
