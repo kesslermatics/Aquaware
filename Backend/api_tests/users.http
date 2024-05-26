@@ -20,4 +20,4 @@ Content-Type: application/json
 ###
 
 GET http://aquaware-production.up.railway.app/user/test
-Authorization: Bearer your_access_token_here
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2NzExNDU2LCJpYXQiOjE3MTY3MTExNTYsImp0aSI6ImJkM2VmY2RmM2ZhNTQ3ZDY5NmUzNjA1NmViZjk3MTBhIiwidXNlcl9pZCI6MX0.h1gGPRLbau6FLLl9rVzcRltM8VvzgTqgzOLR0sjqTXU

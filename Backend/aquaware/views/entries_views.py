@@ -12,7 +12,6 @@ from ..serializers import WaterParameterSerializer
 
 
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def add_entry(request):
     user = request.user
@@ -24,10 +23,8 @@ def add_entry(request):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def get_all_entries(request):
     all_entries = WaterParameter.objects.filter(user=request.user).order_by('-timestamp')
-    print(all_entries)
     serializer = WaterParameterSerializer(all_entries, many=True)
     return Response(serializer.data)
