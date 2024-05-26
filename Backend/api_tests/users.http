@@ -1,4 +1,3 @@
-
 POST http://aquaware-production.up.railway.app/user/login
 Content-Type: application/json
 
@@ -18,4 +17,7 @@ Content-Type: application/json
     "email": "test2@test.de"
 }
 
+###
 
+GET http://aquaware-production.up.railway.app/user/test
+Authorization: Bearer your_access_token_here
