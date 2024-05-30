@@ -1,6 +1,6 @@
 from predict_parameter import PredictParameter
 
-csv_file = '../filtered_feeds.csv'
+csv_file = './filtered_feeds.csv'
 feature_columns = ['Temperatur', 'TDS(ppm)']
 label_column = 'pH'
 
