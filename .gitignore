@@ -17,3 +17,4 @@ Backend/db_credentials.py
 Backend/requirements.txt
 Backend/.env
 /sandbox/sandbox-venv
+/Backend/aquaware/__pycache__
