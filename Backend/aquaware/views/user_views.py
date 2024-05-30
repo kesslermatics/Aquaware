@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -6,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from ..serializers import UserSerializer
 from django.contrib.auth import authenticate
+from django.middleware.csrf import get_token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -26,6 +28,13 @@ def signup(request):
             "user": serializer.data
         })
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@ensure_csrf_cookie
+@api_view(['GET'])
+def get_csrf_token(request):
+    token = get_token(request)
+    return Response({'csrfToken': token})
 
 
 @api_view(['POST'])
