@@ -1,4 +1,4 @@
-from predict_parameter import PredictParameter
+from ..predict_parameter import PredictParameter
 
 csv_file = '../wasserwerte_filled.csv'
 feature_columns = ['Wassertemperatur', 'pH-Wert']
