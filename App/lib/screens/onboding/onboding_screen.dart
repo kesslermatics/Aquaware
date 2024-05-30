@@ -80,29 +80,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                     const Spacer(flex: 2),
-                    AnimatedBtn(
-                      btnAnimationController: _btnAnimationController,
-                      press: () {
-                        _btnAnimationController.isActive = true;
-                        Future.delayed(Duration(milliseconds: 800), () {
-                          setState(() {
-                            isSignInDialogShown = true;
-                          });
-                          customSigninDialog(context, onClosed: (_) {
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 70.0),
+                      child: AnimatedBtn(
+                        btnAnimationController: _btnAnimationController,
+                        press: () {
+                          _btnAnimationController.isActive = true;
+                          Future.delayed(Duration(milliseconds: 2), () {
                             setState(() {
-                              isSignInDialogShown = false;
+                              isSignInDialogShown = true;
+                            });
+                            customSigninDialog(context, onClosed: (_) {
+                              setState(() {
+                                isSignInDialogShown = false;
+                              });
                             });
                           });
-                        });
-                      },
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24.0),
-                      child: Text(
-                        "Stay informed with the latest data and predictions for your aquarium.",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        },
                       ),
                     ),
                   ],

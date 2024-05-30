@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 class AnimatedBtn extends StatelessWidget {
@@ -28,7 +28,7 @@ class AnimatedBtn extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(CupertinoIcons.arrow_right),
+                  Icon(Icons.start),
                   SizedBox(
                     width: 8,
                   ),
