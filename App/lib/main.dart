@@ -97,6 +97,7 @@ class _MyAppState extends State<MyApp> {
               : const OnboardingScreen(),
       routes: {
         '/homepage': (context) => HomepageScreen(),
+        "/onboarding": (context) => OnboardingScreen(),
       },
     );
   }
