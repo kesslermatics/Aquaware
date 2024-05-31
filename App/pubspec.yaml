@@ -30,5 +30,6 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/
+    - assets/icons/
     - assets/Backgrounds/Spline.png
     - assets/RiveAssets/
