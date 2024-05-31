@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
-import 'components/animated_btn.dart';
 import 'components/custom_sign_in.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -16,22 +15,15 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   bool isSignInDialogShown = false;
-  bool isRegisterDialogShown = false; // Add this line
-  late RiveAnimationController _btnAnimationController;
-
-  @override
-  void initState() {
-    _btnAnimationController = OneShotAnimation("active", autoplay: false);
-    super.initState();
-  }
+  bool isRegisterDialogShown = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          const Positioned.fill(
-            child: const RiveAnimation.asset(
+          Positioned.fill(
+            child: RiveAnimation.asset(
               'assets/RiveAssets/small_lake_on_a_rainy_day.riv',
               fit: BoxFit.cover,
             ),
@@ -39,7 +31,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Positioned.fill(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-              child: SizedBox(), // Optional: Add a slight color overlay
+              child: Container(
+                color: Colors.black
+                    .withOpacity(0.2), // Optional: Add a slight color overlay
+              ),
             ),
           ),
           AnimatedPositioned(
@@ -81,22 +76,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     const Spacer(flex: 2),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 70.0),
-                      child: AnimatedBtn(
-                        btnAnimationController: _btnAnimationController,
-                        press: () {
-                          _btnAnimationController.isActive = true;
-                          Future.delayed(Duration(milliseconds: 2), () {
+                      padding: const EdgeInsets.symmetric(vertical: 70.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isSignInDialogShown = true;
+                          });
+                          customSigninDialog(context, onClosed: (_) {
                             setState(() {
-                              isSignInDialogShown = true;
-                            });
-                            customSigninDialog(context, onClosed: (_) {
-                              setState(() {
-                                isSignInDialogShown = false;
-                              });
+                              isSignInDialogShown = false;
                             });
                           });
                         },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 56),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                          ),
+                        ),
+                        child: const Text(
+                          "Get Started",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ],

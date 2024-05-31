@@ -44,7 +44,7 @@ Future<Object?> customSigninDialog(BuildContext context,
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text(
-                      "Access to 240+ hours of content. Learn design and code, by building real apps with Flutter and Swift.",
+                      "Continue exploring and managing your aquariums. Access your personalized dashboard and stay updated with the latest insights.",
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -116,7 +116,7 @@ Future<Object?> customRegisterDialog(BuildContext context,
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text(
-                      "Join us and enjoy 240+ hours of content. Learn design and code, by building real apps with Flutter and Swift.",
+                      "Start monitoring your aquarium's water parameters. Enjoy personalized insights and comprehensive tools designed for you.",
                       textAlign: TextAlign.center,
                     ),
                   ),
