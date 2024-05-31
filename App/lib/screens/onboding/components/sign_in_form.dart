@@ -1,3 +1,4 @@
+import 'package:aquaware/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -115,7 +116,7 @@ class _SignInFormState extends State<SignInForm> {
                     signIn(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF77D8E),
+                    backgroundColor: lightBlue,
                     minimumSize: const Size(double.infinity, 56),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -127,10 +128,12 @@ class _SignInFormState extends State<SignInForm> {
                     ),
                   ),
                   icon: const Icon(
-                    CupertinoIcons.arrow_right,
-                    color: Color(0xFFFE0037),
+                    Icons.start,
                   ),
-                  label: const Text("Sign In"),
+                  label: const Text(
+                    "Sign In",
+                    style: TextStyle(),
+                  ),
                 ),
               )
             ],
