@@ -29,6 +29,7 @@ urlpatterns = [
     re_path("user/get_csrf_token/", user_views.get_csrf_token),
     re_path("user/login/", user_views.login),
     re_path("user/signup/", user_views.signup),
+    re_path("user/jwttest/", user_views.test),
     re_path("user/profile/", user_views.get_user_profile),
     re_path("user/profile/update/", user_views.update_user_profile),
     re_path("user/change_password/", user_views.change_password),
