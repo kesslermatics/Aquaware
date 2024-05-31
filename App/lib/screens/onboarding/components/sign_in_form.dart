@@ -71,46 +71,35 @@ class _SignInFormState extends State<SignInForm> {
       }),
     );
 
-    setState(() {
-      isShowLoading = false;
-    });
-
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final String accessToken = responseData['access'];
       final String refreshToken = responseData['refresh'];
 
+      await _prefs.setString('saved_username', _usernameController.text);
+      await _secureStorage.write(
+          key: 'saved_password', value: _passwordController.text);
       if (rememberMe) {
         await _prefs.setString('accessToken', accessToken);
         await _prefs.setString('refreshToken', refreshToken);
-        await _prefs.setString('saved_username', _usernameController.text);
-        await _secureStorage.write(
-            key: 'saved_password', value: _passwordController.text);
-      } else {
-        await _prefs.remove('saved_username');
-        await _secureStorage.delete(key: 'saved_password');
       }
-
-      setState(() {
-        check.fire();
-      });
+      check.fire();
+      confetti.fire();
 
       Future.delayed(Duration(seconds: 2), () {
         setState(() {
-          isShowLoading = false;
-          confetti.fire();
+          isShowConfetti = false;
         });
 
         Navigator.pushReplacementNamed(
             context, '/homepage'); // Replace with your homepage route
       });
     } else {
-      setState(() {
-        error.fire();
-      });
+      error.fire();
 
       Future.delayed(Duration(seconds: 2), () {
         setState(() {
+          isShowConfetti = false;
           isShowLoading = false;
         });
       });

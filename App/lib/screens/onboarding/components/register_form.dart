@@ -57,16 +57,16 @@ class _RegisterFormState extends State<RegisterForm> {
       }),
     );
 
-    setState(() {
-      isShowLoading = false;
-    });
-
     if (response.statusCode == 400) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('A user with that username already exists.')),
       );
-      setState(() {
-        error.fire();
+      error.fire();
+
+      Future.delayed(Duration(seconds: 2), () {
+        setState(() {
+          isShowLoading = false;
+        });
       });
     }
 
