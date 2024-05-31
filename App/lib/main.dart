@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'screens/onboding/onboding_screen.dart';
+import 'screens/homepage/homepage.dart';
+import 'screens/onboarding/onboding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,12 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'The Flutter Way',
+      title: 'Aquaware',
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFEEF1F8),
         primarySwatch: Colors.blue,
         fontFamily: "Intel",
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationTheme(
           filled: true,
           fillColor: Colors.white,
           errorStyle: TextStyle(height: 0),
@@ -29,7 +30,11 @@ class MyApp extends StatelessWidget {
           errorBorder: defaultInputBorder,
         ),
       ),
-      home: const OnboardingScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => OnboardingScreen(),
+        '/homepage': (context) => HomepageScreen(),
+      },
     );
   }
 }
