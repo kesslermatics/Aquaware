@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import UserSerializer
+from .serializers import UserSerializer, RegisterSerializer
 from django.contrib.auth import authenticate
 from django.middleware.csrf import get_token
 
@@ -16,18 +16,17 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['POST'])
 def signup(request):
-    serializer = UserSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
-        user.set_password(request.data.get('password'))
-        user.save()
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            "user": serializer.data
-        })
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({'detail': 'User created successfully'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        # Temporäre Debugging-Ausgabe
+        print(f"Error in signup view: {e}")
+        return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @ensure_csrf_cookie

@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import re_path, include
 
-
 urlpatterns = [
-    re_path(r'^admin/', admin.site.urls),
-    re_path(r'^api/users/', include('users.urls')),
-    re_path(r'^api/aquariums/', include('aquariums.urls')),
-    re_path(r'^api/water/', include('water.urls')),
+    re_path(r"admin/", admin.site.urls),
+    re_path(r"api/users/", include('users.urls')),
+    re_path(r"api/aquariums/", include('aquariums.urls')),
+    re_path(r"api/water/", include('water.urls')),
 ]
+
