@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Aquarium
+from .models import Aquarium
 
 
 class AquariumSerializer(serializers.ModelSerializer):
