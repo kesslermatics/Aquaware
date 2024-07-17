@@ -1,5 +1,5 @@
 from django.urls import path
-from views import create_aquarium, get_aquarium, update_aquarium, delete_aquarium
+from Backend.aquariums.views import create_aquarium, get_aquarium, update_aquarium, delete_aquarium
 
 urlpatterns = [
     path('create/', create_aquarium, name='create_aquarium'),

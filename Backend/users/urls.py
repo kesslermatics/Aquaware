@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import signup, login, get_user_profile, update_user_profile, change_password, delete_user_account
 
+from Backend.users.views import signup, login, get_user_profile, change_password, update_user_profile, \
+    delete_user_account
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
