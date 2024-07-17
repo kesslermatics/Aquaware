@@ -32,6 +32,11 @@ ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1']
 
 # Application definition
 
+AUTHENTICATION_BACKENDS = (
+    'users.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

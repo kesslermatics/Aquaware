@@ -5,13 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import UserSerializer, RegisterSerializer
+from .serializers import UserSerializer, RegisterSerializer, CustomTokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from django.middleware.csrf import get_token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = UserSerializer
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 @api_view(['POST'])
@@ -38,9 +38,9 @@ def get_csrf_token(request):
 
 @api_view(['POST'])
 def login(request):
-    username = request.data.get('username')
+    email = request.data.get('email')
     password = request.data.get('password')
-    user = authenticate(username=username, password=password)
+    user = authenticate(request, email=email, password=password)
 
     if user is not None:
         refresh = RefreshToken.for_user(user)
@@ -52,7 +52,6 @@ def login(request):
         })
     else:
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
