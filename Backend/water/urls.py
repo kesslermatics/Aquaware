@@ -1,5 +1,5 @@
 from django.urls import path
-from Backend.water.views import add_water_value, get_water_values
+from .views import add_water_value, get_water_values
 
 urlpatterns = [
     path('add/', add_water_value, name='add_water_value'),
