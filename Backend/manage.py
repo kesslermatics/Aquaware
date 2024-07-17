@@ -5,6 +5,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aquaware.settings')
 django.setup()
 import sys
 
+sys.path.append("..")
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
