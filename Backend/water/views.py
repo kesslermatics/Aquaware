@@ -24,7 +24,7 @@ def add_water_values(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_water_values(request, aquarium_id):
+def get_all_values(request, aquarium_id):
     try:
         # Filter water values by aquarium_id and ensure the aquarium belongs to the authenticated user
         water_values = WaterValue.objects.filter(aquarium_id=aquarium_id, aquarium__user=request.user).select_related(
@@ -65,7 +65,7 @@ def get_water_values(request, aquarium_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_aquarium_parameter_values(request, aquarium_id, parameter_name):
+def get_all_values_from_parameter(request, aquarium_id, parameter_name):
     try:
         # Überprüfe, ob der Parameter existiert
         parameter = WaterParameter.objects.get(name=parameter_name)

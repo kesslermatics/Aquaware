@@ -1,10 +1,9 @@
-from django.urls import re_path
+from django.urls import path
 from . import views as aquarium_views
 
 urlpatterns = [
-    re_path("create/", aquarium_views.create_aquarium),
-    re_path(r"(?P<id>\d+)/", aquarium_views.get_aquarium),
-    re_path(r"(?P<id>\d+)/update/", aquarium_views.update_aquarium),
-    re_path(r"(?P<id>\d+)/delete/", aquarium_views.delete_aquarium),
-    re_path(r"user_aquariums/", aquarium_views.get_user_aquariums),
+    path('create/', aquarium_views.create_aquarium, name='create-aquarium'),
+    path('<int:id>/update/', aquarium_views.update_aquarium, name='update-aquarium'),
+    path('<int:id>/delete/', aquarium_views.delete_aquarium, name='delete-aquarium'),
+    path("", aquarium_views.get_user_aquariums),
 ]

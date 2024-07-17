@@ -1,9 +1,8 @@
-from django.urls import re_path
+from django.urls import path
 from . import views as water_views
 
 urlpatterns = [
-    re_path(r"add/", water_views.add_water_values),
-    re_path(r"(?P<aquarium_id>\d+)/values/(?P<parameter_name>[\w-]+)/$", water_views.get_aquarium_parameter_values),
-    re_path(r"(?P<aquarium_id>\d+)/values/", water_views.get_water_values),
-
+    path('add/', water_views.add_water_values, name='add-water-values'),
+    path('aquariums/<int:aquarium_id>/water-values/<str:parameter_name>/', water_views.get_all_values_from_parameter, name='aquarium-parameter-values'),
+    path('aquariums/<int:aquarium_id>/water-values/', water_views.get_all_values, name='aquarium-water-values'),
 ]
