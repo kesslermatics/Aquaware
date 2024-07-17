@@ -1,3 +1,4 @@
+import 'package:aquaware/screens/navigation/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +15,8 @@ class HomepageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MenuDrawer(),
       appBar: AppBar(
-        title: Text('Homepage'),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
