@@ -1,6 +1,6 @@
 from django.db import models
 
-from Backend.users.models import User
+from ..users.models import User
 
 
 class Aquarium(models.Model):

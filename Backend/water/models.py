@@ -1,7 +1,6 @@
 from django.db import models
 
-from Backend.aquariums.models import Aquarium
-
+from ..aquariums.models import Aquarium
 
 class WaterParameter(models.Model):
     name = models.CharField(max_length=255, unique=True)
