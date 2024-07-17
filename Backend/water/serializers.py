@@ -15,8 +15,26 @@ class WaterValueSerializer(serializers.ModelSerializer):
         fields = ['id', 'aquarium', 'parameter', 'value', 'measured_at']
         read_only_fields = ['id', 'measured_at', 'aquarium']
 
+class FlexibleWaterValuesSerializer(serializers.Serializer):
+    aquarium_id = serializers.IntegerField()
+    temperature = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    pH = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    oxygen = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    tds = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+
     def create(self, validated_data):
-        parameter_data = validated_data.pop('parameter')
-        parameter, created = WaterParameter.objects.get_or_create(**parameter_data)
-        water_value = WaterValue.objects.create(parameter=parameter, **validated_data)
-        return water_value
+        aquarium_id = validated_data.pop('aquarium_id')
+        water_values = []
+        for param_name, value in validated_data.items():
+            if value is not None:
+                try:
+                    parameter = WaterParameter.objects.get(name=param_name)
+                except WaterParameter.DoesNotExist:
+                    raise serializers.ValidationError(f"Parameter {param_name} does not exist")
+                water_value = WaterValue.objects.create(
+                    aquarium_id=aquarium_id,
+                    parameter=parameter,
+                    value=value
+                )
+                water_values.append(water_value)
+        return water_values

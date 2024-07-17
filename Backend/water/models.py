@@ -8,7 +8,6 @@ class WaterParameter(models.Model):
     def __str__(self):
         return self.name
 
-
 class WaterValue(models.Model):
     aquarium = models.ForeignKey(Aquarium, on_delete=models.CASCADE, related_name='water_values')
     parameter = models.ForeignKey(WaterParameter, on_delete=models.CASCADE, related_name='water_values')
