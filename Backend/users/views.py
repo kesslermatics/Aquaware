@@ -49,7 +49,7 @@ def login(request):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             "user": serializer.data
-        })
+        }, status=status.HTTP_202_ACCEPTED)
     else:
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
