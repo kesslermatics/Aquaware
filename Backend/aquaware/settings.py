@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     "debug_toolbar",
     "aquaware",
+    "users",
+    "aquariums",
+    "water"
 ]
 
 STATIC_URL = "static/"
