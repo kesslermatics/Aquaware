@@ -1,5 +1,7 @@
 from django.db import models
 from aquariums.models import Aquarium
+from django.utils import timezone
+
 
 class WaterParameter(models.Model):
     name = models.CharField(max_length=255, unique=True)

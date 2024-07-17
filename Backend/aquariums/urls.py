@@ -6,4 +6,5 @@ urlpatterns = [
     re_path(r"(?P<id>\d+)/", aquarium_views.get_aquarium),
     re_path(r"(?P<id>\d+)/update/", aquarium_views.update_aquarium),
     re_path(r"(?P<id>\d+)/delete/", aquarium_views.delete_aquarium),
+    re_path(r"user_aquariums/", aquarium_views.get_user_aquariums),
 ]

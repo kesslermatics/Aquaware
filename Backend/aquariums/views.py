@@ -30,6 +30,13 @@ def get_aquarium(request, id):
     serializer = AquariumSerializer(aquarium)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_aquariums(request):
+    aquariums = Aquarium.objects.filter(user=request.user)
+    serializer = AquariumSerializer(aquariums, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_aquarium(request, id):

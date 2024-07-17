@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -5,7 +7,7 @@ from rest_framework.response import Response
 from pathlib import Path
 from .serializers import WaterParameterSerializer, WaterValueSerializer, FlexibleWaterValuesSerializer
 
-from .models import WaterParameter
+from .models import WaterParameter, WaterValue
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,7 +24,78 @@ def add_water_values(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_water_values(request):
-    all_entries = WaterParameter.objects.filter(user=request.user).order_by('-timestamp')
-    serializer = WaterParameterSerializer(all_entries, many=True)
-    return Response(serializer.data)
+def get_water_values(request, aquarium_id):
+    try:
+        # Filter water values by aquarium_id and ensure the aquarium belongs to the authenticated user
+        water_values = WaterValue.objects.filter(aquarium_id=aquarium_id, aquarium__user=request.user).select_related(
+            'parameter').order_by('measured_at')
+
+        # If no water values are found, ensure we return an appropriate response
+        if not water_values.exists():
+            return Response({'detail': 'No water values found or aquarium does not belong to this user.'},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        # Organize the water values by 2-minute intervals
+        measurements = []
+        current_bundle = None
+        last_time = None
+
+        for water_value in water_values:
+            measured_at = water_value.measured_at.replace(second=0, microsecond=0)
+            if last_time is None or measured_at - last_time > timedelta(minutes=2):
+                current_bundle = {
+                    'measured_at': measured_at.isoformat(),
+                    water_value.parameter.name: {
+                        'value': water_value.value,
+                        'unit': water_value.parameter.unit
+                    }
+                }
+                measurements.append(current_bundle)
+                last_time = measured_at
+            else:
+                current_bundle[water_value.parameter.name] = {
+                    'value': water_value.value,
+                    'unit': water_value.parameter.unit
+                }
+
+        return Response(measurements, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_aquarium_parameter_values(request, aquarium_id, parameter_name):
+    try:
+        # Überprüfe, ob der Parameter existiert
+        parameter = WaterParameter.objects.get(name=parameter_name)
+
+        # Filter Wasserwerte nach aquarium_id, parameter und sicherstellen, dass das Aquarium dem authentifizierten Benutzer gehört
+        water_values = WaterValue.objects.filter(
+            aquarium_id=aquarium_id,
+            aquarium__user=request.user,
+            parameter=parameter
+        )
+
+        # Falls keine Wasserwerte gefunden werden, eine entsprechende Antwort zurückgeben
+        if not water_values.exists():
+            return Response(
+                {'detail': 'No water values found for this parameter or aquarium does not belong to this user.'},
+                status=status.HTTP_404_NOT_FOUND)
+
+        # Organisiere die Wasserwerte nach dem Messzeitpunkt
+        measurements = []
+        for water_value in water_values:
+            measurements.append({
+                'measured_at': water_value.measured_at,
+                parameter.name: {
+                    'value': water_value.value,
+                    'unit': water_value.parameter.unit
+                }
+            })
+
+        return Response(measurements, status=status.HTTP_200_OK)
+    except WaterParameter.DoesNotExist:
+        return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
