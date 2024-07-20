@@ -17,5 +17,5 @@ class WaterParameter(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.user.username} - {self.timestamp}"
+        return f"{self.user.email} - {self.timestamp}"
 

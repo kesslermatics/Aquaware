@@ -59,15 +59,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-      _buildHomePage(),
-      const DashboardScreen(),
+      _profile != null
+          ? DashboardScreen(profile: _profile!)
+          : Center(child: CircularProgressIndicator()),
       const ProfileScreen(),
       const SettingsScreen(),
+    ];
+
+    List<String> _titles = [
+      'Dashboard',
+      'Profile',
+      'Settings',
     ];
 
     return Scaffold(
       drawer: MenuDrawer(_profile, _onItemTapped),
       appBar: AppBar(
+        title: Text(_titles[_selectedIndex]),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
@@ -76,26 +84,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
         ],
       ),
       body: _pages[_selectedIndex],
-    );
-  }
-
-  Widget _buildHomePage() {
-    return Center(
-      child: _isLoading
-          ? CircularProgressIndicator()
-          : _error != null
-              ? Text('Error: $_error')
-              : _profile != null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                            'Welcome, ${_profile!.firstName} ${_profile!.lastName}!'),
-                        Text('Email: ${_profile!.email}'),
-                        // Weitere Profilinformationen hier anzeigen
-                      ],
-                    )
-                  : Text('No profile data available'),
     );
   }
 }

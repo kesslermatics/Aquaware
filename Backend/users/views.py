@@ -110,9 +110,3 @@ def delete_user_account(request):
     user = request.user
     user.delete()
     return Response({"detail": "User account has been deleted."}, status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def test(request):
-    return Response("passed for {}".format(request.user.username))
