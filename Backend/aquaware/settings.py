@@ -29,8 +29,9 @@ SECURE_SSL_REDIRECT = False
 
 ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1']
 
-
 # Application definition
+
+AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = (
     'users.backends.EmailBackend',
@@ -38,14 +39,14 @@ AUTHENTICATION_BACKENDS = (
 )
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
+    #'rest_framework.authtoken',
     'rest_framework_simplejwt',
     "debug_toolbar",
     "aquaware",
