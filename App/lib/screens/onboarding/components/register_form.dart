@@ -1,11 +1,9 @@
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -16,7 +14,8 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -32,6 +31,8 @@ class _RegisterFormState extends State<RegisterForm> {
   late SMITrigger reset;
   late SMITrigger confetti;
 
+  final UserService _userService = UserService();
+
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
         StateMachineController.fromArtboard(artboard, "State Machine 1");
@@ -45,43 +46,15 @@ class _RegisterFormState extends State<RegisterForm> {
       isShowConfetti = true;
     });
 
-    final response = await http.post(
-      Uri.parse('$baseURL/user/signup/'), // Replace with your base URL
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': _usernameController.text,
-        'email': _emailController.text,
-        'password': _passwordController.text,
-      }),
+    final errorMessage = await _userService.signup(
+      _emailController.text,
+      _passwordController.text,
+      _confirmPasswordController.text,
+      _firstNameController.text,
+      _lastNameController.text,
     );
 
-    if (response.statusCode == 400) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('A user with that username already exists.')),
-      );
-      error.fire();
-
-      Future.delayed(Duration(seconds: 2), () {
-        setState(() {
-          isShowLoading = false;
-        });
-      });
-    }
-
-    if (response.statusCode == 200) {
-      // Assuming 201 is the status code for successful creation
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final String accessToken = responseData['access'];
-      final String refreshToken = responseData['refresh'];
-
-      if (rememberMe) {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('accessToken', accessToken);
-        await prefs.setString('refreshToken', refreshToken);
-      }
-
+    if (errorMessage == null) {
       setState(() {
         check.fire();
       });
@@ -92,33 +65,29 @@ class _RegisterFormState extends State<RegisterForm> {
           confetti.fire();
         });
 
-        Navigator.pushReplacementNamed(
-            context, '/homepage'); // Replace with your homepage route
+        Navigator.pushReplacementNamed(context, '/homepage');
       });
     } else {
       setState(() {
         error.fire();
-      });
-
-      Future.delayed(Duration(seconds: 2), () {
-        setState(() {
-          isShowLoading = false;
-        });
+        isShowLoading = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Registration failed. Please check your details.')),
+        SnackBar(content: Text(errorMessage)),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Stack(
       children: [
         Container(
-          height: 350,
+          height: screenHeight *
+              0.45, // Anpassung der Höhe an 80% der Bildschirmhöhe
           child: Column(
             children: [
               Expanded(
@@ -132,17 +101,42 @@ class _RegisterFormState extends State<RegisterForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            "Username",
+                            "First Name",
                             style: TextStyle(color: Colors.black54),
                           ),
                           Padding(
                             padding:
                                 const EdgeInsets.only(top: 8.0, bottom: 16),
                             child: TextFormField(
-                              controller: _usernameController,
+                              controller: _firstNameController,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "User is required";
+                                  return "First name is required";
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: SvgPicture.asset(
+                                      "assets/icons/username.svg"),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Text(
+                            "Last Name",
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 16),
+                            child: TextFormField(
+                              controller: _lastNameController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Last name is required";
                                 }
                                 return null;
                               },

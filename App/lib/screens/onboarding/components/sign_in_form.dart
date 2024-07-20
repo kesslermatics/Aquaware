@@ -1,11 +1,10 @@
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -16,7 +15,7 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isShowLoading = false;
   bool isShowConfetti = false;
@@ -31,6 +30,8 @@ class _SignInFormState extends State<SignInForm> {
   late SMITrigger reset;
   late SMITrigger confetti;
 
+  final UserService _userService = UserService();
+
   @override
   void initState() {
     super.initState();
@@ -39,10 +40,10 @@ class _SignInFormState extends State<SignInForm> {
 
   Future<void> _loadCredentials() async {
     _prefs = await SharedPreferences.getInstance();
-    String? savedUsername = _prefs.getString('saved_username');
+    String? savedEmail = _prefs.getString('saved_email');
     String? savedPassword = await _secureStorage.read(key: 'saved_password');
-    if (savedUsername != null && savedPassword != null) {
-      _usernameController.text = savedUsername;
+    if (savedEmail != null && savedPassword != null) {
+      _emailController.text = savedEmail;
       _passwordController.text = savedPassword;
     }
   }
@@ -60,31 +61,20 @@ class _SignInFormState extends State<SignInForm> {
       isShowConfetti = true;
     });
 
-    final response = await http.post(
-      Uri.parse('$baseURL/user/login/'), // Replace with your base URL
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': _usernameController.text,
-        'password': _passwordController.text,
-      }),
+    final errorMessage = await _userService.login(
+      _emailController.text,
+      _passwordController.text,
     );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final String accessToken = responseData['access'];
-      final String refreshToken = responseData['refresh'];
-
-      await _prefs.setString('saved_username', _usernameController.text);
+    if (errorMessage == null) {
+      await _prefs.setString('saved_email', _emailController.text);
       await _secureStorage.write(
           key: 'saved_password', value: _passwordController.text);
-      if (rememberMe) {
-        await _prefs.setString('accessToken', accessToken);
-        await _prefs.setString('refreshToken', refreshToken);
-      }
-      check.fire();
-      confetti.fire();
+
+      setState(() {
+        check.fire();
+        confetti.fire();
+      });
 
       Future.delayed(Duration(seconds: 2), () {
         setState(() {
@@ -95,17 +85,14 @@ class _SignInFormState extends State<SignInForm> {
             context, '/homepage'); // Replace with your homepage route
       });
     } else {
-      error.fire();
-
-      Future.delayed(Duration(seconds: 2), () {
-        setState(() {
-          isShowConfetti = false;
-          isShowLoading = false;
-        });
+      setState(() {
+        error.fire();
+        isShowConfetti = false;
+        isShowLoading = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed. Please check your credentials.')),
+        SnackBar(content: Text(errorMessage)),
       );
     }
   }
@@ -120,23 +107,23 @@ class _SignInFormState extends State<SignInForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Username",
+                "Email",
                 style: TextStyle(color: Colors.black54),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 16),
                 child: TextFormField(
-                  controller: _usernameController,
+                  controller: _emailController,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Username is required";
+                      return "Email is required";
                     }
                     return null;
                   },
                   decoration: InputDecoration(
                     prefixIcon: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SvgPicture.asset("assets/icons/username.svg"),
+                      child: SvgPicture.asset("assets/icons/email.svg"),
                     ),
                   ),
                 ),

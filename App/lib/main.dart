@@ -1,4 +1,5 @@
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +22,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isLoading = true;
   bool _isAuthenticated = false;
+  final UserService _userService = UserService();
 
   @override
   void initState() {
@@ -30,32 +32,13 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _checkAuthentication() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? accessToken = prefs.getString('accessToken');
+    final String? refreshToken = prefs.getString('refreshToken');
 
-    if (accessToken != null && accessToken.isNotEmpty) {
-      try {
-        final response = await http.get(
-          Uri.parse('$baseURL/user/jwttest/'), // Replace with your base URL
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $accessToken',
-          },
-        );
-
-        if (response.statusCode == 200) {
-          setState(() {
-            _isAuthenticated = true;
-          });
-        } else {
-          setState(() {
-            _isAuthenticated = false;
-          });
-        }
-      } catch (e) {
-        setState(() {
-          _isAuthenticated = false;
-        });
-      }
+    final refreshErrorMessage = await _userService.refreshAccessToken();
+    if (refreshErrorMessage == null) {
+      setState(() {
+        _isAuthenticated = true;
+      });
     } else {
       setState(() {
         _isAuthenticated = false;
