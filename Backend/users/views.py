@@ -1,3 +1,5 @@
+from tokenize import TokenError
+
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -52,6 +54,21 @@ def login(request):
         }, status=status.HTTP_202_ACCEPTED)
     else:
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def refresh_access_token(request):
+    refresh_token = request.data.get('refresh')
+
+    if refresh_token is None:
+        return Response({'error': 'Refresh token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        refresh = RefreshToken(refresh_token)
+        new_access_token = refresh.access_token
+        return Response({'access': str(new_access_token)}, status=status.HTTP_200_OK)
+    except TokenError as e:
+        return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
