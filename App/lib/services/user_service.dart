@@ -29,7 +29,10 @@ class UserService {
     );
 
     if (response.statusCode == 201) {
+      login(email, password);
       return null; // Erfolgreiche Registrierung
+    } else if (response.statusCode == 500) {
+      return "Server Error. Try again later";
     } else {
       var errorData = jsonDecode(response.body);
       List<String> errors = [];

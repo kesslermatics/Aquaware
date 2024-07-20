@@ -64,7 +64,7 @@ class _RegisterFormState extends State<RegisterForm> {
           isShowLoading = false;
           confetti.fire();
         });
-
+        _userService.login(_emailController.text, _passwordController.text);
         Navigator.pushReplacementNamed(context, '/homepage');
       });
     } else {
