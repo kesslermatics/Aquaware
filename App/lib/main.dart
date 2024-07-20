@@ -31,9 +31,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _checkAuthentication() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? refreshToken = prefs.getString('refreshToken');
-
     final refreshErrorMessage = await _userService.refreshAccessToken();
     if (refreshErrorMessage == null) {
       setState(() {

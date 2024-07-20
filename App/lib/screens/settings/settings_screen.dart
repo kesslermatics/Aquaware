@@ -11,9 +11,6 @@ class SettingsScreen extends StatefulWidget {
 class _ProfileScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const MenuDrawer(),
-      appBar: AppBar(),
-    );
+    return Scaffold();
   }
 }

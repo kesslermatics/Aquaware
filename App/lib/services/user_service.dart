@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/models/user_profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,7 +8,7 @@ class UserService {
   static const String signupUrl = '${baseUrl}/api/users/signup/';
   static const String loginUrl = '${baseUrl}/api/users/login/';
   static const String refreshTokenUrl = '${baseUrl}/api/users/token/refresh/';
-  static const String profileUrl = '${baseUrl}profile/';
+  static const String profileUrl = '${baseUrl}/api/users/profile/';
   static const String updateProfileUrl = '${baseUrl}profile/update/';
   static const String changePasswordUrl = '${baseUrl}change-password/';
   static const String deleteAccountUrl = '${baseUrl}delete-account/';
@@ -63,7 +64,7 @@ class UserService {
     }
   }
 
-  Future<Map<String, dynamic>> getUserProfile() async {
+  Future<UserProfile> getUserProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString('accessToken');
 
@@ -75,10 +76,9 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return UserProfile.fromJson(jsonDecode(response.body));
     } else {
-      var errorData = jsonDecode(response.body);
-      throw Exception(errorData['detail'] ?? 'Failed to get user profile');
+      throw Exception('Failed to get user profile');
     }
   }
 
