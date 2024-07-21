@@ -139,7 +139,7 @@ def forgot_password(request):
 
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        reset_link = f"{settings.FRONTEND_URL}/api/users/reset-password/{uid}/{token}/"
+        reset_link = f"{settings.FRONTEND_URL}/api/users/reset/{uid}/{token}/"
 
         mail_subject = 'Password Reset Request'
         message = render_to_string('password_reset_email.html', {
