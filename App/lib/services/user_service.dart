@@ -152,6 +152,21 @@ class UserService {
     }
   }
 
+  Future<String?> forgotPassword(String email) async {
+    final url = Uri.parse('$baseUrl/api/users/forgot-password/');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
+
+    if (response.statusCode == 200) {
+      return null; // Erfolgreich
+    } else {
+      return response.body; // Fehlernachricht zurückgeben
+    }
+  }
+
   Future<String?> refreshAccessToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? refreshToken = prefs.getString('refreshToken');

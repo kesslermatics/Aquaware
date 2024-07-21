@@ -19,7 +19,6 @@ class _SignInFormState extends State<SignInForm> {
   final TextEditingController _passwordController = TextEditingController();
   bool isShowLoading = false;
   bool isShowConfetti = false;
-  bool rememberMe = false;
   bool _isPasswordVisible = false; // Password visibility state
 
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
@@ -97,6 +96,64 @@ class _SignInFormState extends State<SignInForm> {
     }
   }
 
+  Future<void> _showForgotPasswordDialog(BuildContext context) async {
+    final TextEditingController emailController = TextEditingController();
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Forgot Password'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const Text('Enter your email address to reset your password.'),
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    hintText: 'Email',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Email is required';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Resend Password'),
+              onPressed: () async {
+                final errorMessage =
+                    await _userService.forgotPassword(emailController.text);
+                Navigator.of(context).pop();
+                if (errorMessage == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Password reset email sent')),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(errorMessage)),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -163,18 +220,11 @@ class _SignInFormState extends State<SignInForm> {
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  Checkbox(
-                    value: rememberMe,
-                    onChanged: (value) {
-                      setState(() {
-                        rememberMe = value!;
-                      });
-                    },
-                  ),
-                  const Text("Remember Me")
-                ],
+              TextButton(
+                onPressed: () {
+                  _showForgotPasswordDialog(context);
+                },
+                child: const Text("Forgot Password"),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 24),

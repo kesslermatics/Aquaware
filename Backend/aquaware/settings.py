@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+
+from django.conf.global_settings import DATABASES
 from dotenv import load_dotenv
 
 import dj_database_url
@@ -37,6 +39,32 @@ AUTHENTICATION_BACKENDS = (
     'users.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.hostinger.com'  # Ersetzen Sie dies durch Ihren SMTP-Server
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'info@kesslermatics.com'
+EMAIL_HOST_PASSWORD = 'Fulkano_9903'
+DEFAULT_FROM_EMAIL = 'info@kesslermatics.com'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+FRONTEND_URL = 'https://aquaware-production.up.railway.app'
 
 INSTALLED_APPS = [
     #'django.contrib.admin',
@@ -69,33 +97,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'aquaware.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'aquaware.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    }
-}
 
 DATABASES["default"] = dj_database_url.parse(os.getenv("DATABASE_URL"))
 
