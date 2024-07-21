@@ -26,6 +26,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 SECURE_SSL_REDIRECT = False
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://aquaware-production.up.railway.app',
+]
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
