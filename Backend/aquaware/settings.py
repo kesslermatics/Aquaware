@@ -96,6 +96,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'aquaware.urls'
+DEBUG=True
 
 WSGI_APPLICATION = 'aquaware.wsgi.application'
 
