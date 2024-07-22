@@ -1,4 +1,6 @@
 import 'package:aquaware/models/user_profile.dart';
+import 'package:aquaware/models/aquarium.dart';
+import 'package:aquaware/screens/dashboard/details_screen.dart';
 import 'package:aquaware/screens/dashboard/dashboard_screen.dart';
 import 'package:aquaware/screens/navigation/navigation_drawer.dart';
 import 'package:aquaware/screens/profile/profile_screen.dart';
@@ -20,6 +22,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   bool _isLoading = true;
   String? _error;
   int _selectedIndex = 0;
+  Aquarium? _selectedAquarium;
 
   @override
   void initState() {
@@ -52,15 +55,56 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _selectedAquarium = null; // Reset the selected aquarium
     });
     Navigator.pop(context); // Close the drawer
+  }
+
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Logout'),
+          content: Text('Are you sure you want to logout?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                _logout(context); // Call the logout function
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _onAquariumTapped(Aquarium aquarium) {
+    setState(() {
+      _selectedAquarium = aquarium;
+    });
+  }
+
+  void _navigateBack() {
+    setState(() {
+      _selectedAquarium = null;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
       _profile != null
-          ? DashboardScreen(profile: _profile!)
+          ? DashboardScreen(
+              profile: _profile!, onAquariumTapped: _onAquariumTapped)
           : Center(child: CircularProgressIndicator()),
       const ProfileScreen(),
       const SettingsScreen(),
@@ -75,15 +119,25 @@ class _HomepageScreenState extends State<HomepageScreen> {
     return Scaffold(
       drawer: MenuDrawer(_profile, _onItemTapped),
       appBar: AppBar(
-        title: Text(_titles[_selectedIndex]),
+        title: Text(_selectedAquarium != null
+            ? _selectedAquarium!.name
+            : _titles[_selectedIndex]),
         actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () => _logout(context),
-          ),
+          if (_selectedAquarium == null)
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () => _showLogoutConfirmationDialog(context),
+            ),
+          if (_selectedAquarium != null)
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: _navigateBack,
+            ),
         ],
       ),
-      body: _pages[_selectedIndex],
+      body: _selectedAquarium != null
+          ? DetailsScreen(aquarium: _selectedAquarium!)
+          : _pages[_selectedIndex],
     );
   }
 }

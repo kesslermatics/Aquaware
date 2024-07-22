@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {
   final UserProfile profile;
+  final Function(Aquarium) onAquariumTapped;
 
-  const DashboardScreen({required this.profile, super.key});
+  const DashboardScreen(
+      {required this.profile, required this.onAquariumTapped, super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -101,6 +103,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: ListTile(
                                   title: Text(aquarium.name),
                                   subtitle: Text(aquarium.description),
+                                  trailing: Icon(Icons.arrow_forward),
+                                  onTap: () =>
+                                      widget.onAquariumTapped(aquarium),
                                 ),
                               );
                             },
