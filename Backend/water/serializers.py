@@ -26,6 +26,7 @@ class FlexibleWaterValuesSerializer(serializers.Serializer):
         aquarium_id = validated_data.pop('aquarium_id')
         water_values = []
         for param_name, value in validated_data.items():
+            print(validated_data)
             if value is not None:
                 try:
                     parameter = WaterParameter.objects.get(name=param_name)

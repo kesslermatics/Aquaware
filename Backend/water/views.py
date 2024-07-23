@@ -8,17 +8,35 @@ from pathlib import Path
 from .serializers import WaterParameterSerializer, WaterValueSerializer, FlexibleWaterValuesSerializer
 
 from .models import WaterParameter, WaterValue
+from aquariums.models import Aquarium
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_water_values(request):
+    # Extract the aquarium_id from the request data
+    aquarium_id = request.data.get('aquarium_id')
+
+    # Check if the aquarium_id is provided
+    if not aquarium_id:
+        return Response({'error': 'aquarium_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # Check if the aquarium belongs to the authenticated user
+        aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
+    except Aquarium.DoesNotExist:
+        return Response({'error': 'Aquarium not found or does not belong to this user.'},
+                        status=status.HTTP_404_NOT_FOUND)
+
+    # Proceed with adding water values if the aquarium belongs to the user
     serializer = FlexibleWaterValuesSerializer(data=request.data)
     if serializer.is_valid():
         water_values = serializer.save()
         response_serializer = WaterValueSerializer(water_values, many=True)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
