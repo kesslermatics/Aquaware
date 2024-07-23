@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.db.models import OuterRef, Subquery
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -42,41 +43,51 @@ def add_water_values(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_all_values(request, aquarium_id):
+def get_latest_from_all_parameters(request, aquarium_id):
     try:
-        # Filter water values by aquarium_id and ensure the aquarium belongs to the authenticated user
-        water_values = WaterValue.objects.filter(aquarium_id=aquarium_id, aquarium__user=request.user).select_related(
-            'parameter').order_by('measured_at')
+        # Verify that the aquarium belongs to the authenticated user
+        aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
+
+        # Subquery to get the last 10 values per parameter
+        subquery = WaterValue.objects.filter(
+            aquarium_id=aquarium_id,
+            parameter_id=OuterRef('parameter_id')
+        ).order_by('-measured_at')[:10]
+
+        # Fetch only the latest 10 values per parameter
+        water_values = WaterValue.objects.filter(
+            aquarium_id=aquarium_id,
+            aquarium__user=request.user,
+            id__in=Subquery(subquery.values('id'))
+        ).select_related('parameter').order_by('parameter_id', '-measured_at')
 
         # If no water values are found, ensure we return an appropriate response
         if not water_values.exists():
             return Response({'detail': 'No water values found or aquarium does not belong to this user.'},
                             status=status.HTTP_404_NOT_FOUND)
 
-        # Organize the water values by 2-minute intervals
-        measurements = []
-        current_bundle = None
-        last_time = None
-
+        # Organize the water values by parameter
+        measurements = {}
         for water_value in water_values:
-            measured_at = water_value.measured_at.replace(second=0, microsecond=0)
-            if last_time is None or measured_at - last_time > timedelta(minutes=2):
-                current_bundle = {
-                    'measured_at': measured_at.isoformat(),
-                    water_value.parameter.name: {
-                        'value': water_value.value,
-                        'unit': water_value.parameter.unit
-                    }
-                }
-                measurements.append(current_bundle)
-                last_time = measured_at
-            else:
-                current_bundle[water_value.parameter.name] = {
-                    'value': water_value.value,
-                    'unit': water_value.parameter.unit
-                }
+            parameter_name = water_value.parameter.name
+            if parameter_name not in measurements:
+                measurements[parameter_name] = []
+            measurements[parameter_name].append({
+                'measured_at': water_value.measured_at.isoformat(),
+                'value': water_value.value,
+                'unit': water_value.parameter.unit
+            })
 
-        return Response(measurements, status=status.HTTP_200_OK)
+        # Convert measurements dictionary to list for response
+        response_data = [
+            {'parameter': param, 'values': values}
+            for param, values in measurements.items()
+        ]
+
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Aquarium.DoesNotExist:
+        return Response({'detail': 'Aquarium not found or does not belong to this user.'},
+                        status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
