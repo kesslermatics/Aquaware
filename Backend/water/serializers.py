@@ -17,10 +17,10 @@ class WaterValueSerializer(serializers.ModelSerializer):
 
 class FlexibleWaterValuesSerializer(serializers.Serializer):
     aquarium_id = serializers.IntegerField()
-    temperature = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    pH = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    oxygen = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    tds = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    Temperature = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    PH = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    Oxygen = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    TDS = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
 
     def create(self, validated_data):
         aquarium_id = validated_data.pop('aquarium_id')
