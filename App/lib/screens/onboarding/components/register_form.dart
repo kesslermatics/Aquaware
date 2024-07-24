@@ -1,4 +1,5 @@
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,6 @@ class _RegisterFormState extends State<RegisterForm> {
       TextEditingController();
   bool isShowLoading = false;
   bool isShowConfetti = false;
-  bool rememberMe = false;
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
@@ -102,7 +102,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         children: [
                           const Text(
                             "First Name",
-                            style: TextStyle(color: Colors.black54),
+                            style: TextStyle(color: ColorProvider.textDark),
                           ),
                           Padding(
                             padding:
@@ -115,19 +115,11 @@ class _RegisterFormState extends State<RegisterForm> {
                                 }
                                 return null;
                               },
-                              decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/username.svg"),
-                                ),
-                              ),
                             ),
                           ),
                           const Text(
                             "Last Name",
-                            style: TextStyle(color: Colors.black54),
+                            style: TextStyle(color: ColorProvider.textDark),
                           ),
                           Padding(
                             padding:
@@ -140,19 +132,11 @@ class _RegisterFormState extends State<RegisterForm> {
                                 }
                                 return null;
                               },
-                              decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/username.svg"),
-                                ),
-                              ),
                             ),
                           ),
                           const Text(
                             "Email",
-                            style: TextStyle(color: Colors.black54),
+                            style: TextStyle(color: ColorProvider.textDark),
                           ),
                           Padding(
                             padding:
@@ -165,19 +149,11 @@ class _RegisterFormState extends State<RegisterForm> {
                                 }
                                 return null;
                               },
-                              decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/email.svg"),
-                                ),
-                              ),
                             ),
                           ),
                           const Text(
                             "Password",
-                            style: TextStyle(color: Colors.black54),
+                            style: TextStyle(color: ColorProvider.textDark),
                           ),
                           Padding(
                             padding:
@@ -192,12 +168,6 @@ class _RegisterFormState extends State<RegisterForm> {
                               },
                               obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/password.svg"),
-                                ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _isPasswordVisible
@@ -215,7 +185,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           ),
                           const Text(
                             "Confirm Password",
-                            style: TextStyle(color: Colors.black54),
+                            style: TextStyle(color: ColorProvider.textDark),
                           ),
                           Padding(
                             padding:
@@ -233,12 +203,6 @@ class _RegisterFormState extends State<RegisterForm> {
                               },
                               obscureText: !_isConfirmPasswordVisible,
                               decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/password.svg"),
-                                ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _isConfirmPasswordVisible
@@ -254,19 +218,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                 ),
                               ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: rememberMe,
-                                onChanged: (value) {
-                                  setState(() {
-                                    rememberMe = value!;
-                                  });
-                                },
-                              ),
-                              const Text("Remember Me")
-                            ],
                           ),
                         ],
                       ),
@@ -284,7 +235,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: lightBlue,
+                    backgroundColor: Colors.lightBlue,
                     minimumSize: const Size(double.infinity, 56),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -297,8 +248,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   icon: const Icon(
                     Icons.start,
+                    color: ColorProvider.textLight,
                   ),
-                  label: const Text("Register"),
+                  label: const Text(
+                    "Register",
+                    style: TextStyle(color: ColorProvider.textLight),
+                  ),
                 ),
               ),
             ],

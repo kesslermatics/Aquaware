@@ -1,4 +1,5 @@
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -165,7 +166,7 @@ class _SignInFormState extends State<SignInForm> {
             children: [
               const Text(
                 "Email",
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: ColorProvider.textDark),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 16),
@@ -177,17 +178,11 @@ class _SignInFormState extends State<SignInForm> {
                     }
                     return null;
                   },
-                  decoration: InputDecoration(
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SvgPicture.asset("assets/icons/email.svg"),
-                    ),
-                  ),
                 ),
               ),
               const Text(
                 "Password",
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: ColorProvider.textDark),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 16),
@@ -201,10 +196,6 @@ class _SignInFormState extends State<SignInForm> {
                   },
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SvgPicture.asset("assets/icons/password.svg"),
-                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isPasswordVisible
@@ -224,7 +215,12 @@ class _SignInFormState extends State<SignInForm> {
                 onPressed: () {
                   _showForgotPasswordDialog(context);
                 },
-                child: const Text("Forgot Password"),
+                child: const Text(
+                  "Forgot Password",
+                  style: TextStyle(
+                    color: ColorProvider.primary,
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 24),
@@ -248,10 +244,11 @@ class _SignInFormState extends State<SignInForm> {
                   ),
                   icon: const Icon(
                     Icons.start,
+                    color: ColorProvider.textLight,
                   ),
                   label: const Text(
                     "Sign In",
-                    style: TextStyle(),
+                    style: TextStyle(color: ColorProvider.textLight),
                   ),
                 ),
               ),

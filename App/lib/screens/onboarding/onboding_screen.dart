@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
@@ -56,7 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           Text(
                             "Welcome to Aquaware",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: ColorProvider.textLight,
                               fontSize: 50,
                               fontFamily: "Poppins",
                               height: 1.2,
@@ -97,6 +98,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: const Text(
                           "Get Started",
                           style: TextStyle(
+                            color: ColorProvider.textDark,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
