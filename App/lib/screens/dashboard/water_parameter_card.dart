@@ -36,6 +36,7 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/models/water_parameter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class WaterParameterCard extends StatefulWidget {
   final WaterParameter waterParameter;
@@ -73,8 +74,122 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     maxY = data.reduce((a, b) => a > b ? a : b) + deviation;
   }
 
+  final Map<String, Widget Function(BuildContext)> parameterScreens = {
+    'temperature': (context) => TemperatureScreen(),
+    'ph': (context) => PHScreen(),
+    'tds': (context) => TDSScreen(),
+    'oxygen': (context) => OxygenScreen(),
+    'ammonia': (context) => AmmoniaScreen(),
+    'nitrite': (context) => NitriteScreen(),
+    'nitrate': (context) => NitrateScreen(),
+    'phosphate': (context) => PhosphateScreen(),
+    'carbon dioxide': (context) => CarbonDioxideScreen(),
+    'salinity': (context) => SalinityScreen(),
+    'general hardness': (context) => GeneralHardnessScreen(),
+    'carbonate hardness': (context) => CarbonateHardnessScreen(),
+    'copper': (context) => CopperScreen(),
+    'iron': (context) => IronScreen(),
+    'calcium': (context) => CalciumScreen(),
+    'magnesium': (context) => MagnesiumScreen(),
+    'potassium': (context) => PotassiumScreen(),
+    'chlorine': (context) => ChlorineScreen(),
+    'alkalinity': (context) => AlkalinityScreen(),
+    'redox potential': (context) => RedoxPotentialScreen(),
+    'silica': (context) => SilicaScreen(),
+    'boron': (context) => BoronScreen(),
+    'strontium': (context) => StrontiumScreen(),
+    'iodine': (context) => IodineScreen(),
+    'molybdenum': (context) => MolybdenumScreen(),
+    'sulfate': (context) => SulfateScreen(),
+    'organic carbon': (context) => OrganicCarbonScreen(),
+    'turbidity': (context) => TurbidityScreen(),
+    'conductivity': (context) => ConductivityScreen(),
+    'total organic carbon': (context) => TotalOrganicCarbonScreen(),
+    'suspended solids': (context) => SuspendedSolidsScreen(),
+    'fluoride': (context) => FluorideScreen(),
+    'bromine': (context) => BromineScreen(),
+    'chloride': (context) => ChlorideScreen(),
+  };
+
+  final Map<String, IconData> parameterIcons = {
+    'temperature': Icons.thermostat,
+    'ph': Icons.opacity,
+    'tds': Icons.invert_colors,
+    'oxygen': Icons.air,
+    'ammonia': Icons.warning,
+    'nitrite': Icons.report_problem,
+    'nitrate': Icons.grain,
+    'phosphate': Icons.eco,
+    'carbon dioxide': Icons.cloud,
+    'salinity': Icons.waves,
+    'general hardness': Icons.diamond,
+    'carbonate hardness': Icons.filter_hdr,
+    'copper': Icons.circle,
+    'iron': Icons.local_fire_department,
+    'calcium': FontAwesomeIcons.bone,
+    'magnesium': Icons.star,
+    'potassium': Icons.flash_on,
+    'chlorine': Icons.shield,
+    'alkalinity': Icons.bubble_chart,
+    'redox potential': Icons.electrical_services,
+    'silica': Icons.spa,
+    'boron': Icons.scatter_plot,
+    'strontium': Icons.radio_button_checked,
+    'iodine': Icons.lightbulb,
+    'molybdenum': Icons.flash_auto,
+    'sulfate': Icons.bubble_chart,
+    'organic carbon': Icons.nature,
+    'turbidity': Icons.water_damage,
+    'conductivity': Icons.offline_bolt,
+    'total organic carbon': Icons.grass,
+    'suspended solids': Icons.filter_drama,
+    'fluoride': Icons.invert_colors,
+    'bromine': Icons.flare,
+    'chloride': Icons.shield,
+  };
+
+  final Map<String, Color> parameterColors = {
+    'temperature': Colors.red,
+    'ph': Colors.blue,
+    'tds': Colors.brown,
+    'oxygen': Colors.lightBlue,
+    'ammonia': Colors.orange,
+    'nitrite': Colors.purple,
+    'nitrate': Colors.pink,
+    'phosphate': Colors.green,
+    'carbon dioxide': Colors.grey,
+    'salinity': Colors.cyan,
+    'general hardness': Colors.blueGrey,
+    'carbonate hardness': Colors.teal,
+    'copper': Colors.deepOrange,
+    'iron': Colors.redAccent,
+    'calcium': Colors.grey,
+    'magnesium': Colors.blueAccent,
+    'potassium': Colors.yellow,
+    'chlorine': Colors.greenAccent,
+    'alkalinity': Colors.lightGreen,
+    'redox potential': Colors.deepPurple,
+    'silica': Colors.brown,
+    'boron': Colors.purpleAccent,
+    'strontium': Colors.blue,
+    'iodine': Colors.yellowAccent,
+    'molybdenum': Colors.orangeAccent,
+    'sulfate': Colors.blueGrey,
+    'organic carbon': Colors.green,
+    'turbidity': Colors.lightBlue,
+    'conductivity': Colors.indigo,
+    'total organic carbon': Colors.green,
+    'suspended solids': Colors.grey,
+    'fluoride': Colors.lightBlue,
+    'bromine': Colors.red,
+    'chloride': Colors.blueAccent,
+  };
+
   @override
   Widget build(BuildContext context) {
+    if (widget.waterParameter.parameter == "Calcium") {
+      var test = "";
+    }
     final latestValue = widget.waterParameter.values.first;
     return GestureDetector(
       onTap: () =>
@@ -193,431 +308,26 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
   }
 
   void _navigateToDetailScreen(BuildContext context, String parameter) {
-    switch (parameter.toLowerCase()) {
-      case 'temperature':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TemperatureScreen(),
-          ),
-        );
-        break;
-      case 'ph':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PHScreen(),
-          ),
-        );
-        break;
-      case 'tds':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TDSScreen(),
-          ),
-        );
-        break;
-      case 'oxygen':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OxygenScreen(),
-          ),
-        );
-        break;
-      case 'ammonia':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AmmoniaScreen(),
-          ),
-        );
-        break;
-      case 'nitrite':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NitriteScreen(),
-          ),
-        );
-        break;
-      case 'nitrate':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NitrateScreen(),
-          ),
-        );
-        break;
-      case 'phosphate':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PhosphateScreen(),
-          ),
-        );
-        break;
-      case 'carbon dioxide':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CarbonDioxideScreen(),
-          ),
-        );
-        break;
-      case 'salinity':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SalinityScreen(),
-          ),
-        );
-        break;
-      case 'general hardness':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GeneralHardnessScreen(),
-          ),
-        );
-        break;
-      case 'carbonate hardness':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CarbonateHardnessScreen(),
-          ),
-        );
-        break;
-      case 'copper':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CopperScreen(),
-          ),
-        );
-        break;
-      case 'iron':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => IronScreen(),
-          ),
-        );
-        break;
-      case 'calcium':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CalciumScreen(),
-          ),
-        );
-        break;
-      case 'magnesium':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MagnesiumScreen(),
-          ),
-        );
-        break;
-      case 'potassium':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PotassiumScreen(),
-          ),
-        );
-        break;
-      case 'chlorine':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChlorineScreen(),
-          ),
-        );
-        break;
-      case 'alkalinity':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AlkalinityScreen(),
-          ),
-        );
-        break;
-      case 'redox potential':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RedoxPotentialScreen(),
-          ),
-        );
-        break;
-      case 'silica':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SilicaScreen(),
-          ),
-        );
-        break;
-      case 'boron':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BoronScreen(),
-          ),
-        );
-        break;
-      case 'strontium':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => StrontiumScreen(),
-          ),
-        );
-        break;
-      case 'iodine':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => IodineScreen(),
-          ),
-        );
-        break;
-      case 'molybdenum':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MolybdenumScreen(),
-          ),
-        );
-        break;
-      case 'sulfate':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SulfateScreen(),
-          ),
-        );
-        break;
-      case 'organic carbon':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OrganicCarbonScreen(),
-          ),
-        );
-        break;
-      case 'turbidity':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TurbidityScreen(),
-          ),
-        );
-        break;
-      case 'conductivity':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConductivityScreen(),
-          ),
-        );
-        break;
-      case 'total organic carbon':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TotalOrganicCarbonScreen(),
-          ),
-        );
-        break;
-      case 'suspended solids':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SuspendedSolidsScreen(),
-          ),
-        );
-        break;
-      case 'fluoride':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FluorideScreen(),
-          ),
-        );
-        break;
-      case 'bromine':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BromineScreen(),
-          ),
-        );
-        break;
-      case 'chloride':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChlorideScreen(),
-          ),
-        );
-        break;
+    final screenBuilder = parameterScreens[parameter.toLowerCase()];
+    if (screenBuilder != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: screenBuilder),
+      );
+    } else {
+      // Handle unknown parameter screen navigation if needed
     }
   }
 
   Widget _getIconForParameter(String parameter) {
-    switch (parameter.toLowerCase()) {
-      case 'temperature':
-        return Icon(Icons.thermostat, color: Colors.red, size: 40);
-      case 'ph':
-        return Icon(Icons.opacity, color: Colors.blue, size: 40);
-      case 'tds':
-        return Icon(Icons.invert_colors, color: Colors.brown, size: 40);
-      case 'oxygen':
-        return Icon(Icons.air, color: Colors.lightBlue, size: 40);
-      case 'ammonia':
-        return Icon(Icons.warning, color: Colors.orange, size: 40);
-      case 'nitrite':
-        return Icon(Icons.report_problem, color: Colors.purple, size: 40);
-      case 'nitrate':
-        return Icon(Icons.grain, color: Colors.pink, size: 40);
-      case 'phosphate':
-        return Icon(Icons.eco, color: Colors.green, size: 40);
-      case 'carbon dioxide':
-        return Icon(Icons.cloud, color: Colors.grey, size: 40);
-      case 'salinity':
-        return Icon(Icons.waves, color: Colors.cyan, size: 40);
-      case 'general hardness':
-        return Icon(Icons.diamond, color: Colors.blueGrey, size: 40);
-      case 'carbonate hardness':
-        return const Icon(Icons.filter_hdr, color: Colors.teal, size: 40);
-      case 'copper':
-        return Icon(Icons.circle, color: Colors.deepOrange, size: 40);
-      case 'iron':
-        return Icon(Icons.local_fire_department,
-            color: Colors.redAccent, size: 40);
-      case 'calcium':
-        return Icon(Icons.check_circle, color: Colors.white, size: 40);
-      case 'magnesium':
-        return Icon(Icons.star, color: Colors.blueAccent, size: 40);
-      case 'potassium':
-        return Icon(Icons.flash_on, color: Colors.yellow, size: 40);
-      case 'chlorine':
-        return Icon(Icons.shield, color: Colors.greenAccent, size: 40);
-      case 'alkalinity':
-        return Icon(Icons.bubble_chart, color: Colors.lightGreen, size: 40);
-      case 'redox potential':
-        return Icon(Icons.electrical_services,
-            color: Colors.deepPurple, size: 40);
-      case 'silica':
-        return Icon(Icons.spa, color: Colors.brown, size: 40);
-      case 'boron':
-        return Icon(Icons.scatter_plot, color: Colors.purpleAccent, size: 40);
-      case 'strontium':
-        return Icon(Icons.radio_button_checked, color: Colors.blue, size: 40);
-      case 'iodine':
-        return Icon(Icons.lightbulb, color: Colors.yellowAccent, size: 40);
-      case 'molybdenum':
-        return Icon(Icons.flash_auto, color: Colors.orangeAccent, size: 40);
-      case 'sulfate':
-        return Icon(Icons.bubble_chart, color: Colors.blueGrey, size: 40);
-      case 'organic carbon':
-        return Icon(Icons.nature, color: Colors.green, size: 40);
-      case 'turbidity':
-        return Icon(Icons.water_damage, color: Colors.lightBlue, size: 40);
-      case 'conductivity':
-        return Icon(Icons.offline_bolt, color: Colors.indigo, size: 40);
-      case 'total organic carbon':
-        return Icon(Icons.grass, color: Colors.green, size: 40);
-      case 'suspended solids':
-        return Icon(Icons.filter_drama, color: Colors.grey, size: 40);
-      case 'fluoride':
-        return Icon(Icons.invert_colors, color: Colors.lightBlue, size: 40);
-      case 'bromine':
-        return Icon(Icons.flare, color: Colors.red, size: 40);
-      case 'chloride':
-        return Icon(Icons.shield, color: Colors.blueAccent, size: 40);
-      default:
-        return Icon(Icons.device_thermostat, color: Colors.grey, size: 40);
-    }
+    return Icon(
+      parameterIcons[parameter.toLowerCase()] ?? Icons.device_thermostat,
+      color: _getColorForParameter(parameter),
+      size: 40,
+    );
   }
 
   Color _getColorForParameter(String parameter) {
-    switch (parameter.toLowerCase()) {
-      case 'temperature':
-        return Colors.red;
-      case 'ph':
-        return Colors.blue;
-      case 'tds':
-        return Colors.brown;
-      case 'oxygen':
-        return Colors.lightBlue;
-      case 'ammonia':
-        return Colors.orange;
-      case 'nitrite':
-        return Colors.purple;
-      case 'nitrate':
-        return Colors.pink;
-      case 'phosphate':
-        return Colors.green;
-      case 'carbon dioxide':
-        return Colors.grey;
-      case 'salinity':
-        return Colors.cyan;
-      case 'general hardness':
-        return Colors.blueGrey;
-      case 'carbonate hardness':
-        return Colors.teal;
-      case 'copper':
-        return Colors.deepOrange;
-      case 'iron':
-        return Colors.redAccent;
-      case 'calcium':
-        return Colors.white;
-      case 'magnesium':
-        return Colors.blueAccent;
-      case 'potassium':
-        return Colors.yellow;
-      case 'chlorine':
-        return Colors.greenAccent;
-      case 'alkalinity':
-        return Colors.lightGreen;
-      case 'redox potential':
-        return Colors.deepPurple;
-      case 'silica':
-        return Colors.brown;
-      case 'boron':
-        return Colors.purpleAccent;
-      case 'strontium':
-        return Colors.blue;
-      case 'iodine':
-        return Colors.yellowAccent;
-      case 'molybdenum':
-        return Colors.orangeAccent;
-      case 'sulfate':
-        return Colors.blueGrey;
-      case 'organic carbon':
-        return Colors.green;
-      case 'turbidity':
-        return Colors.lightBlue;
-      case 'conductivity':
-        return Colors.indigo;
-      case 'total organic carbon':
-        return Colors.green;
-      case 'suspended solids':
-        return Colors.grey;
-      case 'fluoride':
-        return Colors.lightBlue;
-      case 'bromine':
-        return Colors.red;
-      case 'chloride':
-        return Colors.blueAccent;
-      default:
-        return Colors.grey;
-    }
+    return parameterColors[parameter.toLowerCase()] ?? Colors.grey;
   }
 }
