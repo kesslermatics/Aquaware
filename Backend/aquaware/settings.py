@@ -72,6 +72,7 @@ FRONTEND_URL = 'https://aquaware-production.up.railway.app'
 
 INSTALLED_APPS = [
     #'django.contrib.admin',
+    'django_extensions',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

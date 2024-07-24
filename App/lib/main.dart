@@ -1,4 +1,5 @@
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,17 +54,38 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Aquaware',
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFEEF1F8),
-        primarySwatch: Colors.blue,
-        fontFamily: "Intel",
-        inputDecorationTheme: const InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.white,
-          errorStyle: TextStyle(height: 0),
-          border: defaultInputBorder,
-          enabledBorder: defaultInputBorder,
-          focusedBorder: defaultInputBorder,
-          errorBorder: defaultInputBorder,
+        colorScheme: ColorProvider.colorScheme,
+        appBarTheme: AppBarTheme(
+          backgroundColor:
+              ColorProvider.primaryDark, // Hintergrundfarbe der AppBar
+          foregroundColor: ColorProvider.textLight, // Textfarbe der AppBar
+          iconTheme: IconThemeData(
+              color: ColorProvider.textLight), // Icon-Farbe der AppBar
+          actionsIconTheme: IconThemeData(
+              color: ColorProvider.textLight), // Aktions-Icon-Farbe der AppBar
+          titleTextStyle: TextStyle(
+            color: ColorProvider.textLight, // Textfarbe des Titels
+            fontSize: 20, // Schriftgröße des Titels
+            fontWeight: FontWeight.bold, // Schriftstil des Titels
+          ),
+        ),
+        scaffoldBackgroundColor: ColorProvider.background,
+        textTheme: TextTheme(
+          displayLarge: TextStyle(color: ColorProvider.textDark),
+          displayMedium: TextStyle(color: ColorProvider.textDark),
+          displaySmall: TextStyle(color: ColorProvider.textDark),
+          headlineLarge: TextStyle(color: ColorProvider.textDark),
+          headlineMedium: TextStyle(color: ColorProvider.textDark),
+          headlineSmall: TextStyle(color: ColorProvider.textDark),
+          titleLarge: TextStyle(color: ColorProvider.textDark),
+          titleMedium: TextStyle(color: ColorProvider.textDark),
+          titleSmall: TextStyle(color: ColorProvider.textDark),
+          bodyLarge: TextStyle(color: ColorProvider.textDark),
+          bodyMedium: TextStyle(color: ColorProvider.textDark),
+          bodySmall: TextStyle(color: ColorProvider.textDark),
+          labelLarge: TextStyle(color: ColorProvider.textDark),
+          labelMedium: TextStyle(color: ColorProvider.textDark),
+          labelSmall: TextStyle(color: ColorProvider.textDark),
         ),
       ),
       home: _isLoading

@@ -5,6 +5,7 @@ import 'package:aquaware/screens/dashboard/dashboard_screen.dart';
 import 'package:aquaware/screens/navigation/navigation_drawer.dart';
 import 'package:aquaware/screens/profile/profile_screen.dart';
 import 'package:aquaware/screens/settings/settings_screen.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

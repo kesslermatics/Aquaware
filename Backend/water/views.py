@@ -36,6 +36,7 @@ def add_water_values(request):
     if serializer.is_valid():
         water_values = serializer.save()
         response_serializer = WaterValueSerializer(water_values, many=True)
+        print(response_serializer)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
