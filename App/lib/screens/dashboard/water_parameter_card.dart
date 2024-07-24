@@ -1,3 +1,38 @@
+import 'package:aquaware/screens/parameter_details/alkalinity_screen.dart';
+import 'package:aquaware/screens/parameter_details/ammonia_screen.dart';
+import 'package:aquaware/screens/parameter_details/boron_screen.dart';
+import 'package:aquaware/screens/parameter_details/bromine_screen.dart';
+import 'package:aquaware/screens/parameter_details/calcium_screen.dart';
+import 'package:aquaware/screens/parameter_details/carbon_dioxide_screen.dart';
+import 'package:aquaware/screens/parameter_details/carbonate_hardness_screen.dart';
+import 'package:aquaware/screens/parameter_details/chloride_screen.dart';
+import 'package:aquaware/screens/parameter_details/chlorine_screen.dart';
+import 'package:aquaware/screens/parameter_details/conductivity_screen.dart';
+import 'package:aquaware/screens/parameter_details/copper_screen.dart';
+import 'package:aquaware/screens/parameter_details/fluoride_screen.dart';
+import 'package:aquaware/screens/parameter_details/general_hardness_screen.dart';
+import 'package:aquaware/screens/parameter_details/iodine_screen.dart';
+import 'package:aquaware/screens/parameter_details/iron_screen.dart';
+import 'package:aquaware/screens/parameter_details/magnesium_screen.dart';
+import 'package:aquaware/screens/parameter_details/molybdenum_screen.dart';
+import 'package:aquaware/screens/parameter_details/nitrate_screen.dart';
+import 'package:aquaware/screens/parameter_details/nitrite_screen.dart';
+import 'package:aquaware/screens/parameter_details/organic_carbon_screen.dart';
+import 'package:aquaware/screens/parameter_details/oxygen_screen.dart';
+import 'package:aquaware/screens/parameter_details/ph_screen.dart';
+import 'package:aquaware/screens/parameter_details/phosphate_screen.dart';
+import 'package:aquaware/screens/parameter_details/potassium_screen.dart';
+import 'package:aquaware/screens/parameter_details/redox_potential_screen.dart';
+import 'package:aquaware/screens/parameter_details/salinity_screen.dart';
+import 'package:aquaware/screens/parameter_details/silica_screen.dart';
+import 'package:aquaware/screens/parameter_details/strontium_screen.dart';
+import 'package:aquaware/screens/parameter_details/sulfate_screen.dart';
+import 'package:aquaware/screens/parameter_details/suspended_solids_screen.dart';
+import 'package:aquaware/screens/parameter_details/tds_screen.dart';
+import 'package:aquaware/screens/parameter_details/temperature_screen.dart';
+import 'package:aquaware/screens/parameter_details/total_organic_carbon_screen.dart';
+import 'package:aquaware/screens/parameter_details/turbidity_screen.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/models/water_parameter.dart';
@@ -41,73 +76,85 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
   @override
   Widget build(BuildContext context) {
     final latestValue = widget.waterParameter.values.first;
-    return Card(
-      margin: EdgeInsets.fromLTRB(14, 10, 14, 0),
-      child: IntrinsicHeight(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 14, 0),
-                child: Container(
-                  width: 100,
+    return GestureDetector(
+      onTap: () =>
+          _navigateToDetailScreen(context, widget.waterParameter.parameter),
+      child: Card(
+        margin: EdgeInsets.fromLTRB(14, 10, 14, 0),
+        child: IntrinsicHeight(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 14, 0),
+                  child: Container(
+                    width: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _getIconForParameter(widget.waterParameter.parameter),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                          child: Text(
+                            '${widget.waterParameter.parameter} (${latestValue.unit})',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 500),
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) {
+                            return ScaleTransition(
+                                scale: animation, child: child);
+                          },
+                          child: Text(
+                            latestValue.value.toString(),
+                            key: ValueKey<double>(latestValue.value),
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: VerticalDivider(
+                    color:
+                        _getColorForParameter(widget.waterParameter.parameter),
+                    thickness: 2,
+                  ),
+                ),
+                Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _getIconForParameter(widget.waterParameter.parameter),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                        child: Text(
-                          '${widget.waterParameter.parameter} (${latestValue.unit})',
-                          textAlign: TextAlign.center,
+                      Text(
+                        maxY.toStringAsFixed(2),
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          height: 60,
+                          child: LineChart(mainData()),
                         ),
                       ),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
-                        transitionBuilder:
-                            (Widget child, Animation<double> animation) {
-                          return ScaleTransition(
-                              scale: animation, child: child);
-                        },
-                        child: Text(
-                          latestValue.value.toString(),
-                          key: ValueKey<double>(latestValue.value),
-                          style: TextStyle(fontSize: 24),
-                        ),
+                      Text(
+                        minY.toStringAsFixed(2),
+                        style: TextStyle(fontSize: 10),
                       ),
                     ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                child: VerticalDivider(
-                  color: _getColorForParameter(widget.waterParameter.parameter),
-                  thickness: 2,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: ColorProvider.textDark,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      maxY.toStringAsFixed(2),
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        height: 60,
-                        child: LineChart(mainData()),
-                      ),
-                    ),
-                    Text(
-                      minY.toStringAsFixed(2),
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -143,6 +190,283 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
       ],
     );
+  }
+
+  void _navigateToDetailScreen(BuildContext context, String parameter) {
+    switch (parameter.toLowerCase()) {
+      case 'temperature':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TemperatureScreen(),
+          ),
+        );
+        break;
+      case 'ph':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PHScreen(),
+          ),
+        );
+        break;
+      case 'tds':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TDSScreen(),
+          ),
+        );
+        break;
+      case 'oxygen':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OxygenScreen(),
+          ),
+        );
+        break;
+      case 'ammonia':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AmmoniaScreen(),
+          ),
+        );
+        break;
+      case 'nitrite':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NitriteScreen(),
+          ),
+        );
+        break;
+      case 'nitrate':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NitrateScreen(),
+          ),
+        );
+        break;
+      case 'phosphate':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PhosphateScreen(),
+          ),
+        );
+        break;
+      case 'carbon dioxide':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CarbonDioxideScreen(),
+          ),
+        );
+        break;
+      case 'salinity':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SalinityScreen(),
+          ),
+        );
+        break;
+      case 'general hardness':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GeneralHardnessScreen(),
+          ),
+        );
+        break;
+      case 'carbonate hardness':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CarbonateHardnessScreen(),
+          ),
+        );
+        break;
+      case 'copper':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CopperScreen(),
+          ),
+        );
+        break;
+      case 'iron':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => IronScreen(),
+          ),
+        );
+        break;
+      case 'calcium':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CalciumScreen(),
+          ),
+        );
+        break;
+      case 'magnesium':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MagnesiumScreen(),
+          ),
+        );
+        break;
+      case 'potassium':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PotassiumScreen(),
+          ),
+        );
+        break;
+      case 'chlorine':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChlorineScreen(),
+          ),
+        );
+        break;
+      case 'alkalinity':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AlkalinityScreen(),
+          ),
+        );
+        break;
+      case 'redox potential':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RedoxPotentialScreen(),
+          ),
+        );
+        break;
+      case 'silica':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SilicaScreen(),
+          ),
+        );
+        break;
+      case 'boron':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BoronScreen(),
+          ),
+        );
+        break;
+      case 'strontium':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StrontiumScreen(),
+          ),
+        );
+        break;
+      case 'iodine':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => IodineScreen(),
+          ),
+        );
+        break;
+      case 'molybdenum':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MolybdenumScreen(),
+          ),
+        );
+        break;
+      case 'sulfate':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SulfateScreen(),
+          ),
+        );
+        break;
+      case 'organic carbon':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrganicCarbonScreen(),
+          ),
+        );
+        break;
+      case 'turbidity':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TurbidityScreen(),
+          ),
+        );
+        break;
+      case 'conductivity':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConductivityScreen(),
+          ),
+        );
+        break;
+      case 'total organic carbon':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TotalOrganicCarbonScreen(),
+          ),
+        );
+        break;
+      case 'suspended solids':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SuspendedSolidsScreen(),
+          ),
+        );
+        break;
+      case 'fluoride':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FluorideScreen(),
+          ),
+        );
+        break;
+      case 'bromine':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BromineScreen(),
+          ),
+        );
+        break;
+      case 'chloride':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChlorideScreen(),
+          ),
+        );
+        break;
+    }
   }
 
   Widget _getIconForParameter(String parameter) {
