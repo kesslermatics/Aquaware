@@ -1,11 +1,38 @@
 {
-    "$schema": "https://railway.app/railway.schema.json",
-    "build": {
-        "builder": "NIXPACKS"
-    },
-    "deploy": {
-        "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn aquaware.wsgi",
-        "restartPolicyType": "ON_FAILURE",
-        "restartPolicyMaxRetries": 10
+  "builds": [
+    {
+      "src": "./",
+      "use": "@railway/nixpacks",
+      "nixpacksConfig": {
+        "phases": {
+          "install": {
+            "nixpkgs": ["rustup", "pkg-config"],
+            "cmds": [
+              "rustup-init -y && source $HOME/.cargo/env"
+            ]
+          },
+          "build": {
+            "cmds": [
+              "pip install -r requirements.txt"
+            ]
+          },
+          "start": {
+            "cmd": "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn aquaware.wsgi"
+          }
+        }
+      }
     }
+  ],
+  "deploy": {
+    "startCommand": "gunicorn aquaware.wsgi"
+  },
+  "plugins": {
+    "postgresql": {
+      "defaultDatabase": "mydatabase",
+      "user": "myuser",
+      "password": "mypassword",
+      "host": "myhost",
+      "port": 5432
+    }
+  }
 }
