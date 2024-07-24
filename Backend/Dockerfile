@@ -12,17 +12,16 @@ COPY . /app
 WORKDIR /app
 
 # Erstellen Sie eine virtuelle Umgebung
-RUN python3 -m venv /app/venv
+RUN python3 -m venv venv
 
 # Aktivieren Sie die virtuelle Umgebung und installieren Sie die Python-Abhängigkeiten
-RUN /app/venv/bin/pip install --upgrade pip && \
-    /app/venv/bin/pip install -r requirements.txt
+RUN . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
 # Installieren Sie die Cargo-Abhängigkeiten (falls erforderlich)
-# RUN cargo build --release (dieser Schritt ist optional und abhängig von Ihren Anforderungen)
+# RUN . venv/bin/activate && cargo build --release (dieser Schritt ist optional und abhängig von Ihren Anforderungen)
 
 # Installieren Sie die Django-App-Abhängigkeiten
-RUN /app/venv/bin/python manage.py collectstatic --noinput
+RUN . venv/bin/activate && python manage.py collectstatic --noinput
 
 # Exponieren Sie den Port, auf dem Ihre Django-App läuft
 EXPOSE 8000
