@@ -118,10 +118,8 @@ def get_all_values_from_parameter(request, aquarium_id, parameter_name):
         for water_value in water_values:
             measurements.append({
                 'measured_at': water_value.measured_at,
-                parameter.name: {
-                    'value': water_value.value,
-                    'unit': water_value.parameter.unit
-                }
+                'value': water_value.value,
+                'unit': water_value.parameter.unit
             })
 
         return Response(measurements, status=status.HTTP_200_OK)

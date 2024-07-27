@@ -5,6 +5,10 @@ import 'conductivity_knowledge_screen.dart';
 import 'conductivity_alerts_screen.dart';
 
 class ConductivityScreen extends StatelessWidget {
+  final int aquariumId;
+
+  ConductivityScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class ConductivityScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ConductivityDataScreen(),
+            ConductivityDataScreen(aquariumId: aquariumId),
             ConductivityKnowledgeScreen(),
             ConductivityAlertsScreen(),
           ],

@@ -5,6 +5,10 @@ import 'carbon_dioxide_knowledge_screen.dart';
 import 'carbon_dioxide_alerts_screen.dart';
 
 class CarbonDioxideScreen extends StatelessWidget {
+  final int aquariumId;
+
+  CarbonDioxideScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class CarbonDioxideScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CarbonDioxideDataScreen(),
+            CarbonDioxideDataScreen(aquariumId: aquariumId),
             CarbonDioxideKnowledgeScreen(),
             CarbonDioxideAlertsScreen(),
           ],

@@ -5,6 +5,10 @@ import 'silica_knowledge_screen.dart';
 import 'silica_alerts_screen.dart';
 
 class SilicaScreen extends StatelessWidget {
+  final int aquariumId;
+
+  SilicaScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class SilicaScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            SilicaDataScreen(),
+            SilicaDataScreen(aquariumId: aquariumId),
             SilicaKnowledgeScreen(),
             SilicaAlertsScreen(),
           ],

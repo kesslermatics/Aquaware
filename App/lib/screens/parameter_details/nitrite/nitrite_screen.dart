@@ -5,6 +5,10 @@ import 'nitrite_knowledge_screen.dart';
 import 'nitrite_alerts_screen.dart';
 
 class NitriteScreen extends StatelessWidget {
+  final int aquariumId;
+
+  NitriteScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class NitriteScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            NitriteDataScreen(),
+            NitriteDataScreen(aquariumId: aquariumId),
             NitriteKnowledgeScreen(),
             NitriteAlertsScreen(),
           ],

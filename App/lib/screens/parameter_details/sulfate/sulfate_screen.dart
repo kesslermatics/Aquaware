@@ -5,6 +5,10 @@ import 'sulfate_knowledge_screen.dart';
 import 'sulfate_alerts_screen.dart';
 
 class SulfateScreen extends StatelessWidget {
+  final int aquariumId;
+
+  SulfateScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class SulfateScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            SulfateDataScreen(),
+            SulfateDataScreen(aquariumId: aquariumId),
             SulfateKnowledgeScreen(),
             SulfateAlertsScreen(),
           ],

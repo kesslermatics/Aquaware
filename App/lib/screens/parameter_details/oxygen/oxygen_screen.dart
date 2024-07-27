@@ -5,6 +5,10 @@ import 'oxygen_knowledge_screen.dart';
 import 'oxygen_alerts_screen.dart';
 
 class OxygenScreen extends StatelessWidget {
+  final int aquariumId;
+
+  OxygenScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class OxygenScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            OxygenDataScreen(),
+            OxygenDataScreen(aquariumId: aquariumId),
             OxygenKnowledgeScreen(),
             OxygenAlertsScreen(),
           ],

@@ -5,6 +5,10 @@ import 'iodine_knowledge_screen.dart';
 import 'iodine_alerts_screen.dart';
 
 class IodineScreen extends StatelessWidget {
+  final int aquariumId;
+
+  IodineScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class IodineScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            IodineDataScreen(),
+            IodineDataScreen(aquariumId: aquariumId),
             IodineKnowledgeScreen(),
             IodineAlertsScreen(),
           ],

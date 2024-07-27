@@ -5,6 +5,10 @@ import 'magnesium_knowledge_screen.dart';
 import 'magnesium_alerts_screen.dart';
 
 class MagnesiumScreen extends StatelessWidget {
+  final int aquariumId;
+
+  MagnesiumScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class MagnesiumScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            MagnesiumDataScreen(),
+            MagnesiumDataScreen(aquariumId: aquariumId),
             MagnesiumKnowledgeScreen(),
             MagnesiumAlertsScreen(),
           ],

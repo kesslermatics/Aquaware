@@ -1,13 +1,14 @@
+import 'package:aquaware/models/aquarium.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
-import 'suspended_solids_data_screen.dart';
-import 'suspended_solids_knowledge_screen.dart';
-import 'suspended_solids_alerts_screen.dart';
+import 'temperature_data_screen.dart';
+import 'temperature_knowledge_screen.dart';
+import 'temperature_alerts_screen.dart';
 
-class SuspendedSolidsScreen extends StatelessWidget {
+class TemperatureScreen extends StatelessWidget {
   final int aquariumId;
 
-  SuspendedSolidsScreen({required this.aquariumId});
+  TemperatureScreen({required this.aquariumId});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class SuspendedSolidsScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Suspended Solids'),
+          title: Text('Temperature'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -37,9 +38,11 @@ class SuspendedSolidsScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            SuspendedSolidsDataScreen(aquariumId: aquariumId),
-            SuspendedSolidsKnowledgeScreen(),
-            SuspendedSolidsAlertsScreen(),
+            TemperatureDataScreen(
+              aquariumId: aquariumId,
+            ),
+            TemperatureKnowledgeScreen(),
+            TemperatureAlertsScreen(),
           ],
         ),
       ),

@@ -5,6 +5,10 @@ import 'boron_knowledge_screen.dart';
 import 'boron_alerts_screen.dart';
 
 class BoronScreen extends StatelessWidget {
+  final int aquariumId;
+
+  BoronScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class BoronScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            BoronDataScreen(),
+            BoronDataScreen(aquariumId: aquariumId),
             BoronKnowledgeScreen(),
             BoronAlertsScreen(),
           ],

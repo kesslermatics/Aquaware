@@ -5,6 +5,10 @@ import 'temperature_knowledge_screen.dart';
 import 'temperature_alerts_screen.dart';
 
 class TemperatureScreen extends StatelessWidget {
+  final int aquariumId;
+
+  TemperatureScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class TemperatureScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            TemperatureDataScreen(),
+            TemperatureDataScreen(aquariumId: aquariumId),
             TemperatureKnowledgeScreen(),
             TemperatureAlertsScreen(),
           ],

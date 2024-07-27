@@ -5,6 +5,10 @@ import 'iron_knowledge_screen.dart';
 import 'iron_alerts_screen.dart';
 
 class IronScreen extends StatelessWidget {
+  final int aquariumId;
+
+  IronScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class IronScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            IronDataScreen(),
+            IronDataScreen(aquariumId: aquariumId),
             IronKnowledgeScreen(),
             IronAlertsScreen(),
           ],

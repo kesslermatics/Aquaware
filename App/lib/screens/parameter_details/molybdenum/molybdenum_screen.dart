@@ -5,6 +5,10 @@ import 'molybdenum_knowledge_screen.dart';
 import 'molybdenum_alerts_screen.dart';
 
 class MolybdenumScreen extends StatelessWidget {
+  final int aquariumId;
+
+  MolybdenumScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class MolybdenumScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            MolybdenumDataScreen(),
+            MolybdenumDataScreen(aquariumId: aquariumId),
             MolybdenumKnowledgeScreen(),
             MolybdenumAlertsScreen(),
           ],

@@ -5,6 +5,10 @@ import 'carbonate_hardness_knowledge_screen.dart';
 import 'carbonate_hardness_alerts_screen.dart';
 
 class CarbonateHardnessScreen extends StatelessWidget {
+  final int aquariumId;
+
+  CarbonateHardnessScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class CarbonateHardnessScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CarbonateHardnessDataScreen(),
+            CarbonateHardnessDataScreen(aquariumId: aquariumId),
             CarbonateHardnessKnowledgeScreen(),
             CarbonateHardnessAlertsScreen(),
           ],

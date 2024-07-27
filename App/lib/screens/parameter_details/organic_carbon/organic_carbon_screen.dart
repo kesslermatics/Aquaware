@@ -5,6 +5,10 @@ import 'organic_carbon_knowledge_screen.dart';
 import 'organic_carbon_alerts_screen.dart';
 
 class OrganicCarbonScreen extends StatelessWidget {
+  final int aquariumId;
+
+  OrganicCarbonScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class OrganicCarbonScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            OrganicCarbonDataScreen(),
+            OrganicCarbonDataScreen(aquariumId: aquariumId),
             OrganicCarbonKnowledgeScreen(),
             OrganicCarbonAlertsScreen(),
           ],

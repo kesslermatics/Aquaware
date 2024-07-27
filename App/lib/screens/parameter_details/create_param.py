@@ -21,6 +21,10 @@ import '{parameter_snake_case}_knowledge_screen.dart';
 import '{parameter_snake_case}_alerts_screen.dart';
 
 class {class_name} extends StatelessWidget {{
+  final int aquariumId;
+
+  {class_name}({{required this.aquariumId}});
+
   @override
   Widget build(BuildContext context) {{
     return DefaultTabController(
@@ -49,7 +53,7 @@ class {class_name} extends StatelessWidget {{
         ),
         body: TabBarView(
           children: [
-            {parameter_class}DataScreen(),
+            {parameter_class}DataScreen(aquariumId: aquariumId),
             {parameter_class}KnowledgeScreen(),
             {parameter_class}AlertsScreen(),
           ],
@@ -62,12 +66,72 @@ class {class_name} extends StatelessWidget {{
 
 # Template for the data screen Dart file content
 data_screen_template = '''import 'package:flutter/material.dart';
+import 'package:aquaware/services/water_parameter_service.dart';
+import 'package:aquaware/models/water_value.dart';
+import 'package:aquaware/services/color_provider.dart';
 
-class {class_name}DataScreen extends StatelessWidget {{
+class {class_name}DataScreen extends StatefulWidget {{
+  final int aquariumId;
+
+  {class_name}DataScreen({{required this.aquariumId}});
+
+  @override
+  _{class_name}DataScreenState createState() => _{class_name}DataScreenState();
+}}
+
+class _{class_name}DataScreenState extends State<{class_name}DataScreen> {{
+  late Future<List<WaterValue>> _futureWaterValues;
+  final WaterParameterService _waterParameterService = WaterParameterService();
+
+  @override
+  void initState() {{
+    super.initState();
+    _futureWaterValues = _fetchWaterValues();
+  }}
+
+  Future<List<WaterValue>> _fetchWaterValues() async {{
+    return await _waterParameterService.fetchSingleWaterParameter(
+        widget.aquariumId, '{parameter}');
+  }}
+
   @override
   Widget build(BuildContext context) {{
-    return Center(
-      child: Text('Data for {parameter}'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('{parameter} Data'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {{
+            Navigator.pop(context);
+          }},
+        ),
+      ),
+      body: FutureBuilder<List<WaterValue>>(
+        future: _futureWaterValues,
+        builder: (context, snapshot) {{
+          if (snapshot.connectionState == ConnectionState.waiting) {{
+            return Center(child: CircularProgressIndicator());
+          }} else if (snapshot.hasError) {{
+            return Center(child: Text('Failed to load water values'));
+          }} else if (!snapshot.hasData || snapshot.data!.isEmpty) {{
+            return Center(child: Text('No water values found'));
+          }} else {{
+            return ListView.builder(
+              padding: EdgeInsets.all(16.0),  
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {{
+                final value = snapshot.data![index];
+                return Card(
+                  child: ListTile(
+                    title: Text('\${{value.value}} \${{value.unit}}'),
+                    subtitle: Text('Measured at: \${{value.measuredAt}}'),
+                  ),
+                );
+              }},
+            );
+          }}
+        }},
+      ),
     );
   }}
 }}

@@ -5,6 +5,10 @@ import 'calcium_knowledge_screen.dart';
 import 'calcium_alerts_screen.dart';
 
 class CalciumScreen extends StatelessWidget {
+  final int aquariumId;
+
+  CalciumScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class CalciumScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CalciumDataScreen(),
+            CalciumDataScreen(aquariumId: aquariumId),
             CalciumKnowledgeScreen(),
             CalciumAlertsScreen(),
           ],

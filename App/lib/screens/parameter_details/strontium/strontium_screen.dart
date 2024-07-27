@@ -5,6 +5,10 @@ import 'strontium_knowledge_screen.dart';
 import 'strontium_alerts_screen.dart';
 
 class StrontiumScreen extends StatelessWidget {
+  final int aquariumId;
+
+  StrontiumScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class StrontiumScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            StrontiumDataScreen(),
+            StrontiumDataScreen(aquariumId: aquariumId),
             StrontiumKnowledgeScreen(),
             StrontiumAlertsScreen(),
           ],

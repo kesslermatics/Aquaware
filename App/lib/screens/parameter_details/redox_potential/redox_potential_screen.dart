@@ -5,6 +5,10 @@ import 'redox_potential_knowledge_screen.dart';
 import 'redox_potential_alerts_screen.dart';
 
 class RedoxPotentialScreen extends StatelessWidget {
+  final int aquariumId;
+
+  RedoxPotentialScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class RedoxPotentialScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            RedoxPotentialDataScreen(),
+            RedoxPotentialDataScreen(aquariumId: aquariumId),
             RedoxPotentialKnowledgeScreen(),
             RedoxPotentialAlertsScreen(),
           ],

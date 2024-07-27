@@ -5,6 +5,10 @@ import 'phosphate_knowledge_screen.dart';
 import 'phosphate_alerts_screen.dart';
 
 class PhosphateScreen extends StatelessWidget {
+  final int aquariumId;
+
+  PhosphateScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class PhosphateScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            PhosphateDataScreen(),
+            PhosphateDataScreen(aquariumId: aquariumId),
             PhosphateKnowledgeScreen(),
             PhosphateAlertsScreen(),
           ],

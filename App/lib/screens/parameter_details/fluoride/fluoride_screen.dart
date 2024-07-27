@@ -5,6 +5,10 @@ import 'fluoride_knowledge_screen.dart';
 import 'fluoride_alerts_screen.dart';
 
 class FluorideScreen extends StatelessWidget {
+  final int aquariumId;
+
+  FluorideScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class FluorideScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FluorideDataScreen(),
+            FluorideDataScreen(aquariumId: aquariumId),
             FluorideKnowledgeScreen(),
             FluorideAlertsScreen(),
           ],

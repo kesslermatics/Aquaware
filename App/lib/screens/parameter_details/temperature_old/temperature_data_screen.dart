@@ -3,16 +3,16 @@ import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:aquaware/models/water_value.dart';
 import 'package:aquaware/services/color_provider.dart';
 
-class CopperDataScreen extends StatefulWidget {
+class TemperatureDataScreen extends StatefulWidget {
   final int aquariumId;
 
-  CopperDataScreen({required this.aquariumId});
+  TemperatureDataScreen({required this.aquariumId});
 
   @override
-  _CopperDataScreenState createState() => _CopperDataScreenState();
+  _TemperatureDataScreenState createState() => _TemperatureDataScreenState();
 }
 
-class _CopperDataScreenState extends State<CopperDataScreen> {
+class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
   late Future<List<WaterValue>> _futureWaterValues;
   final WaterParameterService _waterParameterService = WaterParameterService();
 
@@ -24,14 +24,14 @@ class _CopperDataScreenState extends State<CopperDataScreen> {
 
   Future<List<WaterValue>> _fetchWaterValues() async {
     return await _waterParameterService.fetchSingleWaterParameter(
-        widget.aquariumId, 'Copper');
+        widget.aquariumId, 'Temperature');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Copper Data'),
+        title: Text('Temperature Data'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -50,14 +50,14 @@ class _CopperDataScreenState extends State<CopperDataScreen> {
             return Center(child: Text('No water values found'));
           } else {
             return ListView.builder(
-              padding: EdgeInsets.all(16.0),  
+              padding: EdgeInsets.all(16.0),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final value = snapshot.data![index];
                 return Card(
                   child: ListTile(
-                    title: Text('\${value.value} \${value.unit}'),
-                    subtitle: Text('Measured at: \${value.measuredAt}'),
+                    title: Text('${value.value} ${value.unit}'),
+                    subtitle: Text('Measured at: ${value.measuredAt}'),
                   ),
                 );
               },

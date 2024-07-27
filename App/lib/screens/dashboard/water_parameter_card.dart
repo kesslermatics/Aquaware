@@ -40,8 +40,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class WaterParameterCard extends StatefulWidget {
   final WaterParameter waterParameter;
+  final int aquariumId;
 
-  WaterParameterCard({required this.waterParameter});
+  WaterParameterCard({required this.aquariumId, required this.waterParameter});
 
   @override
   _WaterParameterCardState createState() => _WaterParameterCardState();
@@ -74,122 +75,8 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     maxY = data.reduce((a, b) => a > b ? a : b) + deviation;
   }
 
-  final Map<String, Widget Function(BuildContext)> parameterScreens = {
-    'temperature': (context) => TemperatureScreen(),
-    'ph': (context) => PHScreen(),
-    'tds': (context) => TDSScreen(),
-    'oxygen': (context) => OxygenScreen(),
-    'ammonia': (context) => AmmoniaScreen(),
-    'nitrite': (context) => NitriteScreen(),
-    'nitrate': (context) => NitrateScreen(),
-    'phosphate': (context) => PhosphateScreen(),
-    'carbon dioxide': (context) => CarbonDioxideScreen(),
-    'salinity': (context) => SalinityScreen(),
-    'general hardness': (context) => GeneralHardnessScreen(),
-    'carbonate hardness': (context) => CarbonateHardnessScreen(),
-    'copper': (context) => CopperScreen(),
-    'iron': (context) => IronScreen(),
-    'calcium': (context) => CalciumScreen(),
-    'magnesium': (context) => MagnesiumScreen(),
-    'potassium': (context) => PotassiumScreen(),
-    'chlorine': (context) => ChlorineScreen(),
-    'alkalinity': (context) => AlkalinityScreen(),
-    'redox potential': (context) => RedoxPotentialScreen(),
-    'silica': (context) => SilicaScreen(),
-    'boron': (context) => BoronScreen(),
-    'strontium': (context) => StrontiumScreen(),
-    'iodine': (context) => IodineScreen(),
-    'molybdenum': (context) => MolybdenumScreen(),
-    'sulfate': (context) => SulfateScreen(),
-    'organic carbon': (context) => OrganicCarbonScreen(),
-    'turbidity': (context) => TurbidityScreen(),
-    'conductivity': (context) => ConductivityScreen(),
-    'total organic carbon': (context) => TotalOrganicCarbonScreen(),
-    'suspended solids': (context) => SuspendedSolidsScreen(),
-    'fluoride': (context) => FluorideScreen(),
-    'bromine': (context) => BromineScreen(),
-    'chloride': (context) => ChlorideScreen(),
-  };
-
-  final Map<String, IconData> parameterIcons = {
-    'temperature': Icons.thermostat,
-    'ph': Icons.opacity,
-    'tds': Icons.invert_colors,
-    'oxygen': Icons.air,
-    'ammonia': Icons.warning,
-    'nitrite': Icons.report_problem,
-    'nitrate': Icons.grain,
-    'phosphate': Icons.eco,
-    'carbon dioxide': Icons.cloud,
-    'salinity': Icons.waves,
-    'general hardness': Icons.diamond,
-    'carbonate hardness': Icons.filter_hdr,
-    'copper': Icons.circle,
-    'iron': Icons.local_fire_department,
-    'calcium': FontAwesomeIcons.bone,
-    'magnesium': Icons.star,
-    'potassium': Icons.flash_on,
-    'chlorine': Icons.shield,
-    'alkalinity': Icons.bubble_chart,
-    'redox potential': Icons.electrical_services,
-    'silica': Icons.spa,
-    'boron': Icons.scatter_plot,
-    'strontium': Icons.radio_button_checked,
-    'iodine': Icons.lightbulb,
-    'molybdenum': Icons.flash_auto,
-    'sulfate': Icons.bubble_chart,
-    'organic carbon': Icons.nature,
-    'turbidity': Icons.water_damage,
-    'conductivity': Icons.offline_bolt,
-    'total organic carbon': Icons.grass,
-    'suspended solids': Icons.filter_drama,
-    'fluoride': Icons.invert_colors,
-    'bromine': Icons.flare,
-    'chloride': Icons.shield,
-  };
-
-  final Map<String, Color> parameterColors = {
-    'temperature': Colors.red,
-    'ph': Colors.blue,
-    'tds': Colors.brown,
-    'oxygen': Colors.lightBlue,
-    'ammonia': Colors.orange,
-    'nitrite': Colors.purple,
-    'nitrate': Colors.pink,
-    'phosphate': Colors.green,
-    'carbon dioxide': Colors.grey,
-    'salinity': Colors.cyan,
-    'general hardness': Colors.blueGrey,
-    'carbonate hardness': Colors.teal,
-    'copper': Colors.deepOrange,
-    'iron': Colors.redAccent,
-    'calcium': Colors.grey,
-    'magnesium': Colors.blueAccent,
-    'potassium': Colors.yellow,
-    'chlorine': Colors.greenAccent,
-    'alkalinity': Colors.lightGreen,
-    'redox potential': Colors.deepPurple,
-    'silica': Colors.brown,
-    'boron': Colors.purpleAccent,
-    'strontium': Colors.blue,
-    'iodine': Colors.yellowAccent,
-    'molybdenum': Colors.orangeAccent,
-    'sulfate': Colors.blueGrey,
-    'organic carbon': Colors.green,
-    'turbidity': Colors.lightBlue,
-    'conductivity': Colors.indigo,
-    'total organic carbon': Colors.green,
-    'suspended solids': Colors.grey,
-    'fluoride': Colors.lightBlue,
-    'bromine': Colors.red,
-    'chloride': Colors.blueAccent,
-  };
-
   @override
   Widget build(BuildContext context) {
-    if (widget.waterParameter.parameter == "Calcium") {
-      var test = "";
-    }
     final latestValue = widget.waterParameter.values.first;
     return GestureDetector(
       onTap: () =>
@@ -289,9 +176,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
       maxY: maxY,
       minX: 1,
       maxX: data.length.toDouble(),
-      titlesData: FlTitlesData(
-        show: false,
-      ),
+      titlesData: FlTitlesData(show: false),
       borderData: FlBorderData(show: false),
       lineBarsData: [
         LineChartBarData(
@@ -312,7 +197,9 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     if (screenBuilder != null) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: screenBuilder),
+        MaterialPageRoute(
+          builder: (context) => screenBuilder(context, widget.aquariumId),
+        ),
       );
     } else {
       // Handle unknown parameter screen navigation if needed
@@ -330,4 +217,131 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
   Color _getColorForParameter(String parameter) {
     return parameterColors[parameter.toLowerCase()] ?? Colors.grey;
   }
+
+  final Map<String, Widget Function(BuildContext, int)> parameterScreens = {
+    'temperature': (context, aquariumId) =>
+        TemperatureScreen(aquariumId: aquariumId),
+    'ph': (context, aquariumId) => PHScreen(aquariumId: aquariumId),
+    'tds': (context, aquariumId) => TDSScreen(aquariumId: aquariumId),
+    'oxygen': (context, aquariumId) => OxygenScreen(aquariumId: aquariumId),
+    'ammonia': (context, aquariumId) => AmmoniaScreen(aquariumId: aquariumId),
+    'nitrite': (context, aquariumId) => NitriteScreen(aquariumId: aquariumId),
+    'nitrate': (context, aquariumId) => NitrateScreen(aquariumId: aquariumId),
+    'phosphate': (context, aquariumId) =>
+        PhosphateScreen(aquariumId: aquariumId),
+    'carbon dioxide': (context, aquariumId) =>
+        CarbonDioxideScreen(aquariumId: aquariumId),
+    'salinity': (context, aquariumId) => SalinityScreen(aquariumId: aquariumId),
+    'general hardness': (context, aquariumId) =>
+        GeneralHardnessScreen(aquariumId: aquariumId),
+    'carbonate hardness': (context, aquariumId) =>
+        CarbonateHardnessScreen(aquariumId: aquariumId),
+    'copper': (context, aquariumId) => CopperScreen(aquariumId: aquariumId),
+    'iron': (context, aquariumId) => IronScreen(aquariumId: aquariumId),
+    'calcium': (context, aquariumId) => CalciumScreen(aquariumId: aquariumId),
+    'magnesium': (context, aquariumId) =>
+        MagnesiumScreen(aquariumId: aquariumId),
+    'potassium': (context, aquariumId) =>
+        PotassiumScreen(aquariumId: aquariumId),
+    'chlorine': (context, aquariumId) => ChlorineScreen(aquariumId: aquariumId),
+    'alkalinity': (context, aquariumId) =>
+        AlkalinityScreen(aquariumId: aquariumId),
+    'redox potential': (context, aquariumId) =>
+        RedoxPotentialScreen(aquariumId: aquariumId),
+    'silica': (context, aquariumId) => SilicaScreen(aquariumId: aquariumId),
+    'boron': (context, aquariumId) => BoronScreen(aquariumId: aquariumId),
+    'strontium': (context, aquariumId) =>
+        StrontiumScreen(aquariumId: aquariumId),
+    'iodine': (context, aquariumId) => IodineScreen(aquariumId: aquariumId),
+    'molybdenum': (context, aquariumId) =>
+        MolybdenumScreen(aquariumId: aquariumId),
+    'sulfate': (context, aquariumId) => SulfateScreen(aquariumId: aquariumId),
+    'organic carbon': (context, aquariumId) =>
+        OrganicCarbonScreen(aquariumId: aquariumId),
+    'turbidity': (context, aquariumId) =>
+        TurbidityScreen(aquariumId: aquariumId),
+    'conductivity': (context, aquariumId) =>
+        ConductivityScreen(aquariumId: aquariumId),
+    'total organic carbon': (context, aquariumId) =>
+        TotalOrganicCarbonScreen(aquariumId: aquariumId),
+    'suspended solids': (context, aquariumId) =>
+        SuspendedSolidsScreen(aquariumId: aquariumId),
+    'fluoride': (context, aquariumId) => FluorideScreen(aquariumId: aquariumId),
+    'bromine': (context, aquariumId) => BromineScreen(aquariumId: aquariumId),
+    'chloride': (context, aquariumId) => ChlorideScreen(aquariumId: aquariumId),
+  };
+
+  final Map<String, IconData> parameterIcons = {
+    'temperature': Icons.thermostat,
+    'ph': Icons.opacity,
+    'tds': Icons.invert_colors,
+    'oxygen': Icons.air,
+    'ammonia': Icons.warning,
+    'nitrite': Icons.report_problem,
+    'nitrate': Icons.grain,
+    'phosphate': Icons.eco,
+    'carbon dioxide': Icons.cloud,
+    'salinity': Icons.waves,
+    'general hardness': Icons.diamond,
+    'carbonate hardness': Icons.filter_hdr,
+    'copper': Icons.circle,
+    'iron': Icons.local_fire_department,
+    'calcium': FontAwesomeIcons.bone,
+    'magnesium': Icons.star,
+    'potassium': Icons.flash_on,
+    'chlorine': Icons.shield,
+    'alkalinity': Icons.bubble_chart,
+    'redox potential': Icons.electrical_services,
+    'silica': Icons.spa,
+    'boron': Icons.scatter_plot,
+    'strontium': Icons.radio_button_checked,
+    'iodine': Icons.lightbulb,
+    'molybdenum': Icons.flash_auto,
+    'sulfate': Icons.bubble_chart,
+    'organic carbon': Icons.nature,
+    'turbidity': Icons.water_damage,
+    'conductivity': Icons.offline_bolt,
+    'total organic carbon': Icons.grass,
+    'suspended solids': Icons.filter_drama,
+    'fluoride': Icons.invert_colors,
+    'bromine': Icons.flare,
+    'chloride': Icons.shield,
+  };
+
+  final Map<String, Color> parameterColors = {
+    'temperature': Colors.red,
+    'ph': Colors.blue,
+    'tds': Colors.brown,
+    'oxygen': Colors.lightBlue,
+    'ammonia': Colors.orange,
+    'nitrite': Colors.purple,
+    'nitrate': Colors.pink,
+    'phosphate': Colors.green,
+    'carbon dioxide': Colors.grey,
+    'salinity': Colors.cyan,
+    'general hardness': Colors.blueGrey,
+    'carbonate hardness': Colors.teal,
+    'copper': Colors.deepOrange,
+    'iron': Colors.redAccent,
+    'calcium': Colors.grey,
+    'magnesium': Colors.blueAccent,
+    'potassium': Colors.yellow,
+    'chlorine': Colors.greenAccent,
+    'alkalinity': Colors.lightGreen,
+    'redox potential': Colors.deepPurple,
+    'silica': Colors.brown,
+    'boron': Colors.purpleAccent,
+    'strontium': Colors.blue,
+    'iodine': Colors.yellowAccent,
+    'molybdenum': Colors.orangeAccent,
+    'sulfate': Colors.blueGrey,
+    'organic carbon': Colors.green,
+    'turbidity': Colors.lightBlue,
+    'conductivity': Colors.indigo,
+    'total organic carbon': Colors.green,
+    'suspended solids': Colors.grey,
+    'fluoride': Colors.lightBlue,
+    'bromine': Colors.red,
+    'chloride': Colors.blueAccent,
+  };
 }

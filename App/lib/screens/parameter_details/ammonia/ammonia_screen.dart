@@ -5,6 +5,10 @@ import 'ammonia_knowledge_screen.dart';
 import 'ammonia_alerts_screen.dart';
 
 class AmmoniaScreen extends StatelessWidget {
+  final int aquariumId;
+
+  AmmoniaScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class AmmoniaScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            AmmoniaDataScreen(),
+            AmmoniaDataScreen(aquariumId: aquariumId),
             AmmoniaKnowledgeScreen(),
             AmmoniaAlertsScreen(),
           ],

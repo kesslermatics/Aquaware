@@ -5,6 +5,10 @@ import 'salinity_knowledge_screen.dart';
 import 'salinity_alerts_screen.dart';
 
 class SalinityScreen extends StatelessWidget {
+  final int aquariumId;
+
+  SalinityScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class SalinityScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            SalinityDataScreen(),
+            SalinityDataScreen(aquariumId: aquariumId),
             SalinityKnowledgeScreen(),
             SalinityAlertsScreen(),
           ],

@@ -5,6 +5,10 @@ import 'ph_knowledge_screen.dart';
 import 'ph_alerts_screen.dart';
 
 class PHScreen extends StatelessWidget {
+  final int aquariumId;
+
+  PHScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class PHScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            PHDataScreen(),
+            PHDataScreen(aquariumId: aquariumId),
             PHKnowledgeScreen(),
             PHAlertsScreen(),
           ],

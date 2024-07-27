@@ -5,6 +5,10 @@ import 'bromine_knowledge_screen.dart';
 import 'bromine_alerts_screen.dart';
 
 class BromineScreen extends StatelessWidget {
+  final int aquariumId;
+
+  BromineScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class BromineScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            BromineDataScreen(),
+            BromineDataScreen(aquariumId: aquariumId),
             BromineKnowledgeScreen(),
             BromineAlertsScreen(),
           ],

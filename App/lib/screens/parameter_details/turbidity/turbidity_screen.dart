@@ -5,6 +5,10 @@ import 'turbidity_knowledge_screen.dart';
 import 'turbidity_alerts_screen.dart';
 
 class TurbidityScreen extends StatelessWidget {
+  final int aquariumId;
+
+  TurbidityScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class TurbidityScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            TurbidityDataScreen(),
+            TurbidityDataScreen(aquariumId: aquariumId),
             TurbidityKnowledgeScreen(),
             TurbidityAlertsScreen(),
           ],

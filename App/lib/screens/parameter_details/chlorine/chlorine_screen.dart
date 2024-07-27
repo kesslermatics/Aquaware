@@ -5,6 +5,10 @@ import 'chlorine_knowledge_screen.dart';
 import 'chlorine_alerts_screen.dart';
 
 class ChlorineScreen extends StatelessWidget {
+  final int aquariumId;
+
+  ChlorineScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class ChlorineScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ChlorineDataScreen(),
+            ChlorineDataScreen(aquariumId: aquariumId),
             ChlorineKnowledgeScreen(),
             ChlorineAlertsScreen(),
           ],

@@ -21,7 +21,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   void initState() {
     super.initState();
     _futureWaterParameters =
-        _waterParameterService.fetchWaterParameters(widget.aquarium.id);
+        _waterParameterService.fetchAllWaterParameters(widget.aquarium.id);
   }
 
   @override
@@ -41,7 +41,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final waterParameter = snapshot.data![index];
-                return WaterParameterCard(waterParameter: waterParameter);
+                return WaterParameterCard(
+                  aquariumId: widget.aquarium.id,
+                  waterParameter: waterParameter,
+                );
               },
             );
           }

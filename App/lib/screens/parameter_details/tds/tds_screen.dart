@@ -5,6 +5,10 @@ import 'tds_knowledge_screen.dart';
 import 'tds_alerts_screen.dart';
 
 class TDSScreen extends StatelessWidget {
+  final int aquariumId;
+
+  TDSScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class TDSScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            TDSDataScreen(),
+            TDSDataScreen(aquariumId: aquariumId),
             TDSKnowledgeScreen(),
             TDSAlertsScreen(),
           ],

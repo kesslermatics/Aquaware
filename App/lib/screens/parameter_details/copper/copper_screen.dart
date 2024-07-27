@@ -5,6 +5,10 @@ import 'copper_knowledge_screen.dart';
 import 'copper_alerts_screen.dart';
 
 class CopperScreen extends StatelessWidget {
+  final int aquariumId;
+
+  CopperScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class CopperScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CopperDataScreen(),
+            CopperDataScreen(aquariumId: aquariumId),
             CopperKnowledgeScreen(),
             CopperAlertsScreen(),
           ],

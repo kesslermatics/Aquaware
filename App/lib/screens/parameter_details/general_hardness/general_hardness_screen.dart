@@ -5,6 +5,10 @@ import 'general_hardness_knowledge_screen.dart';
 import 'general_hardness_alerts_screen.dart';
 
 class GeneralHardnessScreen extends StatelessWidget {
+  final int aquariumId;
+
+  GeneralHardnessScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class GeneralHardnessScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            GeneralHardnessDataScreen(),
+            GeneralHardnessDataScreen(aquariumId: aquariumId),
             GeneralHardnessKnowledgeScreen(),
             GeneralHardnessAlertsScreen(),
           ],

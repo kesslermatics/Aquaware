@@ -5,6 +5,10 @@ import 'potassium_knowledge_screen.dart';
 import 'potassium_alerts_screen.dart';
 
 class PotassiumScreen extends StatelessWidget {
+  final int aquariumId;
+
+  PotassiumScreen({required this.aquariumId});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,7 +37,7 @@ class PotassiumScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            PotassiumDataScreen(),
+            PotassiumDataScreen(aquariumId: aquariumId),
             PotassiumKnowledgeScreen(),
             PotassiumAlertsScreen(),
           ],
