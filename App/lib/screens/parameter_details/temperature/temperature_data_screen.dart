@@ -30,15 +30,6 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Temperature Data'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
       body: FutureBuilder<List<WaterValue>>(
         future: _futureWaterValues,
         builder: (context, snapshot) {
@@ -50,14 +41,15 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
             return Center(child: Text('No water values found'));
           } else {
             return ListView.builder(
-              padding: EdgeInsets.all(16.0),  
+              padding: EdgeInsets.all(16.0),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final value = snapshot.data![index];
                 return Card(
                   child: ListTile(
-                    title: Text('\${value.value} \${value.unit}'),
-                    subtitle: Text('Measured at: \${value.measuredAt}'),
+                    title: Text(value.value.toString() + value.unit.toString()),
+                    subtitle:
+                        Text("Measured at:" + value.measuredAt.toString()),
                   ),
                 );
               },

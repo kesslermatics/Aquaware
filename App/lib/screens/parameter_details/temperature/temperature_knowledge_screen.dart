@@ -10,7 +10,7 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "The Importance of Aquarium Temperature for Ecosystem and Fish Health",
+            "The Importance of Temperature in Aquarium for Ecosystem and Fish Health",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -19,21 +19,20 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            "Maintaining the correct temperature in an aquarium is critical for the health and well-being of its inhabitants. Temperature plays a vital role in ensuring a balanced ecosystem, influencing various biological and chemical processes within the aquatic environment.",
+            "Temperature is a critical parameter in aquarium management, impacting the health and well-being of fish and other aquatic organisms. Maintaining the correct temperature ensures a balanced ecosystem and supports various biological and chemical processes within the aquatic environment.",
             style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
           ),
           SizedBox(height: 16),
           Text(
             "The Role of Temperature in Aquariums",
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
-            ),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ColorProvider.textDark),
           ),
           SizedBox(height: 8),
           Text(
-            "Temperature is a fundamental parameter in aquarium management, impacting the metabolic rates of fish and other aquatic organisms. Most tropical fish thrive in water temperatures between 24-28°C (75-82°F), while cold-water species prefer temperatures ranging from 10-20°C (50-68°F) (Axelrod, 1996). Maintaining the appropriate temperature range is crucial for the following reasons:",
+            "Temperature influences the metabolic rates of fish and other aquatic organisms. Most tropical fish thrive in water temperatures between 24-28°C (75-82°F), while cold-water species prefer temperatures ranging from 10-20°C (50-68°F) (Axelrod, 1996). Maintaining the appropriate temperature range is crucial for the following reasons:",
             style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
           ),
           SizedBox(height: 8),
@@ -47,10 +46,9 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
           Text(
             "Effects of Temperature on Other Water Parameters",
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
-            ),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ColorProvider.textDark),
           ),
           SizedBox(height: 8),
           Text(
@@ -72,48 +70,58 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
               "Similar to oxygen, the solubility of CO2 decreases with rising temperatures. This can affect plant growth and the overall carbon cycle within the aquarium (Raven & Johnston, 1991)."),
           SizedBox(height: 16),
           Text(
-            "Conclusion",
+            "Good to Know Facts about Temperature",
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
-            ),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ColorProvider.textDark),
           ),
           SizedBox(height: 8),
-          Text(
-            "Temperature regulation is paramount for maintaining a healthy and stable aquarium environment. It influences the metabolic rates, immune function, and overall health of fish and other aquatic organisms. Additionally, temperature has profound effects on critical water parameters such as pH, ammonia toxicity, dissolved oxygen, and the nitrogen cycle. Understanding and managing these interactions is essential for creating a thriving aquatic ecosystem.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
-          ),
+          _buildBulletPoint(context, "Temperature Stability",
+              "Sudden temperature fluctuations can stress fish and other aquatic organisms. Using a reliable heater and thermometer helps maintain a stable temperature environment (Axelrod, 1996)."),
+          _buildBulletPoint(context, "Species-Specific Requirements",
+              "Different species have different temperature preferences. It's important to research the specific needs of your aquarium inhabitants to ensure they are kept within their optimal temperature range (Jobling, 1994)."),
+          _buildBulletPoint(context, "Seasonal Variations",
+              "In natural habitats, many fish experience seasonal temperature changes. Simulating these changes in the aquarium can promote natural behaviors such as breeding (Brett, 1971)."),
           SizedBox(height: 16),
           Text(
             "References",
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
-            ),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ColorProvider.textDark),
           ),
           SizedBox(height: 8),
           _buildReference(
-              "Axelrod, H. R. (1996). The Complete Book of Tropical Fish. T.F.H. Publications."),
+            "Axelrod, H. R. (1996). The Complete Book of Tropical Fish. T.F.H. Publications.",
+          ),
           _buildReference(
-              "Bly, J. E., & Clem, L. W. (1992). Temperature-mediated processes in teleost immunity: in vitro immunosuppression induced by in vivo low temperature in channel catfish. Veterinary Immunology and Immunopathology, 28(1-2), 365-377."),
+            "Bly, J. E., & Clem, L. W. (1992). Temperature-mediated processes in teleost immunity: in vitro immunosuppression induced by in vivo low temperature in channel catfish. Veterinary Immunology and Immunopathology, 28(1-2), 365-377.",
+          ),
           _buildReference(
-              "Brett, J. R. (1971). Energetic responses of salmon to temperature. A study of some thermal relations in the physiology and freshwater ecology of sockeye salmon (Oncorhynchus nerka). American Zoologist, 11(1), 99-113."),
+            "Brett, J. R. (1971). Energetic responses of salmon to temperature. A study of some thermal relations in the physiology and freshwater ecology of sockeye salmon (Oncorhynchus nerka). American Zoologist, 11(1), 99-113.",
+          ),
           _buildReference(
-              "Emerson, K., Russo, R. C., Lund, R. E., & Thurston, R. V. (1975). Aqueous ammonia equilibrium calculations: effect of pH and temperature. Journal of the Fisheries Board of Canada, 32(12), 2379-2383."),
+            "Emerson, K., Russo, R. C., Lund, R. E., & Thurston, R. V. (1975). Aqueous ammonia equilibrium calculations: effect of pH and temperature. Journal of the Fisheries Board of Canada, 32(12), 2379-2383.",
+          ),
           _buildReference(
-              "Hagopian, D. S., & Riley, J. G. (1998). A closer look at the bacteriology of nitrification. Aquacultural Engineering, 18(4), 223-244."),
+            "Hagopian, D. S., & Riley, J. G. (1998). A closer look at the bacteriology of nitrification. Aquacultural Engineering, 18(4), 223-244.",
+          ),
           _buildReference(
-              "Hargreaves, J. A., & Tucker, C. S. (2004). Managing ammonia in fish ponds. Southern Regional Aquaculture Center, 4603."),
+            "Hargreaves, J. A., & Tucker, C. S. (2004). Managing ammonia in fish ponds. Southern Regional Aquaculture Center, 4603.",
+          ),
           _buildReference(
-              "Jobling, M. (1994). Fish Bioenergetics. Chapman & Hall."),
+            "Jobling, M. (1994). Fish Bioenergetics. Chapman & Hall.",
+          ),
           _buildReference(
-              "Raven, J. A., & Johnston, A. M. (1991). Mechanisms of inorganic-carbon acquisition in marine phytoplankton and their implications for the use of other resources. Limnology and Oceanography, 36(8), 1701-1714."),
+            "Raven, J. A., & Johnston, A. M. (1991). Mechanisms of inorganic-carbon acquisition in marine phytoplankton and their implications for the use of other resources. Limnology and Oceanography, 36(8), 1701-1714.",
+          ),
           _buildReference(
-              "Schmidt-Nielsen, K. (1997). Animal Physiology: Adaptation and Environment. Cambridge University Press."),
+            "Schmidt-Nielsen, K. (1997). Animal Physiology: Adaptation and Environment. Cambridge University Press.",
+          ),
           _buildReference(
-              "Wetzel, R. G. (2001). Limnology: Lake and River Ecosystems. Academic Press."),
+            "Wetzel, R. G. (2001). Limnology: Lake and River Ecosystems. Academic Press.",
+          ),
         ],
       ),
     );
