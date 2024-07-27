@@ -49,7 +49,7 @@ class WaterParameterService {
     });
 
     if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
+      List<dynamic> data = json.decode(response.body.replaceAll('Â', ''));
       return data.map((json) => WaterParameter.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load water parameters');
