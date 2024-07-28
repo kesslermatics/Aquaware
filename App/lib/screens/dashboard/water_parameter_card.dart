@@ -1,4 +1,3 @@
-import 'package:aquaware/screens/parameter_details/alkalinity/alkalinity_screen.dart';
 import 'package:aquaware/screens/parameter_details/ammonia/ammonia_screen.dart';
 import 'package:aquaware/screens/parameter_details/boron/boron_screen.dart';
 import 'package:aquaware/screens/parameter_details/bromine/bromine_screen.dart';
@@ -30,7 +29,6 @@ import 'package:aquaware/screens/parameter_details/sulfate/sulfate_screen.dart';
 import 'package:aquaware/screens/parameter_details/suspended_solids/suspended_solids_screen.dart';
 import 'package:aquaware/screens/parameter_details/tds/tds_screen.dart';
 import 'package:aquaware/screens/parameter_details/temperature/temperature_screen.dart';
-import 'package:aquaware/screens/parameter_details/total_organic_carbon/total_organic_carbon_screen.dart';
 import 'package:aquaware/screens/parameter_details/turbidity/turbidity_screen.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -244,8 +242,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     'potassium': (context, aquariumId) =>
         PotassiumScreen(aquariumId: aquariumId),
     'chlorine': (context, aquariumId) => ChlorineScreen(aquariumId: aquariumId),
-    'alkalinity': (context, aquariumId) =>
-        AlkalinityScreen(aquariumId: aquariumId),
     'redox potential': (context, aquariumId) =>
         RedoxPotentialScreen(aquariumId: aquariumId),
     'silica': (context, aquariumId) => SilicaScreen(aquariumId: aquariumId),
@@ -262,8 +258,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         TurbidityScreen(aquariumId: aquariumId),
     'conductivity': (context, aquariumId) =>
         ConductivityScreen(aquariumId: aquariumId),
-    'total organic carbon': (context, aquariumId) =>
-        TotalOrganicCarbonScreen(aquariumId: aquariumId),
     'suspended solids': (context, aquariumId) =>
         SuspendedSolidsScreen(aquariumId: aquariumId),
     'fluoride': (context, aquariumId) => FluorideScreen(aquariumId: aquariumId),
@@ -299,7 +293,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     'molybdenum': Icons.flash_auto,
     'sulfate': Icons.bubble_chart,
     'organic carbon': Icons.nature,
-    'turbidity': Icons.water_damage,
+    'turbidity': Icons.cloud,
     'conductivity': Icons.offline_bolt,
     'total organic carbon': Icons.grass,
     'suspended solids': Icons.filter_drama,

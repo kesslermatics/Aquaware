@@ -4,9 +4,9 @@ import os
 parameters = [
     'PH', 'Temperature', 'TDS', 'Oxygen', 'Ammonia', 'Nitrite', 'Nitrate', 'Phosphate',
     'Carbon Dioxide', 'Salinity', 'General Hardness', 'Carbonate Hardness', 'Copper',
-    'Iron', 'Calcium', 'Magnesium', 'Potassium', 'Chlorine', 'Alkalinity',
+    'Iron', 'Calcium', 'Magnesium', 'Potassium', 'Chlorine',
     'Redox Potential', 'Silica', 'Boron', 'Strontium', 'Iodine', 'Molybdenum',
-    'Sulfate', 'Organic Carbon', 'Turbidity', 'Conductivity', 'Total Organic Carbon',
+    'Sulfate', 'Organic Carbon', 'Turbidity', 'Conductivity',
     'Suspended Solids', 'Fluoride', 'Bromine', 'Chloride'
 ]
 
