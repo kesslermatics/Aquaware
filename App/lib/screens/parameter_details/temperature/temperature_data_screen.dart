@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:aquaware/models/water_value.dart';
 import 'package:aquaware/services/color_provider.dart';
+import 'package:aquaware/widgets/last_updated_widget.dart';
+import 'package:aquaware/widgets/total_entries_widget.dart';
 
 class TemperatureDataScreen extends StatefulWidget {
   final int aquariumId;
@@ -40,19 +42,17 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No water values found'));
           } else {
-            return ListView.builder(
-              padding: EdgeInsets.all(16.0),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final value = snapshot.data![index];
-                return Card(
-                  child: ListTile(
-                    title: Text(value.value.toString() + value.unit.toString()),
-                    subtitle:
-                        Text("Measured at:" + value.measuredAt.toString()),
-                  ),
-                );
-              },
+            List<WaterValue> waterValues = snapshot.data!;
+            WaterValue lastWaterValue = waterValues.first;
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  LastUpdatedWidget(lastWaterValue: lastWaterValue),
+                  TotalEntriesWidget(totalEntries: waterValues.length),
+                ],
+              ),
             );
           }
         },
