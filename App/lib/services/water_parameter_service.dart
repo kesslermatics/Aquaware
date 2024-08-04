@@ -38,10 +38,12 @@ class WaterParameterService {
     return response;
   }
 
-  Future<List<WaterParameter>> fetchAllWaterParameters(int aquariumId) async {
+  Future<List<WaterParameter>> fetchAllWaterParameters(int aquariumId,
+      {int lastXValues = 1000}) async {
     final response = await _makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse('$baseUrl$aquariumId/water-values/'),
+        Uri.parse(
+            '$baseUrl$aquariumId/water-values?last_x_values=$lastXValues'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -58,21 +60,43 @@ class WaterParameterService {
   }
 
   Future<List<WaterValue>> fetchSingleWaterParameter(
-      int aquariumId, String parameter) async {
+      int aquariumId, String parameter,
+      {int lastXValues = 1000}) async {
     final response = await _makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse('$baseUrl$aquariumId/water-values/$parameter'),
+        Uri.parse(
+            '$baseUrl$aquariumId/water-values/$parameter?last_x_values=$lastXValues'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
     });
+
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body.replaceAll('Â', ''));
       return data.map((json) => WaterValue.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load water values');
+    }
+  }
+
+  Future<int> fetchTotalEntries(int aquariumId, String parameter) async {
+    final response = await _makeAuthenticatedRequest((token) {
+      return http.get(
+        Uri.parse('$baseUrl$aquariumId/water-values/$parameter/total-entries'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+    });
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['total_entries'];
+    } else {
+      throw Exception('Failed to load total entries');
     }
   }
 }

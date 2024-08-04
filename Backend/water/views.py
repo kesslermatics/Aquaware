@@ -37,7 +37,7 @@ def add_water_values(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_latest_from_all_parameters(request, aquarium_id, last_x_values=10):
+def get_latest_from_all_parameters(request, aquarium_id, last_x_values=100):
     try:
         aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
 
