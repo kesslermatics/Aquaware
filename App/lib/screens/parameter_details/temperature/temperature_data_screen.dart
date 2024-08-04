@@ -30,7 +30,7 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
   Future<List<WaterValue>> _fetchWaterValues() async {
     return await _waterParameterService.fetchSingleWaterParameter(
         widget.aquariumId, 'Temperature',
-        lastXValues: 100);
+        numberOfEntries: 100);
   }
 
   Future<int> _fetchTotalEntries() async {

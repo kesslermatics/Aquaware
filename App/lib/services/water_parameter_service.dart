@@ -39,11 +39,10 @@ class WaterParameterService {
   }
 
   Future<List<WaterParameter>> fetchAllWaterParameters(int aquariumId,
-      {int lastXValues = 1000}) async {
+      {int number_of_entries = 1000}) async {
     final response = await _makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse(
-            '$baseUrl$aquariumId/water-values?last_x_values=$lastXValues'),
+        Uri.parse('$baseUrl$aquariumId/water-values/$number_of_entries/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -61,11 +60,11 @@ class WaterParameterService {
 
   Future<List<WaterValue>> fetchSingleWaterParameter(
       int aquariumId, String parameter,
-      {int lastXValues = 1000}) async {
+      {int numberOfEntries = 1000}) async {
     final response = await _makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(
-            '$baseUrl$aquariumId/water-values/$parameter?last_x_values=$lastXValues'),
+            '$baseUrl$aquariumId/water-values/$parameter/$numberOfEntries'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

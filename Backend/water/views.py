@@ -37,15 +37,14 @@ def add_water_values(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_latest_from_all_parameters(request, aquarium_id):
-    last_x_values = request.GET.get('last_x_values', 100)
+def get_latest_from_all_parameters(request, aquarium_id, number_of_entries):
     try:
         aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
 
         subquery = WaterValue.objects.filter(
             aquarium_id=aquarium_id,
             parameter_id=OuterRef('parameter_id')
-        ).order_by('-measured_at')[:last_x_values]
+        ).order_by('-measured_at')[:number_of_entries]
 
         water_values = WaterValue.objects.filter(
             aquarium_id=aquarium_id,
@@ -78,15 +77,14 @@ def get_latest_from_all_parameters(request, aquarium_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_all_values_from_parameter(request, aquarium_id, parameter_name):
-    last_x_values = request.GET.get('last_x_values', 100)
+def get_all_values_from_parameter(request, aquarium_id, parameter_name, number_of_entries):
     try:
         parameter = WaterParameter.objects.get(name=parameter_name)
         water_values = WaterValue.objects.filter(
             aquarium_id=aquarium_id,
             aquarium__user=request.user,
             parameter=parameter
-        ).order_by('-measured_at')[:last_x_values]
+        ).order_by('-measured_at')[:number_of_entries]
 
         if not water_values.exists():
             return Response({'detail': 'No water values found for this parameter or aquarium does not belong to this user.'}, status=status.HTTP_404_NOT_FOUND)
