@@ -4,7 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
 class LineChartWidget extends StatelessWidget {
-  final List<double> xValues;
+  final List<DateTime> xValues;
   final List<double> yValues;
   final double yDeviation;
   final Color lineColor;
@@ -15,7 +15,7 @@ class LineChartWidget extends StatelessWidget {
   final String xAxisLabel;
   final String yAxisLabel;
 
-  String lastFormattedDate = "";
+  String lastDate = '';
 
   LineChartWidget({
     required this.xValues,
@@ -34,7 +34,7 @@ class LineChartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<FlSpot> spots = [];
     for (int i = 0; i < xValues.length; i++) {
-      spots.add(FlSpot(xValues[i], yValues[i]));
+      spots.add(FlSpot(i.toDouble(), yValues[i]));
     }
 
     return Card(
@@ -61,6 +61,9 @@ class LineChartWidget extends StatelessWidget {
               height: 300,
               child: LineChart(
                 LineChartData(
+                  lineTouchData: LineTouchData(
+                    handleBuiltInTouches: true,
+                  ),
                   gridData: FlGridData(
                     show: true,
                     getDrawingHorizontalLine: (value) {
@@ -80,18 +83,15 @@ class LineChartWidget extends StatelessWidget {
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 60,
+                        reservedSize: 80,
                         getTitlesWidget: (value, meta) {
-                          DateTime date = DateTime.fromMillisecondsSinceEpoch(
-                              value.toInt());
-                          String formattedDate =
-                              DateFormat('dd-MM').format(date);
-
-                          // Check if the current date has already been displayed
-                          if (formattedDate == lastFormattedDate) {
+                          if (value < 0 || value >= xValues.length) {
                             return Container();
                           }
-                          lastFormattedDate = formattedDate;
+                          DateTime date = xValues[value.toInt()];
+                          String formattedDate =
+                              DateFormat('dd-MM HH:mm').format(date);
+
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: RotatedBox(
@@ -141,8 +141,8 @@ class LineChartWidget extends StatelessWidget {
                   ),
                   minY: yValues.reduce((a, b) => a < b ? a : b) - yDeviation,
                   maxY: yValues.reduce((a, b) => a > b ? a : b) + yDeviation,
-                  minX: xValues.reduce((a, b) => a < b ? a : b),
-                  maxX: xValues.reduce((a, b) => a > b ? a : b),
+                  minX: 0,
+                  maxX: xValues.length.toDouble() - 1,
                   lineBarsData: [
                     LineChartBarData(
                       spots: spots,

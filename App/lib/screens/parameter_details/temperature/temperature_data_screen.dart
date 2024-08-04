@@ -86,9 +86,8 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
   }
 
   Widget _makeLineChartWidget(List<WaterValue> waterValues) {
-    List<double> xValues = waterValues
-        .map((value) => value.measuredAt.millisecondsSinceEpoch.toDouble())
-        .toList();
+    List<DateTime> xValues =
+        waterValues.map((value) => value.measuredAt).toList().reversed.toList();
     List<double> yValues = waterValues.map((value) => value.value).toList();
     double yDeviation = 1;
     return LineChartWidget(
