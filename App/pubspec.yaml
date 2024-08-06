@@ -11,6 +11,7 @@ environment:
 
 dependencies:
   fl_chart: ^0.68.0
+  fl_heatmap: ^0.4.5
   flutter:
     sdk: flutter
   flutter_secure_storage: ^9.2.2

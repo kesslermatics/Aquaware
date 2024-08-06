@@ -170,8 +170,8 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     return LineChartData(
       clipData: FlClipData.all(),
       gridData: FlGridData(show: false),
-      minY: minY,
-      maxY: maxY,
+      minY: minY - (maxY - minY),
+      maxY: maxY + (maxY - minY),
       minX: 1,
       maxX: data.length.toDouble(),
       titlesData: FlTitlesData(show: false),

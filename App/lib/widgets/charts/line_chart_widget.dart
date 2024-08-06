@@ -110,6 +110,7 @@ class LineChartWidget extends StatelessWidget {
                       ),
                     ),
                     leftTitles: AxisTitles(
+                      drawBelowEverything: true,
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 40,

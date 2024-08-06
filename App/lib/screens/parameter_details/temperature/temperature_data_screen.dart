@@ -1,3 +1,4 @@
+import 'package:aquaware/widgets/charts/heatmap_widget.dart';
 import 'package:aquaware/widgets/charts/line_chart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
@@ -73,6 +74,7 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
                         LastUpdatedWidget(lastWaterValue: lastWaterValue),
                         TotalEntriesWidget(totalEntries: totalEntries),
                         _makeLineChartWidget(waterValues),
+                        _makeHeatmapWidget(waterValues),
                       ],
                     ),
                   );
@@ -102,5 +104,13 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
       xAxisLabel: 'Time',
       yAxisLabel: 'Temperature (°C)',
     );
+  }
+
+  Widget _makeHeatmapWidget(List<WaterValue> waterValues) {
+    List<DateTime> xValues =
+        waterValues.map((value) => value.measuredAt).toList();
+    List<double> yValues = waterValues.map((value) => value.value).toList();
+
+    return Container();
   }
 }
