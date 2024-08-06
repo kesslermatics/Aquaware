@@ -111,6 +111,9 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
         waterValues.map((value) => value.measuredAt).toList();
     List<double> yValues = waterValues.map((value) => value.value).toList();
 
-    return Container();
+    return HeatmapWidget(
+      waterValues: waterValues,
+      title: "Temperature Heatmap",
+    );
   }
 }

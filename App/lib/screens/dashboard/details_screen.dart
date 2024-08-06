@@ -20,8 +20,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _futureWaterParameters =
-        _waterParameterService.fetchAllWaterParameters(widget.aquarium.id);
+    _futureWaterParameters = _waterParameterService
+        .fetchAllWaterParameters(widget.aquarium.id, number_of_entries: 10);
   }
 
   @override

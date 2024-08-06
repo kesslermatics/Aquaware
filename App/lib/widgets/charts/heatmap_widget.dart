@@ -1,121 +1,95 @@
+import 'package:aquaware/models/water_value.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_heatmap/fl_heatmap.dart';
 import 'package:intl/intl.dart';
-import 'package:aquaware/services/color_provider.dart';
+import 'dart:math';
 
-class HeatmapWidget extends StatefulWidget {
-  final List<DateTime> xValues;
-  final List<double> yValues;
-  final DateTime day;
+class HeatmapWidget extends StatelessWidget {
+  final List<WaterValue> waterValues;
+  final String title;
 
   HeatmapWidget({
-    required this.xValues,
-    required this.yValues,
-    required this.day,
+    required this.waterValues,
+    this.title = '',
   });
 
   @override
-  _HeatmapWidgetState createState() => _HeatmapWidgetState();
-}
-
-class _HeatmapWidgetState extends State<HeatmapWidget> {
-  HeatmapItem? selectedItem;
-  late HeatmapData heatmapData;
-
-  @override
-  void initState() {
-    super.initState();
-    _initHeatmapData();
-  }
-
-  void _initHeatmapData() {
-    final dateFormatter = DateFormat('dd-MM');
-    final timeFormatter = DateFormat('HH:mm');
-
-    final filteredIndices = widget.xValues
-        .asMap()
-        .entries
-        .where((entry) =>
-            dateFormatter.format(entry.value) ==
-            dateFormatter.format(widget.day))
-        .map((entry) => entry.key)
-        .toList();
-
-    final filteredXValues =
-        filteredIndices.map((index) => widget.xValues[index]).toList();
-    final filteredYValues =
-        filteredIndices.map((index) => widget.yValues[index]).toList();
-
-    final rows = List<String>.generate(24, (index) => '$index:00');
-
-    final dataMap = <String, List<double>>{};
-    for (int i = 0; i < filteredXValues.length; i++) {
-      final hour = filteredXValues[i].hour.toString().padLeft(2, '0') + ':00';
-      dataMap[hour] ??= [];
-      dataMap[hour]!.add(filteredYValues[i]);
-    }
-
-    final items = <HeatmapItem>[];
-    dataMap.forEach((hour, values) {
-      final averageValue = values.reduce((a, b) => a + b) / values.length;
-      items.add(HeatmapItem(
-        value: averageValue,
-        unit: '°C',
-        xAxisLabel: hour,
-        yAxisLabel: '',
-      ));
-    });
-
-    heatmapData = HeatmapData(
-      rows: rows,
-      columns: [''],
-      items: items,
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final title = selectedItem != null
-        ? '${selectedItem!.value.toStringAsFixed(2)} ${selectedItem!.unit}'
-        : '--- ${heatmapData.items.first.unit}';
-    final subtitle = selectedItem != null ? selectedItem!.xAxisLabel : '---';
+    HeatmapData heatmapData = _generateHeatmapData(waterValues);
+
     return Card(
       color: ColorProvider.primaryDark,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: ColorProvider.textLight,
+            if (title.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: ColorProvider.textLight,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            Text(
-              subtitle!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: ColorProvider.textLight,
-              ),
-            ),
-            const SizedBox(height: 8),
             Heatmap(
               onItemSelectedListener: (HeatmapItem? selectedItem) {
-                setState(() {
-                  this.selectedItem = selectedItem;
-                });
+                debugPrint(
+                    'Item ${selectedItem?.yAxisLabel}/${selectedItem?.xAxisLabel} with value ${selectedItem?.value} selected');
               },
-              rowsVisible: 24,
+              rowsVisible: 1, // Only one row for "Temperature"
               heatmapData: heatmapData,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  HeatmapData _generateHeatmapData(List<WaterValue> waterValues) {
+    // Extract unique hours from waterValues
+    List<String> hours =
+        List.generate(24, (index) => '${index.toString().padLeft(2, '0')}:00');
+
+    // Group values by hours and calculate the average per hour
+    Map<String, List<double>> hourlyValues = {};
+    for (var value in waterValues) {
+      String hour = DateFormat('HH:00').format(value.measuredAt);
+      if (!hourlyValues.containsKey(hour)) {
+        hourlyValues[hour] = [];
+      }
+      hourlyValues[hour]!.add(value.value);
+    }
+
+    // Calculate average value for each hour
+    List<HeatmapItem> items = [];
+    hourlyValues.forEach((hour, values) {
+      double averageValue = values.reduce((a, b) => a + b) / values.length;
+      items.add(HeatmapItem(
+        value: averageValue,
+        unit: '°C',
+        xAxisLabel: hour,
+        yAxisLabel: '',
+        style: HeatmapItemStyle.filled,
+      ));
+    });
+
+    return HeatmapData(
+      rows: [''],
+      columns: hours,
+      items: items.reversed.toList(),
+      colorPalette: [
+        Colors.blue,
+        Color.fromARGB(255, 70, 61, 179),
+        Color.fromARGB(255, 142, 28, 230),
+        Color.fromARGB(255, 189, 16, 212),
+        Colors.red,
+      ],
     );
   }
 }
