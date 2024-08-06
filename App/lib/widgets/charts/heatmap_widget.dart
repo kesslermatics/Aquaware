@@ -16,10 +16,10 @@ class HeatmapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HeatmapData heatmapData = _generateHeatmapData(waterValues);
+    HeatmapData heatmapData =
+        _generateHeatmapData(waterValues.reversed.toList());
 
     return Card(
-      color: ColorProvider.primaryDark,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -32,7 +32,7 @@ class HeatmapWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: ColorProvider.textLight,
+                    color: ColorProvider.textDark,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -42,8 +42,16 @@ class HeatmapWidget extends StatelessWidget {
                 debugPrint(
                     'Item ${selectedItem?.yAxisLabel}/${selectedItem?.xAxisLabel} with value ${selectedItem?.value} selected');
               },
-              rowsVisible: 1, // Only one row for "Temperature"
+              rowsVisible: 4, // Display four rows
               heatmapData: heatmapData,
+              showXAxisLabels: false,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            _buildLegend(
+              _getMinValue(waterValues),
+              _getMaxValue(waterValues),
             ),
           ],
         ),
@@ -56,39 +64,113 @@ class HeatmapWidget extends StatelessWidget {
     List<String> hours =
         List.generate(24, (index) => '${index.toString().padLeft(2, '0')}:00');
 
+    // Initialize hourlyValues with all hours as keys and empty lists as values
+    Map<String, List<double>> hourlyValues = {for (var hour in hours) hour: []};
+
     // Group values by hours and calculate the average per hour
-    Map<String, List<double>> hourlyValues = {};
     for (var value in waterValues) {
       String hour = DateFormat('HH:00').format(value.measuredAt);
-      if (!hourlyValues.containsKey(hour)) {
-        hourlyValues[hour] = [];
-      }
       hourlyValues[hour]!.add(value.value);
     }
 
-    // Calculate average value for each hour
+    const rows = [
+      '00:00 - 06:00',
+      '06:00 - 12:00',
+      '12:00 - 18:00',
+      '18:00 - 24:00',
+    ];
+    const columns = [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+    ];
+
+    hourlyValues.removeWhere((key, values) => values.isEmpty);
+
     List<HeatmapItem> items = [];
     hourlyValues.forEach((hour, values) {
       double averageValue = values.reduce((a, b) => a + b) / values.length;
+
+      int rowIndex = int.parse(hour.split(':')[0]) ~/ 6;
+      int columnIndex = int.parse(hour.split(':')[0]) % 6;
       items.add(HeatmapItem(
         value: averageValue,
         unit: '°C',
-        xAxisLabel: hour,
-        yAxisLabel: '',
+        xAxisLabel: columns[columnIndex],
+        yAxisLabel: rows[rowIndex],
         style: HeatmapItemStyle.filled,
       ));
     });
 
     return HeatmapData(
-      rows: [''],
-      columns: hours,
-      items: items.reversed.toList(),
+      radius: 5,
+      rows: rows,
+      columns: columns,
+      items: items,
       colorPalette: [
-        Colors.blue,
-        Color.fromARGB(255, 70, 61, 179),
-        Color.fromARGB(255, 142, 28, 230),
-        Color.fromARGB(255, 189, 16, 212),
-        Colors.red,
+        Color(0xffF5F5F5), // 0
+        Color(0xffBBDEFB), // 100
+        Color(0xff90CAF9), // 200
+        Color(0xff64B5F6), // 300
+        Color(0xff42A5F5), // 400
+        Color(0xff2196F3), // 500
+        Color(0xff1E88E5), // 600
+        Color(0xff1976D2), // 700
+        Color(0xff1565C0), // 800
+        Color(0xff0D47A1), // 900
+      ],
+    );
+  }
+
+  double _getMinValue(List<WaterValue> waterValues) {
+    return waterValues.map((e) => e.value).reduce(min);
+  }
+
+  double _getMaxValue(List<WaterValue> waterValues) {
+    return waterValues.map((e) => e.value).reduce(max);
+  }
+
+  Widget _buildLegend(double minValue, double maxValue) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          minValue.toString(),
+          style: TextStyle(
+            color: ColorProvider.textDark,
+          ),
+        ),
+        SizedBox(width: 8),
+        Container(
+          width: 200,
+          height: 20,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xffF5F5F5),
+                Color(0xffBBDEFB),
+                Color(0xff90CAF9),
+                Color(0xff64B5F6),
+                Color(0xff42A5F5),
+                Color(0xff2196F3),
+                Color(0xff1E88E5),
+                Color(0xff1976D2),
+                Color(0xff1565C0),
+                Color(0xff0D47A1),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          maxValue.toString(),
+          style: TextStyle(
+            color: ColorProvider.textDark,
+          ),
+        ),
       ],
     );
   }

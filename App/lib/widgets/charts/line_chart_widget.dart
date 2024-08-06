@@ -7,10 +7,6 @@ class LineChartWidget extends StatelessWidget {
   final List<DateTime> xValues;
   final List<double> yValues;
   final double yDeviation;
-  final Color lineColor;
-  final Color gridColor;
-  final Color bgColor;
-  final Color textColor;
   final String title;
   final String xAxisLabel;
   final String yAxisLabel;
@@ -21,10 +17,6 @@ class LineChartWidget extends StatelessWidget {
     required this.xValues,
     required this.yValues,
     required this.yDeviation,
-    this.lineColor = Colors.blue,
-    this.gridColor = Colors.grey,
-    this.textColor = ColorProvider.textLight,
-    this.bgColor = ColorProvider.primaryDark,
     this.title = '',
     this.xAxisLabel = '',
     this.yAxisLabel = '',
@@ -38,7 +30,6 @@ class LineChartWidget extends StatelessWidget {
     }
 
     return Card(
-      color: bgColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -52,7 +43,7 @@ class LineChartWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: textColor,
+                    color: ColorProvider.textDark,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -68,13 +59,13 @@ class LineChartWidget extends StatelessWidget {
                     show: true,
                     getDrawingHorizontalLine: (value) {
                       return FlLine(
-                        color: gridColor,
+                        color: Colors.grey,
                         strokeWidth: 1,
                       );
                     },
                     getDrawingVerticalLine: (value) {
                       return FlLine(
-                        color: gridColor,
+                        color: Colors.grey,
                         strokeWidth: 1,
                       );
                     },
@@ -99,7 +90,7 @@ class LineChartWidget extends StatelessWidget {
                               child: Text(
                                 formattedDate,
                                 style: TextStyle(
-                                  color: textColor,
+                                  color: ColorProvider.textDark,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
@@ -117,7 +108,7 @@ class LineChartWidget extends StatelessWidget {
                         getTitlesWidget: (value, meta) => Text(
                           value.toString(),
                           style: TextStyle(
-                            color: textColor,
+                            color: ColorProvider.textDark,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -148,7 +139,7 @@ class LineChartWidget extends StatelessWidget {
                     LineChartBarData(
                       spots: spots,
                       isCurved: true,
-                      color: lineColor,
+                      color: ColorProvider.primary,
                       barWidth: 4,
                       isStrokeCapRound: true,
                       dotData: FlDotData(show: false),

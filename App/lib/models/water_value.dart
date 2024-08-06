@@ -8,7 +8,7 @@ class WaterValue {
 
   factory WaterValue.fromJson(Map<String, dynamic> json) {
     return WaterValue(
-      measuredAt: DateTime.parse(json['measured_at']),
+      measuredAt: DateTime.parse(json['measured_at']).toLocal(),
       value: json['value'],
       unit: json['unit'],
     );

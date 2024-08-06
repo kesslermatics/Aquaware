@@ -96,10 +96,6 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
       xValues: xValues,
       yValues: yValues,
       yDeviation: yDeviation,
-      lineColor: ColorProvider.background,
-      textColor: ColorProvider.textLight,
-      gridColor: Colors.grey,
-      bgColor: ColorProvider.primaryDark,
       title: 'Temperature over Time',
       xAxisLabel: 'Time',
       yAxisLabel: 'Temperature (°C)',
@@ -107,10 +103,6 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
   }
 
   Widget _makeHeatmapWidget(List<WaterValue> waterValues) {
-    List<DateTime> xValues =
-        waterValues.map((value) => value.measuredAt).toList();
-    List<double> yValues = waterValues.map((value) => value.value).toList();
-
     return HeatmapWidget(
       waterValues: waterValues,
       title: "Temperature Heatmap",

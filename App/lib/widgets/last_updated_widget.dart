@@ -15,7 +15,6 @@ class LastUpdatedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: ColorProvider.primaryDark,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -24,7 +23,7 @@ class LastUpdatedWidget extends StatelessWidget {
             SizedBox(width: 8),
             Text(
               'Last updated on ${_formatDate(lastWaterValue.measuredAt)}',
-              style: TextStyle(color: ColorProvider.textLight),
+              style: TextStyle(color: ColorProvider.textDark),
             ),
           ],
         ),

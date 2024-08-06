@@ -9,11 +9,10 @@ class TotalEntriesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: ColorProvider.primaryDark,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text('Total number of entries: $totalEntries',
-            style: TextStyle(color: ColorProvider.textLight)),
+            style: TextStyle(color: ColorProvider.textDark)),
       ),
     );
   }
