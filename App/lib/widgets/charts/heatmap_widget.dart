@@ -38,10 +38,6 @@ class HeatmapWidget extends StatelessWidget {
                 ),
               ),
             Heatmap(
-              onItemSelectedListener: (HeatmapItem? selectedItem) {
-                debugPrint(
-                    'Item ${selectedItem?.yAxisLabel}/${selectedItem?.xAxisLabel} with value ${selectedItem?.value} selected');
-              },
               rowsVisible: 4, // Display four rows
               heatmapData: heatmapData,
               showXAxisLabels: false,

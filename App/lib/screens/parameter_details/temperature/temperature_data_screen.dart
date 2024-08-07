@@ -52,8 +52,8 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No water values found'));
           } else {
-            List<WaterValue> waterValues = snapshot.data!;
-            WaterValue lastWaterValue = waterValues.first;
+            List<WaterValue> waterValues = snapshot.data!.reversed.toList();
+            WaterValue lastWaterValue = waterValues.last;
             return FutureBuilder<int>(
               future: _futureTotalEntries,
               builder: (context, totalEntriesSnapshot) {
@@ -89,13 +89,14 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
 
   Widget _makeLineChartWidget(List<WaterValue> waterValues) {
     List<DateTime> xValues =
-        waterValues.map((value) => value.measuredAt).toList().reversed.toList();
+        waterValues.map((value) => value.measuredAt).toList().toList();
     List<double> yValues = waterValues.map((value) => value.value).toList();
-    double yDeviation = 1;
+    double yDeviation = 0.5;
     return LineChartWidget(
       xValues: xValues,
       yValues: yValues,
       yDeviation: yDeviation,
+      fractionDigits: 2,
       title: 'Temperature over Time',
       xAxisLabel: 'Time',
       yAxisLabel: 'Temperature (°C)',

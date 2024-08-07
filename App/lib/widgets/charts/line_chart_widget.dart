@@ -3,30 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
-class LineChartWidget extends StatelessWidget {
+class LineChartWidget extends StatefulWidget {
   final List<DateTime> xValues;
   final List<double> yValues;
   final double yDeviation;
   final String title;
   final String xAxisLabel;
   final String yAxisLabel;
-
-  String lastDate = '';
+  final fractionDigits;
 
   LineChartWidget({
     required this.xValues,
     required this.yValues,
     required this.yDeviation,
+    required this.fractionDigits,
     this.title = '',
     this.xAxisLabel = '',
     this.yAxisLabel = '',
   });
 
   @override
+  State<LineChartWidget> createState() => _LineChartWidgetState();
+}
+
+class _LineChartWidgetState extends State<LineChartWidget> {
+  String lastDate = '';
+  int _selectedValue = 5;
+  late List<DateTime> usedXValues;
+  late List<double> usedYValues;
+
+  final List<int> _options = [5, 10, 30, 50, 100];
+
+  @override
   Widget build(BuildContext context) {
+    usedXValues =
+        widget.xValues.sublist(widget.xValues.length - _selectedValue);
+    usedYValues =
+        widget.yValues.sublist(widget.yValues.length - _selectedValue);
+
     List<FlSpot> spots = [];
-    for (int i = 0; i < xValues.length; i++) {
-      spots.add(FlSpot(i.toDouble(), yValues[i]));
+    for (int i = 0; i < usedXValues.length; i++) {
+      spots.add(FlSpot(i.toDouble(), usedYValues[i]));
     }
 
     return Card(
@@ -35,11 +52,11 @@ class LineChartWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (title.isNotEmpty)
+            if (widget.title.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Text(
-                  title,
+                  widget.title,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -48,12 +65,60 @@ class LineChartWidget extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
+            Row(
+              children: [
+                Text(
+                  "Last ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: ColorProvider.textDark,
+                  ),
+                ),
+                DropdownButton<int>(
+                  value: _selectedValue,
+                  items: _options.map((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text(value.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      _selectedValue = newValue!;
+                    });
+                  },
+                ),
+                Text(
+                  " Values",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: ColorProvider.textDark,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
             SizedBox(
               height: 300,
               child: LineChart(
                 LineChartData(
                   lineTouchData: LineTouchData(
                     handleBuiltInTouches: true,
+                    touchTooltipData: LineTouchTooltipData(
+                      getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                        return touchedSpots.map((touchedSpot) {
+                          return LineTooltipItem(
+                            '${touchedSpot.y.toStringAsFixed(widget.fractionDigits)}',
+                            TextStyle(
+                              color: ColorProvider.textLight,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        }).toList();
+                      },
+                    ),
                   ),
                   gridData: FlGridData(
                     show: true,
@@ -73,13 +138,14 @@ class LineChartWidget extends StatelessWidget {
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
+                        interval: 10,
                         showTitles: true,
                         reservedSize: 80,
                         getTitlesWidget: (value, meta) {
-                          if (value < 0 || value >= xValues.length) {
+                          if (value < 0 || value >= usedXValues.length) {
                             return Container();
                           }
-                          DateTime date = xValues[value.toInt()];
+                          DateTime date = usedXValues[value.toInt()];
                           String formattedDate =
                               DateFormat('dd-MM HH:mm').format(date);
 
@@ -106,7 +172,7 @@ class LineChartWidget extends StatelessWidget {
                         showTitles: true,
                         reservedSize: 40,
                         getTitlesWidget: (value, meta) => Text(
-                          value.toString(),
+                          value.toStringAsFixed(widget.fractionDigits),
                           style: TextStyle(
                             color: ColorProvider.textDark,
                             fontWeight: FontWeight.bold,
@@ -131,10 +197,12 @@ class LineChartWidget extends StatelessWidget {
                       top: BorderSide(color: Colors.transparent),
                     ),
                   ),
-                  minY: yValues.reduce((a, b) => a < b ? a : b) - yDeviation,
-                  maxY: yValues.reduce((a, b) => a > b ? a : b) + yDeviation,
+                  minY: usedYValues.reduce((a, b) => a < b ? a : b) -
+                      widget.yDeviation,
+                  maxY: usedYValues.reduce((a, b) => a > b ? a : b) +
+                      widget.yDeviation,
                   minX: 0,
-                  maxX: xValues.length.toDouble() - 1,
+                  maxX: usedXValues.length.toDouble() - 1,
                   lineBarsData: [
                     LineChartBarData(
                       spots: spots,
@@ -142,7 +210,13 @@ class LineChartWidget extends StatelessWidget {
                       color: ColorProvider.primary,
                       barWidth: 4,
                       isStrokeCapRound: true,
-                      dotData: FlDotData(show: false),
+                      dotData: FlDotData(
+                        show: true,
+                        checkToShowDot: (spot, barData) {
+                          // Show every (_selectedValue / 5) points
+                          return (spot.x % (_selectedValue / 5)).toInt() == 0;
+                        },
+                      ),
                       belowBarData: BarAreaData(show: false),
                     ),
                   ],

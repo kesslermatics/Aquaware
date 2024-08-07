@@ -60,9 +60,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
   void initState() {
     super.initState();
     gradientColors = [Colors.blue, Colors.blueAccent];
-    data = widget.waterParameter.values.map((e) => e.value).toList();
+    data = widget.waterParameter.values
+        .map((e) => e.value)
+        .toList()
+        .reversed
+        .toList();
     dates = widget.waterParameter.values
         .map((e) => e.measuredAt.toIso8601String())
+        .toList()
+        .reversed
         .toList();
     deviation = (data.reduce((a, b) => a > b ? a : b) -
             data.reduce((a, b) => a < b ? a : b)) /
