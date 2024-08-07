@@ -106,6 +106,7 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
   Widget _makeHeatmapWidget(List<WaterValue> waterValues) {
     return HeatmapWidget(
       waterValues: waterValues,
+      fractionDigits: 2,
       title: "Temperature Heatmap",
     );
   }

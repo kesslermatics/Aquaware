@@ -82,6 +82,10 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
   @override
   Widget build(BuildContext context) {
     final latestValue = widget.waterParameter.values.first;
+    String unit = "";
+    if (latestValue.unit.isNotEmpty) {
+      unit = "(${latestValue.unit})";
+    }
     return GestureDetector(
       onTap: () =>
           _navigateToDetailScreen(context, widget.waterParameter.parameter),
@@ -103,7 +107,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                           child: Text(
-                            '${widget.waterParameter.parameter} (${latestValue.unit})',
+                            '${widget.waterParameter.parameter} $unit',
                             textAlign: TextAlign.center,
                           ),
                         ),

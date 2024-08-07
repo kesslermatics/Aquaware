@@ -8,10 +8,12 @@ import 'dart:math';
 class HeatmapWidget extends StatelessWidget {
   final List<WaterValue> waterValues;
   final String title;
+  final int fractionDigits;
 
   HeatmapWidget({
     required this.waterValues,
     this.title = '',
+    required this.fractionDigits,
   });
 
   @override
@@ -134,14 +136,14 @@ class HeatmapWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          minValue.toString(),
+          minValue.toStringAsFixed(fractionDigits) + waterValues.first.unit,
           style: TextStyle(
             color: ColorProvider.textDark,
           ),
         ),
         SizedBox(width: 8),
         Container(
-          width: 200,
+          width: 150,
           height: 20,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -162,7 +164,7 @@ class HeatmapWidget extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          maxValue.toString(),
+          maxValue.toStringAsFixed(fractionDigits) + waterValues.first.unit,
           style: TextStyle(
             color: ColorProvider.textDark,
           ),
