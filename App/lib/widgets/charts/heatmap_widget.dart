@@ -143,7 +143,7 @@ class HeatmapWidget extends StatelessWidget {
         ),
         SizedBox(width: 8),
         Container(
-          width: 150,
+          width: 100,
           height: 20,
           decoration: const BoxDecoration(
             gradient: LinearGradient(

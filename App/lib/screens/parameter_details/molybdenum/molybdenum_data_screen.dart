@@ -1,3 +1,7 @@
+import 'package:aquaware/widgets/charts/heatmap_widget.dart';
+import 'package:aquaware/widgets/charts/line_chart_widget.dart';
+import 'package:aquaware/widgets/last_updated_widget.dart';
+import 'package:aquaware/widgets/total_entries_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:aquaware/models/water_value.dart';
@@ -14,31 +18,30 @@ class MolybdenumDataScreen extends StatefulWidget {
 
 class _MolybdenumDataScreenState extends State<MolybdenumDataScreen> {
   late Future<List<WaterValue>> _futureWaterValues;
+  late Future<int> _futureTotalEntries;
   final WaterParameterService _waterParameterService = WaterParameterService();
 
   @override
   void initState() {
     super.initState();
     _futureWaterValues = _fetchWaterValues();
+    _futureTotalEntries = _fetchTotalEntries();
   }
 
   Future<List<WaterValue>> _fetchWaterValues() async {
     return await _waterParameterService.fetchSingleWaterParameter(
+        widget.aquariumId, 'Molybdenum',
+        numberOfEntries: 100);
+  }
+
+  Future<int> _fetchTotalEntries() async {
+    return await _waterParameterService.fetchTotalEntries(
         widget.aquariumId, 'Molybdenum');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Molybdenum Data'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
       body: FutureBuilder<List<WaterValue>>(
         future: _futureWaterValues,
         builder: (context, snapshot) {
@@ -49,22 +52,62 @@ class _MolybdenumDataScreenState extends State<MolybdenumDataScreen> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No water values found'));
           } else {
-            return ListView.builder(
-              padding: EdgeInsets.all(16.0),  
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final value = snapshot.data![index];
-                return Card(
-                  child: ListTile(
-                    title: Text('\${value.value} \${value.unit}'),
-                    subtitle: Text('Measured at: \${value.measuredAt}'),
-                  ),
-                );
+            List<WaterValue> waterValues = snapshot.data!.reversed.toList();
+            WaterValue lastWaterValue = waterValues.last;
+            return FutureBuilder<int>(
+              future: _futureTotalEntries,
+              builder: (context, totalEntriesSnapshot) {
+                if (totalEntriesSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (totalEntriesSnapshot.hasError) {
+                  return Center(child: Text('Failed to load total entries'));
+                } else if (!totalEntriesSnapshot.hasData) {
+                  return Center(child: Text('No total entries found'));
+                } else {
+                  int totalEntries = totalEntriesSnapshot.data!;
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        LastUpdatedWidget(lastWaterValue: lastWaterValue),
+                        TotalEntriesWidget(totalEntries: totalEntries),
+                        _makeLineChartWidget(waterValues),
+                        _makeHeatmapWidget(waterValues),
+                      ],
+                    ),
+                  );
+                }
               },
             );
           }
         },
       ),
+    );
+  }
+
+  Widget _makeLineChartWidget(List<WaterValue> waterValues) {
+    List<DateTime> xValues =
+        waterValues.map((value) => value.measuredAt).toList().toList();
+    List<double> yValues = waterValues.map((value) => value.value).toList();
+    double yDeviation = 0.05; // Example deviation for Molybdenum
+    return LineChartWidget(
+      xValues: xValues,
+      yValues: yValues,
+      yDeviation: yDeviation,
+      fractionDigits: 3,
+      title: 'Molybdenum Levels over Time',
+      xAxisLabel: 'Time',
+      yAxisLabel: 'Molybdenum (mg/L)',
+    );
+  }
+
+  Widget _makeHeatmapWidget(List<WaterValue> waterValues) {
+    return HeatmapWidget(
+      waterValues: waterValues,
+      fractionDigits: 3,
+      title: "Molybdenum Level Heatmap",
     );
   }
 }

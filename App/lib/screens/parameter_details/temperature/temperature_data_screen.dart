@@ -1,4 +1,5 @@
 import 'package:aquaware/widgets/charts/heatmap_widget.dart';
+import 'package:aquaware/widgets/charts/histogram_widget.dart';
 import 'package:aquaware/widgets/charts/line_chart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
@@ -75,6 +76,7 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
                         TotalEntriesWidget(totalEntries: totalEntries),
                         _makeLineChartWidget(waterValues),
                         _makeHeatmapWidget(waterValues),
+                        _makeHistogramWidget(waterValues),
                       ],
                     ),
                   );
@@ -108,6 +110,15 @@ class _TemperatureDataScreenState extends State<TemperatureDataScreen> {
       waterValues: waterValues,
       fractionDigits: 2,
       title: "Temperature Heatmap",
+    );
+  }
+
+  Widget _makeHistogramWidget(List<WaterValue> waterValues) {
+    return HistogramWidget(
+      waterValues: waterValues,
+      range: 0.05,
+      fractionDigits: 2,
+      title: 'Distribution in the last 24h',
     );
   }
 }
