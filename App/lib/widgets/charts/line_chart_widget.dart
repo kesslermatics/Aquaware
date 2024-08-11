@@ -11,6 +11,7 @@ class LineChartWidget extends StatefulWidget {
   final String xAxisLabel;
   final String yAxisLabel;
   final fractionDigits;
+  String lastDisplayedDate = '';
 
   LineChartWidget({
     required this.xValues,
@@ -36,10 +37,15 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    usedXValues =
-        widget.xValues.sublist(widget.xValues.length - _selectedValue);
-    usedYValues =
-        widget.yValues.sublist(widget.yValues.length - _selectedValue);
+    if (_selectedValue < widget.xValues.length) {
+      usedXValues =
+          widget.xValues.sublist(widget.xValues.length - _selectedValue);
+      usedYValues =
+          widget.yValues.sublist(widget.yValues.length - _selectedValue);
+    } else {
+      usedXValues = widget.xValues;
+      usedYValues = widget.yValues;
+    }
 
     List<FlSpot> spots = [];
     for (int i = 0; i < usedXValues.length; i++) {
@@ -145,15 +151,32 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                           if (value < 0 || value >= usedXValues.length) {
                             return Container();
                           }
-                          DateTime date = usedXValues[value.toInt()];
-                          String formattedDate =
-                              DateFormat('dd-MM HH:mm').format(date);
+
+                          DateTime currentDate = usedXValues[value.toInt()];
+
+                          // Überprüfe, ob das aktuelle Datum anders ist als das letzte angezeigte Datum
+                          String currentDateString =
+                              DateFormat('dd-MM').format(currentDate);
+                          bool isNewDay =
+                              widget.lastDisplayedDate != currentDateString;
+
+                          // Aktualisiere das letzte angezeigte Datum, wenn ein neuer Tag erkannt wurde
+                          if (isNewDay) {
+                            widget.lastDisplayedDate = currentDateString;
+                          }
+
+                          String formattedDate = (isNewDay || value == 0)
+                              ? DateFormat('dd-MM HH:mm')
+                                  .format(currentDate) // Datum + Uhrzeit
+                              : DateFormat('HH:mm')
+                                  .format(currentDate); // Nur Uhrzeit
 
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: RotatedBox(
                               quarterTurns: 3,
                               child: Text(
+                                textAlign: TextAlign.end,
                                 formattedDate,
                                 style: TextStyle(
                                   color: ColorProvider.textDark,
@@ -213,8 +236,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                       dotData: FlDotData(
                         show: true,
                         checkToShowDot: (spot, barData) {
-                          // Show every (_selectedValue / 5) points
-                          return (spot.x % (_selectedValue / 5)).toInt() == 0;
+                          return (spot.x % (_selectedValue / 6)).toInt() == 0;
                         },
                       ),
                       belowBarData: BarAreaData(show: false),

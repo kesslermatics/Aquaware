@@ -107,7 +107,7 @@ class _PHDataScreenState extends State<PHDataScreen> {
     return HeatmapWidget(
       waterValues: waterValues,
       fractionDigits: 2,
-      title: "Temperature Heatmap",
+      title: "pH Heatmap",
     );
   }
 }
