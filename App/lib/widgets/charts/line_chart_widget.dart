@@ -144,7 +144,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
-                        interval: 10,
+                        interval: 6,
                         showTitles: true,
                         reservedSize: 80,
                         getTitlesWidget: (value, meta) {
@@ -236,7 +236,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                       dotData: FlDotData(
                         show: true,
                         checkToShowDot: (spot, barData) {
-                          return (spot.x % (_selectedValue / 6)).toInt() == 0;
+                          return (spot.x % (_selectedValue / 12)).toInt() == 0;
                         },
                       ),
                       belowBarData: BarAreaData(show: false),
