@@ -29,11 +29,11 @@ class LineChartWidget extends StatefulWidget {
 
 class _LineChartWidgetState extends State<LineChartWidget> {
   String lastDate = '';
-  int _selectedValue = 5;
+  int _selectedValue = 6;
   late List<DateTime> usedXValues;
   late List<double> usedYValues;
 
-  final List<int> _options = [5, 10, 30, 50, 100];
+  final List<int> _options = [6, 12, 24, 48, 96];
 
   @override
   Widget build(BuildContext context) {
