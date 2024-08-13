@@ -1,11 +1,15 @@
 import csv
-from datetime import timedelta
+import io
+from datetime import timedelta, datetime
 
 from django.db.models import OuterRef, Subquery, Count, Max
 from django.http import HttpResponse
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
+from requests.compat import chardet
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from pathlib import Path
@@ -148,11 +152,9 @@ def export_water_values(request, aquarium_id):
         if not water_values.exists():
             return Response({'error': 'No water values found for this aquarium.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Prepare the HttpResponse with the appropriate content type
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename="water_values_{aquarium_id}.csv"'
-
-        writer = csv.writer(response)
+        # Use StringIO to write the CSV content in-memory
+        output = io.StringIO()
+        writer = csv.writer(output)
 
         # Get distinct parameter names to dynamically generate the columns
         parameters = list(WaterValue.objects.filter(aquarium=aquarium)
@@ -182,7 +184,72 @@ def export_water_values(request, aquarium_id):
                 row.append(values['units'].get(param, ''))  # Add the unit
             writer.writerow(row)
 
+        # Ensure UTF-8 encoding by encoding the StringIO content
+        response = HttpResponse(output.getvalue().encode('utf-8'), content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="water_values_{aquarium_id}.csv"'
+
         return response
 
     except Exception as e:
         return Response({'error': f'An error occurred during export: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def import_water_values(request, aquarium_id):
+    try:
+        # Ensure the aquarium exists and belongs to the user
+        aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
+
+        # Get the uploaded file
+        csv_file = request.FILES['file']
+
+        # Detect the encoding of the file
+        raw_data = csv_file.read()
+        result = chardet.detect(raw_data)
+        encoding = result['encoding']
+        csv_file.seek(0)  # Reset the file pointer to the beginning
+
+        # Convert the file to a text stream with the detected encoding
+        csv_file = io.TextIOWrapper(csv_file.file, encoding=encoding)
+
+        # Create a CSV reader
+        reader = csv.DictReader(csv_file)
+
+        headers = reader.fieldnames
+
+        # Ensure that the Measured At column exists
+        if 'Measured At' not in headers:
+            return Response({'error': 'Measured At column is required in the CSV file.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Filter out 'unit' columns from the headers
+        parameters = [header for header in headers if not header.endswith('_unit') and header != 'Measured At']
+
+        # Iterate over each row in the CSV file
+        for row in reader:
+            measured_at = parse_datetime(row['Measured At'])
+
+            # Iterate over each parameter in the CSV file
+            for parameter_name in parameters:
+                value = row[parameter_name]
+                unit = row.get(f'{parameter_name}_unit', '')
+
+                # Fetch or create the WaterParameter
+                parameter, _ = WaterParameter.objects.get_or_create(
+                    name=parameter_name,
+                    defaults={'unit': unit}
+                )
+
+                # Create the WaterValue entry
+                WaterValue.objects.create(
+                    aquarium=aquarium,
+                    parameter=parameter,
+                    value=value,
+                    measured_at=measured_at,
+                )
+
+        return Response({'status': 'Import successful'}, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({'error': f"An error occurred during import: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
