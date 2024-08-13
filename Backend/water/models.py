@@ -14,7 +14,7 @@ class WaterValue(models.Model):
     aquarium = models.ForeignKey(Aquarium, on_delete=models.CASCADE, related_name='water_values')
     parameter = models.ForeignKey(WaterParameter, on_delete=models.CASCADE, related_name='water_values')
     value = models.DecimalField(max_digits=10, decimal_places=3)
-    measured_at = models.DateTimeField(auto_now_add=True)
+    measured_at = models.DateTimeField()
     generated = models.BooleanField(default=False)
 
     def __str__(self):
