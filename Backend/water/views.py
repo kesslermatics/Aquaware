@@ -31,7 +31,7 @@ def add_water_values(request, aquarium_id):
                         status=status.HTTP_404_NOT_FOUND)
 
     # Retrieve the most recent water value entry
-    last_value = WaterValue.objects.filter(aquarium=aquarium).aggregate(last_measured_at=Max('measured_at'))
+    last_value = WaterValue.objects.filter(aquarium=aquarium).aggregate(last_measured_at=Max('added_at'))
     last_measured_at = last_value['last_measured_at']
 
     # Check if the last measured time is within the last 30 minutes
@@ -200,6 +200,17 @@ def import_water_values(request, aquarium_id):
     try:
         # Ensure the aquarium exists and belongs to the user
         aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
+
+        # Retrieve the most recent water value entry
+        last_value = WaterValue.objects.filter(aquarium=aquarium).aggregate(last_measured_at=Max('added_at'))
+        last_measured_at = last_value['last_measured_at']
+
+        # Check if the last measured time is within the last 30 minutes
+        if last_measured_at and last_measured_at >= timezone.now() - timedelta(minutes=29):
+            return Response(
+                {'error': 'You can only submit water values once every 30 minutes.'},
+                status=status.HTTP_429_TOO_MANY_REQUESTS
+            )
 
         # Get the uploaded file
         csv_file = request.FILES['file']
