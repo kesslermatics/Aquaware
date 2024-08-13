@@ -19,11 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def add_water_values(request):
-    aquarium_id = request.data.get('aquarium_id')
-    if not aquarium_id:
-        return Response({'error': 'aquarium_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
+def add_water_values(request, aquarium_id):
     try:
         aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
     except Aquarium.DoesNotExist:
@@ -42,13 +38,16 @@ def add_water_values(request):
         )
 
     # Proceed to save the new water values if valid
-    serializer = FlexibleWaterValuesSerializer(data=request.data)
+    data = request.data.copy()
+    data['aquarium_id'] = aquarium_id  # Füge die aquarium_id zu den Daten hinzu
+    serializer = FlexibleWaterValuesSerializer(data=data)
     if serializer.is_valid():
         water_values = serializer.save()
         response_serializer = WaterValueSerializer(water_values, many=True)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
