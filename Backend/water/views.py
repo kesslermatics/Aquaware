@@ -1,6 +1,8 @@
+import csv
 from datetime import timedelta
 
 from django.db.models import OuterRef, Subquery, Count, Max
+from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -128,3 +130,60 @@ def get_total_entries(request, aquarium_id, parameter_name):
         return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def export_water_values(request, aquarium_id):
+    try:
+        # Check if the aquarium exists and belongs to the logged-in user
+        try:
+            aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
+        except Aquarium.DoesNotExist:
+            return Response({'error': 'Aquarium not found or does not belong to this user.'},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        # Get the water values for the specified aquarium, ordered by measured_at
+        water_values = WaterValue.objects.filter(aquarium=aquarium).select_related('parameter').order_by('measured_at')
+
+        if not water_values.exists():
+            return Response({'error': 'No water values found for this aquarium.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Prepare the HttpResponse with the appropriate content type
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="water_values_{aquarium_id}.csv"'
+
+        writer = csv.writer(response)
+
+        # Get distinct parameter names to dynamically generate the columns
+        parameters = list(WaterValue.objects.filter(aquarium=aquarium)
+                         .values_list('parameter__name', flat=True).distinct())
+        parameters.sort()  # Sort parameter names to maintain consistent column order
+
+        # Write the header row
+        header = ['Measured At'] + parameters + [f"{param}_unit" for param in parameters]
+        writer.writerow(header)
+
+        # Group water values by 'measured_at'
+        measurements = {}
+        for value in water_values:
+            measured_at = timezone.localtime(value.measured_at).strftime('%Y-%m-%d %H:%M:%S')
+            if measured_at not in measurements:
+                measurements[measured_at] = {param: '' for param in parameters}  # Initialize with empty values
+                measurements[measured_at]['units'] = {param: '' for param in parameters}
+            measurements[measured_at][value.parameter.name] = value.value
+            measurements[measured_at]['units'][value.parameter.name] = value.parameter.unit
+
+        # Write the data rows
+        for measured_at, values in measurements.items():
+            row = [measured_at]
+            for param in parameters:
+                row.append(values.get(param, ''))  # Add the value
+            for param in parameters:
+                row.append(values['units'].get(param, ''))  # Add the unit
+            writer.writerow(row)
+
+        return response
+
+    except Exception as e:
+        return Response({'error': f'An error occurred during export: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
