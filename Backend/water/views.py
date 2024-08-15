@@ -281,6 +281,7 @@ def save_alert_settings(request, aquarium_id):
             under_value = serializer.validated_data.get('under_value')
             above_value = serializer.validated_data.get('above_value')
 
+            # Update or create the alert setting
             alert_setting, created = UserAlertSetting.objects.update_or_create(
                 user=user,
                 aquarium=aquarium,

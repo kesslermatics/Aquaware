@@ -55,6 +55,8 @@ class FlexibleWaterValuesSerializer(serializers.Serializer):
 
 class UserAlertSettingSerializer(serializers.ModelSerializer):
     parameter = serializers.SlugRelatedField(slug_field='name', queryset=WaterParameter.objects.all())
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    aquarium = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = UserAlertSetting
