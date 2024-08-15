@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AlertService {
   final UserService _userService = UserService();
   static const String baseUrl =
-      'https://aquaware-production.up.railway.app/api/measurements/aquariums/';
+      'https://aquaware-production.up.railway.app/api/measurements/aquariums';
 
   Future<String?> _getAccessToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,7 +40,7 @@ class AlertService {
       double? underValue, double? aboveValue) async {
     final response = await _makeAuthenticatedRequest((token) {
       return http.post(
-        Uri.parse('$baseUrl/aquariums/$aquariumId/save-alert-settings/'),
+        Uri.parse('$baseUrl/$aquariumId/save-alert-settings/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

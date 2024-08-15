@@ -14,7 +14,8 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from pathlib import Path
-from .serializers import WaterParameterSerializer, WaterValueSerializer, FlexibleWaterValuesSerializer
+from .serializers import WaterParameterSerializer, WaterValueSerializer, FlexibleWaterValuesSerializer, \
+    UserAlertSettingSerializer
 
 from .models import WaterParameter, WaterValue, UserAlertSetting
 from aquariums.models import Aquarium
@@ -274,28 +275,28 @@ def save_alert_settings(request, aquarium_id):
         user = request.user
         aquarium = Aquarium.objects.get(id=aquarium_id, user=user)
 
-        parameter = request.data.get('parameter')
-        under_value = request.data.get('under_value')
-        above_value = request.data.get('above_value')
+        serializer = UserAlertSettingSerializer(data=request.data)
+        if serializer.is_valid():
+            parameter = serializer.validated_data['parameter']
+            under_value = serializer.validated_data.get('under_value')
+            above_value = serializer.validated_data.get('above_value')
 
-        # Check if parameter is provided
-        if not parameter:
-            return Response({'error': 'Parameter is required.'}, status=400)
+            alert_setting, created = UserAlertSetting.objects.update_or_create(
+                user=user,
+                aquarium=aquarium,
+                parameter=parameter,
+                defaults={
+                    'under_value': under_value,
+                    'above_value': above_value,
+                }
+            )
 
-        # Save or update the alert settings
-        alert_setting, created = UserAlertSetting.objects.update_or_create(
-            user=user,
-            aquarium=aquarium,
-            parameter=parameter,
-            defaults={
-                'under_value': under_value,
-                'above_value': above_value,
-            }
-        )
+            return Response({'status': 'Alert settings saved successfully.'}, status=200)
+        else:
+            return Response(serializer.errors, status=400)
 
-        return Response({'status': 'Alert settings saved successfully.'}, status=200)
-
-    except ObjectDoesNotExist:
+    except Aquarium.DoesNotExist:
         return Response({'error': 'Aquarium not found or does not belong to this user.'}, status=404)
     except Exception as e:
         return Response({'error': f'An error occurred: {str(e)}'}, status=400)
+

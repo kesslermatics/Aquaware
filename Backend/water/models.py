@@ -27,7 +27,10 @@ class WaterValue(models.Model):
 class UserAlertSetting(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     aquarium = models.ForeignKey(Aquarium, on_delete=models.CASCADE)
-    parameter = models.CharField(max_length=255)
+    parameter = models.ForeignKey(WaterParameter, on_delete=models.CASCADE)
     under_value = models.FloatField(null=True, blank=True)
     above_value = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'aquarium', 'parameter')

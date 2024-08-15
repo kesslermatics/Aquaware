@@ -24,7 +24,6 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
     double? aboveValue =
         notifyAbove ? double.tryParse(aboveController.text) : null;
 
-    // Implement your AlertService here to save the settings
     await AlertService().saveAlertSettings(
       widget.aquariumId,
       parameter,

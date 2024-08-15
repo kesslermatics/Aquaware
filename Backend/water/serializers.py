@@ -1,6 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
-from .models import WaterParameter, WaterValue
+from .models import WaterParameter, WaterValue, UserAlertSetting
+
 
 class WaterParameterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,3 +51,12 @@ class FlexibleWaterValuesSerializer(serializers.Serializer):
                 )
                 water_values.append(water_value)
         return water_values
+
+
+class UserAlertSettingSerializer(serializers.ModelSerializer):
+    parameter = serializers.SlugRelatedField(slug_field='name', queryset=WaterParameter.objects.all())
+
+    class Meta:
+        model = UserAlertSetting
+        fields = ['user', 'aquarium', 'parameter', 'under_value', 'above_value']
+
