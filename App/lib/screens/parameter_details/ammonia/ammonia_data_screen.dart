@@ -5,7 +5,6 @@ import 'package:aquaware/widgets/total_entries_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:aquaware/models/water_value.dart';
-import 'package:aquaware/services/color_provider.dart';
 
 class AmmoniaDataScreen extends StatefulWidget {
   final int aquariumId;

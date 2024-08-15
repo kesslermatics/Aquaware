@@ -39,7 +39,7 @@ class AmmoniaScreen extends StatelessWidget {
           children: [
             AmmoniaDataScreen(aquariumId: aquariumId),
             AmmoniaKnowledgeScreen(),
-            AmmoniaAlertsScreen(),
+            AmmoniaAlertsScreen(aquariumId: aquariumId),
           ],
         ),
       ),

@@ -8,4 +8,6 @@ urlpatterns = [
     path('aquariums/<int:aquarium_id>/water-values/<int:number_of_entries>/', water_views.get_latest_from_all_parameters, name='aquarium-water-values'),
     path('aquariums/<int:aquarium_id>/export/', water_views.export_water_values, name='export-water-values'),
     path('aquariums/<int:aquarium_id>/import/', water_views.import_water_values, name='aquarium-import-values'),
+    path('aquariums/<int:aquarium_id>/save-alert-settings/', water_views.save_alert_settings, name='save-alert-settings'),
+
 ]

@@ -2,6 +2,7 @@ import csv
 import io
 from datetime import timedelta, datetime
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import OuterRef, Subquery, Count, Max
 from django.http import HttpResponse
 from django.utils import timezone
@@ -15,7 +16,7 @@ from rest_framework.response import Response
 from pathlib import Path
 from .serializers import WaterParameterSerializer, WaterValueSerializer, FlexibleWaterValuesSerializer
 
-from .models import WaterParameter, WaterValue
+from .models import WaterParameter, WaterValue, UserAlertSetting
 from aquariums.models import Aquarium
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -264,3 +265,37 @@ def import_water_values(request, aquarium_id):
 
     except Exception as e:
         return Response({'error': f"An error occurred during import: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def save_alert_settings(request, aquarium_id):
+    try:
+        user = request.user
+        aquarium = Aquarium.objects.get(id=aquarium_id, user=user)
+
+        parameter = request.data.get('parameter')
+        under_value = request.data.get('under_value')
+        above_value = request.data.get('above_value')
+
+        # Check if parameter is provided
+        if not parameter:
+            return Response({'error': 'Parameter is required.'}, status=400)
+
+        # Save or update the alert settings
+        alert_setting, created = UserAlertSetting.objects.update_or_create(
+            user=user,
+            aquarium=aquarium,
+            parameter=parameter,
+            defaults={
+                'under_value': under_value,
+                'above_value': above_value,
+            }
+        )
+
+        return Response({'status': 'Alert settings saved successfully.'}, status=200)
+
+    except ObjectDoesNotExist:
+        return Response({'error': 'Aquarium not found or does not belong to this user.'}, status=404)
+    except Exception as e:
+        return Response({'error': f'An error occurred: {str(e)}'}, status=400)
