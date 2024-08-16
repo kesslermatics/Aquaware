@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'phosphate_data_screen.dart';
 import 'phosphate_knowledge_screen.dart';
-import 'phosphate_alerts_screen.dart';
 
 class PhosphateScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class PhosphateScreen extends StatelessWidget {
           children: [
             PhosphateDataScreen(aquariumId: aquariumId),
             PhosphateKnowledgeScreen(),
-            PhosphateAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Excess phosphate can lead to algae overgrowth, causing oxygen depletion and stress in fish. '
+                  "An appropriate alert can be to notify when phosphate levels exceed 1.0 ppm.",
+              parameterName: "Phosphate",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

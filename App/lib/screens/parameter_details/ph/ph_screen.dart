@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'ph_data_screen.dart';
 import 'ph_knowledge_screen.dart';
-import 'ph_alerts_screen.dart';
 
 class PHScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,14 @@ class PHScreen extends StatelessWidget {
           children: [
             PHDataScreen(aquariumId: aquariumId),
             PHKnowledgeScreen(),
-            PHAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'pH levels that are too high or too low can lead to stress, disease, and even death in fish. '
+                  'Different fish species require different pH levels. '
+                  "An appropriate alert can be to notify when pH levels are outside the range of 6.5 to 8.0, depending on species.",
+              parameterName: "pH",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

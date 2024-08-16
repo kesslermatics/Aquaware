@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'silica_data_screen.dart';
 import 'silica_knowledge_screen.dart';
-import 'silica_alerts_screen.dart';
 
 class SilicaScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class SilicaScreen extends StatelessWidget {
           children: [
             SilicaDataScreen(aquariumId: aquariumId),
             SilicaKnowledgeScreen(),
-            SilicaAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Silica can promote diatom algae growth, which can be problematic in aquariums. '
+                  "An appropriate alert can be to notify when silica levels exceed 2 mg/L.",
+              parameterName: "Silica",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

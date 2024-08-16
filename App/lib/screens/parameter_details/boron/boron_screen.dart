@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'boron_data_screen.dart';
 import 'boron_knowledge_screen.dart';
-import 'boron_alerts_screen.dart';
 
 class BoronScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,14 @@ class BoronScreen extends StatelessWidget {
           children: [
             BoronDataScreen(aquariumId: aquariumId),
             BoronKnowledgeScreen(),
-            BoronAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High levels of boron can be toxic to plants and invertebrates in your aquarium. '
+                  'It can also lead to stress and illness in sensitive fish species. '
+                  "An appropriate alert can be to notify when boron levels are above 1.0 ppm, depending on the species in your tank.",
+              parameterName: "Boron",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

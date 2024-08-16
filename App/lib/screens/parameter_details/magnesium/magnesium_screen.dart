@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'magnesium_data_screen.dart';
 import 'magnesium_knowledge_screen.dart';
-import 'magnesium_alerts_screen.dart';
 
 class MagnesiumScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class MagnesiumScreen extends StatelessWidget {
           children: [
             MagnesiumDataScreen(aquariumId: aquariumId),
             MagnesiumKnowledgeScreen(),
-            MagnesiumAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Magnesium is crucial for coral and invertebrate health, but excessive levels can disrupt water chemistry and harm aquatic life. '
+                  "An appropriate alert can be to notify when magnesium levels are above 1500 ppm.",
+              parameterName: "Magnesium",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

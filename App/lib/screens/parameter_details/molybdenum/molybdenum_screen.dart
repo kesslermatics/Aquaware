@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'molybdenum_data_screen.dart';
 import 'molybdenum_knowledge_screen.dart';
-import 'molybdenum_alerts_screen.dart';
 
 class MolybdenumScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class MolybdenumScreen extends StatelessWidget {
           children: [
             MolybdenumDataScreen(aquariumId: aquariumId),
             MolybdenumKnowledgeScreen(),
-            MolybdenumAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Molybdenum in excess can be toxic to fish and invertebrates, potentially leading to health issues or death. '
+                  "An appropriate alert can be to notify when molybdenum levels exceed 0.01 ppm.",
+              parameterName: "Molybdenum",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

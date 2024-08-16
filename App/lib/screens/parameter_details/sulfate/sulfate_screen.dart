@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'sulfate_data_screen.dart';
 import 'sulfate_knowledge_screen.dart';
-import 'sulfate_alerts_screen.dart';
 
 class SulfateScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class SulfateScreen extends StatelessWidget {
           children: [
             SulfateDataScreen(aquariumId: aquariumId),
             SulfateKnowledgeScreen(),
-            SulfateAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Sulfate in high concentrations can contribute to water hardness and be toxic to fish and invertebrates. '
+                  "An appropriate alert can be to notify when sulfate levels exceed 500 mg/L.",
+              parameterName: "Sulfate",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

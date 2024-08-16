@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'temperature_data_screen.dart';
 import 'temperature_knowledge_screen.dart';
-import 'temperature_alerts_screen.dart';
 
 class TemperatureScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,14 @@ class TemperatureScreen extends StatelessWidget {
           children: [
             TemperatureDataScreen(aquariumId: aquariumId),
             TemperatureKnowledgeScreen(),
-            TemperatureAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Temperature that is too high or too low can cause thermal stress, weaken immune systems, and lead to death. '
+                  'Different species have different temperature requirements. '
+                  "An appropriate alert can be to notify when temperature is outside the range of 24-28°C, depending on species.",
+              parameterName: "Temperature",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

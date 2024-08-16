@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'iron_data_screen.dart';
 import 'iron_knowledge_screen.dart';
-import 'iron_alerts_screen.dart';
 
 class IronScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class IronScreen extends StatelessWidget {
           children: [
             IronDataScreen(aquariumId: aquariumId),
             IronKnowledgeScreen(),
-            IronAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High iron levels can lead to excessive algae growth and may be toxic to invertebrates and some fish species. '
+                  "An appropriate alert can be to notify when iron levels exceed 0.2 ppm.",
+              parameterName: "Iron",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

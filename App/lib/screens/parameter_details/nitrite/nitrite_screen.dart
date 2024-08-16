@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'nitrite_data_screen.dart';
 import 'nitrite_knowledge_screen.dart';
-import 'nitrite_alerts_screen.dart';
 
 class NitriteScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class NitriteScreen extends StatelessWidget {
           children: [
             NitriteDataScreen(aquariumId: aquariumId),
             NitriteKnowledgeScreen(),
-            NitriteAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Nitrite is highly toxic to fish and even small amounts can lead to stress, illness, or death. '
+                  "An appropriate alert can be to notify when nitrite levels are detectable (above 0 ppm).",
+              parameterName: "Nitrite",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

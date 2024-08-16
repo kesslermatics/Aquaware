@@ -1,4 +1,5 @@
 import 'package:aquaware/widgets/charts/heatmap_widget.dart';
+import 'package:aquaware/widgets/charts/histogram_widget.dart';
 import 'package:aquaware/widgets/charts/line_chart_widget.dart';
 import 'package:aquaware/widgets/last_updated_widget.dart';
 import 'package:aquaware/widgets/total_entries_widget.dart';
@@ -74,6 +75,7 @@ class _AmmoniaDataScreenState extends State<AmmoniaDataScreen> {
                         TotalEntriesWidget(totalEntries: totalEntries),
                         _makeLineChartWidget(waterValues),
                         _makeHeatmapWidget(waterValues),
+                        _makeHistogramWidget(waterValues),
                       ],
                     ),
                   );
@@ -107,6 +109,15 @@ class _AmmoniaDataScreenState extends State<AmmoniaDataScreen> {
       waterValues: waterValues,
       fractionDigits: 3,
       title: "Ammonia Level Heatmap",
+    );
+  }
+
+  Widget _makeHistogramWidget(List<WaterValue> waterValues) {
+    return HistogramWidget(
+      waterValues: waterValues,
+      range: 0.01,
+      fractionDigits: 3,
+      title: 'Distribution in the last 24h',
     );
   }
 }

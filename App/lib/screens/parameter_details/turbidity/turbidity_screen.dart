@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'turbidity_data_screen.dart';
 import 'turbidity_knowledge_screen.dart';
-import 'turbidity_alerts_screen.dart';
 
 class TurbidityScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class TurbidityScreen extends StatelessWidget {
           children: [
             TurbidityDataScreen(aquariumId: aquariumId),
             TurbidityKnowledgeScreen(),
-            TurbidityAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High turbidity can reduce light penetration, disrupt photosynthesis, and stress fish by clogging their gills. '
+                  "An appropriate alert can be to notify when turbidity exceeds 5 NTU.",
+              parameterName: "Turbidity",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

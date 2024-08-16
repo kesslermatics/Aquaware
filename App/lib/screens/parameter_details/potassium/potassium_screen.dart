@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'potassium_data_screen.dart';
 import 'potassium_knowledge_screen.dart';
-import 'potassium_alerts_screen.dart';
 
 class PotassiumScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class PotassiumScreen extends StatelessWidget {
           children: [
             PotassiumDataScreen(aquariumId: aquariumId),
             PotassiumKnowledgeScreen(),
-            PotassiumAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Potassium is necessary for plant health, but high levels can be harmful to fish and other aquatic life. '
+                  "An appropriate alert can be to notify when potassium levels exceed 30 ppm.",
+              parameterName: "Potassium",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'calcium_data_screen.dart';
 import 'calcium_knowledge_screen.dart';
-import 'calcium_alerts_screen.dart';
 
 class CalciumScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class CalciumScreen extends StatelessWidget {
           children: [
             CalciumDataScreen(aquariumId: aquariumId),
             CalciumKnowledgeScreen(),
-            CalciumAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High calcium levels can lead to water hardness issues, which might cause stress in soft water fish. '
+                  'On the other hand, low calcium levels can lead to poor shell development in invertebrates. ',
+              parameterName: "Calcium",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

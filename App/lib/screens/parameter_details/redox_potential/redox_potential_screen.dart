@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'redox_potential_data_screen.dart';
 import 'redox_potential_knowledge_screen.dart';
-import 'redox_potential_alerts_screen.dart';
 
 class RedoxPotentialScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class RedoxPotentialScreen extends StatelessWidget {
           children: [
             RedoxPotentialDataScreen(aquariumId: aquariumId),
             RedoxPotentialKnowledgeScreen(),
-            RedoxPotentialAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Redox potential that is too low can indicate poor water quality and lack of oxygen, while too high can cause oxidative stress in fish. '
+                  "An appropriate alert can be to notify when redox potential is outside the range of +200 to +400 mV.",
+              parameterName: "Redox potential",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

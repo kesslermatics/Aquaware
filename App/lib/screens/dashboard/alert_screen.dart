@@ -2,16 +2,23 @@ import 'package:aquaware/services/alert_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AmmoniaAlertsScreen extends StatefulWidget {
+class AlertScreen extends StatefulWidget {
+  final String infotext;
+  final String parameterName;
   final int aquariumId;
 
-  const AmmoniaAlertsScreen({super.key, required this.aquariumId});
+  const AlertScreen({
+    super.key,
+    required this.infotext,
+    required this.parameterName,
+    required this.aquariumId,
+  });
 
   @override
-  _AmmoniaAlertsScreenState createState() => _AmmoniaAlertsScreenState();
+  _AlertScreenState createState() => _AlertScreenState();
 }
 
-class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
+class _AlertScreenState extends State<AlertScreen> {
   bool notifyUnder = false;
   bool notifyAbove = false;
   TextEditingController underController = TextEditingController();
@@ -28,8 +35,8 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
 
   Future<Map<String, dynamic>?> _loadAlertSettings() async {
     try {
-      final alertSettings =
-          await _alertService.getAlertSettings(widget.aquariumId, 'Ammonia');
+      final alertSettings = await _alertService.getAlertSettings(
+          widget.aquariumId, widget.parameterName);
       if (alertSettings != null) {
         notifyUnder = alertSettings['under_value'] != null;
         notifyAbove = alertSettings['above_value'] != null;
@@ -50,7 +57,6 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
       isSaving = true;
     });
 
-    String parameter = 'Ammonia';
     double? underValue =
         notifyUnder ? double.tryParse(underController.text) : null;
     double? aboveValue =
@@ -59,7 +65,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
     try {
       await _alertService.saveAlertSettings(
         widget.aquariumId,
-        parameter,
+        widget.parameterName,
         underValue,
         aboveValue,
       );
@@ -94,15 +100,14 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Ammonia levels that are too high can be dangerous for your fish, leading to stress, illness, and even death. '
-                    'Ideally, ammonia levels should be kept at 0 ppm.',
-                    style: TextStyle(fontSize: 16),
+                  Text(
+                    widget.infotext,
+                    style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(height: 20),
                   const Text(
                     'Notify me per E-Mail when...',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -120,10 +125,10 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                       Expanded(
                         child: Row(
                           children: [
-                            const Text(
-                              'Ammonia is under ',
-                              style: TextStyle(
-                                fontSize: 12,
+                            Text(
+                              '${widget.parameterName} is under ',
+                              style: const TextStyle(
+                                fontSize: 14,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -132,8 +137,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                                 controller: underController,
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(8, 8, 8, 8),
+                                  contentPadding: EdgeInsets.all(8),
                                   isDense: true,
                                   border: OutlineInputBorder(),
                                 ),
@@ -143,7 +147,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                             const Text(
                               'ppm',
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 14,
                               ),
                             ),
                           ],
@@ -165,10 +169,10 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                       Expanded(
                         child: Row(
                           children: [
-                            const Text(
-                              'Ammonia is above ',
-                              style: TextStyle(
-                                fontSize: 12,
+                            Text(
+                              '${widget.parameterName} is above ',
+                              style: const TextStyle(
+                                fontSize: 14,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -178,6 +182,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.all(8),
+                                  isDense: true,
                                   border: OutlineInputBorder(),
                                 ),
                               ),
@@ -186,7 +191,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                             const Text(
                               'ppm',
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 14,
                               ),
                             ),
                           ],

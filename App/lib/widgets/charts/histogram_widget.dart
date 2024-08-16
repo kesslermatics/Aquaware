@@ -92,7 +92,7 @@ class HistogramWidget extends StatelessWidget {
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 60,
+                        reservedSize: 80,
                         getTitlesWidget: (value, meta) {
                           double originalValue = value.toDouble() * range;
                           return Padding(

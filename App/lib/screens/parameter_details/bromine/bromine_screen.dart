@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'bromine_data_screen.dart';
 import 'bromine_knowledge_screen.dart';
-import 'bromine_alerts_screen.dart';
 
 class BromineScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,14 @@ class BromineScreen extends StatelessWidget {
           children: [
             BromineDataScreen(aquariumId: aquariumId),
             BromineKnowledgeScreen(),
-            BromineAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Elevated bromine levels can be harmful to fish, leading to respiratory problems and stress. '
+                  'In extreme cases, it can be lethal. '
+                  "An appropriate alert can be to notify when bromine levels are above 0.1 ppm.",
+              parameterName: "Bromine",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

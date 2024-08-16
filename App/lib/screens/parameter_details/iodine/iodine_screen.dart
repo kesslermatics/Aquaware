@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'iodine_data_screen.dart';
 import 'iodine_knowledge_screen.dart';
-import 'iodine_alerts_screen.dart';
 
 class IodineScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class IodineScreen extends StatelessWidget {
           children: [
             IodineDataScreen(aquariumId: aquariumId),
             IodineKnowledgeScreen(),
-            IodineAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Iodine is necessary for invertebrate health but in high concentrations, it can be toxic to both fish and invertebrates. '
+                  "An appropriate alert can be to notify when iodine levels are above 0.06 ppm.",
+              parameterName: "Iodine",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

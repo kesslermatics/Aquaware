@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'copper_data_screen.dart';
 import 'copper_knowledge_screen.dart';
-import 'copper_alerts_screen.dart';
 
 class CopperScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class CopperScreen extends StatelessWidget {
           children: [
             CopperDataScreen(aquariumId: aquariumId),
             CopperKnowledgeScreen(),
-            CopperAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Elevated copper levels can be highly toxic to invertebrates and sensitive fish species, leading to death. '
+                  "An appropriate alert can be to notify when copper levels exceed 0.1 ppm.",
+              parameterName: "Copper",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

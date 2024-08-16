@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'conductivity_data_screen.dart';
 import 'conductivity_knowledge_screen.dart';
-import 'conductivity_alerts_screen.dart';
 
 class ConductivityScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class ConductivityScreen extends StatelessWidget {
           children: [
             ConductivityDataScreen(aquariumId: aquariumId),
             ConductivityKnowledgeScreen(),
-            ConductivityAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High conductivity often indicates high levels of dissolved salts, which can be harmful to fish not adapted to such conditions. '
+                  "An appropriate alert can be to notify when conductivity exceeds 2000 µS/cm in freshwater aquariums.",
+              parameterName: "Conductivity",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

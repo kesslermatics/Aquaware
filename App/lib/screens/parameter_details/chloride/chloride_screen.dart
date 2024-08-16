@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'chloride_data_screen.dart';
 import 'chloride_knowledge_screen.dart';
-import 'chloride_alerts_screen.dart';
 
 class ChlorideScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class ChlorideScreen extends StatelessWidget {
           children: [
             ChlorideDataScreen(aquariumId: aquariumId),
             ChlorideKnowledgeScreen(),
-            ChlorideAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High chloride levels can indicate contamination and may lead to stress in freshwater fish. '
+                  "An appropriate alert can be to notify when chloride levels are above 250 mg/L.",
+              parameterName: "Chloride",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

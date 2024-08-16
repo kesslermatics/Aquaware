@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'carbon_dioxide_data_screen.dart';
 import 'carbon_dioxide_knowledge_screen.dart';
-import 'carbon_dioxide_alerts_screen.dart';
 
 class CarbonDioxideScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class CarbonDioxideScreen extends StatelessWidget {
           children: [
             CarbonDioxideDataScreen(aquariumId: aquariumId),
             CarbonDioxideKnowledgeScreen(),
-            CarbonDioxideAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Excessive carbon dioxide (CO2) can lower the pH of your aquarium, leading to stress and respiratory issues in fish. '
+                  "In extreme cases, it can cause suffocation. ",
+              parameterName: "Carbon dioxide",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'carbonate_hardness_data_screen.dart';
 import 'carbonate_hardness_knowledge_screen.dart';
-import 'carbonate_hardness_alerts_screen.dart';
 
 class CarbonateHardnessScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,14 @@ class CarbonateHardnessScreen extends StatelessWidget {
           children: [
             CarbonateHardnessDataScreen(aquariumId: aquariumId),
             CarbonateHardnessKnowledgeScreen(),
-            CarbonateHardnessAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High carbonate hardness (KH) levels can cause pH stability issues, making it difficult to adjust pH levels. '
+                  'Low KH can lead to sudden pH swings, which are harmful to fish. '
+                  "An appropriate alert can be to notify when carbonate hardness is above 12 dKH or below 4 dKH.",
+              parameterName: "Carbonate hardness",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

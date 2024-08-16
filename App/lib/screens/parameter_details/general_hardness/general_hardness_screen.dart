@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'general_hardness_data_screen.dart';
 import 'general_hardness_knowledge_screen.dart';
-import 'general_hardness_alerts_screen.dart';
 
 class GeneralHardnessScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,14 @@ class GeneralHardnessScreen extends StatelessWidget {
           children: [
             GeneralHardnessDataScreen(aquariumId: aquariumId),
             GeneralHardnessKnowledgeScreen(),
-            GeneralHardnessAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'General hardness (GH) measures the total concentration of calcium and magnesium. '
+                  'Water that is too hard or too soft can stress fish and affect their osmoregulation. '
+                  "An appropriate alert can be to notify when GH is above 14 dGH or below 4 dGH, depending on the species.",
+              parameterName: "General hardness",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

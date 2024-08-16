@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'organic_carbon_data_screen.dart';
 import 'organic_carbon_knowledge_screen.dart';
-import 'organic_carbon_alerts_screen.dart';
 
 class OrganicCarbonScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class OrganicCarbonScreen extends StatelessWidget {
           children: [
             OrganicCarbonDataScreen(aquariumId: aquariumId),
             OrganicCarbonKnowledgeScreen(),
-            OrganicCarbonAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High levels of organic carbon can indicate poor water quality, leading to oxygen depletion and stress for fish. '
+                  "An appropriate alert can be to notify when organic carbon levels are above 5 mg/L.",
+              parameterName: "Organic carbon",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'fluoride_data_screen.dart';
 import 'fluoride_knowledge_screen.dart';
-import 'fluoride_alerts_screen.dart';
 
 class FluorideScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class FluorideScreen extends StatelessWidget {
           children: [
             FluorideDataScreen(aquariumId: aquariumId),
             FluorideKnowledgeScreen(),
-            FluorideAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'High fluoride levels can be harmful to fish, causing stress and potential organ damage over time. '
+                  "An appropriate alert can be to notify when fluoride levels exceed 1.5 ppm.",
+              parameterName: "Fluoride",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),

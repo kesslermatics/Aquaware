@@ -1,8 +1,8 @@
+import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'strontium_data_screen.dart';
 import 'strontium_knowledge_screen.dart';
-import 'strontium_alerts_screen.dart';
 
 class StrontiumScreen extends StatelessWidget {
   final int aquariumId;
@@ -39,7 +39,13 @@ class StrontiumScreen extends StatelessWidget {
           children: [
             StrontiumDataScreen(aquariumId: aquariumId),
             StrontiumKnowledgeScreen(),
-            StrontiumAlertsScreen(),
+            AlertScreen(
+              infotext:
+                  'Strontium is important for coral growth, but excessive levels can be harmful to invertebrates. '
+                  "An appropriate alert can be to notify when strontium levels exceed 12 ppm.",
+              parameterName: "Strontium",
+              aquariumId: aquariumId,
+            )
           ],
         ),
       ),
