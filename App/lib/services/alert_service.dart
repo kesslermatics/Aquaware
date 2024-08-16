@@ -62,7 +62,7 @@ class AlertService {
       int aquariumId, String parameter) async {
     final response = await _makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse('$baseUrl$aquariumId/get_alerts/$parameter/'),
+        Uri.parse('$baseUrl/$aquariumId/get_alerts/$parameter/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

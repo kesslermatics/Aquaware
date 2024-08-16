@@ -31,20 +31,15 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
 
       if (alertSettings != null) {
         setState(() {
-          if (alertSettings['under_value'] != null) {
-            notifyUnder = true;
-            underController.text = alertSettings['under_value'].toString();
-          }
-          if (alertSettings['above_value'] != null) {
-            notifyAbove = true;
-            aboveController.text = alertSettings['above_value'].toString();
-          }
+          notifyUnder = alertSettings['under_value'] != null;
+          notifyAbove = alertSettings['above_value'] != null;
+          underController.text = alertSettings['under_value']?.toString() ?? '';
+          aboveController.text = alertSettings['above_value']?.toString() ?? '';
         });
       }
     } catch (error) {
-      // Handle error (e.g., show a Snackbar)
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load alert settings')),
+        const SnackBar(content: Text('Failed to load alert settings')),
       );
     }
   }
@@ -65,12 +60,11 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Alert settings saved')),
+        const SnackBar(content: Text('Alert settings saved')),
       );
     } catch (error) {
-      // Handle error (e.g., show a Snackbar)
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save alert settings')),
+        const SnackBar(content: Text('Failed to save alert settings')),
       );
     }
   }
@@ -78,120 +72,123 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Ammonia levels that are too high can be dangerous for your fish, leading to stress, illness, and even death. '
-              'Ideally, ammonia levels should be kept at 0 ppm.',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Notify me per E-Mail when...',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Checkbox(
-                  value: notifyUnder,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      notifyUnder = value ?? false;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: Row(
+      body: notifyUnder == null && notifyAbove == null
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Ammonia levels that are too high can be dangerous for your fish, leading to stress, illness, and even death. '
+                    'Ideally, ammonia levels should be kept at 0 ppm.',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Notify me per E-Mail when...',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Ammonia is under ',
-                        style: TextStyle(
-                          fontSize: 12, // Kleinere Schriftgröße
-                        ),
+                      Checkbox(
+                        value: notifyUnder,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            notifyUnder = value ?? false;
+                          });
+                        },
                       ),
-                      SizedBox(width: 10),
                       Expanded(
-                        child: TextField(
-                          controller: underController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                            isDense: true, // Weniger Innenabstand
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 4),
-                      Text(
-                        'ppm',
-                        style: TextStyle(
-                          fontSize: 12, // Kleinere Schriftgröße
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Ammonia is under ',
+                              style: TextStyle(
+                                fontSize: 12, // Kleinere Schriftgröße
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: TextField(
+                                controller: underController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(8, 8, 8, 8),
+                                  isDense: true, // Weniger Innenabstand
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Text(
+                              'ppm',
+                              style: TextStyle(
+                                fontSize: 12, // Kleinere Schriftgröße
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Checkbox(
-                  value: notifyAbove,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      notifyAbove = value ?? false;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: Row(
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Ammonia is above ',
-                        style: TextStyle(
-                          fontSize: 12, // Kleinere Schriftgröße
-                        ),
+                      Checkbox(
+                        value: notifyAbove,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            notifyAbove = value ?? false;
+                          });
+                        },
                       ),
-                      SizedBox(width: 10),
                       Expanded(
-                        child: TextField(
-                          controller: aboveController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                            isDense: true, // Weniger Innenabstand
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 4),
-                      Text(
-                        'ppm',
-                        style: TextStyle(
-                          fontSize: 12, // Kleinere Schriftgröße
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Ammonia is above ',
+                              style: TextStyle(
+                                fontSize: 12, // Kleinere Schriftgröße
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: TextField(
+                                controller: aboveController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.all(8),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Text(
+                              'ppm',
+                              style: TextStyle(
+                                fontSize: 12, // Kleinere Schriftgröße
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Center(
-              child: ElevatedButton(
-                onPressed: _saveAlertSettings,
-                child: Text('Save'),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: _saveAlertSettings,
+                      child: const Text('Save'),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

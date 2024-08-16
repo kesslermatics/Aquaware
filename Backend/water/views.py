@@ -327,4 +327,3 @@ def get_alert_settings(request, aquarium_id, parameter_name):
     except Exception as e:
         return Response({'error': f'An error occurred: {str(e)}'}, status=400)
 
-    
