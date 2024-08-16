@@ -16,6 +16,38 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
   bool notifyAbove = false;
   TextEditingController underController = TextEditingController();
   TextEditingController aboveController = TextEditingController();
+  final AlertService _alertService = AlertService();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAlertSettings();
+  }
+
+  Future<void> _loadAlertSettings() async {
+    try {
+      final alertSettings =
+          await _alertService.getAlertSettings(widget.aquariumId, 'Ammonia');
+
+      if (alertSettings != null) {
+        setState(() {
+          if (alertSettings['under_value'] != null) {
+            notifyUnder = true;
+            underController.text = alertSettings['under_value'].toString();
+          }
+          if (alertSettings['above_value'] != null) {
+            notifyAbove = true;
+            aboveController.text = alertSettings['above_value'].toString();
+          }
+        });
+      }
+    } catch (error) {
+      // Handle error (e.g., show a Snackbar)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load alert settings')),
+      );
+    }
+  }
 
   void _saveAlertSettings() async {
     String parameter = 'Ammonia';
@@ -24,16 +56,23 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
     double? aboveValue =
         notifyAbove ? double.tryParse(aboveController.text) : null;
 
-    await AlertService().saveAlertSettings(
-      widget.aquariumId,
-      parameter,
-      underValue,
-      aboveValue,
-    );
+    try {
+      await _alertService.saveAlertSettings(
+        widget.aquariumId,
+        parameter,
+        underValue,
+        aboveValue,
+      );
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Alert settings saved')),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Alert settings saved')),
+      );
+    } catch (error) {
+      // Handle error (e.g., show a Snackbar)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save alert settings')),
+      );
+    }
   }
 
   @override
@@ -55,55 +94,93 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            CheckboxListTile(
-              title: Row(
-                children: [
-                  Text('Ammonia is under '),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: underController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: 'e.g., 0.25',
-                        border: OutlineInputBorder(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Checkbox(
+                  value: notifyUnder,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      notifyUnder = value ?? false;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text(
+                        'Ammonia is under ',
+                        style: TextStyle(
+                          fontSize: 12, // Kleinere Schriftgröße
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          controller: underController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                            isDense: true, // Weniger Innenabstand
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'ppm',
+                        style: TextStyle(
+                          fontSize: 12, // Kleinere Schriftgröße
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(' ppm'),
-                ],
-              ),
-              value: notifyUnder,
-              onChanged: (bool? value) {
-                setState(() {
-                  notifyUnder = value ?? false;
-                });
-              },
+                ),
+              ],
             ),
-            CheckboxListTile(
-              title: Row(
-                children: [
-                  Text('Ammonia is above '),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: aboveController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: 'e.g., 1.0',
-                        border: OutlineInputBorder(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Checkbox(
+                  value: notifyAbove,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      notifyAbove = value ?? false;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text(
+                        'Ammonia is above ',
+                        style: TextStyle(
+                          fontSize: 12, // Kleinere Schriftgröße
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          controller: aboveController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                            isDense: true, // Weniger Innenabstand
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'ppm',
+                        style: TextStyle(
+                          fontSize: 12, // Kleinere Schriftgröße
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(' ppm'),
-                ],
-              ),
-              value: notifyAbove,
-              onChanged: (bool? value) {
-                setState(() {
-                  notifyAbove = value ?? false;
-                });
-              },
+                ),
+              ],
             ),
             SizedBox(height: 20),
             Center(

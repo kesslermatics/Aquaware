@@ -301,3 +301,30 @@ def save_alert_settings(request, aquarium_id):
     except Exception as e:
         return Response({'error': f'An error occurred: {str(e)}'}, status=400)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_alert_settings(request, aquarium_id, parameter_name):
+    try:
+        user = request.user
+        aquarium = Aquarium.objects.get(id=aquarium_id, user=user)
+        parameter = WaterParameter.objects.get(name=parameter_name)
+
+        alert_settings = UserAlertSetting.objects.filter(
+            user=user, aquarium=aquarium, parameter=parameter
+        ).first()
+
+        if alert_settings:
+            serializer = UserAlertSettingSerializer(alert_settings)
+            return Response(serializer.data, status=200)
+        else:
+            return Response({'status': 'No alert settings found for this parameter.'}, status=404)
+
+    except Aquarium.DoesNotExist:
+        return Response({'error': 'Aquarium not found or does not belong to this user.'}, status=404)
+    except WaterParameter.DoesNotExist:
+        return Response({'error': 'Parameter not found.'}, status=404)
+    except Exception as e:
+        return Response({'error': f'An error occurred: {str(e)}'}, status=400)
+
+    

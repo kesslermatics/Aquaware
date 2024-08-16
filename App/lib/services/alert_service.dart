@@ -57,4 +57,25 @@ class AlertService {
       throw Exception('Failed to save alert settings');
     }
   }
+
+  Future<Map<String, dynamic>?> getAlertSettings(
+      int aquariumId, String parameter) async {
+    final response = await _makeAuthenticatedRequest((token) {
+      return http.get(
+        Uri.parse('$baseUrl$aquariumId/get_alerts/$parameter/'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+    });
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else if (response.statusCode == 404) {
+      return null; // No alerts found
+    } else {
+      throw Exception('Failed to load alert settings');
+    }
+  }
 }

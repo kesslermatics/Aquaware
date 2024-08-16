@@ -9,5 +9,5 @@ urlpatterns = [
     path('aquariums/<int:aquarium_id>/export/', water_views.export_water_values, name='export-water-values'),
     path('aquariums/<int:aquarium_id>/import/', water_views.import_water_values, name='aquarium-import-values'),
     path('aquariums/<int:aquarium_id>/save-alert-settings/', water_views.save_alert_settings, name='save-alert-settings'),
-
+    path('aquariums/<int:aquarium_id>/get_alerts/<str:parameter_name>/', water_views.get_alert_settings, name='get-alert-settings'),
 ]
