@@ -17,34 +17,39 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
   TextEditingController underController = TextEditingController();
   TextEditingController aboveController = TextEditingController();
   final AlertService _alertService = AlertService();
+  late Future<Map<String, dynamic>?> _alertSettingsFuture;
+  bool isSaving = false;
 
   @override
   void initState() {
     super.initState();
-    _loadAlertSettings();
+    _alertSettingsFuture = _loadAlertSettings();
   }
 
-  Future<void> _loadAlertSettings() async {
+  Future<Map<String, dynamic>?> _loadAlertSettings() async {
     try {
       final alertSettings =
           await _alertService.getAlertSettings(widget.aquariumId, 'Ammonia');
-
       if (alertSettings != null) {
-        setState(() {
-          notifyUnder = alertSettings['under_value'] != null;
-          notifyAbove = alertSettings['above_value'] != null;
-          underController.text = alertSettings['under_value']?.toString() ?? '';
-          aboveController.text = alertSettings['above_value']?.toString() ?? '';
-        });
+        notifyUnder = alertSettings['under_value'] != null;
+        notifyAbove = alertSettings['above_value'] != null;
+        underController.text = alertSettings['under_value']?.toString() ?? '';
+        aboveController.text = alertSettings['above_value']?.toString() ?? '';
       }
+      return alertSettings;
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to load alert settings')),
       );
+      return null;
     }
   }
 
   void _saveAlertSettings() async {
+    setState(() {
+      isSaving = true;
+    });
+
     String parameter = 'Ammonia';
     double? underValue =
         notifyUnder ? double.tryParse(underController.text) : null;
@@ -66,15 +71,25 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to save alert settings')),
       );
+    } finally {
+      setState(() {
+        isSaving = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: notifyUnder == null && notifyAbove == null
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: _alertSettingsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Failed to load alert settings'));
+          } else {
+            return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +123,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                             const Text(
                               'Ammonia is under ',
                               style: TextStyle(
-                                fontSize: 12, // Kleinere Schriftgröße
+                                fontSize: 12,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -119,7 +134,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                                 decoration: const InputDecoration(
                                   contentPadding:
                                       EdgeInsets.fromLTRB(8, 8, 8, 8),
-                                  isDense: true, // Weniger Innenabstand
+                                  isDense: true,
                                   border: OutlineInputBorder(),
                                 ),
                               ),
@@ -128,7 +143,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                             const Text(
                               'ppm',
                               style: TextStyle(
-                                fontSize: 12, // Kleinere Schriftgröße
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -153,7 +168,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                             const Text(
                               'Ammonia is above ',
                               style: TextStyle(
-                                fontSize: 12, // Kleinere Schriftgröße
+                                fontSize: 12,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -171,7 +186,7 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                             const Text(
                               'ppm',
                               style: TextStyle(
-                                fontSize: 12, // Kleinere Schriftgröße
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -181,14 +196,19 @@ class _AmmoniaAlertsScreenState extends State<AmmoniaAlertsScreen> {
                   ),
                   const SizedBox(height: 20),
                   Center(
-                    child: ElevatedButton(
-                      onPressed: _saveAlertSettings,
-                      child: const Text('Save'),
-                    ),
+                    child: isSaving
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: _saveAlertSettings,
+                            child: const Text('Save'),
+                          ),
                   ),
                 ],
               ),
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }
