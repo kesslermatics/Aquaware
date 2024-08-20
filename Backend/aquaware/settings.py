@@ -18,7 +18,9 @@ from dotenv import load_dotenv
 
 import dj_database_url
 
-DEBUG = True
+SWAGGER_SETTINGS = {
+   'USE_SESSION_AUTH': False
+}
 
 LOGGING = {
     'version': 1,
@@ -87,7 +89,7 @@ TEMPLATES = [
 FRONTEND_URL = 'https://aquaware-production.up.railway.app'
 
 INSTALLED_APPS = [
-    #'django.contrib.admin',
+    'django.contrib.admin',
     'django_extensions',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -95,8 +97,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_swagger',
     #'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'drf_yasg',
     "debug_toolbar",
     "aquaware",
     "users",
@@ -104,7 +108,7 @@ INSTALLED_APPS = [
     "water"
 ]
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -115,7 +119,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'request_logging.middleware.LoggingMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 ROOT_URLCONF = 'aquaware.urls'
 
@@ -186,13 +194,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
