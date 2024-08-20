@@ -11,6 +11,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import get_user_model, authenticate
 from django.views.decorators.csrf import ensure_csrf_cookie
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -29,6 +30,15 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 
+@swagger_auto_schema(
+    method='post',
+    request_body=RegisterSerializer,
+    responses={
+        201: 'User created successfully',
+        400: 'Bad request, validation errors',
+        500: 'Internal server error'
+    }
+)
 @api_view(['POST'])
 def signup(request):
     try:
@@ -51,6 +61,14 @@ def get_csrf_token(request):
     return Response({'csrfToken': token})
 
 
+@swagger_auto_schema(
+    method='post',
+    request_body=UserSerializer,
+    responses={
+        202: 'Login successful',
+        400: 'Invalid credentials'
+    }
+)
 @api_view(['POST'])
 def login(request):
     email = request.data.get('email')

@@ -18,7 +18,26 @@ from dotenv import load_dotenv
 
 import dj_database_url
 
-DEBUG = False
+SWAGGER_SETTINGS = {
+   'USE_SESSION_AUTH': False
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # change debug level as appropiate
+            'propagate': False,
+        },
+    },
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,9 +50,6 @@ SECURE_SSL_REDIRECT = False
 CSRF_TRUSTED_ORIGINS = [
     'https://aquaware-production.up.railway.app',
 ]
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 
 ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1']
 
@@ -73,7 +89,7 @@ TEMPLATES = [
 FRONTEND_URL = 'https://aquaware-production.up.railway.app'
 
 INSTALLED_APPS = [
-    #'django.contrib.admin',
+    'django.contrib.admin',
     'django_extensions',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,8 +97,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_swagger',
     #'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'drf_yasg',
     "debug_toolbar",
     "aquaware",
     "users",
@@ -90,7 +108,7 @@ INSTALLED_APPS = [
     "water"
 ]
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -100,7 +118,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'request_logging.middleware.LoggingMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser',
+    ]}
 
 ROOT_URLCONF = 'aquaware.urls'
 
@@ -171,13 +200,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
