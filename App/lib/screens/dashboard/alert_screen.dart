@@ -6,12 +6,14 @@ class AlertScreen extends StatefulWidget {
   final String infotext;
   final String parameterName;
   final int aquariumId;
+  final String unit;
 
   const AlertScreen({
     super.key,
     required this.infotext,
     required this.parameterName,
     required this.aquariumId,
+    required this.unit,
   });
 
   @override
@@ -144,8 +146,8 @@ class _AlertScreenState extends State<AlertScreen> {
                               ),
                             ),
                             const SizedBox(width: 4),
-                            const Text(
-                              'ppm',
+                            Text(
+                              widget.unit,
                               style: TextStyle(
                                 fontSize: 14,
                               ),
@@ -188,8 +190,8 @@ class _AlertScreenState extends State<AlertScreen> {
                               ),
                             ),
                             const SizedBox(width: 4),
-                            const Text(
-                              'ppm',
+                            Text(
+                              widget.unit,
                               style: TextStyle(
                                 fontSize: 14,
                               ),

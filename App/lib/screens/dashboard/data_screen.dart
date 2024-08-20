@@ -1,23 +1,40 @@
 import 'package:aquaware/widgets/charts/heatmap_widget.dart';
+import 'package:aquaware/widgets/charts/histogram_widget.dart';
 import 'package:aquaware/widgets/charts/line_chart_widget.dart';
 import 'package:aquaware/widgets/last_updated_widget.dart';
 import 'package:aquaware/widgets/total_entries_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:aquaware/models/water_value.dart';
-import 'package:aquaware/services/color_provider.dart';
 
-class GeneralHardnessDataScreen extends StatefulWidget {
+class DataScreen extends StatefulWidget {
   final int aquariumId;
+  final String parameterName;
+  final bool isLineChartVisible;
+  final bool isHeatmapVisible;
+  final bool isHistogrammVisible;
+  final double histogrammRange;
+  final String unit;
+  final int fractionDigits;
+  final double lineChartDeviation;
 
-  GeneralHardnessDataScreen({required this.aquariumId});
+  DataScreen({
+    required this.aquariumId,
+    required this.parameterName,
+    this.isLineChartVisible = true,
+    this.isHeatmapVisible = true,
+    this.isHistogrammVisible = true,
+    this.histogrammRange = 0.01,
+    this.unit = '',
+    this.fractionDigits = 2,
+    this.lineChartDeviation = 0.1,
+  });
 
   @override
-  _GeneralHardnessDataScreenState createState() =>
-      _GeneralHardnessDataScreenState();
+  _DataScreenState createState() => _DataScreenState();
 }
 
-class _GeneralHardnessDataScreenState extends State<GeneralHardnessDataScreen> {
+class _DataScreenState extends State<DataScreen> {
   late Future<List<WaterValue>> _futureWaterValues;
   late Future<int> _futureTotalEntries;
   final WaterParameterService _waterParameterService = WaterParameterService();
@@ -31,13 +48,17 @@ class _GeneralHardnessDataScreenState extends State<GeneralHardnessDataScreen> {
 
   Future<List<WaterValue>> _fetchWaterValues() async {
     return await _waterParameterService.fetchSingleWaterParameter(
-        widget.aquariumId, 'General Hardness',
-        numberOfEntries: 100);
+      widget.aquariumId,
+      widget.parameterName,
+      numberOfEntries: 100,
+    );
   }
 
   Future<int> _fetchTotalEntries() async {
     return await _waterParameterService.fetchTotalEntries(
-        widget.aquariumId, 'General Hardness');
+      widget.aquariumId,
+      widget.parameterName,
+    );
   }
 
   @override
@@ -74,8 +95,12 @@ class _GeneralHardnessDataScreenState extends State<GeneralHardnessDataScreen> {
                       children: [
                         LastUpdatedWidget(lastWaterValue: lastWaterValue),
                         TotalEntriesWidget(totalEntries: totalEntries),
-                        _makeLineChartWidget(waterValues),
-                        _makeHeatmapWidget(waterValues),
+                        if (widget.isLineChartVisible)
+                          _makeLineChartWidget(waterValues),
+                        if (widget.isHeatmapVisible)
+                          _makeHeatmapWidget(waterValues),
+                        if (widget.isHistogrammVisible)
+                          _makeHistogramWidget(waterValues),
                       ],
                     ),
                   );
@@ -90,25 +115,33 @@ class _GeneralHardnessDataScreenState extends State<GeneralHardnessDataScreen> {
 
   Widget _makeLineChartWidget(List<WaterValue> waterValues) {
     List<DateTime> xValues =
-        waterValues.map((value) => value.measuredAt).toList().toList();
+        waterValues.map((value) => value.measuredAt).toList();
     List<double> yValues = waterValues.map((value) => value.value).toList();
-    double yDeviation = 3.0; // Example deviation for General Hardness
     return LineChartWidget(
       xValues: xValues,
       yValues: yValues,
-      yDeviation: yDeviation,
-      fractionDigits: 1,
-      title: 'General Hardness over Time',
+      yDeviation: widget.lineChartDeviation,
+      fractionDigits: widget.fractionDigits,
+      title: '${widget.parameterName} Levels over Time',
       xAxisLabel: 'Time',
-      yAxisLabel: 'General Hardness (°dH)',
+      yAxisLabel: '${widget.parameterName} (${widget.unit})',
     );
   }
 
   Widget _makeHeatmapWidget(List<WaterValue> waterValues) {
     return HeatmapWidget(
       waterValues: waterValues,
-      fractionDigits: 1,
-      title: "General Hardness Heatmap",
+      fractionDigits: widget.fractionDigits,
+      title: "${widget.parameterName} Level Heatmap",
+    );
+  }
+
+  Widget _makeHistogramWidget(List<WaterValue> waterValues) {
+    return HistogramWidget(
+      waterValues: waterValues,
+      range: widget.histogrammRange,
+      fractionDigits: widget.fractionDigits,
+      title: 'Distribution in the last 24h',
     );
   }
 }

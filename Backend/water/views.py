@@ -26,9 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_water_values(request, aquarium_id):
+    print("Trying to add parameter")
     try:
         aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
     except Aquarium.DoesNotExist:
+        print("Aquarium not found or does not belong to this user.")
         return Response({'error': 'Aquarium not found or does not belong to this user.'},
                         status=status.HTTP_404_NOT_FOUND)
 
@@ -38,6 +40,7 @@ def add_water_values(request, aquarium_id):
 
     # Check if the last measured time is within the last 30 minutes
     if last_measured_at and last_measured_at >= timezone.now() - timedelta(minutes=29):
+        print("You can only submit water values once every 30 minutes.")
         return Response(
             {'error': 'You can only submit water values once every 30 minutes.'},
             status=status.HTTP_429_TOO_MANY_REQUESTS
@@ -47,10 +50,13 @@ def add_water_values(request, aquarium_id):
     data = request.data.copy()
     data['aquarium_id'] = aquarium_id  # Füge die aquarium_id zu den Daten hinzu
     serializer = FlexibleWaterValuesSerializer(data=data)
+    print("Serializer trying")
     if serializer.is_valid():
         water_values = serializer.save()
         response_serializer = WaterValueSerializer(water_values, many=True)
+        print("Water values created")
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+    print("Serializer not valid")
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

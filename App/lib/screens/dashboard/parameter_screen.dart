@@ -1,13 +1,21 @@
 import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
-import 'oxygen_data_screen.dart';
-import 'oxygen_knowledge_screen.dart';
 
-class OxygenScreen extends StatelessWidget {
+class ParameterScreen extends StatelessWidget {
   final int aquariumId;
+  final String parameterName;
+  final Widget dataScreen;
+  final Widget knowledgeScreen;
+  final Widget alertScreen;
 
-  OxygenScreen({required this.aquariumId});
+  ParameterScreen({
+    required this.aquariumId,
+    required this.parameterName,
+    required this.dataScreen,
+    required this.knowledgeScreen,
+    required this.alertScreen,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +23,7 @@ class OxygenScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Oxygen'),
+          title: Text(parameterName),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -37,15 +45,9 @@ class OxygenScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            OxygenDataScreen(aquariumId: aquariumId),
-            OxygenKnowledgeScreen(),
-            AlertScreen(
-              infotext:
-                  'Low oxygen levels can lead to suffocation and death for fish, especially those in densely stocked tanks. '
-                  "An appropriate alert can be to notify when oxygen levels drop below 5 mg/L.",
-              parameterName: "Oxygen",
-              aquariumId: aquariumId,
-            )
+            dataScreen,
+            knowledgeScreen,
+            alertScreen,
           ],
         ),
       ),
