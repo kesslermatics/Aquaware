@@ -19,3 +19,4 @@ Backend/.env
 /sandbox/sandbox-venv
 /Backend/aquaware/__pycache__
 /Backend/water/__pycache__
+IoT/Aquaware/secrets.h
