@@ -1,3 +1,4 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -5,6 +6,14 @@ from rest_framework.response import Response
 from .models import Aquarium
 from .serializers import AquariumSerializer
 
+@swagger_auto_schema(
+    method='post',
+    request_body=AquariumSerializer,
+    responses={
+        201: AquariumSerializer,
+        400: 'Bad Request'
+    }
+)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_aquarium(request):
@@ -19,6 +28,15 @@ def create_aquarium(request):
         print(f"Error in create_aquarium view: {e}")
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@swagger_auto_schema(
+    method='get',
+    responses={
+        200: AquariumSerializer,
+        404: 'Not Found'
+    },
+    operation_description="Retrieve an aquarium by ID. The aquarium must belong to the authenticated user."
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_aquarium(request, id):
@@ -30,6 +48,14 @@ def get_aquarium(request, id):
     serializer = AquariumSerializer(aquarium)
     return Response(serializer.data)
 
+
+@swagger_auto_schema(
+    method='get',
+    responses={
+        200: AquariumSerializer(many=True),
+    },
+    operation_description="Retrieve all aquariums belonging to the authenticated user."
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_aquariums(request):
@@ -37,6 +63,17 @@ def get_user_aquariums(request):
     serializer = AquariumSerializer(aquariums, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@swagger_auto_schema(
+    method='put',
+    request_body=AquariumSerializer,
+    responses={
+        200: AquariumSerializer,
+        400: 'Bad Request',
+        404: 'Not Found'
+    },
+    operation_description="Update an existing aquarium. The aquarium must belong to the authenticated user. Partial updates are allowed."
+)
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_aquarium(request, id):
@@ -51,6 +88,15 @@ def update_aquarium(request, id):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@swagger_auto_schema(
+    method='delete',
+    responses={
+        204: 'No Content',
+        404: 'Not Found'
+    },
+    operation_description="Delete an existing aquarium. The aquarium must belong to the authenticated user."
+)
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_aquarium(request, id):
