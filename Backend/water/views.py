@@ -97,7 +97,6 @@ def add_water_values(request, aquarium_id):
                 }
             )
         )),
-        404: 'Not Found',
         400: 'Bad Request'
     },
     operation_description="Get the latest water values for all parameters in an aquarium."
@@ -119,9 +118,6 @@ def get_latest_from_all_parameters(request, aquarium_id, number_of_entries):
             id__in=Subquery(subquery.values('id'))
         ).select_related('parameter').order_by('parameter_id', '-measured_at')
 
-        if not water_values.exists():
-            return Response({'detail': 'No water values found or aquarium does not belong to this user.'}, status=status.HTTP_404_NOT_FOUND)
-
         measurements = {}
         for water_value in water_values:
             parameter_name = water_value.parameter.name
@@ -142,6 +138,7 @@ def get_latest_from_all_parameters(request, aquarium_id, number_of_entries):
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 @swagger_auto_schema(
     method='get',
     manual_parameters=[
@@ -160,7 +157,6 @@ def get_latest_from_all_parameters(request, aquarium_id, number_of_entries):
                 }
             )
         )),
-        404: 'Not Found',
         400: 'Bad Request'
     },
     operation_description="Get all water values for a specific parameter in an aquarium."
@@ -176,9 +172,6 @@ def get_all_values_from_parameter(request, aquarium_id, parameter_name, number_o
             parameter=parameter
         ).order_by('-measured_at')[:number_of_entries]
 
-        if not water_values.exists():
-            return Response({'detail': 'No water values found for this parameter or aquarium does not belong to this user.'}, status=status.HTTP_404_NOT_FOUND)
-
         measurements = [{'measured_at': water_value.measured_at.isoformat(), 'value': water_value.value, 'unit': water_value.parameter.unit} for water_value in water_values]
 
         return Response(measurements, status=status.HTTP_200_OK)
@@ -186,6 +179,7 @@ def get_all_values_from_parameter(request, aquarium_id, parameter_name, number_o
         return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @swagger_auto_schema(
