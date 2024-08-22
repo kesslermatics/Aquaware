@@ -16,28 +16,13 @@ from pathlib import Path
 from django.conf.global_settings import DATABASES
 from dotenv import load_dotenv
 
+
 import dj_database_url
 
 SWAGGER_SETTINGS = {
    'USE_SESSION_AUTH': False
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # change debug level as appropiate
-            'propagate': False,
-        },
-    },
-}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -105,7 +90,8 @@ INSTALLED_APPS = [
     "aquaware",
     "users",
     "aquariums",
-    "water"
+    "water",
+    "logs"
 ]
 
 STATIC_URL = "/static/"
@@ -120,6 +106,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'request_logging.middleware.LoggingMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'middleware.logging_middleware.APILoggingMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
