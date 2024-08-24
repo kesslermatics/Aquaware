@@ -16,7 +16,6 @@ from pathlib import Path
 from django.conf.global_settings import DATABASES
 from dotenv import load_dotenv
 
-
 import dj_database_url
 
 SWAGGER_SETTINGS = {
@@ -34,9 +33,10 @@ SECURE_SSL_REDIRECT = False
 
 CSRF_TRUSTED_ORIGINS = [
     'https://aquaware-production.up.railway.app',
+    'https://aquaware.kesslermatics.com',
 ]
 
-ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1', 'https://aquaware.kesslermatics.com']
 
 # Application definition
 
@@ -48,12 +48,12 @@ AUTHENTICATION_BACKENDS = (
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.hostinger.com'  # Ersetzen Sie dies durch Ihren SMTP-Server
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'info@kesslermatics.com'
-EMAIL_HOST_PASSWORD = 'Fulkano_9903'
-DEFAULT_FROM_EMAIL = 'info@kesslermatics.com'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-FRONTEND_URL = 'https://aquaware-production.up.railway.app'
+FRONTEND_URL = 'https://aquaware.kesslermatics.com'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
