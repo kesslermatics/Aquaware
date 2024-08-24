@@ -23,9 +23,7 @@ SWAGGER_SETTINGS = {
 }
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
@@ -36,9 +34,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://aquaware.kesslermatics.com',
 ]
 
-ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1', 'https://aquaware.kesslermatics.com']
-
-# Application definition
+ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1', 'aquaware.kesslermatics.com']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -111,13 +107,6 @@ MIDDLEWARE = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-REST_FRAMEWORK = {
-    'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.FormParser',
-        'rest_framework.parsers.MultiPartParser',
-        'rest_framework.parsers.JSONParser',
-    ]}
-
 ROOT_URLCONF = 'aquaware.urls'
 
 WSGI_APPLICATION = 'aquaware.wsgi.application'
@@ -175,10 +164,6 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -186,9 +171,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
