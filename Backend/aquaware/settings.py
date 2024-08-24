@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'aquaware.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES["default"] = dj_database_url.parse(os.getenv("DATABASE_URL"))
+DATABASES["default"] = dj_database_url.parse(os.environ.get("DATABASE_URL"))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

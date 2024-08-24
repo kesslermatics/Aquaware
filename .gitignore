@@ -5,3 +5,7 @@ Backend/requirements.txt
 /Backend/water/__pycache__
 IoT/Aquaware/secrets.h
 /Backend/backend-venv/
+/.idea
+/Backend/aquaware/__pycache__
+/Backend/static
+/Backend/staticfiles
