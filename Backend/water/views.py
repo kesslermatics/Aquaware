@@ -3,8 +3,10 @@ import io
 from datetime import timedelta, datetime
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 from django.db.models import OuterRef, Subquery, Count, Max
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from drf_yasg import openapi
@@ -16,6 +18,8 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from pathlib import Path
+
+from aquaware import settings
 from .serializers import WaterParameterSerializer, WaterValueSerializer, FlexibleWaterValuesSerializer, \
     UserAlertSettingSerializer
 
@@ -66,12 +70,64 @@ def add_water_values(request, aquarium_id):
     print("Serializer trying")
     if serializer.is_valid():
         water_values = serializer.save()
+        check_alerts_and_notify(water_values)
         response_serializer = WaterValueSerializer(water_values, many=True)
         print("Water values created")
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
     print("Serializer not valid")
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def check_alerts_and_notify(water_values):
+    for water_value in water_values:
+        alert_settings = UserAlertSetting.objects.filter(
+            aquarium=water_value.aquarium,
+            parameter=water_value.parameter
+        )
+
+        for setting in alert_settings:
+            if setting.under_value is not None and water_value.value < setting.under_value:
+                send_alert_email(
+                    setting.user,
+                    water_value.aquarium,
+                    water_value.parameter.name,
+                    water_value.value,
+                    'below',
+                    setting.under_value
+                )
+
+            if setting.above_value is not None and water_value.value > setting.above_value:
+                send_alert_email(
+                    setting.user,
+                    water_value.aquarium,
+                    water_value.parameter.name,
+                    water_value.value,
+                    'above',
+                    setting.above_value
+                )
+
+
+def send_alert_email(user, aquarium, parameter_name, current_value, threshold_type, threshold_value):
+    mail_subject = f'Alert: {parameter_name} has gone {threshold_type} threshold in your aquarium'
+
+    message = render_to_string('alert/alert_email.html', {
+        'user': user,
+        'parameter_name': parameter_name,
+        'aquarium_name': aquarium.name,
+        'current_value': current_value,
+        'threshold_type': threshold_type,
+        'threshold_value': threshold_value,
+    })
+
+    # Send the email
+    send_mail(
+        mail_subject,           # Subject
+        message,                # Message body
+        settings.DEFAULT_FROM_EMAIL,  # From email
+        [user.email],           # To email (list)
+        html_message=message     # HTML message
+    )
 
 
 @swagger_auto_schema(

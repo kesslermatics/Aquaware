@@ -1,0 +1,27 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="14">
+            <item index="0" class="java.lang.String" itemvalue="notebook_shim" />
+            <item index="1" class="java.lang.String" itemvalue="importlib_metadata" />
+            <item index="2" class="java.lang.String" itemvalue="jupyterlab_widgets" />
+            <item index="3" class="java.lang.String" itemvalue="importlib_resources" />
+            <item index="4" class="java.lang.String" itemvalue="pyasn1_modules" />
+            <item index="5" class="java.lang.String" itemvalue="jupyter_client" />
+            <item index="6" class="java.lang.String" itemvalue="pkgutil_resolve_name" />
+            <item index="7" class="java.lang.String" itemvalue="jupyter_core" />
+            <item index="8" class="java.lang.String" itemvalue="jupyterlab_server" />
+            <item index="9" class="java.lang.String" itemvalue="jupyter_server" />
+            <item index="10" class="java.lang.String" itemvalue="jupyterlab_pygments" />
+            <item index="11" class="java.lang.String" itemvalue="typing_extensions" />
+            <item index="12" class="java.lang.String" itemvalue="jupyter_server_terminals" />
+            <item index="13" class="java.lang.String" itemvalue="prometheus_client" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

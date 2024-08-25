@@ -165,7 +165,13 @@ def forgot_password(request):
             'reset_link': reset_link,
         })
 
-        send_mail(mail_subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+        send_mail(
+            mail_subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+            html_message=message)
+
         return Response({'detail': 'Password reset email has been sent'}, status=status.HTTP_200_OK)
     except Exception as e:
         print(f"Error: {e}")

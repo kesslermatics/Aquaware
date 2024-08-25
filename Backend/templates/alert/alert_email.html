@@ -1,0 +1,21 @@
+<!-- alert_email.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert Notification</title>
+</head>
+<body>
+    <p>Dear {{ user.first_name }},</p>
+
+    <p>We wanted to notify you that the water parameter "<strong>{{ parameter_name }}</strong>" in your aquarium <strong>{{ aquarium_name }}</strong> has gone {{ threshold_type }} the set threshold.</p>
+
+    <p>Current Value: {{ current_value }}<br>
+    Threshold: {{ threshold_value }}</p>
+
+    <p>Please check your aquarium's condition as soon as possible.</p>
+
+    <p>Best regards,<br>The Aquaware Team</p>
+</body>
+</html>
