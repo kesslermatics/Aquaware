@@ -9,6 +9,12 @@ import 'dart:convert';
 import 'screens/homepage/homepage.dart';
 import 'screens/onboarding/onboding_screen.dart';
 
+// in pubspec.yaml Version increment
+// in build.gradle version code increment
+// flutter build appbundle
+// java -jar bundletool-all-1.15.6.jar build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/app/outputs/bundle/release/my_app.apks
+// java -jar bundletool-all-1.15.6.jar install-apks --apks=build/app/outputs/bundle/release/my_app.apks
+
 void main() {
   runApp(const MyApp());
 }

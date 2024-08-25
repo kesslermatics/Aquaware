@@ -1,16 +1,18 @@
 import os
 from tokenize import TokenError
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token, logger
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-from django.contrib.auth import get_user_model, authenticate
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth import get_user_model, authenticate, logout
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -133,6 +135,31 @@ def change_password(request):
     user.set_password(new_password)
     user.save()
     return Response({"detail": "Password has been changed."})
+
+
+@login_required
+@csrf_protect
+def delete_account_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None and user == request.user:
+            return redirect(reverse('confirm_delete_account'))
+        else:
+            return render(request, 'delete_account.html', {'error_message': 'Invalid email or password.'})
+    return render(request, 'delete_account.html')
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@csrf_protect
+def confirm_delete_account(request):
+    user = request.user
+    user.delete()
+    logout(request)
+    return Response({'message': 'Your account has been deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['DELETE'])
