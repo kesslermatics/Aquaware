@@ -137,7 +137,6 @@ def change_password(request):
     return Response({"detail": "Password has been changed."})
 
 
-@login_required
 @csrf_protect
 def delete_account_view(request):
     if request.method == 'POST':
