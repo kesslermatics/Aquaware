@@ -1,4 +1,4 @@
-package com.example.aquaware
+package kesslermatics.aquaware
 
 import io.flutter.embedding.android.FlutterActivity
 

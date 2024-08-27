@@ -9,3 +9,5 @@ IoT/Aquaware/secrets.h
 /Backend/aquaware/__pycache__
 /Backend/static
 /Backend/staticfiles
+App/bundletool-all-1.15.6.jar
+App/upload-keystore.jks
