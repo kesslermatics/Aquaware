@@ -75,9 +75,20 @@ class MenuDrawer extends StatelessWidget {
             onTap: () => onItemTapped(1),
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text("Settings"),
+            leading: const Icon(FontAwesomeIcons.key),
+            title: const Text("Privacy"),
             onTap: () => onItemTapped(2),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(FontAwesomeIcons.letterboxd),
+            title: const Text("Send Feedback"),
+            onTap: () => onItemTapped(3),
+          ),
+          ListTile(
+            leading: const Icon(FontAwesomeIcons.info),
+            title: const Text("About"),
+            onTap: () => onItemTapped(4),
           ),
         ],
       ),

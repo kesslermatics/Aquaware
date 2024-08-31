@@ -203,3 +203,26 @@ def forgot_password(request):
     except Exception as e:
         print(f"Error: {e}")
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@csrf_protect
+def send_feedback(request):
+    title = request.data.get('title')
+    message = request.data.get('message')
+
+    if not title or not message:
+        return Response({'error': 'Title and message are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        send_mail(
+            f"Feedback: {title}",
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            ['info@kesslermatics.com'],
+            fail_silently=False,
+        )
+        return Response({'detail': 'Feedback sent successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

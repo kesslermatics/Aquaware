@@ -27,6 +27,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   flutter_svg: ^2.0.10+1
   font_awesome_flutter: ^10.7.0
+  package_info: ^2.0.2
   rive: ^0.13.5
   shared_preferences: ^2.2.3
   syncfusion_flutter_charts: ^26.1.42

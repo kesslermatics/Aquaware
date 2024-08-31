@@ -1,10 +1,7 @@
-import 'package:aquaware/constants.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter/services.dart';
 
 import 'screens/homepage/homepage.dart';
 import 'screens/onboarding/onboding_screen.dart';
@@ -16,7 +13,13 @@ import 'screens/onboarding/onboding_screen.dart';
 // java -jar bundletool-all-1.15.6.jar install-apks --apks=build/app/outputs/bundle/release/my_app.apks
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -61,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Aquaware',
       theme: ThemeData(
         colorScheme: ColorProvider.colorScheme,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor:
               ColorProvider.primaryDark, // Hintergrundfarbe der AppBar
           foregroundColor: ColorProvider.textLight, // Textfarbe der AppBar
@@ -76,7 +79,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         scaffoldBackgroundColor: ColorProvider.background,
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           displayLarge: TextStyle(color: ColorProvider.textDark),
           displayMedium: TextStyle(color: ColorProvider.textDark),
           displaySmall: TextStyle(color: ColorProvider.textDark),
@@ -95,17 +98,17 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       home: _isLoading
-          ? Scaffold(
+          ? const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
             )
           : _isAuthenticated
-              ? HomepageScreen()
+              ? const HomepageScreen()
               : const OnboardingScreen(),
       routes: {
-        '/homepage': (context) => HomepageScreen(),
-        "/onboarding": (context) => OnboardingScreen(),
+        '/homepage': (context) => const HomepageScreen(),
+        "/onboarding": (context) => const OnboardingScreen(),
       },
     );
   }

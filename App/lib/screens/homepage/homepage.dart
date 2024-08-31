@@ -3,6 +3,7 @@ import 'package:aquaware/models/aquarium.dart';
 import 'package:aquaware/screens/dashboard/details_screen.dart';
 import 'package:aquaware/screens/dashboard/dashboard_screen.dart';
 import 'package:aquaware/screens/navigation/navigation_drawer.dart';
+import 'package:aquaware/screens/privacy/privacy_screen.dart';
 import 'package:aquaware/screens/profile/profile_screen.dart';
 import 'package:aquaware/screens/settings/settings_screen.dart';
 import 'package:aquaware/services/color_provider.dart';
@@ -107,7 +108,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
             DashboardScreen(
                 profile: _profile!, onAquariumTapped: _onAquariumTapped),
             ProfileScreen(profile: _profile!),
-            const SettingsScreen(),
+            const PrivacyScreen(),
+            FeedbackScreen(),
+            AboutScreen(),
           ]
         : [
             const Center(
@@ -118,7 +121,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
     List<String> titles = [
       'Dashboard',
       'Profile',
-      'Settings',
+      "Privacy",
+      "Send Feedback",
+      "About",
     ];
 
     return Scaffold(
