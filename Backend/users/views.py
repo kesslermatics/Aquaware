@@ -165,6 +165,11 @@ def confirm_delete_account(request):
 @permission_classes([IsAuthenticated])
 def delete_user_account(request):
     user = request.user
+
+    user.waterparameter_set.update(user=None)
+    user.aquarium_set.update(user=None)
+    user.userealertsetting_set.update(user=None)
+
     user.delete()
     return Response({"detail": "User account has been deleted."}, status=status.HTTP_204_NO_CONTENT)
 

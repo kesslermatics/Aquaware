@@ -37,6 +37,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Account deleted successfully')),
       );
+      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to delete account')),

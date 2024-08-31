@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Aquarium(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='aquariums')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='aquariums')
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

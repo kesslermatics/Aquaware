@@ -12,7 +12,6 @@ class UserService {
   static const String updateProfileUrl = '$baseUrl/api/users/profile/update/';
   static const String changePasswordUrl = '$baseUrl/api/users/change-password/';
   static const String deleteAccountUrl = '$baseUrl/api/users/delete-account/';
-  static const String testUrl = '${baseUrl}test/';
 
   Future<String?> signup(String email, String password, String password2,
       String firstName, String lastName) async {
