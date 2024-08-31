@@ -207,7 +207,6 @@ def forgot_password(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@csrf_protect
 def send_feedback(request):
     title = request.data.get('title')
     message = request.data.get('message')

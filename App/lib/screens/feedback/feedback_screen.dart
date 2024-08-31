@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aquaware/constants.dart';
+import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,13 +25,20 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       _isLoading = true;
     });
 
-    final response = await http.post(
-      Uri.parse('$baseUrl/api/feedback/'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'title': _titleController.text,
-        'message': _messageController.text,
-      }),
+    final response = await UserService().makeAuthenticatedRequest(
+      (token) {
+        return http.post(
+          Uri.parse('$baseUrl/api/users/feedback/'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({
+            'title': _titleController.text,
+            'message': _messageController.text,
+          }),
+        );
+      },
     );
 
     setState(() {

@@ -67,7 +67,7 @@ class UserService {
   }
 
   Future<UserProfile> getUserProfile() async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(profileUrl),
         headers: {
@@ -84,7 +84,7 @@ class UserService {
   }
 
   Future<void> updateUserProfile(Map<String, dynamic> updatedData) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await makeAuthenticatedRequest((token) {
       return http.put(
         Uri.parse(updateProfileUrl),
         headers: {
@@ -105,7 +105,7 @@ class UserService {
 
   Future<void> changePassword(
       String currentPassword, String newPassword) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await makeAuthenticatedRequest((token) {
       return http.post(
         Uri.parse(changePasswordUrl),
         headers: {
@@ -132,7 +132,7 @@ class UserService {
     return prefs.getString('accessToken');
   }
 
-  Future<http.Response> _makeAuthenticatedRequest(
+  Future<http.Response> makeAuthenticatedRequest(
       Future<http.Response> Function(String token) request) async {
     String? token = await _getAccessToken();
     if (token == null) throw Exception('No access token available');
@@ -153,7 +153,7 @@ class UserService {
   }
 
   Future<void> deleteUserAccount() async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await makeAuthenticatedRequest((token) {
       return http.delete(
         Uri.parse(deleteAccountUrl),
         headers: {

@@ -81,12 +81,12 @@ class MenuDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(FontAwesomeIcons.letterboxd),
+            leading: const Icon(FontAwesomeIcons.envelope),
             title: const Text("Send Feedback"),
             onTap: () => onItemTapped(3),
           ),
           ListTile(
-            leading: const Icon(FontAwesomeIcons.info),
+            leading: const Icon(FontAwesomeIcons.circleInfo),
             title: const Text("About"),
             onTap: () => onItemTapped(4),
           ),

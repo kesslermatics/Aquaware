@@ -8,39 +8,10 @@ import 'user_service.dart';
 class WaterParameterService {
   static const String baseUrl =
       'https://aquaware-production.up.railway.app/api/measurements/aquariums/';
-  final UserService _userService = UserService();
-
-  Future<String?> _getAccessToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('accessToken');
-  }
-
-  Future<void> _handleUnauthorized() async {
-    await _userService.refreshAccessToken();
-  }
-
-  Future<http.Response> _makeAuthenticatedRequest(
-      Future<http.Response> Function(String token) request) async {
-    String? token = await _getAccessToken();
-    if (token == null) throw Exception('No access token available');
-
-    http.Response response = await request(token);
-
-    if (response.statusCode == 401) {
-      await _handleUnauthorized();
-      token = await _getAccessToken();
-      if (token == null)
-        throw Exception('No access token available after refresh');
-
-      response = await request(token);
-    }
-
-    return response;
-  }
 
   Future<List<WaterParameter>> fetchAllWaterParameters(int aquariumId,
       {int number_of_entries = 1000}) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse('$baseUrl$aquariumId/water-values/$number_of_entries/'),
         headers: {
@@ -61,7 +32,7 @@ class WaterParameterService {
   Future<List<WaterValue>> fetchSingleWaterParameter(
       int aquariumId, String parameter,
       {int numberOfEntries = 1000}) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(
             '$baseUrl$aquariumId/water-values/$parameter/$numberOfEntries'),
@@ -81,7 +52,7 @@ class WaterParameterService {
   }
 
   Future<int> fetchTotalEntries(int aquariumId, String parameter) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse('$baseUrl$aquariumId/water-values/$parameter/total-entries'),
         headers: {

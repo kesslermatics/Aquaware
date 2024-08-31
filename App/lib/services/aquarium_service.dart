@@ -2,45 +2,14 @@ import 'dart:convert';
 import 'package:aquaware/constants.dart';
 import 'package:aquaware/models/aquarium.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'user_service.dart';
 
 class AquariumService {
-  final UserService _userService = UserService();
-
-  Future<String?> _getAccessToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('accessToken');
-  }
-
-  Future<void> _handleUnauthorized() async {
-    await _userService.refreshAccessToken();
-  }
-
-  Future<http.Response> _makeAuthenticatedRequest(
-      Future<http.Response> Function(String token) request) async {
-    String? token = await _getAccessToken();
-    if (token == null) throw Exception('No access token available');
-
-    http.Response response = await request(token);
-
-    if (response.statusCode == 401) {
-      await _handleUnauthorized();
-      token = await _getAccessToken();
-      if (token == null)
-        throw Exception('No access token available after refresh');
-
-      response = await request(token);
-    }
-
-    return response;
-  }
-
   Future<Aquarium> createAquarium(String name, String description) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await UserService().makeAuthenticatedRequest((token) {
       return http.post(
-        Uri.parse('${baseUrl}/api/aquariums/create/'),
+        Uri.parse('$baseUrl/api/aquariums/create/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -60,9 +29,9 @@ class AquariumService {
   }
 
   Future<List<Aquarium>> getUserAquariums() async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse("${baseUrl}/api/aquariums/"),
+        Uri.parse("$baseUrl/api/aquariums/"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -78,7 +47,7 @@ class AquariumService {
   }
 
   Future<Aquarium> updateAquarium(int id, Map<String, dynamic> updates) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await UserService().makeAuthenticatedRequest((token) {
       return http.put(
         Uri.parse('$baseUrl/api/aquariums/$id/update/'),
         headers: {
@@ -97,7 +66,7 @@ class AquariumService {
   }
 
   Future<void> deleteAquarium(int id) async {
-    final response = await _makeAuthenticatedRequest((token) {
+    final response = await UserService().makeAuthenticatedRequest((token) {
       return http.delete(
         Uri.parse('$baseUrl/api/aquariums/$id/delete/'),
         headers: {

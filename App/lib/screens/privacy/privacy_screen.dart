@@ -5,11 +5,8 @@ class PrivacyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Privacy & Data Usage'),
-      ),
-      body: const SingleChildScrollView(
+    return const Scaffold(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +58,10 @@ class PrivacyScreen extends StatelessWidget {
             SizedBox(height: 16),
             Text(
               'Join our vibrant community of aquarium enthusiasts. Share tips, ask questions, and get support directly from the Aquaware team. We\'re here to help you create the best possible environment for your aquatic life.',
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
+              "Just visit the Aquaware GitHub Repository for more information",
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 16),

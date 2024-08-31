@@ -1,7 +1,9 @@
 import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/models/aquarium.dart';
+import 'package:aquaware/screens/about/about_screen.dart';
 import 'package:aquaware/screens/dashboard/details_screen.dart';
 import 'package:aquaware/screens/dashboard/dashboard_screen.dart';
+import 'package:aquaware/screens/feedback/feedback_screen.dart';
 import 'package:aquaware/screens/navigation/navigation_drawer.dart';
 import 'package:aquaware/screens/privacy/privacy_screen.dart';
 import 'package:aquaware/screens/profile/profile_screen.dart';
@@ -109,8 +111,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 profile: _profile!, onAquariumTapped: _onAquariumTapped),
             ProfileScreen(profile: _profile!),
             const PrivacyScreen(),
-            FeedbackScreen(),
-            AboutScreen(),
+            const FeedbackScreen(),
+            const AboutScreen(),
           ]
         : [
             const Center(
