@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  static const String signupUrl = '${baseUrl}/api/users/signup/';
-  static const String loginUrl = '${baseUrl}/api/users/login/';
-  static const String refreshTokenUrl = '${baseUrl}/api/users/token/refresh/';
-  static const String profileUrl = '${baseUrl}/api/users/profile/';
-  static const String updateProfileUrl = '${baseUrl}profile/update/';
-  static const String changePasswordUrl = '${baseUrl}change-password/';
-  static const String deleteAccountUrl = '${baseUrl}delete-account/';
+  static const String signupUrl = '$baseUrl/api/users/signup/';
+  static const String loginUrl = '$baseUrl/api/users/login/';
+  static const String refreshTokenUrl = '$baseUrl/api/users/token/refresh/';
+  static const String profileUrl = '$baseUrl/api/users/profile/';
+  static const String updateProfileUrl = '$baseUrl/api/users/profile/update/';
+  static const String changePasswordUrl = '$baseUrl/api/users/change-password/';
+  static const String deleteAccountUrl = '$baseUrl/api/users/delete-account/';
   static const String testUrl = '${baseUrl}test/';
 
   Future<String?> signup(String email, String password, String password2,
@@ -68,15 +68,14 @@ class UserService {
   }
 
   Future<UserProfile> getUserProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString('accessToken');
-
-    final response = await http.get(
-      Uri.parse(profileUrl),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
+    final response = await _makeAuthenticatedRequest((token) {
+      return http.get(
+        Uri.parse(profileUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+    });
 
     if (response.statusCode == 200) {
       return UserProfile.fromJson(jsonDecode(response.body));
@@ -86,20 +85,19 @@ class UserService {
   }
 
   Future<void> updateUserProfile(Map<String, dynamic> updatedData) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString('accessToken');
-
-    final response = await http.put(
-      Uri.parse(updateProfileUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-      body: jsonEncode(updatedData),
-    );
+    final response = await _makeAuthenticatedRequest((token) {
+      return http.put(
+        Uri.parse(updateProfileUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(updatedData),
+      );
+    });
 
     if (response.statusCode == 200) {
-      print('Profile updated successfully');
+      // Successfully updated profile
     } else {
       var errorData = jsonDecode(response.body);
       throw Exception(errorData['detail'] ?? 'Failed to update profile');
@@ -108,44 +106,67 @@ class UserService {
 
   Future<void> changePassword(
       String currentPassword, String newPassword) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString('accessToken');
-
-    final response = await http.post(
-      Uri.parse(changePasswordUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-      body: jsonEncode({
-        'current_password': currentPassword,
-        'new_password': newPassword,
-      }),
-    );
+    final response = await _makeAuthenticatedRequest((token) {
+      return http.post(
+        Uri.parse(changePasswordUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          'current_password': currentPassword,
+          'new_password': newPassword,
+        }),
+      );
+    });
 
     if (response.statusCode == 200) {
-      print('Password changed successfully');
+      // Successfully changed password
     } else {
       var errorData = jsonDecode(response.body);
       throw Exception(errorData['detail'] ?? 'Failed to change password');
     }
   }
 
-  Future<void> deleteUserAccount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString('accessToken');
+  Future<String?> _getAccessToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('accessToken');
+  }
 
-    final response = await http.delete(
-      Uri.parse(deleteAccountUrl),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
+  Future<http.Response> _makeAuthenticatedRequest(
+      Future<http.Response> Function(String token) request) async {
+    String? token = await _getAccessToken();
+    if (token == null) throw Exception('No access token available');
+
+    http.Response response = await request(token);
+
+    if (response.statusCode == 401) {
+      await refreshAccessToken();
+      token = await _getAccessToken();
+      if (token == null) {
+        throw Exception('No access token available after refresh');
+      }
+
+      response = await request(token);
+    }
+
+    return response;
+  }
+
+  Future<void> deleteUserAccount() async {
+    final response = await _makeAuthenticatedRequest((token) {
+      return http.delete(
+        Uri.parse(deleteAccountUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+    });
 
     if (response.statusCode == 204) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove('accessToken');
       await prefs.remove('refreshToken');
-      print('User account deleted successfully');
     } else {
       var errorData = jsonDecode(response.body);
       throw Exception(errorData['detail'] ?? 'Failed to delete user account');
@@ -161,9 +182,9 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      return null; // Erfolgreich
+      return null; // Success
     } else {
-      return response.body; // Fehlernachricht zurückgeben
+      return response.body; // Return error message
     }
   }
 

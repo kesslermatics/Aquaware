@@ -18,12 +18,12 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
-  final UserService _userService = UserService();
-  UserProfile? _profile;
-  bool _isLoading = true;
   String? _error;
-  int _selectedIndex = 0;
+  bool _isLoading = true;
+  UserProfile? _profile;
   Aquarium? _selectedAquarium;
+  int _selectedIndex = 0;
+  final UserService _userService = UserService();
 
   @override
   void initState() {
@@ -66,17 +66,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Logout'),
-          content: Text('Are you sure you want to logout?'),
+          title: const Text('Confirm Logout'),
+          content: const Text('Are you sure you want to logout?'),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              child: const Text('No'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             TextButton(
-              child: Text('Yes'),
+              child: const Text('Yes'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
                 _logout(context); // Call the logout function
@@ -102,16 +102,20 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _pages = [
-      _profile != null
-          ? DashboardScreen(
-              profile: _profile!, onAquariumTapped: _onAquariumTapped)
-          : Center(child: CircularProgressIndicator()),
-      const ProfileScreen(),
-      const SettingsScreen(),
-    ];
+    List<Widget> pages = _profile != null
+        ? [
+            DashboardScreen(
+                profile: _profile!, onAquariumTapped: _onAquariumTapped),
+            ProfileScreen(profile: _profile!),
+            const SettingsScreen(),
+          ]
+        : [
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ];
 
-    List<String> _titles = [
+    List<String> titles = [
       'Dashboard',
       'Profile',
       'Settings',
@@ -122,23 +126,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
       appBar: AppBar(
         title: Text(_selectedAquarium != null
             ? _selectedAquarium!.name
-            : _titles[_selectedIndex]),
+            : titles[_selectedIndex]),
         actions: [
           if (_selectedAquarium == null)
             IconButton(
-              icon: Icon(Icons.logout),
+              icon: const Icon(Icons.logout),
               onPressed: () => _showLogoutConfirmationDialog(context),
             ),
           if (_selectedAquarium != null)
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: _navigateBack,
             ),
         ],
       ),
       body: _selectedAquarium != null
           ? DetailsScreen(aquarium: _selectedAquarium!)
-          : _pages[_selectedIndex],
+          : pages[_selectedIndex],
     );
   }
 }

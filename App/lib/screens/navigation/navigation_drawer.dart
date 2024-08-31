@@ -1,5 +1,6 @@
 import 'package:aquaware/constants.dart';
 import 'package:aquaware/models/user_profile.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -7,7 +8,7 @@ class MenuDrawer extends StatelessWidget {
   final UserProfile? profile;
   final Function(int) onItemTapped;
 
-  MenuDrawer(this.profile, this.onItemTapped, {super.key});
+  const MenuDrawer(this.profile, this.onItemTapped, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class MenuDrawer extends StatelessWidget {
 
   Widget buildHeader(BuildContext context) {
     return Container(
-      color: blue,
+      color: ColorProvider.primaryDark,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -38,14 +39,14 @@ class MenuDrawer extends StatelessWidget {
               profile != null
                   ? '${profile!.firstName} ${profile!.lastName}'
                   : 'Guest',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20,
               ),
             ),
             Text(
               profile != null ? profile!.email : '',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
               ),
@@ -58,24 +59,24 @@ class MenuDrawer extends StatelessWidget {
 
   Widget buildMenuItems(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Wrap(
         runSpacing: 16,
         children: [
           ListTile(
             leading: const Icon(FontAwesomeIcons.gauge),
-            title: Text("Dashboard"),
+            title: const Text("Dashboard"),
             onTap: () => onItemTapped(0),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(FontAwesomeIcons.user),
-            title: Text("Profile"),
+            leading: const Icon(FontAwesomeIcons.user),
+            title: const Text("Profile"),
             onTap: () => onItemTapped(1),
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: Text("Settings"),
+            title: const Text("Settings"),
             onTap: () => onItemTapped(2),
           ),
         ],
