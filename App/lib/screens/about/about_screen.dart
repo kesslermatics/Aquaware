@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -9,31 +9,31 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  String _appVersion = '';
+  String _version = "";
 
   @override
   void initState() {
     super.initState();
-    _getAppVersion();
+    _fetchAppVersion();
   }
 
-  Future<void> _getAppVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  Future<void> _fetchAppVersion() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
-      _appVersion = packageInfo.version;
+      _version = info.version;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About'),
-      ),
       body: Center(
-        child: Text(
-          'App Version: $_appVersion',
-          style: const TextStyle(fontSize: 20),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'App Version: $_version',
+            style: const TextStyle(fontSize: 18),
+          ),
         ),
       ),
     );

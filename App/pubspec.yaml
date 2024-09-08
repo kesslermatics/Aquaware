@@ -8,11 +8,17 @@ version: 1.0.0+1
 
 flutter_launcher_icons:
   android: "launcher_icon"
-  image_path: "assets/aquaware_logo_small-final.jpg"
+  image_path: "assets/Aquaware_logo_filled_cropped.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter_native_splash:
-  color: "#F3F4EC"
+  android_12:
+    color: "#ffffff"
+    image: assets/Aquaware_logo_filled_wtext_bigger_margin.png
+    android: true
+  color: "#ffffff"
+  image: assets/Aquaware_logo_filled_wtext_bigger_margin.png
+  android: true
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
@@ -28,6 +34,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   font_awesome_flutter: ^10.7.0
   package_info: ^2.0.2
+  package_info_plus: ^8.0.2
   rive: ^0.13.5
   shared_preferences: ^2.2.3
   syncfusion_flutter_charts: ^26.1.42
