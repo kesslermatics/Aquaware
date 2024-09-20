@@ -56,7 +56,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'frontend-react/build'),
+            os.path.join(BASE_DIR, "frontend-react", "build")
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -114,16 +114,9 @@ ROOT_URLCONF = 'aquaware.urls'
 
 WSGI_APPLICATION = 'aquaware.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES["default"] = dj_database_url.parse(os.environ.get("DATABASE_URL"))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -161,16 +154,6 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
-}
-
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'static/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'frontend-react', 'webpack-stats.json'),
-        'POLL_INTERVAL': 0.1,
-        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
-    }
 }
 
 INTERNAL_IPS = [
