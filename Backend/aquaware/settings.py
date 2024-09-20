@@ -54,7 +54,9 @@ DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,7 +89,8 @@ INSTALLED_APPS = [
     "users",
     "environments",
     "water",
-    "logs"
+    "logs",
+    "frontend"
 ]
 
 STATIC_URL = "/static/"

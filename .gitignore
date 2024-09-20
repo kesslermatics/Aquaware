@@ -13,3 +13,6 @@ App/bundletool-all-1.15.6.jar
 App/upload-keystore.jks
 /Backend/frontend/node_modules
 /Backend/frontend/.idea
+/Backend/aquaware/__pycache__
+/Backend/frontend/__pycache__
+/Backend/frontend/migrations
