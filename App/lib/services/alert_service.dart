@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AlertService {
   static const String baseUrl =
-      'https://aquaware-production.up.railway.app/api/measurements/aquariums';
+      'https://aquaware-production.up.railway.app/api/measurements/environments';
 
   Future<void> saveAlertSettings(int aquariumId, String parameter,
       double? underValue, double? aboveValue) async {

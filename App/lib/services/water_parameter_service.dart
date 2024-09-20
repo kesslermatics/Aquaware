@@ -7,13 +7,13 @@ import 'user_service.dart';
 
 class WaterParameterService {
   static const String baseUrl =
-      'https://aquaware-production.up.railway.app/api/measurements/aquariums/';
+      'https://aquaware-production.up.railway.app/api/measurements/environments/';
 
-  Future<List<WaterParameter>> fetchAllWaterParameters(int aquariumId,
+  Future<List<WaterParameter>> fetchAllWaterParameters(int environmentId,
       {int number_of_entries = 1000}) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse('$baseUrl$aquariumId/water-values/$number_of_entries/'),
+        Uri.parse('$baseUrl$environmentId/water-values/$number_of_entries/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -30,12 +30,12 @@ class WaterParameterService {
   }
 
   Future<List<WaterValue>> fetchSingleWaterParameter(
-      int aquariumId, String parameter,
+      int environmentId, String parameter,
       {int numberOfEntries = 1000}) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(
-            '$baseUrl$aquariumId/water-values/$parameter/$numberOfEntries'),
+            '$baseUrl$environmentId/water-values/$parameter/$numberOfEntries'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
