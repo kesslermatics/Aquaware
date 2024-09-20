@@ -1,5 +1,5 @@
 import 'package:aquaware/models/user_profile.dart';
-import 'package:aquaware/models/aquarium.dart';
+import 'package:aquaware/models/environment.dart';
 import 'package:aquaware/screens/about/about_screen.dart';
 import 'package:aquaware/screens/dashboard/details_screen.dart';
 import 'package:aquaware/screens/dashboard/dashboard_screen.dart';
@@ -7,8 +7,6 @@ import 'package:aquaware/screens/feedback/feedback_screen.dart';
 import 'package:aquaware/screens/navigation/navigation_drawer.dart';
 import 'package:aquaware/screens/privacy/privacy_screen.dart';
 import 'package:aquaware/screens/profile/profile_screen.dart';
-import 'package:aquaware/screens/settings/settings_screen.dart';
-import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,7 +22,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   String? _error;
   bool _isLoading = true;
   UserProfile? _profile;
-  Aquarium? _selectedAquarium;
+  Environment? _selectedEnvironment;
   int _selectedIndex = 0;
   final UserService _userService = UserService();
 
@@ -59,7 +57,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _selectedAquarium = null; // Reset the selected aquarium
+      _selectedEnvironment = null; // Reset the selected aquarium
     });
     Navigator.pop(context); // Close the drawer
   }
@@ -91,15 +89,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
     );
   }
 
-  void _onAquariumTapped(Aquarium aquarium) {
+  void _onEnvironmentTapped(Environment environment) {
     setState(() {
-      _selectedAquarium = aquarium;
+      _selectedEnvironment = environment;
     });
   }
 
   void _navigateBack() {
     setState(() {
-      _selectedAquarium = null;
+      _selectedEnvironment = null;
     });
   }
 
@@ -108,7 +106,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     List<Widget> pages = _profile != null
         ? [
             DashboardScreen(
-                profile: _profile!, onAquariumTapped: _onAquariumTapped),
+                profile: _profile!, onEnvironmentTapped: _onEnvironmentTapped),
             ProfileScreen(profile: _profile!),
             const PrivacyScreen(),
             const FeedbackScreen(),
@@ -131,24 +129,24 @@ class _HomepageScreenState extends State<HomepageScreen> {
     return Scaffold(
       drawer: MenuDrawer(_profile, _onItemTapped),
       appBar: AppBar(
-        title: Text(_selectedAquarium != null
-            ? _selectedAquarium!.name
+        title: Text(_selectedEnvironment != null
+            ? _selectedEnvironment!.name
             : titles[_selectedIndex]),
         actions: [
-          if (_selectedAquarium == null)
+          if (_selectedEnvironment == null)
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () => _showLogoutConfirmationDialog(context),
             ),
-          if (_selectedAquarium != null)
+          if (_selectedEnvironment != null)
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: _navigateBack,
             ),
         ],
       ),
-      body: _selectedAquarium != null
-          ? DetailsScreen(aquarium: _selectedAquarium!)
+      body: _selectedEnvironment != null
+          ? DetailsScreen(aquarium: _selectedEnvironment!)
           : pages[_selectedIndex],
     );
   }

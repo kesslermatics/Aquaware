@@ -1,11 +1,11 @@
-import 'package:aquaware/models/aquarium.dart';
+import 'package:aquaware/models/environment.dart';
 import 'package:aquaware/models/water_parameter.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:flutter/material.dart';
 import 'water_parameter_card.dart';
 
 class DetailsScreen extends StatefulWidget {
-  final Aquarium aquarium;
+  final Environment aquarium;
 
   const DetailsScreen({required this.aquarium, super.key});
 
@@ -31,11 +31,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
         future: _futureWaterParameters,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No water parameters found.'));
+            return const Center(child: Text('No water parameters found.'));
           } else {
             return ListView.builder(
               itemCount: snapshot.data!.length,

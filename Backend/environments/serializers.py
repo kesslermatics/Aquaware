@@ -5,8 +5,10 @@ from .models import Environment
 class EnvironmentSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     description = serializers.CharField(required=True)
+    environment_type = serializers.ChoiceField(choices=Environment.ENVIRONMENT_TYPES)
+    public = serializers.BooleanField(default=False)
 
     class Meta:
         model = Environment
-        fields = ['id', 'name', 'description', 'created_at', "public"]
+        fields = ['id', 'name', 'description', 'created_at', "environment_type", "public"]
         read_only_fields = ['id', 'created_at']
