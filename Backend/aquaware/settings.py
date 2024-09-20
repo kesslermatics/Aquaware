@@ -13,7 +13,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from django.conf.global_settings import DATABASES
+from django.conf.global_settings import DATABASES, DEBUG
 from dotenv import load_dotenv
 
 import dj_database_url
@@ -56,6 +56,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'frontend-react/build'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -81,6 +82,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
+    'webpack_loader',
     #'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'drf_yasg',
@@ -89,8 +91,7 @@ INSTALLED_APPS = [
     "users",
     "environments",
     "water",
-    "logs",
-    "frontend"
+    "logs"
 ]
 
 STATIC_URL = "/static/"
@@ -163,6 +164,16 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'static/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend-react', 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
+    }
+}
+
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
@@ -178,5 +189,5 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, "frontend-react", "build", "static"),
 ]
