@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
-from .models import Aquarium
+from .models import Environment
 
 User = get_user_model()
 
@@ -14,10 +14,10 @@ class AquariumTests(APITestCase):
     def setUp(self):
         self.signup_url = reverse('user-signup')
         self.login_url = reverse('user-login')
-        self.create_aquarium_url = reverse('create-aquarium')
-        self.update_aquarium_url = lambda id: reverse('update-aquarium', args=[id])
-        self.delete_aquarium_url = lambda id: reverse('delete-aquarium', args=[id])
-        self.get_user_aquariums_url = reverse('get-user-aquariums')
+        self.create_aquarium_url = reverse('create-environment')
+        self.update_aquarium_url = lambda id: reverse('update-environment', args=[id])
+        self.delete_aquarium_url = lambda id: reverse('delete-environment', args=[id])
+        self.get_user_aquariums_url = reverse('get-user-environment')
 
         self.user_data = {
             "email": "newuser@example.com",

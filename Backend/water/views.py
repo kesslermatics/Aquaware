@@ -24,7 +24,7 @@ from .serializers import WaterParameterSerializer, WaterValueSerializer, Flexibl
     UserAlertSettingSerializer
 
 from .models import WaterParameter, WaterValue, UserAlertSetting
-from aquariums.models import Aquarium
+from environments.models import Environment
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,43 +38,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
         404: 'Not Found',
         429: 'Too Many Requests'
     },
-    operation_description="Add water values to an aquarium. Ensures values are only added once every 30 minutes."
+    operation_description="Add water values to an environment. Ensures values are only added once every 30 minutes."
 )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def add_water_values(request, aquarium_id):
-    print("Trying to add parameter")
+def add_water_values(request, environment_id):
     try:
-        aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
-    except Aquarium.DoesNotExist:
-        print("Aquarium not found or does not belong to this user.")
-        return Response({'error': 'Aquarium not found or does not belong to this user.'},
+        environment = Environment.objects.get(id=environment_id, user=request.user)
+    except Environment.DoesNotExist:
+        return Response({'error': 'Environment not found or does not belong to this user.'},
                         status=status.HTTP_404_NOT_FOUND)
 
-    # Retrieve the most recent water value entry
-    last_value = WaterValue.objects.filter(aquarium=aquarium).aggregate(last_measured_at=Max('added_at'))
+    last_value = WaterValue.objects.filter(environment=environment).aggregate(last_measured_at=Max('added_at'))
     last_measured_at = last_value['last_measured_at']
 
-    # Check if the last measured time is within the last 30 minutes
     if last_measured_at and last_measured_at >= timezone.now() - timedelta(minutes=29):
-        print("You can only submit water values once every 30 minutes.")
         return Response(
             {'error': 'You can only submit water values once every 30 minutes.'},
             status=status.HTTP_429_TOO_MANY_REQUESTS
         )
 
-    # Proceed to save the new water values if valid
     data = request.data.copy()
-    data['aquarium_id'] = aquarium_id  # Füge die aquarium_id zu den Daten hinzu
+    data['environment_id'] = environment_id
     serializer = FlexibleWaterValuesSerializer(data=data)
-    print("Serializer trying")
     if serializer.is_valid():
         water_values = serializer.save()
         check_alerts_and_notify(water_values)
         response_serializer = WaterValueSerializer(water_values, many=True)
-        print("Water values created")
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
-    print("Serializer not valid")
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -82,7 +73,7 @@ def add_water_values(request, aquarium_id):
 def check_alerts_and_notify(water_values):
     for water_value in water_values:
         alert_settings = UserAlertSetting.objects.filter(
-            aquarium=water_value.aquarium,
+            environment=water_value.environment,
             parameter=water_value.parameter
         )
 
@@ -90,7 +81,7 @@ def check_alerts_and_notify(water_values):
             if setting.under_value is not None and water_value.value < setting.under_value:
                 send_alert_email(
                     setting.user,
-                    water_value.aquarium,
+                    water_value.environment,
                     water_value.parameter.name,
                     water_value.value,
                     'below',
@@ -100,7 +91,7 @@ def check_alerts_and_notify(water_values):
             if setting.above_value is not None and water_value.value > setting.above_value:
                 send_alert_email(
                     setting.user,
-                    water_value.aquarium,
+                    water_value.environment,
                     water_value.parameter.name,
                     water_value.value,
                     'above',
@@ -108,25 +99,24 @@ def check_alerts_and_notify(water_values):
                 )
 
 
-def send_alert_email(user, aquarium, parameter_name, current_value, threshold_type, threshold_value):
-    mail_subject = f'Alert: {parameter_name} has gone {threshold_type} threshold in your aquarium'
+def send_alert_email(user, environment, parameter_name, current_value, threshold_type, threshold_value):
+    mail_subject = f'Alert: {parameter_name} has gone {threshold_type} threshold in your environment'
 
     message = render_to_string('alert/alert_email.html', {
         'user': user,
         'parameter_name': parameter_name,
-        'aquarium_name': aquarium.name,
+        'environment_name': environment.name,
         'current_value': current_value,
         'threshold_type': threshold_type,
         'threshold_value': threshold_value,
     })
 
-    # Send the email
     send_mail(
-        mail_subject,           # Subject
-        message,                # Message body
-        settings.DEFAULT_FROM_EMAIL,  # From email
-        [user.email],           # To email (list)
-        html_message=message     # HTML message
+        mail_subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [user.email],
+        html_message=message
     )
 
 
@@ -155,22 +145,22 @@ def send_alert_email(user, aquarium, parameter_name, current_value, threshold_ty
         )),
         400: 'Bad Request'
     },
-    operation_description="Get the latest water values for all parameters in an aquarium."
+    operation_description="Get the latest water values for all parameters in an environment."
 )
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_latest_from_all_parameters(request, aquarium_id, number_of_entries):
+def get_latest_from_all_parameters(request, environment_id, number_of_entries):
     try:
-        aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
+        environment = Environment.objects.get(id=environment_id, user=request.user)
 
         subquery = WaterValue.objects.filter(
-            aquarium_id=aquarium_id,
+            environment_id=environment_id,
             parameter_id=OuterRef('parameter_id')
         ).order_by('-measured_at')[:number_of_entries]
 
         water_values = WaterValue.objects.filter(
-            aquarium_id=aquarium_id,
-            aquarium__user=request.user,
+            environment_id=environment_id,
+            environment__user=request.user,
             id__in=Subquery(subquery.values('id'))
         ).select_related('parameter').order_by('parameter_id', '-measured_at')
 
@@ -188,11 +178,10 @@ def get_latest_from_all_parameters(request, aquarium_id, number_of_entries):
         response_data = [{'parameter': param, 'values': values} for param, values in measurements.items()]
 
         return Response(response_data, status=status.HTTP_200_OK)
-    except Aquarium.DoesNotExist:
-        return Response({'detail': 'Aquarium not found or does not belong to this user.'}, status=status.HTTP_404_NOT_FOUND)
+    except Environment.DoesNotExist:
+        return Response({'detail': 'Environment not found or does not belong to this user.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @swagger_auto_schema(
@@ -215,16 +204,16 @@ def get_latest_from_all_parameters(request, aquarium_id, number_of_entries):
         )),
         400: 'Bad Request'
     },
-    operation_description="Get all water values for a specific parameter in an aquarium."
+    operation_description="Get all water values for a specific parameter in an environment."
 )
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_all_values_from_parameter(request, aquarium_id, parameter_name, number_of_entries):
+def get_all_values_from_parameter(request, environment_id, parameter_name, number_of_entries):
     try:
         parameter = WaterParameter.objects.get(name=parameter_name)
         water_values = WaterValue.objects.filter(
-            aquarium_id=aquarium_id,
-            aquarium__user=request.user,
+            environment_id=environment_id,
+            environment__user=request.user,
             parameter=parameter
         ).order_by('-measured_at')[:number_of_entries]
 
@@ -235,7 +224,6 @@ def get_all_values_from_parameter(request, aquarium_id, parameter_name, number_o
         return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @swagger_auto_schema(
@@ -253,16 +241,16 @@ def get_all_values_from_parameter(request, aquarium_id, parameter_name, number_o
         404: 'Not Found',
         400: 'Bad Request'
     },
-    operation_description="Get the total number of entries for a specific parameter in an aquarium."
+    operation_description="Get the total number of entries for a specific parameter in an environment."
 )
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_total_entries(request, aquarium_id, parameter_name):
+def get_total_entries(request, environment_id, parameter_name):
     try:
         parameter = WaterParameter.objects.get(name=parameter_name)
         total_entries = WaterValue.objects.filter(
-            aquarium_id=aquarium_id,
-            aquarium__user=request.user,
+            environment_id=environment_id,
+            environment__user=request.user,
             parameter=parameter
         ).count()
 
@@ -280,31 +268,31 @@ def get_total_entries(request, aquarium_id, parameter_name):
         404: 'Not Found',
         400: 'Bad Request'
     },
-    operation_description="Export water values as a CSV file for a specific aquarium."
+    operation_description="Export water values as a CSV file for a specific environment."
 )
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def export_water_values(request, aquarium_id):
+def export_water_values(request, environment_id):
     try:
-        # Check if the aquarium exists and belongs to the logged-in user
+        # Check if the environment exists and belongs to the logged-in user
         try:
-            aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
-        except Aquarium.DoesNotExist:
-            return Response({'error': 'Aquarium not found or does not belong to this user.'},
+            environment = Environment.objects.get(id=environment_id, user=request.user)
+        except Environment.DoesNotExist:
+            return Response({'error': 'Environment not found or does not belong to this user.'},
                             status=status.HTTP_404_NOT_FOUND)
 
-        # Get the water values for the specified aquarium, ordered by measured_at
-        water_values = WaterValue.objects.filter(aquarium=aquarium).select_related('parameter').order_by('measured_at')
+        # Get the water values for the specified environment, ordered by measured_at
+        water_values = WaterValue.objects.filter(environment=environment).select_related('parameter').order_by('measured_at')
 
         if not water_values.exists():
-            return Response({'error': 'No water values found for this aquarium.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'No water values found for this environment.'}, status=status.HTTP_404_NOT_FOUND)
 
         # Use StringIO to write the CSV content in-memory
         output = io.StringIO()
         writer = csv.writer(output)
 
         # Get distinct parameter names to dynamically generate the columns
-        parameters = list(WaterValue.objects.filter(aquarium=aquarium)
+        parameters = list(WaterValue.objects.filter(environment=environment)
                          .values_list('parameter__name', flat=True).distinct())
         parameters.sort()  # Sort parameter names to maintain consistent column order
 
@@ -333,7 +321,7 @@ def export_water_values(request, aquarium_id):
 
         # Ensure UTF-8 encoding by encoding the StringIO content
         response = HttpResponse(output.getvalue().encode('utf-8'), content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename="water_values_{aquarium_id}.csv"'
+        response['Content-Disposition'] = f'attachment; filename="water_values_{environment_id}.csv"'
 
         return response
 
@@ -359,13 +347,13 @@ def export_water_values(request, aquarium_id):
 )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def import_water_values(request, aquarium_id):
+def import_water_values(request, environment_id):
     try:
-        # Ensure the aquarium exists and belongs to the user
-        aquarium = Aquarium.objects.get(id=aquarium_id, user=request.user)
+        # Ensure the environment exists and belongs to the user
+        environment = Environment.objects.get(id=environment_id, user=request.user)
 
         # Retrieve the most recent water value entry
-        last_value = WaterValue.objects.filter(aquarium=aquarium).aggregate(last_measured_at=Max('added_at'))
+        last_value = WaterValue.objects.filter(environment=environment).aggregate(last_measured_at=Max('added_at'))
         last_measured_at = last_value['last_measured_at']
 
         # Check if the last measured time is within the last 30 minutes
@@ -417,7 +405,7 @@ def import_water_values(request, aquarium_id):
 
                 # Create the WaterValue entry
                 WaterValue.objects.create(
-                    aquarium=aquarium,
+                    environment=environment,
                     parameter=parameter,
                     value=value,
                     measured_at=measured_at,
@@ -437,14 +425,14 @@ def import_water_values(request, aquarium_id):
         400: 'Bad Request',
         404: 'Not Found'
     },
-    operation_description="Save alert settings for a specific parameter in an aquarium."
+    operation_description="Save alert settings for a specific parameter in an environment."
 )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def save_alert_settings(request, aquarium_id):
+def save_alert_settings(request, environment_id):
     try:
         user = request.user
-        aquarium = Aquarium.objects.get(id=aquarium_id, user=user)
+        environment = Environment.objects.get(id=environment_id, user=user)
 
         serializer = UserAlertSettingSerializer(data=request.data)
         if serializer.is_valid():
@@ -455,7 +443,7 @@ def save_alert_settings(request, aquarium_id):
             # Update or create the alert setting
             alert_setting, created = UserAlertSetting.objects.update_or_create(
                 user=user,
-                aquarium=aquarium,
+                environment=environment,
                 parameter=parameter,
                 defaults={
                     'under_value': under_value,
@@ -467,8 +455,8 @@ def save_alert_settings(request, aquarium_id):
         else:
             return Response(serializer.errors, status=400)
 
-    except Aquarium.DoesNotExist:
-        return Response({'error': 'Aquarium not found or does not belong to this user.'}, status=404)
+    except Environment.DoesNotExist:
+        return Response({'error': 'Environment not found or does not belong to this user.'}, status=404)
     except Exception as e:
         return Response({'error': f'An error occurred: {str(e)}'}, status=400)
 
@@ -483,18 +471,18 @@ def save_alert_settings(request, aquarium_id):
         404: 'Not Found',
         400: 'Bad Request'
     },
-    operation_description="Get alert settings for a specific parameter in an aquarium."
+    operation_description="Get alert settings for a specific parameter in an environment."
 )
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_alert_settings(request, aquarium_id, parameter_name):
+def get_alert_settings(request, environment_id, parameter_name):
     try:
         user = request.user
-        aquarium = Aquarium.objects.get(id=aquarium_id, user=user)
+        environment = Environment.objects.get(id=environment_id, user=user)
         parameter = WaterParameter.objects.get(name=parameter_name)
 
         alert_settings = UserAlertSetting.objects.filter(
-            user=user, aquarium=aquarium, parameter=parameter
+            user=user, environment=environment, parameter=parameter
         ).first()
 
         if alert_settings:
@@ -503,8 +491,8 @@ def get_alert_settings(request, aquarium_id, parameter_name):
         else:
             return Response({'status': 'No alert settings found for this parameter.'}, status=404)
 
-    except Aquarium.DoesNotExist:
-        return Response({'error': 'Aquarium not found or does not belong to this user.'}, status=404)
+    except Environment.DoesNotExist:
+        return Response({'error': 'Environment not found or does not belong to this user.'}, status=404)
     except WaterParameter.DoesNotExist:
         return Response({'error': 'Parameter not found.'}, status=404)
     except Exception as e:

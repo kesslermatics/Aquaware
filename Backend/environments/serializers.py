@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import Aquarium
+from .models import Environment
 
 
-class AquariumSerializer(serializers.ModelSerializer):
+class EnvironmentSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     description = serializers.CharField(required=True)
 
     class Meta:
-        model = Aquarium
-        fields = ['id', 'name', 'description', 'created_at']
+        model = Environment
+        fields = ['id', 'name', 'description', 'created_at', "public"]
         read_only_fields = ['id', 'created_at']

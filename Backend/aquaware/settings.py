@@ -85,7 +85,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "aquaware",
     "users",
-    "aquariums",
+    "environments",
     "water",
     "logs"
 ]

@@ -28,6 +28,7 @@ dependencies:
   fl_heatmap: ^0.4.5
   flutter:
     sdk: flutter
+  flutter_expandable_fab: ^2.3.0
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.1
   flutter_secure_storage: ^9.2.2

@@ -2,6 +2,7 @@ import 'package:aquaware/models/aquarium.dart';
 import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/services/aquarium_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 class DashboardScreen extends StatefulWidget {
   final UserProfile profile;
@@ -47,7 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> _createAquarium() async {
     if (_nameController.text.isEmpty || _descriptionController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill out all fields')),
+        const SnackBar(content: Text('Please fill out all fields')),
       );
       return;
     }
@@ -82,28 +83,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text('Welcome, ${widget.profile.firstName}!',
-                  style: TextStyle(fontSize: 24)),
+                  style: const TextStyle(fontSize: 24)),
             ),
           ),
           Expanded(
             child: _isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : _error != null
                     ? Center(child: Text('Error: $_error'))
                     : _aquariums.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Text('No aquariums found. Please add one.'))
                         : ListView.builder(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             itemCount: _aquariums.length,
                             itemBuilder: (context, index) {
                               final aquarium = _aquariums[index];
                               return Card(
-                                margin: EdgeInsets.only(bottom: 16),
+                                margin: const EdgeInsets.only(bottom: 16),
                                 child: ListTile(
                                   title: Text(aquarium.name),
                                   subtitle: Text(aquarium.description),
-                                  trailing: Icon(Icons.arrow_forward),
+                                  trailing: const Icon(Icons.arrow_forward),
                                   onTap: () =>
                                       widget.onAquariumTapped(aquarium),
                                 ),
@@ -113,11 +114,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      // Floating Action Button to create a new aquarium
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showCreateAquariumDialog(context),
-        child: Icon(Icons.add),
-        tooltip: 'Create Aquarium',
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        type: ExpandableFabType.up,
+        childrenAnimation: ExpandableFabAnimation.none,
+        distance: 70,
+        overlayStyle: ExpandableFabOverlayStyle(
+          color: Colors.white.withOpacity(0.9),
+        ),
+        children: const [
+          Row(
+            children: [
+              Text('Remind'),
+              SizedBox(width: 20),
+              FloatingActionButton.small(
+                heroTag: null,
+                onPressed: null,
+                child: Icon(Icons.notifications),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text('Email'),
+              SizedBox(width: 20),
+              FloatingActionButton.small(
+                heroTag: null,
+                onPressed: null,
+                child: Icon(Icons.email),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text('Star'),
+              SizedBox(width: 20),
+              FloatingActionButton.small(
+                heroTag: null,
+                onPressed: null,
+                child: Icon(Icons.star),
+              ),
+            ],
+          ),
+          FloatingActionButton.small(
+            heroTag: null,
+            onPressed: null,
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
@@ -126,7 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(
+        title: const Text(
           'Add an Aquarium',
           style: TextStyle(
             fontSize: 20,
@@ -137,28 +181,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: const InputDecoration(labelText: 'Name'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(
               controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: const InputDecoration(labelText: 'Description'),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               _createAquarium();
               Navigator.of(context).pop();
             },
-            child: Text('Create'),
+            child: const Text('Create'),
           ),
         ],
       ),
