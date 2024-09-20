@@ -4,7 +4,7 @@
         "builder": "NIXPACKS"
     },
     "deploy": {
-        "startCommand": "python manage.py migrate && gunicorn aquaware.wsgi && python manage.py collectstatic --noinput && cd frontend-react && npm install && npm run build && cd .. && python manage.py collectstatic --noinput",
+        "startCommand": "python manage.py migrate && gunicorn aquaware.wsgi && python manage.py collectstatic --noinput && npm install --prefix frontend-react && npm run build --prefix frontend-react && python manage.py collectstatic --noinput",
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10
     }
