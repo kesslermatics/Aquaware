@@ -16,109 +16,93 @@ const Services = () => {
     <Section id="how-to-use">
       <div className="container">
         <Heading
-          title="Generative AI made for creators."
-          text="Brainwave unlocks the potential of AI-powered applications"
+          title="Getting Started with Aquaware"
+          text="Monitor and manage your water data with ease using these simple steps."
         />
 
         <div className="relative">
+          {/* First Tile: Steps to get started */}
           <div className="relative z-1 flex items-center h-[39rem] mb-5 p-8 border border-n-1/10 rounded-3xl overflow-hidden lg:p-20 xl:h-[46rem]">
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none md:w-3/5 xl:w-auto">
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none md:w-3/5 xl:w-auto -translate-x-20">
               <img
-                className="w-full h-full object-cover md:object-right"
-                width={800}
-                alt="Smartest AI"
-                height={730}
+                className="object-cover md:object-right"
+                width={500}
+                alt="Getting Started"
+                height={330}
                 src={service1}
               />
             </div>
 
-            <div className="relative z-1 max-w-[17rem] ml-auto">
-              <h4 className="h4 mb-4">Smartest AI</h4>
+            <div className="relative z-1 max-w-[50rem] ml-auto">
+              <h4 className="h4 mb-4">Steps to Get Started</h4>
               <p className="body-2 mb-[3rem] text-n-3">
-                Brainwave unlocks the potential of AI-powered applications
+                Follow these simple steps to start monitoring your water:
               </p>
               <ul className="body-2">
-                {aquawareServices.map((item, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start py-4 border-t border-n-6"
-                  >
-                    <img width={24} height={24} src={check} />
-                    <p className="ml-4">{item}</p>
-                  </li>
-                ))}
+                <li className="flex items-start py-4 border-t border-n-6">
+                  <img width={24} height={24} src={check} />
+                  <p className="ml-4">1. Create an account</p>
+                </li>
+                <li className="flex items-start py-4 border-t border-n-6">
+                  <img width={24} height={24} src={check} />
+                  <p className="ml-4">
+                    2. Upload your water parameters via REST API
+                  </p>
+                </li>
+                <li className="flex items-start py-4 border-t border-n-6">
+                  <img width={24} height={24} src={check} />
+                  <p className="ml-4">3. Set up automated monitoring alerts</p>
+                </li>
+                <li className="flex items-start py-4 border-t border-n-6">
+                  <img width={24} height={24} src={check} />
+                  <p className="ml-4">4. View historical data and trends</p>
+                </li>
               </ul>
             </div>
-
-            <Generating className="absolute left-4 right-4 bottom-4 border-n-1/10 border lg:left-1/2 lg-right-auto lg:bottom-8 lg:-translate-x-1/2" />
           </div>
 
+          {/* Second Tile: Data Visualization */}
           <div className="relative z-1 grid gap-5 lg:grid-cols-2">
             <div className="relative min-h-[39rem] border border-n-1/10 rounded-3xl overflow-hidden">
               <div className="absolute inset-0">
                 <img
                   src={service2}
-                  className="h-full w-full object-cover"
+                  className="object-cover opacity-20"
                   width={630}
                   height={750}
-                  alt="robot"
+                  alt="Data Visualization"
                 />
               </div>
 
               <div className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-b from-n-8/0 to-n-8/90 lg:p-15">
-                <h4 className="h4 mb-4">Photo editing</h4>
+                <h4 className="h4 mb-4">Visualize Your Data</h4>
                 <p className="body-2 mb-[3rem] text-n-3">
-                  Automatically enhance your photos using our AI app&apos;s
-                  photo editing feature. Try it now!
+                  Aquaware provides intuitive charts and graphs to help you
+                  quickly understand your water data.
                 </p>
               </div>
-
-              <PhotoChatMessage />
             </div>
 
-            <div className="p-4 bg-n-7 rounded-3xl overflow-hidden lg:min-h-[46rem]">
+            {/* Third Tile: Advanced Features */}
+            <div className="p-4 bg-n-8 rounded-3xl overflow-hidden lg:min-h-[46rem] border border-n-1/10">
               <div className="py-12 px-4 xl:px-8">
-                <h4 className="h4 mb-4">Video generation</h4>
+                <h4 className="h4 mb-4">Advanced Features</h4>
                 <p className="body-2 mb-[2rem] text-n-3">
-                  The world’s most powerful AI photo and video art generation
-                  engine. What will you create?
+                  Unlock advanced features like AI-driven predictions, custom
+                  alerts, and public water data integration.
                 </p>
-
-                <ul className="flex items-center justify-between">
-                  {aquawareServicesIcons.map((item, index) => (
-                    <li
-                      key={index}
-                      className={`rounded-2xl flex items-center justify-center ${
-                        index === 2
-                          ? "w-[3rem] h-[3rem] p-0.25 bg-conic-gradient md:w-[4.5rem] md:h-[4.5rem]"
-                          : "flex w-10 h-10 bg-n-6 md:w-15 md:h-15"
-                      }`}
-                    >
-                      <div
-                        className={
-                          index === 2
-                            ? "flex items-center justify-center w-full h-full bg-n-7 rounded-[1rem]"
-                            : ""
-                        }
-                      >
-                        <img src={item} width={24} height={24} alt={item} />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
               </div>
 
-              <div className="relative h-[20rem] bg-n-8 rounded-xl overflow-hidden md:h-[25rem]">
+              <div className="relative h-[20rem] rounded-xl overflow-hidden md:h-[25rem]">
                 <img
                   src={service3}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover opacity-20"
                   width={520}
                   height={400}
-                  alt="Scary robot"
+                  alt="Advanced features"
                 />
 
                 <VideoChatMessage />
-                <VideoBar />
               </div>
             </div>
           </div>
