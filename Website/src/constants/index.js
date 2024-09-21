@@ -14,9 +14,6 @@ import {
   framer,
   homeSmile,
   instagram,
-  notification2,
-  notification3,
-  notification4,
   notion,
   photoshop,
   plusSquare,
@@ -44,34 +41,44 @@ export const navigation = [
   },
   {
     id: "1",
-    title: "Pricing",
-    url: "#pricing",
+    title: "How it works",
+    url: "#how-to-use",
   },
   {
     id: "2",
-    title: "How to use",
-    url: "#how-to-use",
+    title: "Pricing",
+    url: "#pricing",
   },
   {
     id: "3",
     title: "Roadmap",
     url: "#roadmap",
   },
+  {
+    id: "4",
+    title: "Create Account",
+    url: "#signup",
+    onlyMobile: true,
+  },
+  {
+    id: "5",
+    title: "Login",
+    url: "#login",
+    onlyMobile: true,
+  },
 ];
 
 export const heroIcons = [homeSmile, file02, searchMd, plusSquare];
 
-export const notificationImages = [notification4, notification3, notification2];
-
 export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
 
-export const brainwaveServices = [
-  "Photo generating",
-  "Photo enhance",
-  "Seamless Integration",
+export const aquawareServices = [
+  "Water Value Monitoring",
+  "AI-Powered Insights",
+  "Seamless Data Visualization",
 ];
 
-export const brainwaveServicesIcons = [
+export const aquawareServicesIcons = [
   recording03,
   recording01,
   disc02,
@@ -82,55 +89,55 @@ export const brainwaveServicesIcons = [
 export const roadmap = [
   {
     id: "0",
-    title: "Voice recognition",
-    text: "Enable the chatbot to understand and respond to voice commands, making it easier for users to interact with the app hands-free.",
-    date: "May 2023",
+    title: "Water Quality Monitoring",
+    text: "Enable users to monitor real-time water quality values such as pH, temperature, and salinity for their aquariums or natural bodies of water.",
+    date: "July 2023",
     status: "done",
     imageUrl: roadmap1,
     colorful: true,
   },
   {
     id: "1",
-    title: "Gamification",
-    text: "Add game-like elements, such as badges or leaderboards, to incentivize users to engage with the chatbot more frequently.",
-    date: "May 2023",
+    title: "AI-Powered Analysis",
+    text: "Introduce AI-driven insights to predict water quality trends and suggest improvements.",
+    date: "August 2023",
     status: "progress",
     imageUrl: roadmap2,
   },
   {
     id: "2",
-    title: "Chatbot customization",
-    text: "Allow users to customize the chatbot's appearance and behavior, making it more engaging and fun to interact with.",
-    date: "May 2023",
-    status: "done",
+    title: "Public Water Data Access",
+    text: "Allow users to view water quality data from nearby public lakes and reservoirs, increasing community awareness and engagement.",
+    date: "October 2023",
+    status: "progress",
     imageUrl: roadmap3,
   },
   {
     id: "3",
-    title: "Integration with APIs",
-    text: "Allow the chatbot to access external data sources, such as weather APIs or news APIs, to provide more relevant recommendations.",
-    date: "May 2023",
-    status: "progress",
+    title: "Advanced Data Visualization",
+    text: "Offer advanced charts and visual tools for users to track and compare historical water data.",
+    date: "November 2023",
+    status: "planned",
     imageUrl: roadmap4,
   },
 ];
 
 export const collabText =
-  "With smart automation and top-notch security, it's the perfect solution for teams looking to work smarter.";
+  "Aquaware provides seamless water monitoring with real-time data, ensuring your aquariums and natural water bodies remain healthy and balanced.";
 
 export const collabContent = [
   {
     id: "0",
-    title: "Seamless Integration",
+    title: "Real-Time Monitoring",
     text: collabText,
   },
   {
     id: "1",
-    title: "Smart Automation",
+    title: "AI-Powered Insights",
   },
   {
     id: "2",
-    title: "Top-notch Security",
+    title: "Advanced Data Visualization",
   },
 ];
 
@@ -197,34 +204,36 @@ export const pricing = [
   {
     id: "0",
     title: "Basic",
-    description: "AI chatbot, personalized recommendations",
+    description: "Monitor 1 water value, free for personal use",
     price: "0",
     features: [
-      "An AI chatbot that can understand your queries",
-      "Personalized recommendations based on your preferences",
-      "Ability to explore the app and its features without any cost",
+      "Monitor one water parameter (e.g., pH or temperature)",
+      "Basic water quality tracking",
+      "Access to real-time data visualization",
     ],
   },
   {
     id: "1",
-    title: "Premium",
-    description: "Advanced AI chatbot, priority support, analytics dashboard",
+    title: "Advanced",
+    description:
+      "Monitor multiple water values, AI insights, advanced visualizations",
     price: "9.99",
     features: [
-      "An advanced AI chatbot that can understand complex queries",
-      "An analytics dashboard to track your conversations",
-      "Priority support to solve issues quickly",
+      "Monitor multiple water parameters",
+      "AI-powered insights for trend analysis",
+      "Advanced visual tools for data tracking",
     ],
   },
   {
     id: "2",
     title: "Enterprise",
-    description: "Custom AI chatbot, advanced analytics, dedicated account",
+    description:
+      "Custom monitoring solutions for large aquariums or public water bodies",
     price: null,
     features: [
-      "An AI chatbot that can understand your queries",
-      "Personalized recommendations based on your preferences",
-      "Ability to explore the app and its features without any cost",
+      "Custom water quality monitoring",
+      "Dedicated support and tailored features",
+      "Historical data access and AI insights",
     ],
   },
 ];
@@ -232,53 +241,37 @@ export const pricing = [
 export const benefits = [
   {
     id: "0",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
-    backgroundUrl: "assets/benefits/card-1.svg",
+    title: "Monitor Your Water",
+    text: "Track essential water parameters like pH, temperature, and salinity in real-time.",
+    backgroundUrl: "./src/assets/benefits/card-1.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
   },
   {
     id: "1",
-    title: "Improve everyday",
-    text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
-    backgroundUrl: "assets/benefits/card-2.svg",
+    title: "AI-Powered Insights",
+    text: "Leverage AI to detect trends and offer suggestions to improve water quality.",
+    backgroundUrl: "./src/assets/benefits/card-2.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
     light: true,
   },
   {
     id: "2",
-    title: "Connect everywhere",
-    text: "Connect with the AI chatbot from anywhere, on any device, making it more accessible and convenient.",
-    backgroundUrl: "assets/benefits/card-3.svg",
+    title: "Connect to Public Data",
+    text: "Access water quality data from local lakes, rivers, or public aquariums.",
+    backgroundUrl: "./src/assets/benefits/card-3.svg",
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,
   },
   {
     id: "3",
-    title: "Fast responding",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
-    backgroundUrl: "assets/benefits/card-4.svg",
+    title: "Easy Data Visualization",
+    text: "Get clear, user-friendly visualizations of your water data for quick analysis.",
+    backgroundUrl: "./src/assets/benefits/card-4.svg",
     iconUrl: benefitIcon4,
     imageUrl: benefitImage2,
     light: true,
-  },
-  {
-    id: "4",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
-    backgroundUrl: "assets/benefits/card-5.svg",
-    iconUrl: benefitIcon1,
-    imageUrl: benefitImage2,
-  },
-  {
-    id: "5",
-    title: "Improve everyday",
-    text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
-    backgroundUrl: "assets/benefits/card-6.svg",
-    iconUrl: benefitIcon2,
-    imageUrl: benefitImage2,
   },
 ];
 
