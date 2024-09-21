@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTemperatureThreeQuarters } from "@fortawesome/free-solid-svg-icons";
 
+import { faFish } from "@fortawesome/free-solid-svg-icons";
 const Notification = ({ className, title }) => {
   return (
     <div

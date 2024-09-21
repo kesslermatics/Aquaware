@@ -1,8 +1,11 @@
+import { faTv } from "@fortawesome/free-solid-svg-icons";
+import { faCode } from "@fortawesome/free-solid-svg-icons";
+import { faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { faRobot } from "@fortawesome/free-solid-svg-icons";
+import { faWater } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
+
 import {
-  benefitIcon1,
-  benefitIcon2,
-  benefitIcon3,
-  benefitIcon4,
   benefitImage2,
   chromecast,
   disc02,
@@ -244,34 +247,51 @@ export const benefits = [
     title: "Monitor Your Water",
     text: "Track essential water parameters like pH, temperature, and salinity in real-time.",
     backgroundUrl: "./src/assets/benefits/card-1.svg",
-    iconUrl: benefitIcon1,
+    iconUrl: faTv,
     imageUrl: benefitImage2,
   },
   {
     id: "1",
-    title: "AI-Powered Insights",
-    text: "Leverage AI to detect trends and offer suggestions to improve water quality.",
+    title: "Easy API Documentation",
+    text: "Integrate your own systems seamlessly with our easy-to-use API and detailed documentation.",
     backgroundUrl: "./src/assets/benefits/card-2.svg",
-    iconUrl: benefitIcon2,
+    iconUrl: faCode,
     imageUrl: benefitImage2,
     light: true,
   },
   {
     id: "2",
-    title: "Connect to Public Data",
-    text: "Access water quality data from local lakes, rivers, or public aquariums.",
+    title: "Intuitive Data Visualization",
+    text: "Visualize your water data with clear and customizable charts for quick insights.",
     backgroundUrl: "./src/assets/benefits/card-3.svg",
-    iconUrl: benefitIcon3,
+    iconUrl: faChartLine,
     imageUrl: benefitImage2,
   },
   {
     id: "3",
-    title: "Easy Data Visualization",
-    text: "Get clear, user-friendly visualizations of your water data for quick analysis.",
-    backgroundUrl: "./src/assets/benefits/card-4.svg",
-    iconUrl: benefitIcon4,
+    title: "Learn More About Water Parameters",
+    text: "Discover why monitoring water parameters is crucial for maintaining aquatic health.",
+    backgroundUrl: "./src/assets/benefits/card-6.svg",
+    iconUrl: faBookOpen,
     imageUrl: benefitImage2,
     light: true,
+  },
+  {
+    id: "4",
+    title: "AI-Powered Water Parameter Prediction (Coming Soon)",
+    text: "Use AI to predict and forecast water parameter changes for proactive adjustments.",
+    backgroundUrl: "./src/assets/benefits/card-4.svg",
+    iconUrl: faRobot,
+    imageUrl: benefitImage2,
+    light: true,
+  },
+  {
+    id: "5",
+    title: "See Local Public Lakes and Aquariums (Coming Soon)",
+    text: "Explore water quality data from nearby lakes and public aquariums in your area.",
+    backgroundUrl: "./src/assets/benefits/card-5.svg",
+    iconUrl: faWater,
+    imageUrl: benefitImage2,
   },
 ];
 

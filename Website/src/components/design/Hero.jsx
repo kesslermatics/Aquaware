@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { MouseParallax } from "react-just-parallax";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFish, faFishFins, faOtter } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFish,
+  faFishFins,
+  faOtter,
+  faClover,
+  faShrimp,
+} from "@fortawesome/free-solid-svg-icons";
 
 import PlusSvg from "../../assets/svg/PlusSvg";
 
@@ -100,9 +106,9 @@ export const BackgroundCircles = ({ parallaxRef }) => {
 
         <div className="absolute bottom-1/2 left-1/2 w-0.25 h-1/2 origin-bottom -rotate-[85deg]">
           <FontAwesomeIcon
-            icon={faFish}
+            icon={faClover}
             size="4x"
-            className={`-ml-3 -mt-3 text-[#1A1A32] transition-transform duration-500 ease-out ${
+            className={`-ml-3 -mt-3 text-[#B9AEDF] transition-transform duration-500 ease-out ${
               mounted
                 ? "translate-y-0 opacity-[.4]"
                 : "translate-y-10 opacity-0"
@@ -112,7 +118,7 @@ export const BackgroundCircles = ({ parallaxRef }) => {
 
         <div className="absolute bottom-1/2 left-1/2 w-0.25 h-1/2 origin-bottom rotate-[70deg]">
           <FontAwesomeIcon
-            icon={faFishFins}
+            icon={faShrimp}
             size="4x"
             className={`-ml-3 -mt-3 text-[#88E5BE] transition-transform duration-500 ease-out ${
               mounted
