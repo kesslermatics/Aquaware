@@ -14,3 +14,4 @@ App/upload-keystore.jks
 /Backend/aquaware/__pycache__
 /Backend/frontend/__pycache__
 /Backend/frontend/migrations
+/Backend/staticfiles
