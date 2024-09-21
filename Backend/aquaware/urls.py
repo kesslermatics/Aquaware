@@ -23,8 +23,6 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from django.conf import settings
 
-from aquaware import views
-
 schema_view = get_schema_view(
    openapi.Info(
       title="Aquaware API",
@@ -41,7 +39,6 @@ urlpatterns = [
     path("api/users/", include('users.urls')),
     path("api/environments/", include('environments.urls')),
     path("api/measurements/", include('water.urls')),
-    path("", views.index, name='index'),
 ]
 
 if settings.DEBUG:
