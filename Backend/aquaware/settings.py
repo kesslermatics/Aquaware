@@ -31,10 +31,10 @@ SECURE_SSL_REDIRECT = False
 
 CSRF_TRUSTED_ORIGINS = [
     'https://aquaware-production.up.railway.app',
-    'https://aquaware.kesslermatics.com',
+    'https://dev.aquaware.cloud',
 ]
 
-ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1', 'aquaware.kesslermatics.com']
+ALLOWED_HOSTS = ['aquaware-production.up.railway.app', 'localhost', '127.0.0.1', 'dev.aquaware.cloud']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -56,7 +56,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, "frontend-react", "build")
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -80,7 +79,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     "django.contrib.staticfiles",
-    'whitenoise.runserver_nostatic',
     'rest_framework',
     'rest_framework_swagger',
     #'rest_framework.authtoken',
@@ -105,11 +103,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'request_logging.middleware.LoggingMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'middleware.logging_middleware.APILoggingMiddleware',
 ]
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'aquaware.urls'
 
@@ -172,5 +167,5 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend-react", "build", "static"),
+    os.path.join(BASE_DIR, "static"),
 ]

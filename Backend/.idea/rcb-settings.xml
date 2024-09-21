@@ -5,7 +5,7 @@
       <DevServerState>
         <option name="packageJsonPath" value="$PROJECT_DIR$/frontend-react/package.json" />
         <option name="scriptName" value="start" />
-        <option name="url" value="http://127.0.0.1:8000" />
+        <option name="url" value="http://localhost:3000" />
       </DevServerState>
     </option>
   </component>
