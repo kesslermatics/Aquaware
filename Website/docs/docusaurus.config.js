@@ -4,7 +4,7 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
-import { themes as prismThemes } from "prism-react-renderer";
+import tailwindPlugin from "./plugins/tailwind-config.cjs";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -28,6 +28,8 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
+
+  plugins: [tailwindPlugin],
 
   presets: [
     [
@@ -68,13 +70,16 @@ const config = {
         respectPrefersColorScheme: false,
       },
       navbar: {
-        title: "Aquaware API Documentation",
+        title: "Aquaware Documentation",
         hideOnScroll: true,
-      },
-
-      prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
+        items: [
+          {
+            type: "docSidebar",
+            sidebarId: "tutorialSidebar",
+            position: "left",
+            label: "Getting Started",
+          },
+        ],
       },
     }),
 };
