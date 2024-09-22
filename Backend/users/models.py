@@ -1,6 +1,27 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
 
+
+class SubscriptionTier(models.Model):
+    HOBBY = 'hobby'
+    ADVANCED = 'advanced'
+    BUSINESS = 'business'
+
+    TIER_CHOICES = [
+        (HOBBY, 'Hobby'),
+        (ADVANCED, 'Advanced'),
+        (BUSINESS, 'Business'),
+    ]
+
+    name = models.CharField(max_length=50, choices=TIER_CHOICES, unique=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    description = models.TextField(blank=True)
+    upload_frequency_minutes = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.name
+
+
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -16,6 +37,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(email, password, **extra_fields)
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -41,6 +63,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     objects = UserManager()
+
+    subscription_tier = models.ForeignKey(SubscriptionTier, on_delete=models.CASCADE, null=False, blank=False,
+                                          related_name='users')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
