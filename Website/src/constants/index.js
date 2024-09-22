@@ -7,15 +7,10 @@ import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 import {
   benefitImage2,
-  discordBlack,
-  facebook,
   file02,
   homeSmile,
-  instagram,
   plusSquare,
   searchMd,
-  telegram,
-  twitter,
   yourlogo,
 } from "../../src/assets";
 
@@ -32,19 +27,24 @@ export const navigation = [
   },
   {
     id: "2",
-    title: "Pricing",
-    url: "#pricing",
+    title: "Api-Documentation",
+    url: "/documentation",
   },
   {
     id: "3",
-    title: "Create Account",
-    url: "#signup",
-    onlyMobile: true,
+    title: "Pricing",
+    url: "/pricing",
   },
   {
     id: "4",
+    title: "Create Account",
+    url: "/signup",
+    onlyMobile: true,
+  },
+  {
+    id: "5",
     title: "Login",
-    url: "#login",
+    url: "/login",
     onlyMobile: true,
   },
 ];
@@ -52,31 +52,6 @@ export const navigation = [
 export const heroIcons = [homeSmile, file02, searchMd, plusSquare];
 
 export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
-
-export const aquawareServices = [
-  "Water Value Monitoring",
-  "AI-Powered Insights",
-  "Seamless Data Visualization",
-];
-
-export const collabText =
-  "Aquaware provides seamless water monitoring with real-time data, ensuring your aquariums and natural water bodies remain healthy and balanced.";
-
-export const collabContent = [
-  {
-    id: "0",
-    title: "Real-Time Monitoring",
-    text: collabText,
-  },
-  {
-    id: "1",
-    title: "AI-Powered Insights",
-  },
-  {
-    id: "2",
-    title: "Advanced Data Visualization",
-  },
-];
 
 export const pricing = [
   {
@@ -174,38 +149,5 @@ export const benefits = [
     iconUrl: faWater,
     imageUrl: benefitImage2,
     light: true,
-  },
-];
-
-export const socials = [
-  {
-    id: "0",
-    title: "Discord",
-    iconUrl: discordBlack,
-    url: "#",
-  },
-  {
-    id: "1",
-    title: "Twitter",
-    iconUrl: twitter,
-    url: "#",
-  },
-  {
-    id: "2",
-    title: "Instagram",
-    iconUrl: instagram,
-    url: "#",
-  },
-  {
-    id: "3",
-    title: "Telegram",
-    iconUrl: telegram,
-    url: "#",
-  },
-  {
-    id: "4",
-    title: "Facebook",
-    iconUrl: facebook,
-    url: "#",
   },
 ];
