@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aquaware.cloud/blog"/>
     <subtitle>My Site Blog</subtitle>
-    <icon>https://aquaware.cloud/img/favicon.ico</icon>
+    <icon>https://aquaware.cloud/img/aquaware.png</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>
         <id>https://aquaware.cloud/blog/welcome</id>
