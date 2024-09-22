@@ -70,7 +70,7 @@ const config = {
         respectPrefersColorScheme: false,
       },
       navbar: {
-        title: "Aquaware Documentation",
+        title: "",
         hideOnScroll: true,
         items: [
           {

@@ -28,7 +28,7 @@ export const navigation = [
   {
     id: "2",
     title: "Api-Documentation",
-    url: "/docs",
+    url: "/docs/index.html",
   },
   {
     id: "3",
