@@ -37,7 +37,7 @@ const ApiInfo = () => {
             </li>
           </ul>
 
-          <Button href="/api-docs">Check the API Documentation</Button>
+          <Button href="/docs/index.html">Check the API Documentation</Button>
         </div>
 
         <div className="lg:ml-auto xl:w-[38rem] mt-4">

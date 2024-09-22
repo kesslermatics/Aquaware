@@ -37,6 +37,8 @@
     /* Grau mit leichtem Blau-Grün-Ton */
     --n-14: #031726;
     /* Marineblau */
+    --n-15: #575ab2;
+    --n-16: #9c9eed;
 
     /* Schriftarten */
     --font-sans: 'Sora', sans-serif;
@@ -78,9 +80,26 @@ body {
     background-color: var(--n-8);
 }
 
+b,
+strong {
+    color: var(--n-16);
+}
+
+a {
+    color: var(--n-15);
+}
+
 .navbar {
     background-color: var(--n-8);
     opacity: 0.;
+}
+
+.pagination-nav__link {
+    background-color: var(--n-6);
+}
+
+.card {
+    background-color: var(--n-6);
 }
 
 /* Beispiel für benutzerdefinierte Klassen mit Tailwind-Werten */

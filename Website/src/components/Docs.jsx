@@ -2,9 +2,14 @@ const Docs = () => {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <iframe
-        src="/docs/intro/index.html"
+        src="/docs/quick-start-guide/index.html"
         title="Docusaurus Documentation"
-        style={{ width: "100%", height: "100%", border: "none" }}
+        style={{
+          width: "100vw",
+          height: "100vh",
+          border: "none",
+          overflow: "hidden",
+        }}
       />
     </div>
   );
