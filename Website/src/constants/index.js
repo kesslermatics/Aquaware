@@ -18,22 +18,22 @@ export const navigation = [
   {
     id: "0",
     title: "Features",
-    url: "#features",
+    url: "/#features",
   },
   {
     id: "1",
     title: "How it works",
-    url: "#how-to-use",
+    url: "/#how-to-use",
   },
   {
     id: "2",
     title: "Api-Documentation",
-    url: "/documentation",
+    url: "/docs",
   },
   {
     id: "3",
     title: "Pricing",
-    url: "/pricing",
+    url: "/#pricing",
   },
   {
     id: "4",
