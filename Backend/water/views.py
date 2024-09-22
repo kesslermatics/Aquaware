@@ -49,12 +49,21 @@ def add_water_values(request, environment_id):
         return Response({'error': 'Environment not found or does not belong to this user.'},
                         status=status.HTTP_404_NOT_FOUND)
 
+        # Fetch the user's subscription tier upload frequency
+    user_subscription_tier = request.user.subscription_tier
+    if not user_subscription_tier:
+        return Response({'error': 'User does not have a valid subscription tier.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Use the upload frequency from the user's subscription tier
+    upload_frequency_minutes = user_subscription_tier.upload_frequency_minutes
+
     last_value = WaterValue.objects.filter(environment=environment).aggregate(last_measured_at=Max('added_at'))
     last_measured_at = last_value['last_measured_at']
 
-    if last_measured_at and last_measured_at >= timezone.now() - timedelta(minutes=29):
+    if last_measured_at and last_measured_at >= timezone.now() - timedelta(upload_frequency_minutes - 1):
         return Response(
-            {'error': 'You can only submit water values once every 30 minutes.'},
+            {'error': 'You can only submit water values once every ' + str(upload_frequency_minutes) + ' minutes.'},
             status=status.HTTP_429_TOO_MANY_REQUESTS
         )
 
@@ -352,14 +361,23 @@ def import_water_values(request, environment_id):
         # Ensure the environment exists and belongs to the user
         environment = Environment.objects.get(id=environment_id, user=request.user)
 
+        # Fetch the user's subscription tier upload frequency
+        user_subscription_tier = request.user.subscription_tier
+        if not user_subscription_tier:
+            return Response({'error': 'User does not have a valid subscription tier.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Use the upload frequency from the user's subscription tier
+        upload_frequency_minutes = user_subscription_tier.upload_frequency_minutes
+
         # Retrieve the most recent water value entry
         last_value = WaterValue.objects.filter(environment=environment).aggregate(last_measured_at=Max('added_at'))
         last_measured_at = last_value['last_measured_at']
 
         # Check if the last measured time is within the last 30 minutes
-        if last_measured_at and last_measured_at >= timezone.now() - timedelta(minutes=29):
+        if last_measured_at and last_measured_at >= timezone.now() - timedelta(upload_frequency_minutes - 1):
             return Response(
-                {'error': 'You can only submit water values once every 30 minutes.'},
+                {'error': 'You can only submit water values once every ' + str(upload_frequency_minutes) + ' minutes.'},
                 status=status.HTTP_429_TOO_MANY_REQUESTS
             )
 
