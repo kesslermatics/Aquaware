@@ -4,6 +4,8 @@ from django.contrib.auth.password_validation import validate_password
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from users.models import SubscriptionTier
+
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -27,7 +29,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
-            subscription_tier=1,
+            subscription_tier = SubscriptionTier.objects.get(id=1),
         )
         user.set_password(validated_data['password'])
         user.save()
