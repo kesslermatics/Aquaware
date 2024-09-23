@@ -15,3 +15,5 @@ App/upload-keystore.jks
 /Backend/frontend/__pycache__
 /Backend/frontend/migrations
 /Backend/staticfiles
+/Backend/static
+/Website/docs/.docusaurus
