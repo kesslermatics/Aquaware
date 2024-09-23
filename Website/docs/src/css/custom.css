@@ -86,7 +86,7 @@ strong {
 }
 
 a {
-    color: var(--n-15);
+    color: var(--n-2);
 }
 
 .navbar {
@@ -110,6 +110,15 @@ a {
     /* px-5 */
     padding-right: 1.25rem;
     /* px-5 */
+}
+
+.navbar-sidebar {
+    background-color: var(--n-8);
+}
+
+
+html[data-theme='dark'] {
+    --ifm-toc-border-color: var(--n-6);
 }
 
 .h1 {

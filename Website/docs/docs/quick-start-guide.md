@@ -32,7 +32,7 @@ Simply create your environment within the app, and you'll receive an **Environme
 ### Upload Your Water Values
 
 Using your Environment ID, you can now start uploading water values such as pH, temperature, or any other relevant parameters.
-Ready to get started? Follow the documentation to learn how to [Add Water Values](./add-water-values-).
+Ready to get started? Follow the documentation to learn how to [Add Water Values](./measurement-management/add_water_values).
 
 ## Need Help?
 
