@@ -4,6 +4,7 @@ class UserProfile {
   final String firstName;
   final String lastName;
   final DateTime dateJoined;
+  final int subscriptionTier;
 
   UserProfile({
     required this.id,
@@ -11,6 +12,7 @@ class UserProfile {
     required this.firstName,
     required this.lastName,
     required this.dateJoined,
+    required this.subscriptionTier,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class UserProfile {
       firstName: json['first_name'],
       lastName: json['last_name'],
       dateJoined: DateTime.parse(json['date_joined']),
+      subscriptionTier: json['subscription_tier_id'],
     );
   }
 

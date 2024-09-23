@@ -80,6 +80,12 @@ def add_water_values(request, environment_id):
 
 
 def check_alerts_and_notify(water_values):
+    user = water_values[0].environment.user
+
+    # Check if the user has the right subscription tier (2 = Advanced, 3 = Business)
+    if user.subscription_tier_id not in [2, 3]:
+        return
+
     for water_value in water_values:
         alert_settings = UserAlertSetting.objects.filter(
             environment=water_value.environment,
