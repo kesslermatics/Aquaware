@@ -91,7 +91,7 @@ a {
 
 .navbar {
     background-color: var(--n-8);
-    opacity: 0.;
+    margin-top: 15px;
 }
 
 .pagination-nav__link {
@@ -114,6 +114,7 @@ a {
 
 .navbar-sidebar {
     background-color: var(--n-8);
+    margin-top: 10px;
 }
 
 
