@@ -1,0 +1,26 @@
+{
+  "id": "tutorial-basics/login",
+  "title": "Login",
+  "description": "To access your Aquaware account, you can log in either through our website, the app or programmatically using our API. After logging in, you'll receive JWT tokens, which are crucial for future authorization.",
+  "source": "@site/docs/tutorial-basics/login.md",
+  "sourceDirName": "tutorial-basics",
+  "slug": "/tutorial-basics/login",
+  "permalink": "/docs/tutorial-basics/login",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Create an Account",
+    "permalink": "/docs/tutorial-basics/create-an-account"
+  },
+  "next": {
+    "title": "JWT-Tokens",
+    "permalink": "/docs/tutorial-basics/jwt-tokens"
+  }
+}

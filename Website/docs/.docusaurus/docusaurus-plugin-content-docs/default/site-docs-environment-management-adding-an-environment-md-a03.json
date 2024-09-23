@@ -1,0 +1,26 @@
+{
+  "id": "environment-management/adding-an-environment",
+  "title": "How to add an Environment",
+  "description": "Adding an environment in Aquaware is simple and can be done either via the Aquaware app or through our API.",
+  "source": "@site/docs/environment-management/adding-an-environment.md",
+  "sourceDirName": "environment-management",
+  "slug": "/environment-management/adding-an-environment",
+  "permalink": "/docs/environment-management/adding-an-environment",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Environments",
+    "permalink": "/docs/category/environments"
+  },
+  "next": {
+    "title": "Get All of My Environments",
+    "permalink": "/docs/environment-management/get-all-environments"
+  }
+}

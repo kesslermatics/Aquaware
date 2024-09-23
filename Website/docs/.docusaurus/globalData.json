@@ -1,0 +1,128 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "quick-start-guide",
+          "docs": [
+            {
+              "id": "environment-management/adding-an-environment",
+              "path": "/docs/environment-management/adding-an-environment",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "environment-management/delete-environment",
+              "path": "/docs/environment-management/delete-environment",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "environment-management/get-all-environments",
+              "path": "/docs/environment-management/get-all-environments",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "environment-management/get-public-environments",
+              "path": "/docs/environment-management/get-public-environments",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "environment-management/update-environment",
+              "path": "/docs/environment-management/update-environment",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/add_water_values",
+              "path": "/docs/measurement-management/add_water_values",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/export_water_values",
+              "path": "/docs/measurement-management/export_water_values",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/get_alert_settings",
+              "path": "/docs/measurement-management/get_alert_settings",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/get_all_values_from_parameter",
+              "path": "/docs/measurement-management/get_all_values_from_parameter",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/get_latest_from_all_parameters",
+              "path": "/docs/measurement-management/get_latest_from_all_parameters",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/get_total_entries",
+              "path": "/docs/measurement-management/get_total_entries",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/import_water_values",
+              "path": "/docs/measurement-management/import_water_values",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "measurement-management/save_alert_settings",
+              "path": "/docs/measurement-management/save_alert_settings",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "quick-start-guide",
+              "path": "/docs/quick-start-guide",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "user-management/create-an-account",
+              "path": "/docs/user-management/create-an-account",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "user-management/jwt-tokens",
+              "path": "/docs/user-management/jwt-tokens",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "user-management/login",
+              "path": "/docs/user-management/login",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "/category/user-management",
+              "path": "/docs/category/user-management",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "/category/environments",
+              "path": "/docs/category/environments",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "/category/measurements",
+              "path": "/docs/category/measurements",
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "tutorialSidebar": {
+              "link": {
+                "path": "/docs/quick-start-guide",
+                "label": "quick-start-guide"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

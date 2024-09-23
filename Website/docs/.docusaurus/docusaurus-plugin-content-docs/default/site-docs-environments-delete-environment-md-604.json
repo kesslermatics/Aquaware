@@ -1,0 +1,26 @@
+{
+  "id": "Environments/delete-environment",
+  "title": "Delete an Environment",
+  "description": "To delete an environment, you can use the following API endpoint:",
+  "source": "@site/docs/Environments/delete-environment.md",
+  "sourceDirName": "Environments",
+  "slug": "/Environments/delete-environment",
+  "permalink": "/docs/Environments/delete-environment",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Update My Environment",
+    "permalink": "/docs/Environments/update-environment"
+  },
+  "next": {
+    "title": "Get All Public Environments",
+    "permalink": "/docs/Environments/get-public-environments"
+  }
+}

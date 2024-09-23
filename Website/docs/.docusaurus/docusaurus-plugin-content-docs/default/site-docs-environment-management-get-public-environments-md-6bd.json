@@ -1,0 +1,26 @@
+{
+  "id": "environment-management/get-public-environments",
+  "title": "Get All Public Environments",
+  "description": "To retrieve a list of all publicly available environments, you can use the following API endpoint:",
+  "source": "@site/docs/environment-management/get-public-environments.md",
+  "sourceDirName": "environment-management",
+  "slug": "/environment-management/get-public-environments",
+  "permalink": "/docs/environment-management/get-public-environments",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Delete an Environment",
+    "permalink": "/docs/environment-management/delete-environment"
+  },
+  "next": {
+    "title": "Measurements",
+    "permalink": "/docs/category/measurements"
+  }
+}

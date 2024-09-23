@@ -1,0 +1,26 @@
+{
+  "id": "environment-management/update-environment",
+  "title": "Update My Environment",
+  "description": "To update an environment that you have previously created, you can use the following API endpoint:",
+  "source": "@site/docs/environment-management/update-environment.md",
+  "sourceDirName": "environment-management",
+  "slug": "/environment-management/update-environment",
+  "permalink": "/docs/environment-management/update-environment",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Get All of My Environments",
+    "permalink": "/docs/environment-management/get-all-environments"
+  },
+  "next": {
+    "title": "Delete an Environment",
+    "permalink": "/docs/environment-management/delete-environment"
+  }
+}

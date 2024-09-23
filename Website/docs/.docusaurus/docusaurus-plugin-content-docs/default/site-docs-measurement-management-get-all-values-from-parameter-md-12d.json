@@ -1,0 +1,26 @@
+{
+  "id": "measurement-management/get_all_values_from_parameter",
+  "title": "Get All Values From Parameter",
+  "description": "The Get All Values From Parameter endpoint allows you to retrieve all water values for a specific parameter in an environment. This is useful for monitoring trends over time, for example, checking how the pH level or temperature of the water has changed.",
+  "source": "@site/docs/measurement-management/get_all_values_from_parameter.md",
+  "sourceDirName": "measurement-management",
+  "slug": "/measurement-management/get_all_values_from_parameter",
+  "permalink": "/docs/measurement-management/get_all_values_from_parameter",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Add Water Values",
+    "permalink": "/docs/measurement-management/add_water_values"
+  },
+  "next": {
+    "title": "Get Total Entries for a Parameter",
+    "permalink": "/docs/measurement-management/get_total_entries"
+  }
+}

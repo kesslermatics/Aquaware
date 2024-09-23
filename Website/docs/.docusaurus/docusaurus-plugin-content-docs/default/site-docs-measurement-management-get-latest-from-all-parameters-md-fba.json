@@ -1,0 +1,26 @@
+{
+  "id": "measurement-management/get_latest_from_all_parameters",
+  "title": "Get Latest Values from All Parameters",
+  "description": "Endpoint",
+  "source": "@site/docs/measurement-management/get_latest_from_all_parameters.md",
+  "sourceDirName": "measurement-management",
+  "slug": "/measurement-management/get_latest_from_all_parameters",
+  "permalink": "/docs/measurement-management/get_latest_from_all_parameters",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Get Total Entries for a Parameter",
+    "permalink": "/docs/measurement-management/get_total_entries"
+  },
+  "next": {
+    "title": "Export Water Values",
+    "permalink": "/docs/measurement-management/export_water_values"
+  }
+}

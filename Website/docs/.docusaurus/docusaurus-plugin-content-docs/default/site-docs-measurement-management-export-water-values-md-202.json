@@ -1,0 +1,26 @@
+{
+  "id": "measurement-management/export_water_values",
+  "title": "Export Water Values",
+  "description": "Endpoint",
+  "source": "@site/docs/measurement-management/export_water_values.md",
+  "sourceDirName": "measurement-management",
+  "slug": "/measurement-management/export_water_values",
+  "permalink": "/docs/measurement-management/export_water_values",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Get Latest Values from All Parameters",
+    "permalink": "/docs/measurement-management/get_latest_from_all_parameters"
+  },
+  "next": {
+    "title": "Import Water Values",
+    "permalink": "/docs/measurement-management/import_water_values"
+  }
+}

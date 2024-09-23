@@ -1,0 +1,26 @@
+{
+  "id": "tutorial-basics/jwt-token",
+  "title": "jwt-token",
+  "description": "",
+  "source": "@site/docs/tutorial-basics/jwt-token.md",
+  "sourceDirName": "tutorial-basics",
+  "slug": "/tutorial-basics/jwt-token",
+  "permalink": "/docs/tutorial-basics/jwt-token",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Login",
+    "permalink": "/docs/tutorial-basics/login"
+  },
+  "next": {
+    "title": "Tutorial - Extras",
+    "permalink": "/docs/category/tutorial---extras"
+  }
+}

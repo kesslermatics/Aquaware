@@ -1,0 +1,22 @@
+{
+  "id": "measurement-management/get_alert_settings",
+  "title": "Get Alert Settings",
+  "description": "Alerts are only available in the Advanced or Business plan. You can retrieve the current alert threshold settings for any water parameter within your environment. Alerts will notify you via email when thresholds are crossed, sent to your registered email address.",
+  "source": "@site/docs/measurement-management/get_alert_settings.md",
+  "sourceDirName": "measurement-management",
+  "slug": "/measurement-management/get_alert_settings",
+  "permalink": "/docs/measurement-management/get_alert_settings",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 8,
+  "frontMatter": {
+    "sidebar_position": 8
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Save Alert Settings",
+    "permalink": "/docs/measurement-management/save_alert_settings"
+  }
+}

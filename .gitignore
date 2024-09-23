@@ -17,3 +17,5 @@ App/upload-keystore.jks
 /Backend/staticfiles
 /Backend/static
 /Website/docs/.docusaurus
+/Backend/aquaware/__pycache__
+/Backend/static

@@ -1,0 +1,26 @@
+{
+  "id": "User Management/jwt-tokens",
+  "title": "JWT-Tokens",
+  "description": "When you log into Aquaware, you receive JWT Tokens that are essential for authenticating and authorizing your requests to the API. JWT (JSON Web Token) is a secure, compact token format used to represent information between two parties.",
+  "source": "@site/docs/User Management/jwt-tokens.md",
+  "sourceDirName": "User Management",
+  "slug": "/User Management/jwt-tokens",
+  "permalink": "/docs/User Management/jwt-tokens",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Login",
+    "permalink": "/docs/User Management/login"
+  },
+  "next": {
+    "title": "Environments",
+    "permalink": "/docs/category/environments"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "measurement-management/get_total_entries",
+  "title": "Get Total Entries for a Parameter",
+  "description": "Endpoint",
+  "source": "@site/docs/measurement-management/get_total_entries.md",
+  "sourceDirName": "measurement-management",
+  "slug": "/measurement-management/get_total_entries",
+  "permalink": "/docs/measurement-management/get_total_entries",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Get All Values From Parameter",
+    "permalink": "/docs/measurement-management/get_all_values_from_parameter"
+  },
+  "next": {
+    "title": "Get Latest Values from All Parameters",
+    "permalink": "/docs/measurement-management/get_latest_from_all_parameters"
+  }
+}

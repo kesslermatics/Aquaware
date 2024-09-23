@@ -1,0 +1,26 @@
+{
+  "id": "measurement-management/save_alert_settings",
+  "title": "Save Alert Settings",
+  "description": "Alerts are only available in the Advanced or Business plan. You can set threshold alerts for your water parameters through the API or directly in the app. Once set, alerts will notify you via email when a water parameter exceeds the defined threshold. The emails are sent to the account's registered email address.",
+  "source": "@site/docs/measurement-management/save_alert_settings.md",
+  "sourceDirName": "measurement-management",
+  "slug": "/measurement-management/save_alert_settings",
+  "permalink": "/docs/measurement-management/save_alert_settings",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 7,
+  "frontMatter": {
+    "sidebar_position": 7
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Import Water Values",
+    "permalink": "/docs/measurement-management/import_water_values"
+  },
+  "next": {
+    "title": "Get Alert Settings",
+    "permalink": "/docs/measurement-management/get_alert_settings"
+  }
+}
