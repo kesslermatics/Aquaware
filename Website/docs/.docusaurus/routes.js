@@ -79,15 +79,15 @@ export default [
   },
   {
     path: '/docs',
-    component: ComponentCreator('/docs', '4ce'),
+    component: ComponentCreator('/docs', '05f'),
     routes: [
       {
         path: '/docs',
-        component: ComponentCreator('/docs', '952'),
+        component: ComponentCreator('/docs', '18b'),
         routes: [
           {
             path: '/docs',
-            component: ComponentCreator('/docs', 'fb9'),
+            component: ComponentCreator('/docs', 'f74'),
             routes: [
               {
                 path: '/docs/category/environments',
@@ -206,6 +206,12 @@ export default [
               {
                 path: '/docs/user-management/login',
                 component: ComponentCreator('/docs/user-management/login', '96b'),
+                exact: true,
+                sidebar: "tutorialSidebar"
+              },
+              {
+                path: '/docs/user-management/refresh-access-token',
+                component: ComponentCreator('/docs/user-management/refresh-access-token', '94b'),
                 exact: true,
                 sidebar: "tutorialSidebar"
               }

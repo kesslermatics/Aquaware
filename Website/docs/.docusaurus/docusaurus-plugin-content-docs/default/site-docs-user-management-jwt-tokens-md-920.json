@@ -20,7 +20,7 @@
     "permalink": "/docs/user-management/login"
   },
   "next": {
-    "title": "Environments",
-    "permalink": "/docs/category/environments"
+    "title": "Refresh Access Token",
+    "permalink": "/docs/user-management/refresh-access-token"
   }
 }
