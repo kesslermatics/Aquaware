@@ -206,17 +206,17 @@
     },
     "content": "393be207"
   },
-  "/docs-4ce": {
+  "/docs-05f": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "aba21aa0"
     }
   },
-  "/docs-952": {
+  "/docs-18b": {
     "__comp": "a7bd4aaa",
     "__props": "0058b4c6"
   },
-  "/docs-fb9": {
+  "/docs-f74": {
     "__comp": "a94703ab"
   },
   "/docs/category/environments-e65": {
@@ -298,6 +298,10 @@
   "/docs/user-management/login-96b": {
     "__comp": "17896441",
     "content": "4aec6b30"
+  },
+  "/docs/user-management/refresh-access-token-94b": {
+    "__comp": "17896441",
+    "content": "95cae0bc"
   },
   "/-2e1": {
     "__comp": "c4f5d8e4",

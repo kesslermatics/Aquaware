@@ -66,7 +66,7 @@ class UserService {
     }
   }
 
-  Future<UserProfile> getUserProfile() async {
+  Future<void> getUserProfile() async {
     final response = await makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(profileUrl),
@@ -77,7 +77,7 @@ class UserService {
     });
 
     if (response.statusCode == 200) {
-      return UserProfile.fromJson(jsonDecode(response.body));
+      UserProfile.setFromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to get user profile');
     }

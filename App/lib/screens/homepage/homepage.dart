@@ -1,5 +1,5 @@
-import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/models/environment.dart';
+import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/screens/about/about_screen.dart';
 import 'package:aquaware/screens/dashboard/details_screen.dart';
 import 'package:aquaware/screens/dashboard/dashboard_screen.dart';
@@ -21,7 +21,6 @@ class HomepageScreen extends StatefulWidget {
 class _HomepageScreenState extends State<HomepageScreen> {
   String? _error;
   bool _isLoading = true;
-  UserProfile? _profile;
   Environment? _selectedEnvironment;
   int _selectedIndex = 0;
   final UserService _userService = UserService();
@@ -34,9 +33,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   Future<void> _fetchUserProfile() async {
     try {
-      final profile = await _userService.getUserProfile();
+      await _userService.getUserProfile();
       setState(() {
-        _profile = profile;
         _isLoading = false;
       });
     } catch (e) {
@@ -103,11 +101,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> pages = _profile != null
+    List<Widget> pages = !_isLoading
         ? [
-            DashboardScreen(
-                profile: _profile!, onEnvironmentTapped: _onEnvironmentTapped),
-            ProfileScreen(profile: _profile!),
+            DashboardScreen(onEnvironmentTapped: _onEnvironmentTapped),
+            const ProfileScreen(),
             const PrivacyScreen(),
             const FeedbackScreen(),
             const AboutScreen(),
@@ -127,7 +124,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     ];
 
     return Scaffold(
-      drawer: MenuDrawer(_profile, _onItemTapped),
+      drawer: MenuDrawer(_onItemTapped),
       appBar: AppBar(
         title: Text(_selectedEnvironment != null
             ? _selectedEnvironment!.name

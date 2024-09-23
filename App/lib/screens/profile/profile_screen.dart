@@ -5,9 +5,7 @@ import 'package:aquaware/services/user_service.dart';
 import 'package:aquaware/models/user_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final UserProfile profile;
-
-  const ProfileScreen({super.key, required this.profile});
+  const ProfileScreen({super.key});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -21,8 +19,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _firstNameController =
-        TextEditingController(text: widget.profile.firstName);
-    _lastNameController = TextEditingController(text: widget.profile.lastName);
+        TextEditingController(text: UserProfile.getInstance().firstName);
+    _lastNameController =
+        TextEditingController(text: UserProfile.getInstance().lastName);
   }
 
   @override
@@ -53,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _changePassword() async {
     final errorMessage =
-        await UserService().forgotPassword(widget.profile.email);
+        await UserService().forgotPassword(UserProfile.getInstance().email);
     if (errorMessage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Password reset email sent')),
@@ -82,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Email: ${widget.profile.email}',
+            Text('Email: ${UserProfile.getInstance().email}',
                 style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 16),
             TextField(

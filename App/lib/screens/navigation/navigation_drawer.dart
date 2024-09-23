@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MenuDrawer extends StatelessWidget {
-  final UserProfile? profile;
   final Function(int) onItemTapped;
 
-  const MenuDrawer(this.profile, this.onItemTapped, {super.key});
+  const MenuDrawer(this.onItemTapped, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +35,14 @@ class MenuDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              profile != null
-                  ? '${profile!.firstName} ${profile!.lastName}'
-                  : 'Guest',
+              '${UserProfile.getInstance().firstName} ${UserProfile.getInstance().lastName}',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20,
               ),
             ),
             Text(
-              profile != null ? profile!.email : '',
+              UserProfile.getInstance().email,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,

@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 class DashboardScreen extends StatefulWidget {
-  final UserProfile profile;
   final Function(Environment) onEnvironmentTapped;
 
-  const DashboardScreen(
-      {required this.profile, required this.onEnvironmentTapped, super.key});
+  const DashboardScreen({required this.onEnvironmentTapped, super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -94,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('Welcome, ${widget.profile.firstName}!',
+              child: Text('Welcome, ${UserProfile.getInstance().firstName}!',
                   style: const TextStyle(fontSize: 24)),
             ),
           ),

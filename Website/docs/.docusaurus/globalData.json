@@ -96,6 +96,11 @@
               "sidebar": "tutorialSidebar"
             },
             {
+              "id": "user-management/refresh-access-token",
+              "path": "/docs/user-management/refresh-access-token",
+              "sidebar": "tutorialSidebar"
+            },
+            {
               "id": "/category/user-management",
               "path": "/docs/category/user-management",
               "sidebar": "tutorialSidebar"
