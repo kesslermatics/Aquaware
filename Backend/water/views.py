@@ -1,5 +1,6 @@
 import csv
 import io
+from collections import defaultdict
 from datetime import timedelta, datetime
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -61,7 +62,9 @@ def add_water_values(request, environment_id):
     last_value = WaterValue.objects.filter(environment=environment).aggregate(last_measured_at=Max('added_at'))
     last_measured_at = last_value['last_measured_at']
 
-    if last_measured_at and last_measured_at >= timezone.now() - timedelta(upload_frequency_minutes - 1):
+    print(timezone.now() - timedelta(upload_frequency_minutes - 1))
+
+    if last_measured_at and last_measured_at >= timezone.now() - timedelta(minutes=(upload_frequency_minutes - 1)):
         return Response(
             {'error': 'You can only submit water values once every ' + str(upload_frequency_minutes) + ' minutes.'},
             status=status.HTTP_429_TOO_MANY_REQUESTS
@@ -315,23 +318,30 @@ def export_water_values(request, environment_id):
         header = ['Measured At'] + parameters + [f"{param}_unit" for param in parameters]
         writer.writerow(header)
 
-        # Group water values by 'measured_at'
-        measurements = {}
+        # Group water values by 5-minute intervals
+        measurements = defaultdict(lambda: {param: [] for param in parameters})
         for value in water_values:
-            measured_at = timezone.localtime(value.measured_at).strftime('%Y-%m-%d %H:%M:%S')
-            if measured_at not in measurements:
-                measurements[measured_at] = {param: '' for param in parameters}  # Initialize with empty values
-                measurements[measured_at]['units'] = {param: '' for param in parameters}
-            measurements[measured_at][value.parameter.name] = value.value
-            measurements[measured_at]['units'][value.parameter.name] = value.parameter.unit
+            # Round the measured_at time to the nearest 5 minutes
+            measured_at = timezone.localtime(value.measured_at)
+            rounded_time = measured_at - timedelta(minutes=measured_at.minute % 5, seconds=measured_at.second, microseconds=measured_at.microsecond)
+            rounded_time_str = rounded_time.strftime('%Y-%m-%d %H:%M:%S')
 
-        # Write the data rows
-        for measured_at, values in measurements.items():
-            row = [measured_at]
+            # Append the value to the corresponding parameter list for that time interval
+            measurements[rounded_time_str][value.parameter.name].append(value.value)
+            measurements[rounded_time_str][f"{value.parameter.name}_unit"] = value.parameter.unit
+
+        # Calculate averages for each 5-minute interval and write to CSV
+        for rounded_time, values in measurements.items():
+            row = [rounded_time]
             for param in parameters:
-                row.append(values.get(param, ''))  # Add the value
+                if values[param]:
+                    # Calculate the average value for this parameter in the 5-minute window
+                    avg_value = sum(values[param]) / len(values[param])
+                    row.append(avg_value)
+                else:
+                    row.append('')
             for param in parameters:
-                row.append(values['units'].get(param, ''))  # Add the unit
+                row.append(values[f"{param}_unit"])
             writer.writerow(row)
 
         # Ensure UTF-8 encoding by encoding the StringIO content

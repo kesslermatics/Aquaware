@@ -9,7 +9,7 @@ import { useState } from "react";
 import aquawareLogo from "../assets/aquaware.png";
 
 const Header = () => {
-  const pathname = useLocation();
+  const { pathname, hash } = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
 
   const toggleNavigation = () => {
@@ -36,7 +36,7 @@ const Header = () => {
       }`}
     >
       <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
-        <a className="block w-[12rem] xl:mr-8 flex items-center" href="#hero">
+        <a className="block w-[12rem] xl:mr-8 flex items-center" href="/#hero">
           <img src={aquawareLogo} className="h-10" alt="Aquaware Logo" />
           <p className="m-4">Aquaware</p>
         </a>
@@ -55,7 +55,7 @@ const Header = () => {
                 className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${
                   item.onlyMobile ? "lg:hidden" : ""
                 } px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
-                  item.url === pathname.hash
+                  item.url === pathname + hash
                     ? "z-2 lg:text-n-1"
                     : "lg:text-n-1/50"
                 } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
