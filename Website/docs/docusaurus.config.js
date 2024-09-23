@@ -8,8 +8,8 @@ import tailwindPlugin from "./plugins/tailwind-config.cjs";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
+  title: "Aquaware API Documentation",
+  tagline: "Enjoy the easy to read documentation to get started quickly",
   favicon: "img/aquaware.png",
 
   // Set the production url of your site here
@@ -70,8 +70,7 @@ const config = {
         respectPrefersColorScheme: false,
       },
       navbar: {
-        title: "",
-        hideOnScroll: true,
+        title: "Aquaware Api Documentation",
         items: [
           {
             type: "docSidebar",

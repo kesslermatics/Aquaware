@@ -4,8 +4,8 @@
  * Modify the docusaurus.config.js file at your site's root instead.
  */
 export default {
-  "title": "My Site",
-  "tagline": "Dinosaurs are cool",
+  "title": "Aquaware API Documentation",
+  "tagline": "Enjoy the easy to read documentation to get started quickly",
   "favicon": "img/aquaware.png",
   "url": "https://aquaware.cloud",
   "baseUrl": "/",
@@ -56,8 +56,7 @@ export default {
       "respectPrefersColorScheme": false
     },
     "navbar": {
-      "title": "",
-      "hideOnScroll": true,
+      "title": "Aquaware Api Documentation",
       "items": [
         {
           "type": "docSidebar",
@@ -65,7 +64,8 @@ export default {
           "position": "left",
           "label": "Getting Started"
         }
-      ]
+      ],
+      "hideOnScroll": false
     },
     "docs": {
       "versionPersistence": "localStorage",
