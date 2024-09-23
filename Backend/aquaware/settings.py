@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-FRONTEND_URL = 'https://aquaware.kesslermatics.com'
+FRONTEND_URL = 'https://aquaware.cloud'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
