@@ -15,7 +15,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'password2', 'first_name', 'last_name']
+        fields = ['email', 'password', 'password2', 'first_name', 'last_name', "subscription_tier"]
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -26,7 +26,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User(
             email=validated_data['email'],
             first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            last_name=validated_data.get('last_name', ''),
+            subscription_tier=1,
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -39,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'date_joined']
+        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'date_joined', "subscription_tier"]
         read_only_fields = ['id', 'date_joined']
 
     def validate(self, attrs):
@@ -50,7 +51,8 @@ class UserSerializer(serializers.ModelSerializer):
         user = User(
             email=validated_data['email'],
             first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            last_name=validated_data.get('last_name', ''),
+            subscription_tier=1,
         )
         user.set_password(validated_data['password'])
         user.save()

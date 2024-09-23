@@ -19,3 +19,4 @@ App/upload-keystore.jks
 /Website/docs/.docusaurus
 /Backend/aquaware/__pycache__
 /Backend/static
+/Backend/users/__pycache__
