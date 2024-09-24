@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 import Cookies from "js-cookie";
 import backgroundVideo from "../assets/bg-aquarium2.mp4";
 
@@ -7,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // Handle regular login
   const handleLogin = async () => {
     const response = await fetch(
       "https://dev.aquaware.cloud/api/users/login/",
@@ -26,12 +28,40 @@ const Login = () => {
     const data = await response.json();
 
     if (response.ok) {
-      // Save JWT token to cookie
-      Cookies.set("access_token", data.access, { expires: 1 }); // expires in 1 day
-      Cookies.set("refresh_token", data.refresh, { expires: 7 }); // refresh token, 7 days
+      Cookies.set("access_token", data.access, { expires: 1 });
+      Cookies.set("refresh_token", data.refresh, { expires: 7 });
       window.location.href = "/dashboard"; // Redirect after successful login
     } else {
       setError("Invalid login credentials");
+    }
+  };
+
+  // Handle Google login
+  const handleGoogleLogin = async (tokenResponse) => {
+    const token = tokenResponse.credential;
+
+    const response = await fetch(
+      "https://dev.aquaware.cloud/api/users/google-login/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+        }),
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      Cookies.set("access_token", data.access, { expires: 1 });
+      Cookies.set("refresh_token", data.refresh, { expires: 7 });
+      window.location.href = "/dashboard"; // Redirect after successful Google login
+    } else {
+      setError(data.error || "Google login failed");
     }
   };
 
@@ -83,16 +113,15 @@ const Login = () => {
           <p className="absolute bg-white px-4 text-gray-500">or</p>
         </div>
 
-        <button className="w-full flex items-center justify-center bg-gray-100 text-n-8 font-semibold border border-gray-400 rounded-md py-3 mb-6">
-          <img
-            src="https://img.icons8.com/fluency/48/google-logo.png"
-            alt="Google Icon"
-            className="w-6 h-6 mr-2"
+        <div className="w-full flex items-center justify-center text-n-8 font-semibold rounded-md py-3 mb-6">
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={() => setError("Google login failed")}
+            useOneTap
           />
-          Sign In With Google
-        </button>
+        </div>
 
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-gray-600 mt-6">
           Don’t have an account?{" "}
           <a
             className="text-blue-500 font-semibold cursor-pointer"

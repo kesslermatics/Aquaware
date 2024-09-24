@@ -20,3 +20,4 @@ App/upload-keystore.jks
 /Backend/aquaware/__pycache__
 /Backend/static
 /Backend/users/__pycache__
+App/android/release-signing.properties

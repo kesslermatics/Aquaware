@@ -61,7 +61,7 @@ class MenuDrawer extends StatelessWidget {
         runSpacing: 16,
         children: [
           ListTile(
-            leading: const Icon(FontAwesomeIcons.gauge),
+            leading: const Icon(FontAwesomeIcons.chartLine),
             title: const Text("Dashboard"),
             onTap: () => onItemTapped(0),
           ),
@@ -83,7 +83,7 @@ class MenuDrawer extends StatelessWidget {
             onTap: () => onItemTapped(3),
           ),
           ListTile(
-            leading: const Icon(FontAwesomeIcons.circleInfo),
+            leading: const Icon(FontAwesomeIcons.infoCircle),
             title: const Text("About"),
             onTap: () => onItemTapped(4),
           ),

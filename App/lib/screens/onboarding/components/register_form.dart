@@ -3,7 +3,10 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive/rive.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -32,6 +35,9 @@ class _RegisterFormState extends State<RegisterForm> {
   late SMITrigger confetti;
 
   final UserService _userService = UserService();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      clientId:
+          "191107134677-01dnm67luaua0bpalbkia3jucktqggoi.apps.googleusercontent.com");
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -59,7 +65,7 @@ class _RegisterFormState extends State<RegisterForm> {
         check.fire();
       });
 
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         setState(() {
           isShowLoading = false;
           confetti.fire();
@@ -79,15 +85,62 @@ class _RegisterFormState extends State<RegisterForm> {
     }
   }
 
+  Future<void> _googleSignup() async {
+    setState(() {
+      isShowLoading = true;
+      isShowConfetti = true;
+    });
+
+    try {
+      await _googleSignIn.signOut();
+      GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        return; // The user canceled the sign-in
+      }
+
+      final googleAuth = await googleUser.authentication;
+      final googleToken = googleAuth.idToken;
+
+      // Send the token to your backend
+      final errorMessage = await _userService.googleSignup(googleToken);
+
+      if (errorMessage == null) {
+        setState(() {
+          check.fire();
+        });
+
+        Future.delayed(const Duration(seconds: 2), () {
+          setState(() {
+            isShowLoading = false;
+            confetti.fire();
+          });
+          _userService.login(_emailController.text, _passwordController.text);
+          Navigator.pushReplacementNamed(context, '/homepage');
+        });
+      } else {
+        setState(() {
+          error.fire();
+          isShowLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Google Sign-In failed: $e")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Stack(
       children: [
-        Container(
-          height: screenHeight *
-              0.45, // Anpassung der Höhe an 80% der Bildschirmhöhe
+        SizedBox(
+          height: screenHeight * 0.45,
           child: Column(
             children: [
               Expanded(
@@ -256,6 +309,11 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
               ),
+              SignInButton(
+                Buttons.Google,
+                text: "Sign up with Google",
+                onPressed: _googleSignup,
+              )
             ],
           ),
         ),
@@ -301,13 +359,13 @@ class CustomPositioned extends StatelessWidget {
     return Positioned.fill(
       child: Column(
         children: [
-          Spacer(),
+          const Spacer(),
           SizedBox(
             height: size,
             width: size,
             child: child,
           ),
-          Spacer(flex: 2),
+          const Spacer(flex: 2),
         ],
       ),
     );
