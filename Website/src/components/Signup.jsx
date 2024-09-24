@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
 import backgroundVideo from "../assets/bg-aquarium2.mp4";
 
 const Signup = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -13,6 +20,68 @@ const Signup = () => {
 
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const validateFields = () => {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      return "All fields must be filled!";
+    }
+    return "";
+  };
+
+  const validatePassword = () => {
+    const passwordRegex = /^(?!\d+$).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return "Password must be at least 8 characters long and shall not be common.";
+    }
+    if (password !== confirmPassword) {
+      return "Passwords do not match!";
+    }
+    return "";
+  };
+
+  const handleSignup = async () => {
+    const fieldValidationError = validateFields();
+    if (fieldValidationError) {
+      setError(fieldValidationError);
+      return;
+    }
+
+    const passwordValidationError = validatePassword();
+    if (passwordValidationError) {
+      setError(passwordValidationError);
+      return;
+    }
+
+    const response = await fetch(
+      "https://dev.aquaware.cloud/api/users/signup/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          password: password,
+          password2: confirmPassword,
+        }),
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      Cookies.set("access_token", data.access, { expires: 1 });
+      Cookies.set("refresh_token", data.refresh, { expires: 7 });
+      window.location.href = "/dashboard";
+    } else if (response.status === 409) {
+      setError("Email already in use");
+    } else {
+      setError(data.error || "Invalid input");
+    }
   };
 
   return (
@@ -31,6 +100,8 @@ const Signup = () => {
           Sign Up
         </h1>
 
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
         <div className="w-full flex flex-col mb-4">
           <p className="text-base text-center mb-4 text-n-8">
             Become a part of a new generation now
@@ -39,23 +110,31 @@ const Signup = () => {
             <input
               type="text"
               placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               className="w-1/2 text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
             />
             <input
               type="text"
               placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               className="w-1/2 text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
             />
           </div>
           <input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
           />
           <div className="relative w-full">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
             />
             <span
@@ -73,6 +152,8 @@ const Signup = () => {
             <input
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
             />
             <span
@@ -88,7 +169,10 @@ const Signup = () => {
           </div>
         </div>
 
-        <button className="w-full bg-n-15 text-white font-semibold rounded-md py-3 mb-4">
+        <button
+          onClick={handleSignup}
+          className="w-full bg-n-15 text-white font-semibold rounded-md py-3 mb-4"
+        >
           Sign Up
         </button>
 

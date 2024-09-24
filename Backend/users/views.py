@@ -1,9 +1,10 @@
 import os
 from tokenize import TokenError
-
+from google.oauth2 import id_token
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites import requests
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token, logger
 from django.shortcuts import redirect, render
@@ -22,6 +23,7 @@ from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from .models import SubscriptionTier
 from .serializers import UserSerializer, RegisterSerializer, CustomTokenObtainPairSerializer
 
 from aquaware import settings
@@ -65,6 +67,46 @@ def signup(request):
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@api_view(['POST'])
+def google_signup(request):
+    try:
+        token = request.data.get('token')
+        if not token:
+            return Response({"error": "No token provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Google token verification
+        try:
+            idinfo = id_token.verify_oauth2_token(token, requests.Request())
+            email = idinfo.get('email')
+            first_name = idinfo.get('given_name', '')
+            last_name = idinfo.get('family_name', '')
+
+            User = get_user_model()
+            user, created = User.objects.get_or_create(email=email, defaults={
+                'first_name': first_name,
+                'last_name': last_name,
+                'subscription_tier': SubscriptionTier.objects.get(id=1)  # Default to free tier
+            })
+
+            if not created:
+                return Response({"error": "User with this email already exists"}, status=status.HTTP_409_CONFLICT)
+
+            # Create JWT tokens
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+                'detail': 'Google signup successful'
+            }, status=status.HTTP_201_CREATED)
+
+        except ValueError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print(f"Error during Google signup: {e}")
+        return Response({"error": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @ensure_csrf_cookie
 @api_view(['GET'])
 def get_csrf_token(request):
@@ -96,6 +138,40 @@ def login(request):
         }, status=status.HTTP_202_ACCEPTED)
     else:
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def google_login(request):
+    try:
+        token = request.data.get('token')
+        if not token:
+            return Response({"error": "No token provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verify Google token
+        try:
+            idinfo = id_token.verify_oauth2_token(token, requests.Request())
+            email = idinfo.get('email')
+
+            # Check if the user exists
+            user = User.objects.filter(email=email).first()
+
+            if not user:
+                return Response({"error": "User not found, please sign up first"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Generate JWT tokens
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+                'detail': 'Google login successful'
+            }, status=status.HTTP_200_OK)
+
+        except ValueError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['POST'])
 def refresh_access_token(request):
