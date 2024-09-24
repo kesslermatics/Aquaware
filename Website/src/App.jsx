@@ -8,6 +8,8 @@ import Hero from "./components/Hero";
 import Pricing from "./components/Pricing";
 import Services from "./components/Services";
 import Docs from "./components/Docs";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 const App = () => {
   return (
@@ -34,6 +36,8 @@ const App = () => {
           <Route path="/api-info" element={<ApiInfo />} />
           <Route path="/services" element={<Services />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
 
           {/* 404 Not Found */}
           <Route
