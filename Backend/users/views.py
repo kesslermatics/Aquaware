@@ -1,10 +1,7 @@
-import os
 from tokenize import TokenError
 from google.oauth2 import id_token
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites import requests
+from google.auth.transport import requests
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token, logger
 from django.shortcuts import redirect, render
