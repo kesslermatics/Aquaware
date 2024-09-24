@@ -89,7 +89,8 @@ INSTALLED_APPS = [
     "users",
     "environments",
     "water",
-    "logs"
+    "logs",
+    'corsheaders',
 ]
 
 STATIC_URL = "/static/"
@@ -104,7 +105,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'request_logging.middleware.LoggingMiddleware',
     'middleware.logging_middleware.APILoggingMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'https://aquaware.cloud/',
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'aquaware.urls'
 
