@@ -96,6 +96,7 @@ INSTALLED_APPS = [
 STATIC_URL = "/static/"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -105,15 +106,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'request_logging.middleware.LoggingMiddleware',
     'middleware.logging_middleware.APILoggingMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'https://aquaware.cloud',
-]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
