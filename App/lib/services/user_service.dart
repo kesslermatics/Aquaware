@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:aquaware/constants.dart';
 import 'package:aquaware/models/user_profile.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +13,7 @@ class UserService {
   static const String updateProfileUrl = '$baseUrl/api/users/profile/update/';
   static const String changePasswordUrl = '$baseUrl/api/users/change-password/';
   static const String deleteAccountUrl = '$baseUrl/api/users/delete-account/';
+  static const String googleSignupUrl = '$baseUrl/api/users/google-signup/';
 
   Future<String?> signup(String email, String password, String password2,
       String firstName, String lastName) async {
@@ -44,6 +46,27 @@ class UserService {
     }
   }
 
+  Future<String?> googleSignup(String? googleToken) async {
+    final response = await http.post(
+      Uri.parse(googleSignupUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'token': googleToken}),
+    );
+
+    if (response.statusCode == 201) {
+      var data = jsonDecode(response.body);
+      String accessToken = data['access'];
+      String refreshToken = data['refresh'];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('accessToken', accessToken);
+      await prefs.setString('refreshToken', refreshToken);
+      return null;
+    } else {
+      var errorData = jsonDecode(response.body);
+      return errorData['error'] ?? 'Failed to sign up with Google';
+    }
+  }
+
   Future<String?> login(String email, String password) async {
     final response = await http.post(
       Uri.parse(loginUrl),
@@ -63,6 +86,27 @@ class UserService {
       var errorData = jsonDecode(response.body);
       return errorData['message'] ??
           'Failed to log in'; // Fehlermeldung zurückgeben
+    }
+  }
+
+  Future<String?> googleLogin(String googleToken) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/users/google-login/'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'token': googleToken}),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      String accessToken = data['access'];
+      String refreshToken = data['refresh'];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('accessToken', accessToken);
+      await prefs.setString('refreshToken', refreshToken);
+      return null;
+    } else {
+      var errorData = jsonDecode(response.body);
+      return errorData['error'] ?? 'Failed to log in';
     }
   }
 

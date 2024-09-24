@@ -12,7 +12,7 @@ Future<Object?> customSigninDialog(BuildContext context,
     context: context,
     transitionDuration: const Duration(milliseconds: 400),
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      Tween<Offset> tween = Tween(begin: Offset(0, -1), end: Offset.zero);
+      Tween<Offset> tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
       return SlideTransition(
         position: tween.animate(
           CurvedAnimation(parent: animation, curve: Curves.easeInOut),
@@ -44,7 +44,7 @@ Future<Object?> customSigninDialog(BuildContext context,
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text(
-                      "Continue exploring and managing your aquariums. Access your personalized dashboard and stay updated with the latest insights.",
+                      "Continue exploring and managing your aquariums.",
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -74,7 +74,7 @@ Future<Object?> customRegisterDialog(BuildContext context,
     context: context,
     transitionDuration: const Duration(milliseconds: 400),
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      Tween<Offset> tween = Tween(begin: Offset(0, -1), end: Offset.zero);
+      Tween<Offset> tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
       return SlideTransition(
         position: tween.animate(
           CurvedAnimation(parent: animation, curve: Curves.easeInOut),
