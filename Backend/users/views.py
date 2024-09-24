@@ -32,18 +32,28 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 
+from django.contrib.auth import get_user_model
+
+
 @swagger_auto_schema(
     method='post',
     request_body=RegisterSerializer,
     responses={
         201: 'User created successfully',
         400: 'Bad request, validation errors',
+        409: 'Conflict, email already in use',
         500: 'Internal server error'
     }
 )
 @api_view(['POST'])
 def signup(request):
     try:
+        User = get_user_model()
+        email = request.data.get('email')
+
+        if User.objects.filter(email=email).exists():
+            return Response({'detail': 'Email already in use'}, status=status.HTTP_409_CONFLICT)
+
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -51,7 +61,6 @@ def signup(request):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Temporäre Debugging-Ausgabe
         print(f"Error in signup view: {e}")
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
