@@ -37,63 +37,65 @@ const PricingPlanInfo = () => {
 
   const getButtonText = (planId) => {
     if (planId == userPlan) {
-      return "Current Plan"; // User's current plan
+      return "Current Plan";
     }
-    return "Get started";
+    return "Upgrade";
   };
 
   const getButtonClass = (planId) => {
-    if (planId === userPlan) {
-      return "bg-green-500 text-white cursor-default"; // Styled for the current plan
+    if (planId == userPlan) {
+      return "bg-green-500 text-white cursor-default";
     }
-    return "bg-blue-500 text-white hover:bg-blue-600"; // Styled for other plans
+    return "bg-blue-500 text-white hover:bg-blue-600";
   };
 
   return (
-    <div className="flex flex-wrap gap-4 h-full justify-center">
-      {pricing.map((item) => (
-        <div
-          key={item.id}
-          className="w-full sm:w-[18rem] lg:w-[22rem] h-auto p-4 bg-n-8 border border-n-6 rounded-xl shadow-lg"
-        >
-          <h4 className="text-lg font-semibold mb-2 text-center">
-            {item.title}
-          </h4>
-          <p className="text-sm text-gray-500 text-center mb-4">
-            {item.description}
-          </p>
-
-          <div className="flex justify-center items-center mb-4">
-            {item.price && (
-              <>
-                <span className="text-xl font-semibold">$</span>
-                <span className="text-4xl font-bold ml-1">{item.price}</span>
-              </>
-            )}
-          </div>
-
-          <button
-            className={`w-full py-2 rounded-lg font-semibold text-center ${getButtonClass(
-              item.id
-            )}`}
-            disabled={item.id === userPlan} // Disable button if it's the current plan
+    <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
+      <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl">
+        {pricing.map((item) => (
+          <div
+            key={item.id}
+            className="w-full sm:w-[18rem] lg:w-[22rem] h-auto p-4 bg-n-8 border border-n-6 rounded-xl shadow-lg"
           >
-            {getButtonText(item.id)}
-          </button>
+            <h4 className="text-lg font-semibold mb-2 text-center">
+              {item.title}
+            </h4>
+            <p className="text-sm text-gray-500 text-center mb-4">
+              {item.description}
+            </p>
 
-          <ul className="mt-4">
-            {item.features.map((feature, index) => (
-              <li
-                key={index}
-                className="flex items-center py-2 border-t border-gray-300"
-              >
-                <img src={check} alt="Check" className="w-4 h-4" />
-                <p className="text-sm ml-2">{feature}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+            <div className="flex justify-center items-center mb-4">
+              {item.price && (
+                <>
+                  <span className="text-xl font-semibold">$</span>
+                  <span className="text-4xl font-bold ml-1">{item.price}</span>
+                </>
+              )}
+            </div>
+
+            <button
+              className={`w-full py-2 rounded-lg font-semibold text-center ${getButtonClass(
+                item.id
+              )}`}
+              disabled={item.id === userPlan} // Disable button if it's the current plan
+            >
+              {getButtonText(item.id)}
+            </button>
+
+            <ul className="mt-4">
+              {item.features.map((feature, index) => (
+                <li
+                  key={index}
+                  className="flex items-center py-2 border-t border-gray-300"
+                >
+                  <img src={check} alt="Check" className="w-4 h-4" />
+                  <p className="text-sm ml-2">{feature}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

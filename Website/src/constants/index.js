@@ -76,7 +76,7 @@ export const pricing = [
     features: [
       "Monitor all water parameters with no limits",
       "AI-powered insights for water trend analysis and predictions",
-      "Advanced data visualizations and custom dashboards",
+      "Upload water values every 30 minutes for precise tracking",
       "Add alerts and notifications for specific water parameter thresholds",
       "Ideal for users wanting advanced analysis and data-driven decisions",
     ],
