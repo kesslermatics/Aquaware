@@ -1,16 +1,27 @@
 import { useLocation } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
-
+import Cookies from "js-cookie"; // Um die Cookies zu überprüfen
 import { navigation } from "../constants";
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import aquawareLogo from "../assets/aquaware.png";
 
 const Header = () => {
   const { pathname, hash } = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Zustand für Login-Überprüfung
+
+  // Überprüfe, ob ein refresh_token in den Cookies vorhanden ist
+  useEffect(() => {
+    const refreshToken = Cookies.get("refresh_token");
+    if (refreshToken) {
+      setIsLoggedIn(true); // Wenn ein refresh_token vorhanden ist, ist der Nutzer eingeloggt
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   const toggleNavigation = () => {
     if (openNavigation) {
@@ -68,15 +79,24 @@ const Header = () => {
           <HamburgerMenu />
         </nav>
 
-        <a
-          href="/signup"
-          className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
-        >
-          New account
-        </a>
-        <Button className="hidden lg:flex" href="/login">
-          Sign in
-        </Button>
+        {/* Wenn der Nutzer eingeloggt ist, zeige "Profile" statt "Sign in" und "Create Account" */}
+        {isLoggedIn ? (
+          <Button className="hidden lg:flex" href="/dashboard">
+            Dashboard
+          </Button>
+        ) : (
+          <>
+            <a
+              href="/signup"
+              className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
+            >
+              Create Account
+            </a>
+            <Button className="hidden lg:flex" href="/login">
+              Sign in
+            </Button>
+          </>
+        )}
 
         <Button
           className="ml-auto lg:hidden"
