@@ -98,14 +98,21 @@ const AccountInfo = () => {
       await ensureAccessToken(); // Ensure token is fresh before sending data
       const accessToken = Cookies.get("access_token");
 
-      const response = await fetch("/api/users/profile/update/", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(userData),
-      });
+      const response = await fetch(
+        "https://dev.aquaware.cloud/api/users/profile/update/",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+          }),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update profile.");

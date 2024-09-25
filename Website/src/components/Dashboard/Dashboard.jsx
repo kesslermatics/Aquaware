@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import AccountInfo from "./AccountInfo";
-import PasswordInfo from "./PasswordInfo";
 import EnvironmentInfo from "./EnvironmentInfo";
 import PricingPlanInfo from "./PricingPlanInfo";
+import Cookies from "js-cookie"; // Import Cookies for token management
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("account");
@@ -20,6 +20,13 @@ const Dashboard = () => {
       default:
         return <AccountInfo />;
     }
+  };
+
+  // Logout function that removes the tokens and redirects to homepage
+  const handleLogout = () => {
+    Cookies.remove("access_token");
+    Cookies.remove("refresh_token");
+    window.location.href = "/"; // Redirect to homepage after logout
   };
 
   return (
@@ -42,14 +49,6 @@ const Dashboard = () => {
           </li>
           <li
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
-              activeTab === "password" ? "bg-n-15 text-n-1" : "hover:bg-n-16"
-            }`}
-            onClick={() => setActiveTab("password")}
-          >
-            Password
-          </li>
-          <li
-            className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
               activeTab === "environments"
                 ? "bg-n-15 text-n-1"
                 : "hover:bg-n-16"
@@ -69,6 +68,14 @@ const Dashboard = () => {
             Pricing Plans
           </li>
         </ul>
+
+        {/* Logout Button */}
+        <button
+          className="mt-8 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
 
       {/* Content Area */}
