@@ -10,6 +10,7 @@ import Services from "./components/Services";
 import Docs from "./components/Docs";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
           {/* 404 Not Found */}
           <Route
