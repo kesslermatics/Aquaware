@@ -56,7 +56,7 @@ const Dashboard = () => {
           <ul className="absolute top-16 left-0 w-full bg-n-8 p-6 z-50">
             <li
               className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
-                activeTab === "account" ? "bg-n-15 text-n-1" : "hover:bg-n-16"
+                activeTab === "account" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
               }`}
               onClick={() => {
                 setActiveTab("account");
@@ -68,8 +68,8 @@ const Dashboard = () => {
             <li
               className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
                 activeTab === "environments"
-                  ? "bg-n-15 text-n-1"
-                  : "hover:bg-n-16"
+                  ? "bg-n-6 text-n-1"
+                  : "hover:bg-n-6"
               }`}
               onClick={() => {
                 setActiveTab("environments");
@@ -81,8 +81,8 @@ const Dashboard = () => {
             <li
               className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
                 activeTab === "pricingplans"
-                  ? "bg-n-15 text-n-1"
-                  : "hover:bg-n-16"
+                  ? "bg-n-6 text-n-1"
+                  : "hover:bg-n-6"
               }`}
               onClick={() => {
                 setActiveTab("pricingplans");
@@ -102,7 +102,7 @@ const Dashboard = () => {
         <ul className="w-full">
           <li
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
-              activeTab === "account" ? "bg-n-15 text-n-1" : "hover:bg-n-16"
+              activeTab === "account" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
             }`}
             onClick={() => setActiveTab("account")}
           >
@@ -110,9 +110,7 @@ const Dashboard = () => {
           </li>
           <li
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
-              activeTab === "environments"
-                ? "bg-n-15 text-n-1"
-                : "hover:bg-n-16"
+              activeTab === "environments" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
             }`}
             onClick={() => setActiveTab("environments")}
           >
@@ -120,9 +118,7 @@ const Dashboard = () => {
           </li>
           <li
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
-              activeTab === "pricingplans"
-                ? "bg-n-15 text-n-1"
-                : "hover:bg-n-16"
+              activeTab === "pricingplans" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
             }`}
             onClick={() => setActiveTab("pricingplans")}
           >
