@@ -55,7 +55,7 @@ export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
 
 export const pricing = [
   {
-    id: "0",
+    id: "1",
     title: "Hobby",
     description:
       "Free for personal use, monitor all water parameters with limited uploads",
@@ -69,7 +69,7 @@ export const pricing = [
     ],
   },
   {
-    id: "1",
+    id: "2",
     title: "Advanced",
     description: "AI-powered insights and advanced monitoring tools",
     price: "7.99",
@@ -82,7 +82,7 @@ export const pricing = [
     ],
   },
   {
-    id: "2",
+    id: "3",
     title: "Business",
     description:
       "Frequent water monitoring with priority features for businesses",

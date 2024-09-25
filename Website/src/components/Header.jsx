@@ -82,7 +82,7 @@ const Header = () => {
         {/* Wenn der Nutzer eingeloggt ist, zeige "Profile" statt "Sign in" und "Create Account" */}
         {isLoggedIn ? (
           <Button className="hidden lg:flex" href="/dashboard">
-            Dashboard
+            Profile
           </Button>
         ) : (
           <>

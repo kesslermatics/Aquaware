@@ -12,6 +12,7 @@ const AccountInfo = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -94,6 +95,7 @@ const AccountInfo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccessMessage(""); // Clear success message before submitting
     try {
       await ensureAccessToken(); // Ensure token is fresh before sending data
       const accessToken = Cookies.get("access_token");
@@ -120,7 +122,7 @@ const AccountInfo = () => {
 
       const updatedData = await response.json();
       setUserData(updatedData);
-      alert("Profile updated successfully.");
+      setSuccessMessage("Profile updated successfully."); // Set success message
     } catch (error) {
       setError(error.message);
     }
@@ -223,13 +225,18 @@ const AccountInfo = () => {
           />
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
           >
             Update Profile
           </button>
+          {successMessage && (
+            <span className="text-green-500 text-sm ml-4">
+              {successMessage}
+            </span>
+          )}
         </div>
       </form>
     </div>

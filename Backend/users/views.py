@@ -1,5 +1,7 @@
 import os
 from tokenize import TokenError
+
+from django.utils import timezone
 from google.oauth2 import id_token
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
@@ -131,6 +133,10 @@ def login(request):
     if user is not None:
         refresh = RefreshToken.for_user(user)
         serializer = UserSerializer(instance=user)
+
+        user.last_login = timezone.now()
+        user.save(update_fields=['last_login'])
+
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
@@ -157,6 +163,9 @@ def google_login(request):
 
             if not user:
                 return Response({"error": "User not found, please sign up first"}, status=status.HTTP_404_NOT_FOUND)
+
+            user.last_login = timezone.now()
+            user.save(update_fields=['last_login'])
 
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)
