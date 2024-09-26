@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const ResetPassword = () => {
   const { uid, token } = useParams();
@@ -8,6 +10,8 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false); // Toggle for new password
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Toggle for confirm password
 
   const handleResetPassword = async () => {
     if (newPassword !== confirmPassword) {
@@ -34,7 +38,7 @@ const ResetPassword = () => {
       if (response.ok) {
         setSuccessMessage("Password has been reset successfully!");
         setTimeout(() => {
-          history.push("/login"); // Redirect to login page after success
+          history("/login"); // Redirect to login page after success
         }, 2000);
       } else {
         const data = await response.json();
@@ -57,21 +61,50 @@ const ResetPassword = () => {
           <p className="text-green-500 text-center mb-4">{successMessage}</p>
         )}
 
-        <input
-          type="password"
-          placeholder="New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
-        />
+        {/* New Password Input */}
+        <div className="relative">
+          <input
+            type={showNewPassword ? "text" : "password"} // Toggle between password and text
+            placeholder="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
+          />
+          <button
+            type="button"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+            onClick={() => setShowNewPassword(!showNewPassword)}
+          >
+            {showNewPassword ? (
+              <FontAwesomeIcon icon={faEyeSlash} className="mr-4 text-n-8" />
+            ) : (
+              <FontAwesomeIcon icon={faEye} className="mr-4 text-n-8" />
+            )}{" "}
+            {/* Eye icon */}
+          </button>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Confirm New Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
-        />
+        {/* Confirm Password Input */}
+        <div className="relative">
+          <input
+            type={showConfirmPassword ? "text" : "password"} // Toggle between password and text
+            placeholder="Confirm New Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
+          />
+          <button
+            type="button"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showNewPassword ? (
+              <FontAwesomeIcon icon={faEyeSlash} className="mr-4 text-n-8" />
+            ) : (
+              <FontAwesomeIcon icon={faEye} className="mr-4 text-n-8" />
+            )}{" "}
+          </button>
+        </div>
 
         <button
           onClick={handleResetPassword}

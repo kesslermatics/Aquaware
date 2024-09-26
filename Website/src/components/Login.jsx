@@ -2,10 +2,13 @@ import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import Cookies from "js-cookie";
 import backgroundVideo from "../assets/bg-aquarium2.mp4";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Toggle for password visibility
   const [error, setError] = useState("");
 
   // Handle regular login
@@ -92,13 +95,26 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"} // Toggle between password and text
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
+            />
+            <button
+              type="button"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <FontAwesomeIcon icon={faEyeSlash} className="mr-4 text-n-8" />
+              ) : (
+                <FontAwesomeIcon icon={faEye} className="mr-4 text-n-8" />
+              )}{" "}
+            </button>
+          </div>
           <div className="text-right mt-2">
             <a href="/forgot-password" className="text-blue-500 font-semibold">
               Forgot Password?
