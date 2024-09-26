@@ -93,6 +93,10 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+SIMPLE_JWT = {
+'UPDATE_LAST_LOGIN': True,
+}
+
 STATIC_URL = "/static/"
 
 MIDDLEWARE = [

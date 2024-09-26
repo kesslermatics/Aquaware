@@ -1,16 +1,26 @@
 import { useLocation } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
-
-import { navigation } from "../constants";
+import Cookies from "js-cookie"; // Um die Cookies zu überprüfen
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import aquawareLogo from "../assets/aquaware.png";
 
 const Header = () => {
   const { pathname, hash } = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Zustand für Login-Überprüfung
+
+  // Überprüfe, ob ein refresh_token in den Cookies vorhanden ist
+  useEffect(() => {
+    const refreshToken = Cookies.get("refresh_token");
+    if (refreshToken) {
+      setIsLoggedIn(true); // Wenn ein refresh_token vorhanden ist, ist der Nutzer eingeloggt
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   const toggleNavigation = () => {
     if (openNavigation) {
@@ -47,44 +57,132 @@ const Header = () => {
           } fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
         >
           <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
-            {navigation.map((item) => (
-              <a
-                key={item.id}
-                href={item.url}
-                onClick={handleClick}
-                className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${
-                  item.onlyMobile ? "lg:hidden" : ""
-                } px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
-                  item.url === pathname + hash
-                    ? "z-2 lg:text-n-1"
-                    : "lg:text-n-1/50"
-                } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
-              >
-                {item.title}
-              </a>
-            ))}
+            <a
+              href="/#features"
+              onClick={handleClick}
+              className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                pathname + hash === "/#features"
+                  ? "z-2 lg:text-n-1"
+                  : "lg:text-n-1/50"
+              } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+            >
+              Features
+            </a>
+            <a
+              href="/#how-to-use"
+              onClick={handleClick}
+              className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                pathname + hash === "/#how-to-use"
+                  ? "z-2 lg:text-n-1"
+                  : "lg:text-n-1/50"
+              } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+            >
+              How it works
+            </a>
+            <a
+              href="/docs/index.html"
+              onClick={handleClick}
+              className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                pathname === "/docs/index.html"
+                  ? "z-2 lg:text-n-1"
+                  : "lg:text-n-1/50"
+              } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+            >
+              Api-Documentation
+            </a>
+            <a
+              href="/#pricing"
+              onClick={handleClick}
+              className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                pathname + hash === "/#pricing"
+                  ? "z-2 lg:text-n-1"
+                  : "lg:text-n-1/50"
+              } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+            >
+              Pricing
+            </a>
+            {openNavigation && (
+              <>
+                {isLoggedIn ? (
+                  <>
+                    <a
+                      href="/dashboard"
+                      onClick={handleClick}
+                      className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                        pathname + hash === "/dashboard"
+                          ? "z-2 lg:text-n-1"
+                          : "lg:text-n-1/50"
+                      } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+                    >
+                      Profile
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href="/signup"
+                      onClick={handleClick}
+                      className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                        pathname + hash === "/signup"
+                          ? "z-2 lg:text-n-1"
+                          : "lg:text-n-1/50"
+                      } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+                    >
+                      Create Account
+                    </a>
+                    <a
+                      href="/login"
+                      onClick={handleClick}
+                      className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                        pathname + hash === "/login"
+                          ? "z-2 lg:text-n-1"
+                          : "lg:text-n-1/50"
+                      } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+                    >
+                      Sign In
+                    </a>
+                  </>
+                )}
+              </>
+            )}
           </div>
 
           <HamburgerMenu />
         </nav>
 
-        <a
-          href="/signup"
-          className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
-        >
-          New account
-        </a>
-        <Button className="hidden lg:flex" href="/login">
-          Sign in
-        </Button>
-
-        <Button
-          className="ml-auto lg:hidden"
-          px="px-3"
-          onClick={toggleNavigation}
-        >
-          <MenuSvg openNavigation={openNavigation} />
-        </Button>
+        {isLoggedIn ? (
+          <>
+            <Button className="hidden lg:flex" href="/dashboard">
+              Profile
+            </Button>
+            <Button
+              className="ml-auto lg:hidden"
+              px="px-3"
+              onClick={toggleNavigation}
+            >
+              <MenuSvg openNavigation={openNavigation} />
+            </Button>
+          </>
+        ) : (
+          <>
+            <a
+              href="/signup"
+              className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
+            >
+              Create Account
+            </a>
+            <Button className="hidden lg:flex" href="/login">
+              Sign in
+            </Button>
+            <Button
+              className="ml-auto lg:hidden"
+              px="px-3"
+              onClick={toggleNavigation}
+            >
+              <MenuSvg openNavigation={openNavigation} />
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

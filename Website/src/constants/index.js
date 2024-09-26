@@ -14,48 +14,13 @@ import {
   yourlogo,
 } from "../../src/assets";
 
-export const navigation = [
-  {
-    id: "0",
-    title: "Features",
-    url: "/#features",
-  },
-  {
-    id: "1",
-    title: "How it works",
-    url: "/#how-to-use",
-  },
-  {
-    id: "2",
-    title: "Api-Documentation",
-    url: "/docs/index.html",
-  },
-  {
-    id: "3",
-    title: "Pricing",
-    url: "/#pricing",
-  },
-  {
-    id: "4",
-    title: "Create Account",
-    url: "/signup",
-    onlyMobile: true,
-  },
-  {
-    id: "5",
-    title: "Login",
-    url: "/login",
-    onlyMobile: true,
-  },
-];
-
 export const heroIcons = [homeSmile, file02, searchMd, plusSquare];
 
 export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
 
 export const pricing = [
   {
-    id: "0",
+    id: "1",
     title: "Hobby",
     description:
       "Free for personal use, monitor all water parameters with limited uploads",
@@ -69,20 +34,20 @@ export const pricing = [
     ],
   },
   {
-    id: "1",
+    id: "2",
     title: "Advanced",
     description: "AI-powered insights and advanced monitoring tools",
     price: "7.99",
     features: [
       "Monitor all water parameters with no limits",
       "AI-powered insights for water trend analysis and predictions",
-      "Advanced data visualizations and custom dashboards",
+      "Upload water values every 30 minutes for precise tracking",
       "Add alerts and notifications for specific water parameter thresholds",
       "Ideal for users wanting advanced analysis and data-driven decisions",
     ],
   },
   {
-    id: "2",
+    id: "3",
     title: "Business",
     description:
       "Frequent water monitoring with priority features for businesses",
