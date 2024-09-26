@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { format } from "date-fns"; // Nützlich zur Formatierung des Datums
+import { useNavigate } from "react-router-dom"; // Für die Navigation zur Homepage
 
 const AccountInfo = () => {
   const [userData, setUserData] = useState({
@@ -13,6 +14,7 @@ const AccountInfo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const navigate = useNavigate(); // React Router Hook für Navigation
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -128,6 +130,15 @@ const AccountInfo = () => {
     }
   };
 
+  const handleLogout = () => {
+    // Lösche die Tokens aus den Cookies
+    Cookies.remove("access_token");
+    Cookies.remove("refresh_token");
+
+    // Navigiere zur Homepage
+    window.location.href = "/";
+  };
+
   // Map subscription tier to plan name
   const getSubscriptionPlan = (tier) => {
     switch (tier) {
@@ -239,6 +250,16 @@ const AccountInfo = () => {
           )}
         </div>
       </form>
+
+      {/* Logout Button */}
+      <div className="flex justify-start mt-4">
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };
