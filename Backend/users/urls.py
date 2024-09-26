@@ -31,6 +31,7 @@ urlpatterns = [
     path('profile/', user_views.get_user_profile, name='user-profile'),
     path('profile/update/', user_views.update_user_profile, name='update-user-profile'),
     path('change-password/', user_views.change_password, name='change-password'),
+    path('reset-password/', user_views.reset_password, name='reset-password'),
     path('delete-account-from-web/', user_views.delete_account_view, name='delete-user-account'),
     path('delete-account/', user_views.delete_user_account, name='delete-user-account'),
     path('confirm-delete-account/', user_views.confirm_delete_account, name='confirm_delete_account'),
