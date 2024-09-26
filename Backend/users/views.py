@@ -1,5 +1,6 @@
 from tokenize import TokenError
 
+from coreapi.compat import force_text
 from django.utils import timezone
 from google.oauth2 import id_token
 from django.contrib.auth.tokens import default_token_generator
@@ -293,6 +294,31 @@ def forgot_password(request):
         return Response({'detail': 'Password reset email has been sent'}, status=status.HTTP_200_OK)
     except Exception as e:
         print(f"Error: {e}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def reset_password(request):
+    try:
+        uid = request.data.get('uid')
+        token = request.data.get('token')
+        new_password = request.data.get('new_password')
+
+        if not uid or not token or not new_password:
+            return Response({'error': 'Missing parameters'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user_id = force_text(urlsafe_base64_decode(uid))
+            user = User.objects.get(pk=user_id)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if default_token_generator.check_token(user, token):
+            user.set_password(new_password)
+            user.save()
+            return Response({'detail': 'Password has been reset successfully'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

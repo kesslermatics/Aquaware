@@ -99,6 +99,11 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
           />
+          <div className="text-right mt-2">
+            <a href="/forgot-password" className="text-blue-500 font-semibold">
+              Forgot Password?
+            </a>
+          </div>
         </div>
 
         <button
