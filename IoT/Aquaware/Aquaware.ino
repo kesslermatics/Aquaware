@@ -13,7 +13,7 @@ char password[] = PASSWORD;
 
 // WiFi and client setup
 WiFiSSLClient wifiClient;
-HttpClient client = HttpClient(wifiClient, "aquaware-production.up.railway.app", 443);
+HttpClient client = HttpClient(wifiClient, "dev.aquaware.cloud", 443);
 
 #define VREF 3.3              // Analog reference voltage of the ADC
 #define READINGSCOUNT 100     // The amount of reading to calculate the average from
@@ -44,7 +44,7 @@ float temp[READINGSCOUNT];
 
 // Timer to calculate the interval to read data and send them
 long timer = 0;
-long timeOut = 180000; // 30 minutes in milliseconds
+long timeOut = 1800000; // 30 minutes in milliseconds
 
 String accessToken = "";
 String refreshToken = "";
@@ -112,7 +112,10 @@ void loop() {
 
     // Refresh the access token if needed
     Serial.println("Refreshing access token...");
-    refreshAccessToken();
+    if (!refreshAccessToken()) {
+      Serial.println("Failed to refresh access token, re-logging...");
+      login();
+    }
 
     // Send the data to the server
     Serial.println("Sending data to the server...");
@@ -147,13 +150,9 @@ void login() {
   client.beginBody();
   client.print(payload);
   client.endRequest();
-  Serial.println(client.connected());
-  while(!client.available()){}
+
   int statusCode = client.responseStatusCode();
-  
-  Serial.println(statusCode);
   String response = client.responseBody();
-  Serial.println(statusCode);
 
   if (statusCode == 202) {
     StaticJsonDocument<202> doc;
@@ -174,7 +173,7 @@ void login() {
 // Refresh the access token
 bool refreshAccessToken() {
   client.beginRequest();
-  client.post("https://aquaware-production.up.railway.app/api/users/token/refresh/");
+  client.post("/api/users/token/refresh/");
   client.sendHeader("Content-Type", "application/json");
 
   String payload = "{\"refresh\":\"" + refreshToken + "\"}";
@@ -206,7 +205,7 @@ bool refreshAccessToken() {
 // Send data to the server
 bool sendData(float temp, float ph, float tds) {
   client.beginRequest();
-  client.post("https://aquaware-production.up.railway.app/api/measurements/add/3/");
+  client.post("/api/measurements/add/3/");
   client.sendHeader("Content-Type", "application/json");
   client.sendHeader("Authorization", "Bearer " + accessToken);
 
@@ -246,7 +245,6 @@ void readTemp(int index) {
 // Read TDS value and apply some compensation algorithm
 void readTDS(int index) {
   static unsigned long analogSampleTimepoint = millis();
-  // Every 40 milliseconds read the analog value from the ADC
   if(millis()-analogSampleTimepoint > 40U){    
     analogSampleTimepoint = millis();
     analogBuffer[analogBufferIndex] = analogRead(TDS_PIN); 
@@ -260,22 +258,18 @@ void readTDS(int index) {
     printTimepoint = millis();
     for(copyIndex=0; copyIndex<SCOUNT; copyIndex++){
       analogBufferTemp[copyIndex] = analogBuffer[copyIndex];
-      
-      // Read the analog value more stable by the median filtering algorithm, and convert to voltage value
       averageVoltage = getMedianNum(analogBufferTemp,SCOUNT) * (float)VREF / 1024.0;
       
-      // Temperature compensation formula: FinalResult(25°C) = FinalResult(current)/(1.0+0.02*(fTP-25.0)); 
       float compensationCoefficient = 1.0+0.02*(temperature-25.0);
       float compensationVoltage = averageVoltage/compensationCoefficient;
       
-      // Convert voltage value to TDS value
       tdsValue = (133.42*compensationVoltage*compensationVoltage*compensationVoltage - 255.86*compensationVoltage*compensationVoltage + 857.39*compensationVoltage)*0.5;
     }
   }
   tds[index] = tdsValue;
 }
 
-// This function will be used to get a stable TDS value from an array of readings.
+// Get a stable value from an array of readings.
 int getMedianNum(float bArray[], int iFilterLen) {
   int bTab[iFilterLen];
   for (byte i = 0; i < iFilterLen; i++)
@@ -301,8 +295,6 @@ int getMedianNum(float bArray[], int iFilterLen) {
   return bTemp;
 }
 
-// Remap values after calibrating a sensor.
-// For example, we need to remap pH values from a specific analog range to mol/l.
 float mapFloat(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
