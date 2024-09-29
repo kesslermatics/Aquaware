@@ -13,6 +13,9 @@ import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
+import Impressum from "./components/Impressum";
+import Privacy from "./components/Privacy";
+import TermsAndConditions from "./components/TermsAndConditions";
 
 const App = () => {
   return (
@@ -46,6 +49,12 @@ const App = () => {
           <Route
             path="/reset-password/:uid/:token"
             element={<ResetPassword />}
+          />
+          <Route path="/impressum" element={<Impressum />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditions />}
           />
 
           {/* 404 Not Found */}
