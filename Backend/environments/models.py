@@ -19,6 +19,7 @@ class Environment(models.Model):
     environment_type = models.CharField(max_length=50, choices=ENVIRONMENT_TYPES)
     created_at = models.DateTimeField(auto_now_add=True)
     public = models.BooleanField(default=False)
+    city = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         unique_together = ('user', 'name')

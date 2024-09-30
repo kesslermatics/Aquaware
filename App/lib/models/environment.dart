@@ -5,6 +5,7 @@ class Environment {
   final DateTime createdAt;
   final String environmentType;
   final bool public;
+  final String city;
 
   Environment({
     required this.id,
@@ -13,6 +14,7 @@ class Environment {
     required this.createdAt,
     required this.environmentType,
     required this.public,
+    required this.city,
   });
 
   factory Environment.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Environment {
       createdAt: DateTime.parse(json['created_at']),
       environmentType: json['environment_type'],
       public: json['public'],
+      city: json['city'] ?? "",
     );
   }
 
@@ -34,6 +37,7 @@ class Environment {
       'created_at': createdAt.toIso8601String(),
       'environment_type': environmentType,
       'public': public,
+      'city': city,
     };
   }
 }

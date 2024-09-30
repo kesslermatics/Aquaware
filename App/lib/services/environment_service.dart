@@ -11,6 +11,7 @@ class EnvironmentService {
     String description,
     String environmentType,
     bool public,
+    String? city,
   ) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.post(
@@ -24,6 +25,7 @@ class EnvironmentService {
           'description': description,
           "environment_type": environmentType,
           "public": public,
+          "city": city,
         }),
       );
     });
@@ -85,6 +87,25 @@ class EnvironmentService {
 
     if (response.statusCode != 204) {
       throw Exception('Failed to delete environment: ${response.body}');
+    }
+  }
+
+  // Neue Methode für öffentliche Environments
+  Future<List<Environment>> getPublicEnvironments() async {
+    final response = await UserService().makeAuthenticatedRequest((token) {
+      return http.get(
+        Uri.parse('$baseUrl/api/environments/public/'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+    });
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => Environment.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to get public environments: ${response.body}');
     }
   }
 }

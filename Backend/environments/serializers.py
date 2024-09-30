@@ -7,8 +7,9 @@ class EnvironmentSerializer(serializers.ModelSerializer):
     description = serializers.CharField(required=True)
     environment_type = serializers.ChoiceField(choices=Environment.ENVIRONMENT_TYPES)
     public = serializers.BooleanField(default=False)
+    city = serializers.CharField(required=False)
 
     class Meta:
         model = Environment
-        fields = ['id', 'name', 'description', 'created_at', "environment_type", "public"]
+        fields = ['id', 'name', 'description', 'created_at', "environment_type", "public", "city"]
         read_only_fields = ['id', 'created_at']

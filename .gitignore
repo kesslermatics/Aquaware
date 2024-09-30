@@ -21,3 +21,4 @@ App/upload-keystore.jks
 /Backend/static
 /Backend/users/__pycache__
 App/android/release-signing.properties
+/Backend/environments/migrations
