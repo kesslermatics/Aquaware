@@ -134,7 +134,7 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
         # Check if user owns the environment or is subscribed
         environment = Environment.objects.filter(
             Q(id=environment_id, user=request.user) |
-            Q(id=environment_id, subscribed_users=request.user.id)
+            Q(id=environment_id, subscribed_users=request.user)
         ).first()
 
         if not environment:
