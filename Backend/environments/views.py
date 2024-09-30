@@ -76,7 +76,7 @@ def subscribe_to_environment(request, environment_id):
     user = request.user
     try:
         environment = Environment.objects.get(id=environment_id, public=True)
-        UserEnvironmentSubscription.objects.create(user=user, environment=environment)
+        UserEnvironmentSubscription.objects.create(user=user, environment=environment )
         return Response({'message': 'Subscribed successfully'}, status=status.HTTP_201_CREATED)
     except Environment.DoesNotExist:
         return Response({'error': 'Environment not found or not public'}, status=status.HTTP_404_NOT_FOUND)
