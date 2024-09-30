@@ -75,7 +75,7 @@ def delete_environment(request, id):
 def subscribe_to_environment(request, environment_id):
     user = request.user
     try:
-        environment = Environment.objects.get(id=environment_id, is_public=True)
+        environment = Environment.objects.get(id=environment_id, public=True)
         UserEnvironmentSubscription.objects.create(user=user, environment=environment)
         return Response({'message': 'Subscribed successfully'}, status=status.HTTP_201_CREATED)
     except Environment.DoesNotExist:
