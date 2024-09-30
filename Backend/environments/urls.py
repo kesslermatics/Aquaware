@@ -8,4 +8,6 @@ urlpatterns = [
     path("", environment_views.get_user_environments, name='get-user-environments'),
     path('public/', environment_views.get_public_environments, name="get-public-environments"),
 
+    path('<int:environment_id>/subscribe/', environment_views.subscribe_to_environment, name='subscribe-environment'),
+    path('<int:environment_id>/environments/', environment_views.get_user_environments, name='unsubscribe-environment'),
 ]
