@@ -440,6 +440,7 @@ def get_alert_settings(request, environment_id, parameter_name):
     except WaterParameter.DoesNotExist:
         return Response({'error': 'Parameter not found.'}, status=404)
     except Exception as e:
-        return Response({'error': f'An error occurred: {str(e)}'}, sta
+        return Response({'error': f'An error occurred: {str(e)}'}, status=400)
+
 
 
