@@ -58,14 +58,7 @@ def update_environment(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(
-    method='delete',
-    responses={
-        204: 'No Content',
-        404: 'Not Found'
-    },
-    operation_description="Delete an existing environment. The environment must belong to the authenticated user."
-)
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_environment(request, id):
@@ -95,7 +88,7 @@ def subscribe_to_environment(request, environment_id):
 def get_user_environments(request):
     user = request.user
 
-    owned_environments = Environment.objects.filter(created_by_user=user)
+    owned_environments = Environment.objects.filter(user=user)
 
     subscribed_environments = Environment.objects.filter(
         id__in=UserEnvironmentSubscription.objects.filter(user=user).values_list('environment_id', flat=True)
