@@ -5,7 +5,6 @@ import 'package:aquaware/screens/dashboard/create_environment_screen.dart';
 import 'package:aquaware/services/environment_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Function(Environment) onEnvironmentTapped;
@@ -19,26 +18,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final EnvironmentService _environmentService = EnvironmentService();
   List<Environment> _environments = [];
-  final List<Environment> _publicEnvironments = [];
-  final List<Environment> _filteredEnvironments = [];
   bool _isLoading = true;
   String? _error;
-
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _cityController =
-      TextEditingController(); // New Controller for City
-  final String _selectedEnvironmentType = 'aquarium';
-  final bool _isPublic = false;
-  final String _searchQuery = "";
-
-  static const List<Map<String, String>> ENVIRONMENT_TYPES = [
-    {'value': 'aquarium', 'label': 'Aquarium'},
-    {'value': 'lake', 'label': 'Lake'},
-    {'value': 'sea', 'label': 'Sea'},
-    {'value': 'pool', 'label': 'Pool'},
-    {'value': 'other', 'label': 'Other'},
-  ];
 
   @override
   void initState() {
@@ -61,39 +42,74 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  Future<void> _createEnvironment() async {
-    if (_nameController.text.isEmpty ||
-        _descriptionController.text.isEmpty ||
-        (_isPublic && _cityController.text.isEmpty)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill out all required fields')),
-      );
-    } else {
-      setState(() {
-        _isLoading = true;
-      });
+  // Methode zum Löschen eines Environments
+  Future<void> _deleteEnvironment(
+      BuildContext context, Environment environment) async {
+    TextEditingController nameController = TextEditingController();
+    bool isDeleting = false;
 
-      try {
-        await _environmentService.createEnvironment(
-          _nameController.text,
-          _descriptionController.text,
-          _selectedEnvironmentType,
-          _isPublic,
-          _cityController.text,
-        );
-        _nameController.clear();
-        _descriptionController.clear();
-        _cityController.clear();
-        _fetchEnvironments();
-      } catch (e) {
-        setState(() {
-          _error = e.toString();
-          _isLoading = false;
-        });
-      }
-
-      Navigator.of(context).pop();
-    }
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: const Text('Delete Environment'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                  'Please enter the name of the environment to confirm deletion:'),
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Environment Name',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: isDeleting
+                  ? null
+                  : () async {
+                      if (nameController.text == environment.name) {
+                        setState(() {
+                          isDeleting = true;
+                        });
+                        await _environmentService
+                            .deleteEnvironment(environment.id);
+                        setState(() {
+                          _environments.remove(environment);
+                          isDeleting = false;
+                          _fetchEnvironments();
+                        });
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content:
+                                  Text('Environment deleted successfully')),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Environment name does not match')),
+                        );
+                      }
+                    },
+              child: isDeleting
+                  ? const CircularProgressIndicator()
+                  : const Text(
+                      'Delete',
+                      style: TextStyle(color: Colors.red),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -105,8 +121,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('Welcome, ${UserProfile.getInstance().firstName}!',
-                  style: const TextStyle(fontSize: 24)),
+              child: Text(
+                'Welcome, ${UserProfile.getInstance().firstName}!',
+                style: const TextStyle(fontSize: 24),
+              ),
             ),
           ),
           Expanded(
@@ -117,7 +135,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     : _environments.isEmpty
                         ? const Center(
                             child:
-                                Text('No environments found. Please add one.'))
+                                Text('No environments found. Please add one.'),
+                          )
                         : ListView.builder(
                             padding: const EdgeInsets.all(16),
                             itemCount: _environments.length,
@@ -126,11 +145,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               return Card(
                                 margin: const EdgeInsets.only(bottom: 16),
                                 child: ListTile(
+                                  leading: environment.public
+                                      ? const Icon(Icons.public,
+                                          color: Colors.blue)
+                                      : null,
                                   title: Text(environment.name),
                                   subtitle: Text(environment.description),
                                   trailing: const Icon(Icons.arrow_forward),
                                   onTap: () =>
                                       widget.onEnvironmentTapped(environment),
+                                  onLongPress: () {
+                                    _deleteEnvironment(context, environment);
+                                  },
                                 ),
                               );
                             },
@@ -170,7 +196,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ).then((result) {
                   if (result == true) {
-                    // Refresh environments after creation
                     _fetchEnvironments();
                   }
                 }),
@@ -189,10 +214,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   MaterialPageRoute(
                     builder: (context) => const AddPublicEnvironmentScreen(),
                   ),
-                ).then((selectedEnvironment) {
-                  if (selectedEnvironment != null) {
-                    // Handle the selected public environment
-                  }
+                ).then((result) {
+                  _fetchEnvironments();
                 }),
                 child: const Icon(Icons.public),
               ),
