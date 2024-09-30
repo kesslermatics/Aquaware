@@ -35,7 +35,7 @@ class UserService {
     } else if (response.statusCode == 500) {
       return "Server Error. Try again later";
     } else {
-      var errorData = jsonDecode(response.body);
+      var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       List<String> errors = [];
       errorData.forEach((key, value) {
         if (value is List) {
@@ -54,7 +54,7 @@ class UserService {
     );
 
     if (response.statusCode == 201) {
-      var data = jsonDecode(response.body);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
       String accessToken = data['access'];
       String refreshToken = data['refresh'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -62,7 +62,7 @@ class UserService {
       await prefs.setString('refreshToken', refreshToken);
       return null;
     } else {
-      var errorData = jsonDecode(response.body);
+      var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       return errorData['error'] ?? 'Failed to sign up with Google';
     }
   }
@@ -75,7 +75,7 @@ class UserService {
     );
 
     if (response.statusCode == 202) {
-      var data = jsonDecode(response.body);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
       String accessToken = data['access'];
       String refreshToken = data['refresh'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,7 +83,7 @@ class UserService {
       await prefs.setString('refreshToken', refreshToken);
       return null; // Erfolgreiches Login
     } else {
-      var errorData = jsonDecode(response.body);
+      var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       return errorData['message'] ??
           'Failed to log in'; // Fehlermeldung zurückgeben
     }
@@ -97,7 +97,7 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
       String accessToken = data['access'];
       String refreshToken = data['refresh'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -105,7 +105,7 @@ class UserService {
       await prefs.setString('refreshToken', refreshToken);
       return null;
     } else {
-      var errorData = jsonDecode(response.body);
+      var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       return errorData['error'] ?? 'Failed to log in';
     }
   }
@@ -121,7 +121,7 @@ class UserService {
     });
 
     if (response.statusCode == 200) {
-      UserProfile.setFromJson(jsonDecode(response.body));
+      UserProfile.setFromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       throw Exception('Failed to get user profile');
     }
@@ -142,7 +142,7 @@ class UserService {
     if (response.statusCode == 200) {
       // Successfully updated profile
     } else {
-      var errorData = jsonDecode(response.body);
+      var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       throw Exception(errorData['detail'] ?? 'Failed to update profile');
     }
   }
@@ -166,7 +166,7 @@ class UserService {
     if (response.statusCode == 200) {
       // Successfully changed password
     } else {
-      var errorData = jsonDecode(response.body);
+      var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       throw Exception(errorData['detail'] ?? 'Failed to change password');
     }
   }
@@ -211,7 +211,7 @@ class UserService {
       await prefs.remove('accessToken');
       await prefs.remove('refreshToken');
     } else {
-      var errorData = jsonDecode(response.body);
+      var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       throw Exception(errorData['detail'] ?? 'Failed to delete user account');
     }
   }
@@ -245,7 +245,7 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
       String accessToken = data['access'];
       await prefs.setString('accessToken', accessToken);
       return null;

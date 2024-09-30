@@ -31,7 +31,7 @@ class EnvironmentService {
     });
 
     if (response.statusCode == 201) {
-      return Environment.fromJson(jsonDecode(response.body));
+      return Environment.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       throw Exception('Failed to create environment: ${response.body}');
     }
@@ -48,7 +48,7 @@ class EnvironmentService {
     });
 
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+      List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
       return data.map((json) => Environment.fromJson(json)).toList();
     } else {
       throw Exception('Failed to get user environments: ${response.body}');
@@ -69,7 +69,7 @@ class EnvironmentService {
     });
 
     if (response.statusCode == 200) {
-      return Environment.fromJson(jsonDecode(response.body));
+      return Environment.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       throw Exception('Failed to update environment: ${response.body}');
     }
@@ -90,19 +90,19 @@ class EnvironmentService {
     }
   }
 
-  // Neue Methode für öffentliche Environments
   Future<List<Environment>> getPublicEnvironments() async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse('$baseUrl/api/environments/public/'),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': 'Bearer $token',
         },
       );
     });
 
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+      List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
       return data.map((json) => Environment.fromJson(json)).toList();
     } else {
       throw Exception('Failed to get public environments: ${response.body}');

@@ -1,8 +1,11 @@
 import 'package:aquaware/models/environment.dart';
 import 'package:aquaware/models/user_profile.dart';
+import 'package:aquaware/screens/dashboard/add_public_environment_screen.dart';
+import 'package:aquaware/screens/dashboard/create_environment_screen.dart';
 import 'package:aquaware/services/environment_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Function(Environment) onEnvironmentTapped;
@@ -16,6 +19,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final EnvironmentService _environmentService = EnvironmentService();
   List<Environment> _environments = [];
+  final List<Environment> _publicEnvironments = [];
+  final List<Environment> _filteredEnvironments = [];
   bool _isLoading = true;
   String? _error;
 
@@ -23,8 +28,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _cityController =
       TextEditingController(); // New Controller for City
-  String _selectedEnvironmentType = 'aquarium';
-  bool _isPublic = false;
+  final String _selectedEnvironmentType = 'aquarium';
+  final bool _isPublic = false;
+  final String _searchQuery = "";
 
   static const List<Map<String, String>> ENVIRONMENT_TYPES = [
     {'value': 'aquarium', 'label': 'Aquarium'},
@@ -157,111 +163,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 20),
               FloatingActionButton.small(
                 heroTag: null,
-                onPressed: () => _showCreateEnvironmentDialog(context),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateEnvironmentScreen(),
+                  ),
+                ).then((result) {
+                  if (result == true) {
+                    // Refresh environments after creation
+                    _fetchEnvironments();
+                  }
+                }),
                 child: const Icon(Icons.add),
               ),
             ],
           ),
-        ],
-      ),
-    );
-  }
-
-  void _showCreateEnvironmentDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: const Text(
-            'Add an Aquatic Environment',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(labelText: 'Description'),
-                ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
-                  value: _selectedEnvironmentType,
-                  decoration:
-                      const InputDecoration(labelText: 'Environment Type'),
-                  items: ENVIRONMENT_TYPES.map((type) {
-                    return DropdownMenuItem<String>(
-                      value: type['value'],
-                      child: Text(type['label']!),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedEnvironmentType = value!;
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const Text('Public'),
-                    Checkbox(
-                      value: _isPublic,
-                      onChanged: (value) {
-                        if (value!) {
-                          _showPublicWarning();
-                        }
-                        setState(() {
-                          _isPublic = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                if (_isPublic) ...[
-                  TextField(
-                    controller: _cityController,
-                    decoration: const InputDecoration(labelText: 'City'),
+          Row(
+            children: [
+              const Text("Add a publicly available Environment"),
+              const SizedBox(width: 20),
+              FloatingActionButton.small(
+                heroTag: null,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddPublicEnvironmentScreen(),
                   ),
-                ],
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _createEnvironment();
-              },
-              child: const Text('Create'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showPublicWarning() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Warning'),
-        content: const Text(
-            'By making this environment public, everyone will be able to see its values.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+                ).then((selectedEnvironment) {
+                  if (selectedEnvironment != null) {
+                    // Handle the selected public environment
+                  }
+                }),
+                child: const Icon(Icons.public),
+              ),
+            ],
           ),
         ],
       ),
