@@ -134,7 +134,7 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
         # Check if user owns the environment or is subscribed
         environment = Environment.objects.filter(
             Q(id=environment_id, user=request.user) |
-            Q(id=environment_id, userenvironmentsubscription__user=request.user)
+            Q(id=environment_id, subscribed_users=request.user)
         ).first()
 
         if not environment:
@@ -177,7 +177,7 @@ def get_all_values_from_parameter(request, environment_id, parameter_name, numbe
         # Check if user owns the environment or is subscribed
         environment = Environment.objects.filter(
             Q(id=environment_id, user=request.user) |
-            Q(id=environment_id, userenvironmentsubscription__user=request.user)
+            Q(id=environment_id, subscribed_users=request.user)
         ).first()
 
         if not environment:
@@ -205,7 +205,7 @@ def get_total_entries(request, environment_id, parameter_name):
         # Check if user owns the environment or is subscribed
         environment = Environment.objects.filter(
             Q(id=environment_id, user=request.user) |
-            Q(id=environment_id, userenvironmentsubscription__user=request.user)
+            Q(id=environment_id, subscribed_users=request.user)
         ).first()
 
         if not environment:
@@ -380,7 +380,7 @@ def save_alert_settings(request, environment_id):
         # Check if user owns the environment or is subscribed
         environment = Environment.objects.filter(
             Q(id=environment_id, user=user) |
-            Q(id=environment_id, userenvironmentsubscription__user=user)
+            Q(id=environment_id, subscribed_users=user)
         ).first()
 
         if not environment:
@@ -419,7 +419,7 @@ def get_alert_settings(request, environment_id, parameter_name):
         # Check if user owns the environment or is subscribed
         environment = Environment.objects.filter(
             Q(id=environment_id, user=user) |
-            Q(id=environment_id, userenvironmentsubscription__user=user)
+            Q(id=environment_id, subscribed_users=user)
         ).first()
 
         if not environment:
@@ -432,7 +432,7 @@ def get_alert_settings(request, environment_id, parameter_name):
         ).first()
 
         if alert_settings:
-            serializer = UserAlertSettingSerializer(alert_settings) 
+            serializer = UserAlertSettingSerializer(alert_settings)
             return Response(serializer.data, status=200)
         else:
             return Response({'status': 'No alert settings found for this parameter.'}, status=404)
