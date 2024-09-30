@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -26,3 +28,16 @@ class Environment(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.environment_type})"
+
+
+# Model to store the relationship between users and their subscriptions to public environments
+class UserEnvironmentSubscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions')
+    environment = models.ForeignKey(Environment, on_delete=models.CASCADE, related_name='subscribed_users')
+    subscribed_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = ('user', 'environment')
+
+    def __str__(self):
+        return f"{self.user.username} subscribed to {self.environment.name}"
