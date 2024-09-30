@@ -108,4 +108,19 @@ class EnvironmentService {
       throw Exception('Failed to get public environments: ${response.body}');
     }
   }
+
+  Future<void> subscribeToPublicEnvironment(int environmentId) async {
+    final response = await UserService().makeAuthenticatedRequest((token) {
+      return http.post(
+        Uri.parse('$baseUrl/api/environments/$environmentId/subscribe/'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+    });
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to subscribe: ${response.body}');
+    }
+  }
 }

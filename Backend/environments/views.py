@@ -43,15 +43,6 @@ def get_public_environments(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_user_environments(request):
-    environments = Environment.objects.filter(user=request.user)
-    serializer = EnvironmentSerializer(environments, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_environment(request, id):

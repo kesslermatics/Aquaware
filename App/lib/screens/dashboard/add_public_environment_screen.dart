@@ -118,8 +118,24 @@ class _AddPublicEnvironmentScreenState
                                 ),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.add),
-                                  onPressed: () {
-                                    Navigator.pop(context, environment);
+                                  onPressed: () async {
+                                    try {
+                                      await _environmentService
+                                          .subscribeToPublicEnvironment(
+                                              environment.id);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Successfully subscribed!')),
+                                      );
+                                      Navigator.pop(context);
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Failed to subscribe: $e')));
+                                    }
                                   },
                                 ),
                               ),
