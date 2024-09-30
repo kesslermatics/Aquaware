@@ -30,17 +30,6 @@ from environments.models import Environment
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-@swagger_auto_schema(
-    method='post',
-    request_body=FlexibleWaterValuesSerializer,
-    responses={
-        201: openapi.Response('Created', WaterValueSerializer(many=True)),
-        400: 'Bad Request',
-        404: 'Not Found',
-        429: 'Too Many Requests'
-    },
-    operation_description="Add water values to an environment. Ensures values are only added once every 30 minutes."
-)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_water_values(request, environment_id):
@@ -138,33 +127,6 @@ def send_alert_email(user, environment, parameter_name, current_value, threshold
     )
 
 
-@swagger_auto_schema(
-    method='get',
-    manual_parameters=[
-        openapi.Parameter('number_of_entries', openapi.IN_QUERY, description="Number of latest entries", type=openapi.TYPE_INTEGER)
-    ],
-    responses={
-        200: openapi.Response('Success', openapi.Schema(
-            type=openapi.TYPE_ARRAY,
-            items=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'parameter': openapi.Schema(type=openapi.TYPE_STRING),
-                    'values': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(
-                        type=openapi.TYPE_OBJECT,
-                        properties={
-                            'measured_at': openapi.Schema(type=openapi.TYPE_STRING, format='date-time'),
-                            'value': openapi.Schema(type=openapi.TYPE_NUMBER),
-                            'unit': openapi.Schema(type=openapi.TYPE_STRING),
-                        }
-                    )),
-                }
-            )
-        )),
-        400: 'Bad Request'
-    },
-    operation_description="Get the latest water values for all parameters in an environment."
-)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_latest_from_all_parameters(request, environment_id, number_of_entries):
@@ -244,23 +206,7 @@ def get_all_values_from_parameter(request, environment_id, parameter_name, numbe
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(
-    method='get',
-    manual_parameters=[
-        openapi.Parameter('parameter_name', openapi.IN_PATH, description="Name of the parameter", type=openapi.TYPE_STRING),
-    ],
-    responses={
-        200: openapi.Response('Success', openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'total_entries': openapi.Schema(type=openapi.TYPE_INTEGER),
-            }
-        )),
-        404: 'Not Found',
-        400: 'Bad Request'
-    },
-    operation_description="Get the total number of entries for a specific parameter in an environment."
-)
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_total_entries(request, environment_id, parameter_name):
@@ -279,15 +225,6 @@ def get_total_entries(request, environment_id, parameter_name):
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(
-    method='get',
-    responses={
-        200: 'CSV File',
-        404: 'Not Found',
-        400: 'Bad Request'
-    },
-    operation_description="Export water values as a CSV file for a specific environment."
-)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def export_water_values(request, environment_id):
@@ -354,22 +291,6 @@ def export_water_values(request, environment_id):
         return Response({'error': f'An error occurred during export: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@swagger_auto_schema(
-    method='post',
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'file': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_BINARY, description="CSV file containing water values"),
-        },
-        required=['file']
-    ),
-    responses={
-        201: 'Import Successful',
-        400: 'Bad Request',
-        429: 'Too Many Requests'
-    },
-    operation_description="Import water values from a CSV file. Ensures values are only added once every 30 minutes."
-)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def import_water_values(request, environment_id):
@@ -451,16 +372,6 @@ def import_water_values(request, environment_id):
         return Response({'error': f"An error occurred during import: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(
-    method='post',
-    request_body=UserAlertSettingSerializer,
-    responses={
-        200: 'Alert settings saved successfully',
-        400: 'Bad Request',
-        404: 'Not Found'
-    },
-    operation_description="Save alert settings for a specific parameter in an environment."
-)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def save_alert_settings(request, environment_id):
@@ -495,18 +406,6 @@ def save_alert_settings(request, environment_id):
         return Response({'error': f'An error occurred: {str(e)}'}, status=400)
 
 
-@swagger_auto_schema(
-    method='get',
-    manual_parameters=[
-        openapi.Parameter('parameter_name', openapi.IN_PATH, description="Name of the parameter", type=openapi.TYPE_STRING),
-    ],
-    responses={
-        200: UserAlertSettingSerializer,
-        404: 'Not Found',
-        400: 'Bad Request'
-    },
-    operation_description="Get alert settings for a specific parameter in an environment."
-)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_alert_settings(request, environment_id, parameter_name):
