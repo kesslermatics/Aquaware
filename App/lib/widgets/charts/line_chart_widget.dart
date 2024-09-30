@@ -14,6 +14,7 @@ class LineChartWidget extends StatefulWidget {
   String lastDisplayedDate = '';
 
   LineChartWidget({
+    super.key,
     required this.xValues,
     required this.yValues,
     required this.yDeviation,
@@ -29,23 +30,61 @@ class LineChartWidget extends StatefulWidget {
 
 class _LineChartWidgetState extends State<LineChartWidget> {
   String lastDate = '';
-  int _selectedValue = 6;
+  String _selectedFilter = 'Last 6 hours';
   late List<DateTime> usedXValues;
   late List<double> usedYValues;
+  List<String> availableFilters = [];
 
-  final List<int> _options = [6, 12, 24, 48, 96];
+  @override
+  void initState() {
+    super.initState();
+    _updateAvailableFilters();
+  }
+
+  void _updateAvailableFilters() {
+    DateTime now = DateTime.now();
+    availableFilters = [];
+
+    if (widget.xValues
+        .any((date) => date.isAfter(now.subtract(const Duration(hours: 6))))) {
+      availableFilters.add('Last 6 hours');
+    }
+    if (widget.xValues
+        .any((date) => date.isAfter(now.subtract(const Duration(hours: 24))))) {
+      availableFilters.add('Last 24 hours');
+    }
+    if (widget.xValues
+        .any((date) => date.isAfter(now.subtract(const Duration(days: 7))))) {
+      availableFilters.add('Last week');
+    }
+
+    if (!availableFilters.contains(_selectedFilter)) {
+      _selectedFilter =
+          availableFilters.isNotEmpty ? availableFilters.first : '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (_selectedValue < widget.xValues.length) {
-      usedXValues =
-          widget.xValues.sublist(widget.xValues.length - _selectedValue);
-      usedYValues =
-          widget.yValues.sublist(widget.yValues.length - _selectedValue);
-    } else {
-      usedXValues = widget.xValues;
-      usedYValues = widget.yValues;
+    DateTime now = DateTime.now();
+    DateTime filterTime;
+
+    switch (_selectedFilter) {
+      case 'Last 24 hours':
+        filterTime = now.subtract(const Duration(hours: 24));
+        break;
+      case 'Last week':
+        filterTime = now.subtract(const Duration(days: 7));
+        break;
+      default:
+        filterTime = now.subtract(const Duration(hours: 6));
+        break;
     }
+
+    usedXValues =
+        widget.xValues.where((date) => date.isAfter(filterTime)).toList();
+    usedYValues =
+        widget.yValues.sublist(widget.xValues.indexOf(usedXValues.first));
 
     List<FlSpot> spots = [];
     for (int i = 0; i < usedXValues.length; i++) {
@@ -63,7 +102,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   widget.title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: ColorProvider.textDark,
@@ -73,37 +112,31 @@ class _LineChartWidgetState extends State<LineChartWidget> {
               ),
             Row(
               children: [
-                Text(
-                  "Last ",
+                const Text(
+                  "Filter: ",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: ColorProvider.textDark,
                   ),
                 ),
-                DropdownButton<int>(
-                  value: _selectedValue,
-                  items: _options.map((int value) {
-                    return DropdownMenuItem<int>(
+                DropdownButton<String>(
+                  value: _selectedFilter.isNotEmpty ? _selectedFilter : null,
+                  items: availableFilters.map((String value) {
+                    return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value.toString()),
+                      child: Text(value),
                     );
                   }).toList(),
-                  onChanged: (int? newValue) {
+                  onChanged: (String? newValue) {
                     setState(() {
-                      _selectedValue = newValue!;
+                      _selectedFilter = newValue!;
+                      _updateAvailableFilters();
                     });
                   },
                 ),
-                Text(
-                  " Values",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: ColorProvider.textDark,
-                  ),
-                ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             SizedBox(
@@ -116,8 +149,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                       getTooltipItems: (List<LineBarSpot> touchedSpots) {
                         return touchedSpots.map((touchedSpot) {
                           return LineTooltipItem(
-                            '${touchedSpot.y.toStringAsFixed(widget.fractionDigits)}',
-                            TextStyle(
+                            touchedSpot.y
+                                .toStringAsFixed(widget.fractionDigits),
+                            const TextStyle(
                               color: ColorProvider.textLight,
                               fontWeight: FontWeight.bold,
                             ),
@@ -129,13 +163,13 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                   gridData: FlGridData(
                     show: true,
                     getDrawingHorizontalLine: (value) {
-                      return FlLine(
+                      return const FlLine(
                         color: Colors.grey,
                         strokeWidth: 1,
                       );
                     },
                     getDrawingVerticalLine: (value) {
-                      return FlLine(
+                      return const FlLine(
                         color: Colors.grey,
                         strokeWidth: 1,
                       );
@@ -144,7 +178,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
-                        interval: 6,
+                        interval: (usedXValues.length / 6)
+                            .roundToDouble()
+                            .clamp(1, double.infinity),
                         showTitles: true,
                         reservedSize: 80,
                         getTitlesWidget: (value, meta) {
@@ -154,22 +190,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
                           DateTime currentDate = usedXValues[value.toInt()];
 
-                          // Überprüfe, ob das aktuelle Datum anders ist als das letzte angezeigte Datum
-                          String currentDateString =
-                              DateFormat('dd-MM').format(currentDate);
-                          bool isNewDay =
-                              widget.lastDisplayedDate != currentDateString;
-
-                          // Aktualisiere das letzte angezeigte Datum, wenn ein neuer Tag erkannt wurde
-                          if (isNewDay) {
-                            widget.lastDisplayedDate = currentDateString;
-                          }
-
-                          String formattedDate = (isNewDay || value == 0)
-                              ? DateFormat('dd-MM HH:mm')
-                                  .format(currentDate) // Datum + Uhrzeit
-                              : DateFormat('HH:mm')
-                                  .format(currentDate); // Nur Uhrzeit
+                          String formattedDate =
+                              DateFormat('dd-MM HH:mm').format(currentDate);
 
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
@@ -178,7 +200,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                               child: Text(
                                 textAlign: TextAlign.end,
                                 formattedDate,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: ColorProvider.textDark,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -196,7 +218,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                         reservedSize: 40,
                         getTitlesWidget: (value, meta) => Text(
                           value.toStringAsFixed(widget.fractionDigits),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: ColorProvider.textDark,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
@@ -204,16 +226,16 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                         ),
                       ),
                     ),
-                    topTitles: AxisTitles(
+                    topTitles: const AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
-                    rightTitles: AxisTitles(
+                    rightTitles: const AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
                   ),
                   borderData: FlBorderData(
                     show: true,
-                    border: Border(
+                    border: const Border(
                       bottom: BorderSide(color: Colors.transparent),
                       left: BorderSide(color: Colors.transparent),
                       right: BorderSide(color: Colors.transparent),
@@ -236,7 +258,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                       dotData: FlDotData(
                         show: true,
                         checkToShowDot: (spot, barData) {
-                          return (spot.x % (_selectedValue / 12)).toInt() == 0;
+                          return (spot.x % (usedXValues.length / 6)).toInt() ==
+                              0;
                         },
                       ),
                       belowBarData: BarAreaData(show: false),

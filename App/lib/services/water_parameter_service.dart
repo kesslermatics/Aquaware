@@ -4,16 +4,15 @@ import 'package:aquaware/models/water_value.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'user_service.dart';
+import 'package:aquaware/constants.dart';
 
 class WaterParameterService {
-  static const String baseUrl =
-      'https://aquaware-production.up.railway.app/api/measurements/environments/';
-
   Future<List<WaterParameter>> fetchAllWaterParameters(int environmentId,
-      {int number_of_entries = 1000}) async {
+      {int number_of_entries = 336}) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse('$baseUrl$environmentId/water-values/$number_of_entries/'),
+        Uri.parse(
+            '$baseUrl/api/measurements/environments/$environmentId/water-values/$number_of_entries/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -35,7 +34,7 @@ class WaterParameterService {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(
-            '$baseUrl$environmentId/water-values/$parameter/$numberOfEntries'),
+            '$baseUrl/api/measurements/environments/$environmentId/water-values/$parameter/$numberOfEntries'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -54,7 +53,8 @@ class WaterParameterService {
   Future<int> fetchTotalEntries(int aquariumId, String parameter) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
-        Uri.parse('$baseUrl$aquariumId/water-values/$parameter/total-entries'),
+        Uri.parse(
+            '$baseUrl/api/measurements/environments/$aquariumId/water-values/$parameter/total-entries'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

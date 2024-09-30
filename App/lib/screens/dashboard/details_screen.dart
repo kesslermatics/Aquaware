@@ -37,10 +37,24 @@ class _DetailsScreenState extends State<DetailsScreen> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No water parameters found.'));
           } else {
+            DateTime sevenDaysAgo =
+                DateTime.now().subtract(const Duration(days: 7));
+
+            List<WaterParameter> recentParameters =
+                snapshot.data!.where((param) {
+              return param.values.any(
+                  (waterValue) => waterValue.measuredAt.isAfter(sevenDaysAgo));
+            }).toList();
+
+            if (recentParameters.isEmpty) {
+              return const Center(
+                  child: Text('No water parameters found in the last 7 days.'));
+            }
+
             return ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: recentParameters.length,
               itemBuilder: (context, index) {
-                final waterParameter = snapshot.data![index];
+                final waterParameter = recentParameters[index];
                 return WaterParameterCard(
                   aquariumId: widget.aquarium.id,
                   waterParameter: waterParameter,
