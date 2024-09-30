@@ -5,7 +5,7 @@ from datetime import timedelta, datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
-from django.db.models import OuterRef, Subquery, Count, Max
+from django.db.models import OuterRef, Subquery, Count, Max, Q
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -131,7 +131,14 @@ def send_alert_email(user, environment, parameter_name, current_value, threshold
 @permission_classes([IsAuthenticated])
 def get_latest_from_all_parameters(request, environment_id, number_of_entries):
     try:
-        environment = Environment.objects.get(id=environment_id, user=request.user)
+        # Check if user owns the environment or is subscribed
+        environment = Environment.objects.filter(
+            Q(id=environment_id, user=request.user) |
+            Q(id=environment_id, userenvironmentsubscription__user=request.user)
+        ).first()
+
+        if not environment:
+            return Response({'detail': 'Environment not found or not accessible by this user.'}, status=status.HTTP_404_NOT_FOUND)
 
         subquery = WaterValue.objects.filter(
             environment_id=environment_id,
@@ -140,7 +147,6 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
 
         water_values = WaterValue.objects.filter(
             environment_id=environment_id,
-            environment__user=request.user,
             id__in=Subquery(subquery.values('id'))
         ).select_related('parameter').order_by('parameter_id', '-measured_at')
 
@@ -158,42 +164,28 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
         response_data = [{'parameter': param, 'values': values} for param, values in measurements.items()]
 
         return Response(response_data, status=status.HTTP_200_OK)
-    except Environment.DoesNotExist:
-        return Response({'detail': 'Environment not found or does not belong to this user.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(
-    method='get',
-    manual_parameters=[
-        openapi.Parameter('parameter_name', openapi.IN_PATH, description="Name of the parameter", type=openapi.TYPE_STRING),
-        openapi.Parameter('number_of_entries', openapi.IN_QUERY, description="Number of latest entries", type=openapi.TYPE_INTEGER)
-    ],
-    responses={
-        200: openapi.Response('Success', openapi.Schema(
-            type=openapi.TYPE_ARRAY,
-            items=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'measured_at': openapi.Schema(type=openapi.TYPE_STRING, format='date-time'),
-                    'value': openapi.Schema(type=openapi.TYPE_NUMBER),
-                    'unit': openapi.Schema(type=openapi.TYPE_STRING),
-                }
-            )
-        )),
-        400: 'Bad Request'
-    },
-    operation_description="Get all water values for a specific parameter in an environment."
-)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_all_values_from_parameter(request, environment_id, parameter_name, number_of_entries):
     try:
+        # Check if user owns the environment or is subscribed
+        environment = Environment.objects.filter(
+            Q(id=environment_id, user=request.user) |
+            Q(id=environment_id, userenvironmentsubscription__user=request.user)
+        ).first()
+
+        if not environment:
+            return Response({'detail': 'Environment not found or not accessible by this user.'}, status=status.HTTP_404_NOT_FOUND)
+
         parameter = WaterParameter.objects.get(name=parameter_name)
         water_values = WaterValue.objects.filter(
             environment_id=environment_id,
-            environment__user=request.user,
             parameter=parameter
         ).order_by('-measured_at')[:number_of_entries]
 
@@ -206,15 +198,22 @@ def get_all_values_from_parameter(request, environment_id, parameter_name, numbe
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_total_entries(request, environment_id, parameter_name):
     try:
+        # Check if user owns the environment or is subscribed
+        environment = Environment.objects.filter(
+            Q(id=environment_id, user=request.user) |
+            Q(id=environment_id, userenvironmentsubscription__user=request.user)
+        ).first()
+
+        if not environment:
+            return Response({'detail': 'Environment not found or not accessible by this user.'}, status=status.HTTP_404_NOT_FOUND)
+
         parameter = WaterParameter.objects.get(name=parameter_name)
         total_entries = WaterValue.objects.filter(
             environment_id=environment_id,
-            environment__user=request.user,
             parameter=parameter
         ).count()
 
@@ -223,6 +222,7 @@ def get_total_entries(request, environment_id, parameter_name):
         return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
@@ -377,7 +377,14 @@ def import_water_values(request, environment_id):
 def save_alert_settings(request, environment_id):
     try:
         user = request.user
-        environment = Environment.objects.get(id=environment_id, user=user)
+        # Check if user owns the environment or is subscribed
+        environment = Environment.objects.filter(
+            Q(id=environment_id, user=user) |
+            Q(id=environment_id, userenvironmentsubscription__user=user)
+        ).first()
+
+        if not environment:
+            return Response({'error': 'Environment not found or not accessible by this user.'}, status=404)
 
         serializer = UserAlertSettingSerializer(data=request.data)
         if serializer.is_valid():
@@ -400,8 +407,6 @@ def save_alert_settings(request, environment_id):
         else:
             return Response(serializer.errors, status=400)
 
-    except Environment.DoesNotExist:
-        return Response({'error': 'Environment not found or does not belong to this user.'}, status=404)
     except Exception as e:
         return Response({'error': f'An error occurred: {str(e)}'}, status=400)
 
@@ -411,7 +416,15 @@ def save_alert_settings(request, environment_id):
 def get_alert_settings(request, environment_id, parameter_name):
     try:
         user = request.user
-        environment = Environment.objects.get(id=environment_id, user=user)
+        # Check if user owns the environment or is subscribed
+        environment = Environment.objects.filter(
+            Q(id=environment_id, user=user) |
+            Q(id=environment_id, userenvironmentsubscription__user=user)
+        ).first()
+
+        if not environment:
+            return Response({'error': 'Environment not found or not accessible by this user.'}, status=404)
+
         parameter = WaterParameter.objects.get(name=parameter_name)
 
         alert_settings = UserAlertSetting.objects.filter(
@@ -424,10 +437,9 @@ def get_alert_settings(request, environment_id, parameter_name):
         else:
             return Response({'status': 'No alert settings found for this parameter.'}, status=404)
 
-    except Environment.DoesNotExist:
-        return Response({'error': 'Environment not found or does not belong to this user.'}, status=404)
     except WaterParameter.DoesNotExist:
         return Response({'error': 'Parameter not found.'}, status=404)
     except Exception as e:
-        return Response({'error': f'An error occurred: {str(e)}'}, status=400)
+        return Response({'error': f'An error occurred: {str(e)}'}, sta
+
 
