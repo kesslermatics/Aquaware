@@ -432,7 +432,7 @@ def get_alert_settings(request, environment_id, parameter_name):
         ).first()
 
         if alert_settings:
-            serializer = UserAlertSettingSerializer(alert_settings)
+            serializer = UserAlertSettingSerializer(alert_settings) 
             return Response(serializer.data, status=200)
         else:
             return Response({'status': 'No alert settings found for this parameter.'}, status=404)
