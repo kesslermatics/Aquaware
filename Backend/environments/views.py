@@ -58,17 +58,32 @@ def update_environment(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_environment(request, id):
-    try:
-        environment = Environment.objects.get(id=id, user=request.user)
-    except Environment.DoesNotExist:
-        return Response({'error': 'Environment not found or does not belong to this user.'}, status=status.HTTP_404_NOT_FOUND)
+    user = request.user
 
-    environment.delete()
-    return Response({'message': 'Environment deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+    try:
+        # Check if the environment belongs to the user (ownership)
+        environment = Environment.objects.get(id=id, user=user)
+        # If the user is the owner, delete the environment
+        environment.delete()
+        return Response({'message': 'Environment deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+
+    except Environment.DoesNotExist:
+        try:
+            # If the user does not own the environment, check if the user is subscribed to it
+            subscription = UserEnvironmentSubscription.objects.get(environment_id=id, user=user)
+            # Delete the subscription but keep the environment
+            subscription.delete()
+            return Response({'message': 'Subscription removed successfully.'}, status=status.HTTP_204_NO_CONTENT)
+
+        except UserEnvironmentSubscription.DoesNotExist:
+            return Response({'error': 'Environment not found or no subscription exists for this user.'},
+                            status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        return Response({'error': f'An error occurred: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
