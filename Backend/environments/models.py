@@ -32,8 +32,8 @@ class Environment(models.Model):
 
 # Model to store the relationship between users and their subscriptions to public environments
 class UserEnvironmentSubscription(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions')
-    environment = models.ForeignKey(Environment, on_delete=models.CASCADE, related_name='subscribed_users')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='subscriptions')
+    environment = models.ForeignKey(Environment, on_delete=models.SET_NULL, null=True, related_name='subscribed_users')
     subscribed_at = models.DateTimeField(default=timezone.now)
 
     class Meta:

@@ -13,7 +13,7 @@ class WaterParameter(models.Model):
         return self.name
 
 class WaterValue(models.Model):
-    environment = models.ForeignKey(Environment, on_delete=models.CASCADE, related_name='water_values')
+    environment = models.ForeignKey(Environment, on_delete=models.SET_NULL, blank=True, null=True, related_name='water_values')
     parameter = models.ForeignKey(WaterParameter, on_delete=models.CASCADE, related_name='water_values')
     value = models.DecimalField(max_digits=10, decimal_places=3)
     measured_at = models.DateTimeField()

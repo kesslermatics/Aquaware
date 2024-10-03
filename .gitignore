@@ -24,3 +24,5 @@ App/android/release-signing.properties
 /Backend/environments/migrations
 /Backend/environments/__pycache__
 App/android/app/upload_certificate.pem
+/Backend/environments/__pycache__
+/Backend/water/migrations
