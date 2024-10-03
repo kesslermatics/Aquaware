@@ -61,8 +61,8 @@ def signup(request):
             # Return a response with the tokens and a success message
             return Response({
                 'detail': 'User created successfully',
-                'access_token': access_token,
-                'refresh_token': refresh_token,
+                'access': access_token,
+                'refresh': refresh_token,
             }, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
