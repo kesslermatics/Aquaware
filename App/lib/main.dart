@@ -12,6 +12,9 @@ import 'screens/onboarding/onboding_screen.dart';
 // java -jar bundletool-all-1.15.6.jar build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/app/outputs/bundle/release/my_app.apks
 // java -jar bundletool-all-1.15.6.jar install-apks --apks=build/app/outputs/bundle/release/my_app.apks
 
+// keytool -genkeypair -alias my-release-key -keyalg RSA -keysize 2048 -validity 10000 -keystore my-release-key.jks
+// keytool -list -v -keystore <pfad-zu-deinem-keystore>.jks -alias <dein-alias> -storepass <dein-keystore-passwort>
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
