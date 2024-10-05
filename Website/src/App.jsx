@@ -15,8 +15,17 @@ import ResetPassword from "./components/ResetPassword";
 import Impressum from "./components/Impressum";
 import Privacy from "./components/Privacy";
 import TermsAndConditions from "./components/TermsAndConditions";
+import { useEffect } from "react";
 
 const App = () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${
+      import.meta.env.VITE_PAYPAL_CLIENT_ID
+    }&currency=EUR`;
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
   return (
     <>
       <Header />
