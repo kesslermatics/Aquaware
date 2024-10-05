@@ -29,10 +29,10 @@ const PricingList = () => {
 
           <Button
             className="w-full mb-6"
-            href={"/pricing"}
+            href={item.buttonRef}
             white={!!item.price}
           >
-            {item.price ? "Get started" : "Contact us"}
+            {item.buttonText}
           </Button>
 
           <ul>

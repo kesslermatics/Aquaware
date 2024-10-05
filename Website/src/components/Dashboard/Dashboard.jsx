@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom"; // React Router v6 Hooks für die Navigation
 import AccountInfo from "./AccountInfo";
 import EnvironmentInfo from "./EnvironmentInfo";
 import PricingPlanInfo from "./PricingPlanInfo";
@@ -8,23 +9,32 @@ import MenuSvg from "../../assets/svg/MenuSvg";
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("account");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate(); // Hook für Navigation
+  const location = useLocation(); // Hook für den Zugriff auf den aktuellen Standort (URL)
 
   useEffect(() => {
     const refreshToken = Cookies.get("refresh_token");
-    if (refreshToken) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
+    if (!refreshToken) {
+      navigate("/login"); // Umleitung zu /login, wenn kein Token
     }
-  }, []);
+  }, [navigate]);
+
+  // Listen for changes in the URL hash to update the active tab
+  useEffect(() => {
+    const hash = location.hash.replace("#", ""); // Entferne das '#' und erhalte nur den Tab-Namen
+    if (hash) {
+      setActiveTab(hash);
+    }
+  }, [location]);
 
   const toggleNavigation = () => {
-    if (menuOpen) {
-      setMenuOpen(false);
-    } else {
-      setMenuOpen(true);
-    }
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    navigate(`/dashboard#${tab}`); // Update the URL hash when the tab changes
+    setMenuOpen(false); // Close the menu after changing the tab
   };
 
   const renderTabContent = () => {
@@ -58,10 +68,7 @@ const Dashboard = () => {
               className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
                 activeTab === "account" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
               }`}
-              onClick={() => {
-                setActiveTab("account");
-                setMenuOpen(false);
-              }}
+              onClick={() => handleTabChange("account")}
             >
               Account
             </li>
@@ -71,10 +78,7 @@ const Dashboard = () => {
                   ? "bg-n-6 text-n-1"
                   : "hover:bg-n-6"
               }`}
-              onClick={() => {
-                setActiveTab("environments");
-                setMenuOpen(false);
-              }}
+              onClick={() => handleTabChange("environments")}
             >
               Environments
             </li>
@@ -84,10 +88,7 @@ const Dashboard = () => {
                   ? "bg-n-6 text-n-1"
                   : "hover:bg-n-6"
               }`}
-              onClick={() => {
-                setActiveTab("pricingplans");
-                setMenuOpen(false);
-              }}
+              onClick={() => handleTabChange("pricingplans")}
             >
               Pricing Plans
             </li>
@@ -104,7 +105,7 @@ const Dashboard = () => {
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
               activeTab === "account" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
             }`}
-            onClick={() => setActiveTab("account")}
+            onClick={() => handleTabChange("account")}
           >
             Account
           </li>
@@ -112,7 +113,7 @@ const Dashboard = () => {
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
               activeTab === "environments" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
             }`}
-            onClick={() => setActiveTab("environments")}
+            onClick={() => handleTabChange("environments")}
           >
             Environments
           </li>
@@ -120,14 +121,13 @@ const Dashboard = () => {
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
               activeTab === "pricingplans" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
             }`}
-            onClick={() => setActiveTab("pricingplans")}
+            onClick={() => handleTabChange("pricingplans")}
           >
             Pricing Plans
           </li>
         </ul>
       </div>
 
-      {/* Content Area */}
       <div className="w-full lg:w-3/4 bg-n-8 rounded-r-lg p-8">
         {renderTabContent()}
       </div>
