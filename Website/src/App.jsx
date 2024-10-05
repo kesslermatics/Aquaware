@@ -6,7 +6,6 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Pricing from "./components/Pricing";
-import Services from "./components/Services";
 import Docs from "./components/Docs";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -31,7 +30,6 @@ const App = () => {
                 <Hero />
                 <Benefits />
                 <ApiInfo />
-                <Services />
                 <Pricing />
               </>
             }
@@ -40,7 +38,6 @@ const App = () => {
           <Route path="/hero" element={<Hero />} />
           <Route path="/benefits" element={<Benefits />} />
           <Route path="/api-info" element={<ApiInfo />} />
-          <Route path="/services" element={<Services />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />

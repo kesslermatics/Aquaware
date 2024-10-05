@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 
 const PricingPlanInfo = () => {
   const [userPlan, setUserPlan] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   useEffect(() => {
     const fetchUserPlan = async () => {
@@ -35,18 +36,34 @@ const PricingPlanInfo = () => {
     fetchUserPlan();
   }, []);
 
+  const handlePlanClick = (plan) => {
+    if (plan.id !== userPlan) {
+      setSelectedPlan(plan); // Set the selected plan for display
+    }
+  };
+
   const getButtonText = (planId) => {
     if (planId == userPlan) {
       return "Current Plan";
+    } else if (planId > userPlan) {
+      return "Upgrade";
+    } else if (planId < userPlan) {
+      return "Downgrade";
     }
-    return "Upgrade";
   };
 
   const getButtonClass = (planId) => {
     if (planId == userPlan) {
       return "bg-green-500 text-white cursor-default";
+    } else if (planId > userPlan) {
+      return "bg-blue-500 text-white hover:bg-blue-600"; // Upgrade button
+    } else if (planId < userPlan) {
+      return "bg-blue-500 text-white hover:bg-blue-600"; // Downgrade button
     }
-    return "bg-blue-500 text-white hover:bg-blue-600";
+  };
+
+  const isButtonDisabled = (planId) => {
+    return planId == userPlan; // Disable button if it's the current plan
   };
 
   return (
@@ -77,7 +94,8 @@ const PricingPlanInfo = () => {
               className={`w-full py-2 rounded-lg font-semibold text-center ${getButtonClass(
                 item.id
               )}`}
-              disabled={item.id === userPlan} // Disable button if it's the current plan
+              onClick={() => handlePlanClick(item)} // Handle plan click
+              disabled={isButtonDisabled(item.id)} // Disable button if it's the current plan
             >
               {getButtonText(item.id)}
             </button>
@@ -96,6 +114,22 @@ const PricingPlanInfo = () => {
           </div>
         ))}
       </div>
+
+      {/* Display selected plan details */}
+      {selectedPlan && (
+        <div className="mt-8 w-full max-w-7xl mx-auto p-6 border border-n-6 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold mb-4">Selected Plan</h3>
+          <p><strong>Plan:</strong> {selectedPlan.title}</p>
+          <p><strong>Price:</strong> ${selectedPlan.price} / month</p>
+          <p><strong>Description:</strong> {selectedPlan.description}</p>
+          
+          <div className="mt-4">
+            <Button className="text-white hover:bg-blue-600">
+              Pay Now with PayPal
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
