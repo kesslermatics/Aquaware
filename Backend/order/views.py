@@ -88,6 +88,7 @@ def capture_order(request, order_id):
             subscription_tier_name = request.data.get('plan')
             print(f"Subscription tier name from request: {subscription_tier_name}")
 
+
             # Get the subscription tier from the database
             subscription_tier = SubscriptionTier.objects.get(name=subscription_tier_name)
             print(f"Subscription tier object found: {subscription_tier}")
