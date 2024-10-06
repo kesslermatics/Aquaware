@@ -2,11 +2,13 @@ import { check } from "../../assets";
 import { pricing } from "../../constants";
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
+import Confetti from "react-confetti";
 
 const PricingPlanInfo = () => {
   const [userPlan, setUserPlan] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [message, setMessage] = useState("");
+  const [showConfetti, setShowConfetti] = useState(false); // New state for confetti
   const paypalRef = useRef(null);
 
   // Function to refresh the access token
@@ -88,7 +90,7 @@ const PricingPlanInfo = () => {
 
   useEffect(() => {
     if (selectedPlan && window.paypal) {
-      paypalRef.current.innerHTML = "";
+      paypalRef.current.innerHTML = ""; // Clear PayPal button container before rendering
 
       window.paypal
         .Buttons({
@@ -154,6 +156,18 @@ const PricingPlanInfo = () => {
                 throw new Error(
                   `${errorDetail.description} (${orderData.debug_id})`
                 );
+              } else {
+                // Show confetti on successful payment
+                setShowConfetti(true);
+                setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
+                setMessage("Payment successful! Enjoy your new plan.");
+
+                // Reset the selected plan and scroll to top
+                setSelectedPlan(null);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+
+                // Fetch the updated user plan
+                fetchUserPlan();
               }
             } catch (error) {
               console.error(error);
@@ -197,6 +211,8 @@ const PricingPlanInfo = () => {
 
   return (
     <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
+      {showConfetti && <Confetti />} {/* Confetti component */}
+
       <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl">
         {pricing.map((item) => (
           <div
@@ -266,6 +282,8 @@ const PricingPlanInfo = () => {
           <p>{message}</p>
         </div>
       )}
+   
+
     </div>
   );
 };
