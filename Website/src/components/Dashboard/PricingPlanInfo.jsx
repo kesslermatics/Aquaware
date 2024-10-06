@@ -1,14 +1,12 @@
-import { check } from "../../assets";
-import { pricing } from "../../constants";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { pricing } from "../../constants"; // Pricing data
 import Cookies from "js-cookie";
-import Confetti from "react-confetti";
+import confetti from "canvas-confetti";
 
 const PricingPlanInfo = () => {
   const [userPlan, setUserPlan] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [message, setMessage] = useState("");
-  const [showConfetti, setShowConfetti] = useState(false); // New state for confetti
   const paypalRef = useRef(null);
 
   // Function to refresh the access token
@@ -62,6 +60,7 @@ const PricingPlanInfo = () => {
     }
   };
 
+  // Fetch user plan on load
   useEffect(() => {
     const fetchUserPlan = async () => {
       try {
@@ -88,9 +87,19 @@ const PricingPlanInfo = () => {
     fetchUserPlan();
   }, []);
 
+  // Confetti animation
+  const launchConfetti = () => {
+    confetti({
+      particleCount: 150,
+      spread: 60,
+      origin: { y: 0.6 },
+    });
+  };
+
+  // PayPal Subscription
   useEffect(() => {
     if (selectedPlan && window.paypal) {
-      paypalRef.current.innerHTML = ""; // Clear PayPal button container before rendering
+      paypalRef.current.innerHTML = "";
 
       window.paypal
         .Buttons({
@@ -100,80 +109,61 @@ const PricingPlanInfo = () => {
             color: "gold",
             label: "paypal",
           },
-          async createOrder() {
-            console.log("Order Creation Initiated");
+          async createSubscription() {
             try {
               const response = await fetchWithTokenRefresh(
-                "https://dev.aquaware.cloud/api/orders/create-order/",
+                "https://dev.aquaware.cloud/api/orders/create-subscription/",
                 {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    plan: selectedPlan.id,
-                    amount: selectedPlan.price,
+                    plan_id: selectedPlan.id,
                   }),
                 }
               );
 
-              const orderData = await response.json();
-              if (orderData.id) {
-                return orderData.id;
+              const subscriptionData = await response.json();
+              if (subscriptionData.approval_url) {
+                return subscriptionData.approval_url;
               } else {
-                const errorDetail = orderData?.details?.[0];
-                const errorMessage = errorDetail
-                  ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                  : JSON.stringify(orderData);
-
-                throw new Error(errorMessage);
+                throw new Error("Failed to create subscription.");
               }
             } catch (error) {
               console.error(error);
+              setMessage(`Could not initiate PayPal Subscription...${error}`);
             }
           },
           async onApprove(data, actions) {
             try {
               const response = await fetchWithTokenRefresh(
-                `https://dev.aquaware.cloud/api/orders/${data.paymentID}/capture/`,
+                `https://dev.aquaware.cloud/api/orders/execute-subscription/`,
                 {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    plan: selectedPlan.id,
-                    payer_id: data.payerID,
+                    token: data.orderID,
+                    plan_id: selectedPlan.id,
                   }),
                 }
               );
 
-              const orderData = await response.json();
-              const errorDetail = orderData?.details?.[0];
-              if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
-                return actions.restart();
-              } else if (errorDetail) {
-                throw new Error(
-                  `${errorDetail.description} (${orderData.debug_id})`
-                );
+              const result = await response.json();
+              if (result.message) {
+                setMessage("Subscription activated successfully!");
+                launchConfetti(); // Show confetti animation
+                setSelectedPlan(null); // Reset selected plan
+                fetchUserPlan(); // Fetch updated user plan
+    
               } else {
-                // Show confetti on successful payment
-                setShowConfetti(true);
-                setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
-                setMessage("Payment successful! Enjoy your new plan.");
-
-                // Reset the selected plan and scroll to top
-                setSelectedPlan(null);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-
-                // Fetch the updated user plan
-                fetchUserPlan();
+                setMessage("Subscription activation failed.");
               }
             } catch (error) {
               console.error(error);
-              setMessage(
-                `Sorry, your transaction could not be processed...${error}`
-              );
+              setMessage(`Sorry, your transaction could not be processed...${error}`);
             }
           },
         })
@@ -183,7 +173,8 @@ const PricingPlanInfo = () => {
 
   const handlePlanClick = (plan) => {
     if (plan.id !== userPlan) {
-      setSelectedPlan(plan);
+      setSelectedPlan(plan); // Set the selected plan for display
+      window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top
     }
   };
 
@@ -200,19 +191,17 @@ const PricingPlanInfo = () => {
   const getButtonClass = (planId) => {
     if (planId == userPlan) {
       return "bg-green-500 text-white cursor-default";
-    } else if (planId > userPlan || planId < userPlan) {
+    } else {
       return "bg-blue-500 text-white hover:bg-blue-600";
     }
   };
 
   const isButtonDisabled = (planId) => {
-    return planId == userPlan;
+    return planId == userPlan; // Disable button if it's the current plan
   };
 
   return (
     <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
-      {showConfetti && <Confetti />} {/* Confetti component */}
-
       <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl">
         {pricing.map((item) => (
           <div
@@ -236,9 +225,7 @@ const PricingPlanInfo = () => {
             </div>
 
             <button
-              className={`w-full py-2 rounded-lg font-semibold text-center ${getButtonClass(
-                item.id
-              )}`}
+              className={`w-full py-2 rounded-lg font-semibold text-center ${getButtonClass(item.id)}`}
               onClick={() => handlePlanClick(item)}
               disabled={isButtonDisabled(item.id)}
             >
@@ -247,11 +234,8 @@ const PricingPlanInfo = () => {
 
             <ul className="mt-4">
               {item.features.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-center py-2 border-t border-gray-300"
-                >
-                  <img src={check} alt="Check" className="w-4 h-4" />
+                <li key={index} className="flex items-center py-2 border-t border-gray-300">
+                  
                   <p className="text-sm ml-2">{feature}</p>
                 </li>
               ))}
@@ -274,16 +258,10 @@ const PricingPlanInfo = () => {
             <strong>Description:</strong> {selectedPlan.description}
           </p>
 
-          <div
-            className="mt-4 bg-n-8"
-            id="paypal-button-container"
-            ref={paypalRef}
-          ></div>
+          <div className="mt-4 bg-n-8" id="paypal-button-container" ref={paypalRef}></div>
           <p>{message}</p>
         </div>
       )}
-   
-
     </div>
   );
 };
