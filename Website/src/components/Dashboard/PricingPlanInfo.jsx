@@ -128,11 +128,9 @@ const PricingPlanInfo = () => {
               }
             } catch (error) {
               console.error(error);
-              setMessage(`Could not initiate PayPal Checkout...${error}`);
             }
           },
           async onApprove(data, actions) {
-            console.log("Order Approval Initiated", data);
             try {
               const response = await fetchWithTokenRefresh(
                 `https://dev.aquaware.cloud/api/orders/${data.paymentID}/capture/`,
@@ -150,26 +148,11 @@ const PricingPlanInfo = () => {
 
               const orderData = await response.json();
               const errorDetail = orderData?.details?.[0];
-
               if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
                 return actions.restart();
               } else if (errorDetail) {
                 throw new Error(
                   `${errorDetail.description} (${orderData.debug_id})`
-                );
-              } else if (!orderData.purchase_units) {
-                throw new Error(JSON.stringify(orderData));
-              } else {
-                const transaction =
-                  orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
-                  orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
-                setMessage(
-                  `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`
-                );
-                console.log(
-                  "Capture result",
-                  orderData,
-                  JSON.stringify(orderData, null, 2)
                 );
               }
             } catch (error) {
