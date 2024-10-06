@@ -28,7 +28,7 @@ def create_order(request):
             return Response({"detail": "Plan and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         payment = paypalrestsdk.Payment({
-            "intent": "CAPTURE",
+            "intent": "ORDER",
             "payer": {
                 "payment_method": "paypal"
             },
