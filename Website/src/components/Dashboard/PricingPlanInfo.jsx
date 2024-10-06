@@ -113,13 +113,12 @@ const PricingPlanInfo = () => {
                   },
                   body: JSON.stringify({
                     plan: selectedPlan.id,
-                    amount: 1,
+                    amount: selectedPlan.price,
                   }),
                 }
               );
 
               const orderData = await response.json();
-              console.log("Order data:", orderData.id);
               if (orderData.id) {
                 return orderData.id;
               } else {

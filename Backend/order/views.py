@@ -33,6 +33,15 @@ def create_order(request):
                 "payment_method": "paypal"
             },
             "transactions": [{
+                "item_list": {
+                    "items": [{
+                        "name": "item",
+                        "sku": "item",
+                        "price": str(amount),
+                        "currency": "EUR",
+                        "quantity": 1
+                    }]
+                },
                 "amount": {
                     "total": str(amount),
                     "currency": "EUR"
