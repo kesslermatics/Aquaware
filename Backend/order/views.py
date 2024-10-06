@@ -84,12 +84,12 @@ def capture_order(request, order_id):
             print("Payment executed successfully")
 
             user = request.user
-            subscription_tier_name = request.data.get('plan')
-            print(f"Subscription tier name from request: {subscription_tier_name}")
+            subscription_tier_id = request.data.get('plan')
+            print(f"Subscription tier name from request: {subscription_tier_id}")
 
 
             # Get the subscription tier from the database
-            subscription_tier = SubscriptionTier.objects.get(name=subscription_tier_name)
+            subscription_tier = SubscriptionTier.objects.get(id=subscription_tier_id)
             print(f"Subscription tier object found: {subscription_tier}")
 
             # Update user's subscription tier
