@@ -1,133 +1,129 @@
-import paypalrestsdk
+import requests
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
-from urllib.parse import urlparse, parse_qs
 
 from order.models import Invoice
 from users.models import SubscriptionTier
 
-paypalrestsdk.configure({
-    "mode": settings.PAYPAL_MODE,  # sandbox oder live
-    "client_id": settings.PAYPAL_CLIENT_ID,
-    "client_secret": settings.PAYPAL_CLIENT_SECRET,
-})
-
+def get_paypal_access_token():
+    url = f"https://api-m.{settings.PAYPAL_MODE}.paypal.com/v1/oauth2/token"
+    headers = {
+        "Accept": "application/json",
+        "Accept-Language": "en_US"
+    }
+    data = {
+        "grant_type": "client_credentials"
+    }
+    response = requests.post(url, headers=headers, data=data, auth=(settings.PAYPAL_CLIENT_ID, settings.PAYPAL_CLIENT_SECRET))
+    if response.status_code == 200:
+        return response.json()['access_token']
+    else:
+        return None
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def create_order(request):
-
+def create_subscription(request):
     try:
-        plan = request.data.get("plan")
-        amount = request.data.get("amount")
+        plan_id = request.data.get("plan_id")
 
-        if not plan or not amount:
-            return Response({"detail": "Plan and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
+        if not plan_id:
+            return Response({"detail": "Plan ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        payment = paypalrestsdk.Payment({
-            "intent": "sale",
-            "payer": {
-                "payment_method": "paypal"
+        access_token = get_paypal_access_token()
+        if not access_token:
+            return Response({"detail": "Failed to get PayPal access token."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        url = f"https://api-m.{settings.PAYPAL_MODE}.paypal.com/v1/billing/subscriptions"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}"
+        }
+
+        subscription_data = {
+            "plan_id": plan_id,
+            "subscriber": {
+                "name": {
+                    "given_name": request.user.first_name,
+                    "surname": request.user.last_name
+                },
+                "email_address": request.user.email
             },
-            "transactions": [{
-                "item_list": {
-                    "items": [{
-                        "price": str(amount),
-                        "currency": "EUR",
-                        "quantity": 1
-                    }]
-                },
-                "amount": {
-                    "total": str(amount),
-                    "currency": "EUR"
-                },
-                "description": f"Subscription plan {plan} purchase"
-            }],
-            "redirect_urls": {
-                "return_url": "https://aquaware.cloud/payment/success",
-                "cancel_url": "https://aquaware.cloud/payment/cancel"
+            "application_context": {
+                "brand_name": "Aquaware",
+                "locale": "en-US",
+                "shipping_preference": "NO_SHIPPING",
+                "user_action": "SUBSCRIBE_NOW",
+                "return_url": "https://yourdomain.com/payment/success",
+                "cancel_url": "https://yourdomain.com/payment/cancel"
             }
-        })
+        }
 
-        if payment.create():
-            token = ''
-            for link in payment.links:
-                if link.rel == "approval_url":
-                    url = link.href
-                    parsed_url = urlparse(url)
-                    query_params = parse_qs(parsed_url.query)
-                    token = query_params.get('token', [None])[0]
-            return Response({"id": token}, status=status.HTTP_201_CREATED)
+        response = requests.post(url, headers=headers, json=subscription_data)
+        if response.status_code in [201, 200]:
+            response_data = response.json()
+            approval_url = ""
+            for link in response_data.get('links', []):
+                if link.get('rel') == 'approve':
+                    approval_url = link.get('href')
+                    break
+            return Response({"approval_url": approval_url}, status=status.HTTP_201_CREATED)
         else:
-            return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({"error": response.json()}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def capture_order(request, order_id):
+def capture_subscription(request):
     try:
-        # Log to see the initial incoming request data
-        print(f"Starting capture for order_id: {order_id}")
+        subscription_id = request.query_params.get('subscription_id')
+        if not subscription_id:
+            return Response({"detail": "Subscription ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Attempt to find the payment via PayPal SDK
-        payment = paypalrestsdk.Payment.find(order_id)
-        print(f"Payment found: {payment}")
+        access_token = get_paypal_access_token()
+        if not access_token:
+            return Response({"detail": "Failed to get PayPal access token."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        # Attempt to execute the payment
-        if payment.execute({"payer_id": request.data.get('payer_id')}):
-            print("Payment executed successfully")
+        # Get the subscription details
+        url = f"https://api-m.{settings.PAYPAL_MODE}.paypal.com/v1/billing/subscriptions/{subscription_id}"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}"
+        }
 
-            user = request.user
-            subscription_tier_id = request.data.get('plan')
-            print(f"Subscription tier name from request: {subscription_tier_id}")
-
-
-            # Get the subscription tier from the database
-            subscription_tier = SubscriptionTier.objects.get(id=subscription_tier_id)
-            print(f"Subscription tier object found: {subscription_tier}")
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            subscription_details = response.json()
 
             # Update user's subscription tier
+            user = request.user
+            plan_id = subscription_details['plan_id']
+            subscription_tier = SubscriptionTier.objects.get(plan_id=plan_id)
+
             user.subscription_tier = subscription_tier
             user.save()
-            print(f"User's subscription updated to: {subscription_tier}")
 
-            # Create an invoice for the payment
-            amount_paid = payment.transactions[0].amount.total
-            print(f"Amount paid: {amount_paid}")
-
+            # Create an invoice for the subscription
+            amount_paid = subscription_details['billing_info']['last_payment']['amount']['value']
             invoice = Invoice.objects.create(
                 user=user,
                 amount=amount_paid,
                 description=f"Subscription plan {subscription_tier.name} purchase",
-                status="paid",
+                status="active",
                 subscription_tier=subscription_tier,
-                invoice_id=payment.id
+                invoice_id=subscription_id
             )
-            print(f"Invoice created: {invoice}")
 
-            # Return a successful response
-            return Response({"status": "Payment captured successfully."}, status=status.HTTP_200_OK)
+            return Response({"status": "Subscription activated successfully."}, status=status.HTTP_200_OK)
         else:
-            # Print the error if payment execution fails
-            print(f"Payment execution failed with error: {payment.error}")
-            return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({"error": response.json()}, status=status.HTTP_400_BAD_REQUEST)
     except SubscriptionTier.DoesNotExist:
-        # Handle case where the subscription tier is invalid
-        print(f"SubscriptionTier not found: {request.data.get('plan')}")
         return Response({"error": "Invalid subscription tier."}, status=status.HTTP_400_BAD_REQUEST)
-
     except Exception as e:
-        # Log any unexpected exception that occurs
-        print(f"An unexpected error occurred: {str(e)}")
         return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -140,7 +136,7 @@ def get_user_invoices(request):
             "description": invoice.description,
             "status": invoice.status,
             "created_at": invoice.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            "subscription_tier": invoice.subscription_tier.name,  # Zugriff auf das SubscriptionTier
+            "subscription_tier": invoice.subscription_tier.name,
             "invoice_id": invoice.invoice_id,
         }
         for invoice in invoices
