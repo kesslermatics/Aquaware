@@ -135,7 +135,7 @@ const PricingPlanInfo = () => {
             console.log("Order Approval Initiated", data);
             try {
               const response = await fetchWithTokenRefresh(
-                `https://dev.aquaware.cloud/api/orders/${data.orderID}/capture/`,
+                `https://dev.aquaware.cloud/api/orders/${data.paymentID}/capture/`,
                 {
                   method: "POST",
                   headers: {
