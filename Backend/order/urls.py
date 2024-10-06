@@ -6,5 +6,5 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
-    path('create-checkout-session/', views.create_checkout_session(), name='capture_order'),
+    
 ]
