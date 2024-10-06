@@ -88,99 +88,6 @@ const PricingPlanInfo = () => {
     fetchUserPlan();
   }, []);
 
-  useEffect(() => {
-    if (selectedPlan && window.paypal) {
-      paypalRef.current.innerHTML = ""; // Clear PayPal button container before rendering
-
-      window.paypal
-        .Buttons({
-          style: {
-            shape: "rect",
-            layout: "vertical",
-            color: "gold",
-            label: "paypal",
-          },
-          async createOrder() {
-            console.log("Order Creation Initiated");
-            try {
-              const response = await fetchWithTokenRefresh(
-                "https://dev.aquaware.cloud/api/orders/create-order/",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    plan: selectedPlan.id,
-                    amount: selectedPlan.price,
-                  }),
-                }
-              );
-
-              const orderData = await response.json();
-              if (orderData.id) {
-                return orderData.id;
-              } else {
-                const errorDetail = orderData?.details?.[0];
-                const errorMessage = errorDetail
-                  ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                  : JSON.stringify(orderData);
-
-                throw new Error(errorMessage);
-              }
-            } catch (error) {
-              console.error(error);
-            }
-          },
-          async onApprove(data, actions) {
-            try {
-              const response = await fetchWithTokenRefresh(
-                `https://dev.aquaware.cloud/api/orders/${data.paymentID}/capture/`,
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    plan: selectedPlan.id,
-                    payer_id: data.payerID,
-                  }),
-                }
-              );
-
-              const orderData = await response.json();
-              const errorDetail = orderData?.details?.[0];
-              if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
-                return actions.restart();
-              } else if (errorDetail) {
-                throw new Error(
-                  `${errorDetail.description} (${orderData.debug_id})`
-                );
-              } else {
-                // Show confetti on successful payment
-                setShowConfetti(true);
-                setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
-                setMessage("Payment successful! Enjoy your new plan.");
-
-                // Reset the selected plan and scroll to top
-                setSelectedPlan(null);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-
-                // Fetch the updated user plan
-                fetchUserPlan();
-              }
-            } catch (error) {
-              console.error(error);
-              setMessage(
-                `Sorry, your transaction could not be processed...${error}`
-              );
-            }
-          },
-        })
-        .render(paypalRef.current);
-    }
-  }, [selectedPlan]);
-
   const handlePlanClick = (plan) => {
     if (plan.id !== userPlan) {
       setSelectedPlan(plan);
@@ -212,7 +119,6 @@ const PricingPlanInfo = () => {
   return (
     <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
       {showConfetti && <Confetti />} {/* Confetti component */}
-
       <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl">
         {pricing.map((item) => (
           <div
@@ -259,7 +165,6 @@ const PricingPlanInfo = () => {
           </div>
         ))}
       </div>
-
       {/* Display selected plan details and PayPal button */}
       {selectedPlan && (
         <div className="mt-8 w-full max-w-7xl mx-auto p-6 border border-n-6 rounded-xl shadow-lg bg-n-8">
@@ -274,16 +179,9 @@ const PricingPlanInfo = () => {
             <strong>Description:</strong> {selectedPlan.description}
           </p>
 
-          <div
-            className="mt-4 bg-n-8"
-            id="paypal-button-container"
-            ref={paypalRef}
-          ></div>
           <p>{message}</p>
         </div>
       )}
-   
-
     </div>
   );
 };
