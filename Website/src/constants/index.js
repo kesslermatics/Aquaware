@@ -46,13 +46,14 @@ export const pricing = [
     ],
     buttonText: "Leverage your tracking",
     buttonRef: "/dashboard#pricingplans",
+    stripeLink: "https://buy.stripe.com/7sI8xE2i7c4Ial26oo",
   },
   {
     id: "3",
     title: "Premium",
     description:
       "Frequent water monitoring with AI tools for detailed insights and more",
-    price: "6.99",
+    price: "5.99",
     features: [
       "Everything from the Hobby and Advanced plan",
       "Add public water bodies for public data sharing",
@@ -62,6 +63,7 @@ export const pricing = [
     ],
     buttonText: "Upgrade to premium features",
     buttonRef: "/dashboard#pricingplans",
+    stripeLink: "https://buy.stripe.com/cN24ho5uj9WA0Ks5kl",
   },
 ];
 

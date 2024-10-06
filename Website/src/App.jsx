@@ -5,7 +5,6 @@ import ApiInfo from "./components/ApiInfo";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Pricing from "./components/Pricing";
 import Docs from "./components/Docs";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -14,18 +13,12 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Impressum from "./components/Impressum";
 import Privacy from "./components/Privacy";
+import Success from "./components/Success";
+import Pricing from "./components/Pricing";
 import TermsAndConditions from "./components/TermsAndConditions";
 import { useEffect } from "react";
 
 const App = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${
-      import.meta.env.VITE_PAYPAL_CLIENT_ID
-    }&currency=EUR`;
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
   return (
     <>
       <Header />
@@ -47,7 +40,6 @@ const App = () => {
           <Route path="/hero" element={<Hero />} />
           <Route path="/benefits" element={<Benefits />} />
           <Route path="/api-info" element={<ApiInfo />} />
-          <Route path="/pricing" element={<Pricing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -62,6 +54,7 @@ const App = () => {
             path="/terms-and-conditions"
             element={<TermsAndConditions />}
           />
+          <Route path="/success" element={<Success />} />
 
           {/* 404 Not Found */}
           <Route

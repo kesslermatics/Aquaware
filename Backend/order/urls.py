@@ -6,6 +6,5 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
-    path('create-subscription/', views.create_subscription, name='capture_order'),
-    path('execute-subscription/', views.execute_subscription, name='capture_order'),
+    path('create-checkout-session/', views.create_checkout_session(), name='capture_order'),
 ]
