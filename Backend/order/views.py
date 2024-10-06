@@ -80,7 +80,7 @@ def capture_order(request, order_id):
         print(f"Payment found: {payment}")
 
         # Attempt to execute the payment
-        if payment.execute({"payer_id": order_id}):
+        if payment.execute({"payer_id": request.data.get('payer_id')}):
             print("Payment executed successfully")
 
             user = request.user

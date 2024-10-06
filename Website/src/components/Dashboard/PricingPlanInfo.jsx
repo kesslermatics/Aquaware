@@ -141,6 +141,10 @@ const PricingPlanInfo = () => {
                   headers: {
                     "Content-Type": "application/json",
                   },
+                  body: JSON.stringify({
+                    plan: selectedPlan.id,
+                    payer_id: data.payerID,
+                  }),
                 }
               );
 
