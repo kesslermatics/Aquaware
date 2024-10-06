@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
+from urllib.parse import urlparse, parse_qs
 
 from order.models import Invoice
 from users.models import SubscriptionTier
@@ -45,7 +46,14 @@ def create_order(request):
         })
 
         if payment.create():
-            return Response({"id": payment.id}, status=status.HTTP_201_CREATED)
+            token = ''
+            for link in payment.links:
+                if link.rel == "approval_url":
+                    url = link.href
+                    parsed_url = urlparse(url)
+                    query_params = parse_qs(parsed_url.query)
+                    token = query_params.get('token', [None])[0]
+            return Response({"id": token}, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
 
