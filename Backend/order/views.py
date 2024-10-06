@@ -77,7 +77,7 @@ def capture_order(request, order_id):
         print(f"Request data: {request.data}")
 
         # Attempt to find the payment via PayPal SDK
-        payment = paypalrestsdk.Payment.find(order_id)
+        payment = paypalrestsdk.Payment.find(resource_id=order_id)
         print(f"Payment found: {payment}")
 
         # Extract the payer ID from the request
