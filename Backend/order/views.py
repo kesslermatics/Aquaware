@@ -74,13 +74,13 @@ def capture_order(request, order_id):
     try:
         # Log to see the initial incoming request data
         print(f"Starting capture for order_id: {order_id}")
-        
+
         # Attempt to find the payment via PayPal SDK
         payment = paypalrestsdk.Payment.find(order_id)
         print(f"Payment found: {payment}")
 
         # Attempt to execute the payment
-        if payment.execute({"payer_id": order_id}):
+        if payment.execute({"payer_id": request.data.payment_id}):
             print("Payment executed successfully")
 
             user = request.user
