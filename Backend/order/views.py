@@ -28,15 +28,13 @@ def create_order(request):
             return Response({"detail": "Plan and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         payment = paypalrestsdk.Payment({
-            "intent": "sale",
+            "intent": "CAPTURE",
             "payer": {
                 "payment_method": "paypal"
             },
             "transactions": [{
                 "item_list": {
                     "items": [{
-                        "name": "item",
-                        "sku": "item",
                         "price": str(amount),
                         "currency": "EUR",
                         "quantity": 1
@@ -74,33 +72,64 @@ def create_order(request):
 @permission_classes([IsAuthenticated])
 def capture_order(request, order_id):
     try:
-        payment = paypalrestsdk.Payment.find(order_id)
+        # Log to see the initial incoming request data
+        print(f"Starting capture for order_id: {order_id}")
+        print(f"Request data: {request.data}")
 
-        if payment.execute({"payer_id": request.data.get("payer_id")}):
+        # Attempt to find the payment via PayPal SDK
+        payment = paypalrestsdk.Payment.find(order_id)
+        print(f"Payment found: {payment}")
+
+        # Extract the payer ID from the request
+        payer_id = request.data.get("payer_id")
+        print(f"Payer ID: {payer_id}")
+
+        # Attempt to execute the payment
+        if payment.execute({"payer_id": payer_id}):
+            print("Payment executed successfully")
+
             user = request.user
             subscription_tier_name = request.data.get('plan')
+            print(f"Subscription tier name from request: {subscription_tier_name}")
 
+            # Get the subscription tier from the database
             subscription_tier = SubscriptionTier.objects.get(name=subscription_tier_name)
+            print(f"Subscription tier object found: {subscription_tier}")
 
+            # Update user's subscription tier
             user.subscription_tier = subscription_tier
             user.save()
+            print(f"User's subscription updated to: {subscription_tier}")
 
-            Invoice.objects.create(
+            # Create an invoice for the payment
+            amount_paid = payment.transactions[0].amount.total
+            print(f"Amount paid: {amount_paid}")
+
+            invoice = Invoice.objects.create(
                 user=user,
-                amount=payment.transactions[0].amount.total,
+                amount=amount_paid,
                 description=f"Subscription plan {subscription_tier.name} purchase",
                 status="paid",
                 subscription_tier=subscription_tier,
                 invoice_id=payment.id
             )
+            print(f"Invoice created: {invoice}")
 
+            # Return a successful response
             return Response({"status": "Payment captured successfully."}, status=status.HTTP_200_OK)
         else:
+            # Print the error if payment execution fails
+            print(f"Payment execution failed with error: {payment.error}")
             return Response({"error": payment.error}, status=status.HTTP_400_BAD_REQUEST)
 
     except SubscriptionTier.DoesNotExist:
+        # Handle case where the subscription tier is invalid
+        print(f"SubscriptionTier not found: {request.data.get('plan')}")
         return Response({"error": "Invalid subscription tier."}, status=status.HTTP_400_BAD_REQUEST)
+
     except Exception as e:
+        # Log any unexpected exception that occurs
+        print(f"An unexpected error occurred: {str(e)}")
         return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

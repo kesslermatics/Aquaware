@@ -48,7 +48,6 @@ const PricingPlanInfo = () => {
 
       let response = await fetch(url, options);
 
-      // If the token has expired, refresh it and retry the request
       if (response.status === 401) {
         accessToken = await refreshAccessToken();
         options.headers.Authorization = `Bearer ${accessToken}`;
@@ -89,7 +88,7 @@ const PricingPlanInfo = () => {
 
   useEffect(() => {
     if (selectedPlan && window.paypal) {
-      paypalRef.current.innerHTML = ""; // Clear PayPal button container before rendering
+      paypalRef.current.innerHTML = "";
 
       window.paypal
         .Buttons({
@@ -99,10 +98,8 @@ const PricingPlanInfo = () => {
             color: "gold",
             label: "paypal",
           },
-          message: {
-            amount: selectedPlan.price,
-          },
           async createOrder() {
+            console.log("Order Creation Initiated");
             try {
               const response = await fetchWithTokenRefresh(
                 "https://dev.aquaware.cloud/api/orders/create-order/",
@@ -135,6 +132,7 @@ const PricingPlanInfo = () => {
             }
           },
           async onApprove(data, actions) {
+            console.log("Order Approval Initiated", data);
             try {
               const response = await fetchWithTokenRefresh(
                 `https://dev.aquaware.cloud/api/orders/${data.orderID}/capture/`,
@@ -184,7 +182,7 @@ const PricingPlanInfo = () => {
 
   const handlePlanClick = (plan) => {
     if (plan.id !== userPlan) {
-      setSelectedPlan(plan); // Set the selected plan for display
+      setSelectedPlan(plan);
     }
   };
 
@@ -202,12 +200,12 @@ const PricingPlanInfo = () => {
     if (planId == userPlan) {
       return "bg-green-500 text-white cursor-default";
     } else if (planId > userPlan || planId < userPlan) {
-      return "bg-blue-500 text-white hover:bg-blue-600"; // Upgrade or Downgrade button
+      return "bg-blue-500 text-white hover:bg-blue-600";
     }
   };
 
   const isButtonDisabled = (planId) => {
-    return planId == userPlan; // Disable button if it's the current plan
+    return planId == userPlan;
   };
 
   return (
@@ -238,8 +236,8 @@ const PricingPlanInfo = () => {
               className={`w-full py-2 rounded-lg font-semibold text-center ${getButtonClass(
                 item.id
               )}`}
-              onClick={() => handlePlanClick(item)} // Handle plan click
-              disabled={isButtonDisabled(item.id)} // Disable button if it's the current plan
+              onClick={() => handlePlanClick(item)}
+              disabled={isButtonDisabled(item.id)}
             >
               {getButtonText(item.id)}
             </button>
@@ -261,7 +259,7 @@ const PricingPlanInfo = () => {
 
       {/* Display selected plan details and PayPal button */}
       {selectedPlan && (
-        <div className="mt-8 w-full max-w-7xl mx-auto p-6 border border-n-6 rounded-xl shadow-lg">
+        <div className="mt-8 w-full max-w-7xl mx-auto p-6 border border-n-6 rounded-xl shadow-lg bg-n-8">
           <h3 className="text-xl font-semibold mb-4">Selected Plan</h3>
           <p>
             <strong>Plan:</strong> {selectedPlan.title}
@@ -274,7 +272,7 @@ const PricingPlanInfo = () => {
           </p>
 
           <div
-            className="mt-4"
+            className="mt-4 bg-n-8"
             id="paypal-button-container"
             ref={paypalRef}
           ></div>
