@@ -80,11 +80,8 @@ def capture_order(request, order_id):
         payment = paypalrestsdk.Payment.find(order_id)
         print(f"Payment found: {payment}")
 
-        # Extract the payer ID from the request
-        print(f"Payer ID: {payer_id}")
-
         # Attempt to execute the payment
-        if payment.execute({"payer_id": payer_id}):
+        if payment.execute({"payer_id": order_id}):
             print("Payment executed successfully")
 
             user = request.user
