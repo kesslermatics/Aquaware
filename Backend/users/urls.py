@@ -42,5 +42,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('feedback/', user_views.send_feedback, name='send-feedback'),
 
-    path('stripe-webhook/', user_views.stripe_webhook, name='send-feedback'),
+    path('stripe-webhook/', user_views.stripe_webhook, name='stripe-webhook'),
 ]
