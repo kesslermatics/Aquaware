@@ -384,11 +384,11 @@ def stripe_webhook(request):
 
 def handle_subscription_created(subscription):
     customer_email = get_email_from_subscription(subscription)
-    update_user_subscription(customer_email, subscription['items']['data'][0]['price']['nickname'])
+    update_user_subscription(customer_email, subscription['object']['items']['data'][0]['plan']['product'])
 
 def handle_subscription_updated(subscription):
     customer_email = get_email_from_subscription(subscription)
-    update_user_subscription(customer_email, subscription['items']['data'][0]['price']['nickname'])
+    update_user_subscription(customer_email, subscription['object']['items']['data'][0]['plan']['product'])
 
 def handle_subscription_deleted(subscription):
     customer_email = get_email_from_subscription(subscription)
@@ -399,23 +399,26 @@ def get_email_from_subscription(subscription):
     customer = stripe.Customer.retrieve(customer_id)
     return customer['email']
 
-def update_user_subscription(email, subscription_name):
-    print(f"Updating subscription for {email} to {subscription_name}")
+def update_user_subscription(email, product_id):
+    print(f"Updating subscription for {email} to product {product_id}")
     try:
         user = User.objects.get(email=email)
-        subscription_tier = SubscriptionTier.objects.get(name=subscription_name)
+        subscription_tier = "Hobby"
+        if product_id == "prod_Qz0KqGeOXBrWMP":
+            subscription_tier = SubscriptionTier.objects.get(id=2)
+        if product_id == "prod_Qz0Lzwswmwr5X1":
+            subscription_tier = SubscriptionTier.objects.get(id=3)
         user.subscription_tier = subscription_tier
         user.save()
     except User.DoesNotExist:
         print(f"User with email {email} does not exist.")
     except SubscriptionTier.DoesNotExist:
-        print(f"SubscriptionTier {subscription_name} does not exist.")
+        print(f"SubscriptionTier {product_id} does not exist.")
 
 def remove_user_subscription(email):
     try:
         user = User.objects.get(email=email)
-        # Remove the subscription by setting a default tier or null (depends on your logic)
-        hobby_tier = SubscriptionTier.objects.get(name="hobby")
+        hobby_tier = SubscriptionTier.objects.get(id=1)
         user.subscription_tier = hobby_tier
         user.save()
     except User.DoesNotExist:
