@@ -31,6 +31,7 @@ from .serializers import UserSerializer, RegisterSerializer, CustomTokenObtainPa
 from aquaware import settings
 
 User = get_user_model()
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
