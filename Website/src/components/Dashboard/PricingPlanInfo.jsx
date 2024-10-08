@@ -95,6 +95,9 @@ const PricingPlanInfo = () => {
   };
 
   const getButtonText = (planId) => {
+    if (planId == 1) {
+      return "Always Active";
+    }
     if (planId == userPlan) {
       return "Current Plan";
     } else if (planId > userPlan) {
@@ -105,6 +108,9 @@ const PricingPlanInfo = () => {
   };
 
   const getButtonClass = (planId) => {
+    if (planId == 1) {
+      return "text-white cursor-default";
+    }
     if (planId == userPlan) {
       return "bg-green-500 text-white cursor-default";
     } else if (planId > userPlan || planId < userPlan) {
@@ -113,13 +119,35 @@ const PricingPlanInfo = () => {
   };
 
   const isButtonDisabled = (planId) => {
+    if (planId == 1) {
+      return true;
+    }
     return planId == userPlan;
   };
 
   return (
     <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
-      {showConfetti && <Confetti />} {/* Confetti component */}
       <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl">
+        <h2 className="text-2xl font-semibold">Plan Information</h2>
+        <p className="text-center mt-4 mb-4">
+          We use Stripe for payment processing. Please ensure you use the same
+          email address that you have registered with through our API, app, or
+          on this website to complete your payment. This will help ensure your
+          account is correctly linked with your subscription.
+        </p>
+        {/* Display customer portal link if userPlan is not 1 */}
+        {userPlan != 1 && (
+          <div className=" text-center w-full max-w-7xl mx-auto p-6 rounded-xl shadow-lg bg-n-8">
+            <a
+              href="https://billing.stripe.com/p/login/fZeaGa4mc7Zi2oU8ww"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold text-center hover:bg-blue-600"
+            >
+              Manage Your Active Subscription
+            </a>
+          </div>
+        )}
         {pricing.map((item) => (
           <div
             key={item.id}
@@ -178,22 +206,6 @@ const PricingPlanInfo = () => {
           <p>
             <strong>Description:</strong> {selectedPlan.description}
           </p>
-        </div>
-      )}
-      {/* Display customer portal link if userPlan is not 1 */}
-      {userPlan !== 1 && (
-        <div className="mt-8 w-full max-w-7xl mx-auto p-6 border border-n-6 rounded-xl shadow-lg bg-n-8">
-          <h3 className="text-xl font-semibold mb-4">
-            Manage Your Subscription
-          </h3>
-          <a
-            href="https://billing.stripe.com/p/login/fZeaGa4mc7Zi2oU8ww"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold text-center hover:bg-blue-600"
-          >
-            Go to Customer Portal
-          </a>
         </div>
       )}
     </div>

@@ -5,12 +5,12 @@ from django.db import models
 class SubscriptionTier(models.Model):
     HOBBY = 'hobby'
     ADVANCED = 'advanced'
-    BUSINESS = 'business'
+    PREMIUM = 'premium'
 
     TIER_CHOICES = [
         (HOBBY, 'Hobby'),
         (ADVANCED, 'Advanced'),
-        (BUSINESS, 'Business'),
+        (PREMIUM, 'Premium'),
     ]
 
     name = models.CharField(max_length=50, choices=TIER_CHOICES, unique=True)

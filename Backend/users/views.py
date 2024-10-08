@@ -1,6 +1,8 @@
 from tokenize import TokenError
 
+import stripe
 from coreapi.compat import force_text
+from django.http import JsonResponse
 from django.utils import timezone
 from google.oauth2 import id_token
 from django.contrib.auth.tokens import default_token_generator
@@ -347,3 +349,71 @@ def send_feedback(request):
         return Response({'detail': 'Feedback sent successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError:
+        return JsonResponse({'error': 'Invalid payload'}, status=400)
+    except stripe.error.SignatureVerificationError:
+        return JsonResponse({'error': 'Invalid signature'}, status=400)
+
+    # Handle the event
+    if event['type'] == 'customer.subscription.created':
+        handle_subscription_created(event['data']['object'])
+
+    elif event['type'] == 'customer.subscription.updated':
+        handle_subscription_updated(event['data']['object'])
+
+    elif event['type'] == 'customer.subscription.deleted':
+        handle_subscription_deleted(event['data']['object'])
+
+    return JsonResponse({'status': 'success'})
+
+def handle_subscription_created(subscription):
+    customer_email = get_email_from_subscription(subscription)
+    update_user_subscription(customer_email, subscription['items']['data'][0]['price']['nickname'])
+
+def handle_subscription_updated(subscription):
+    customer_email = get_email_from_subscription(subscription)
+    update_user_subscription(customer_email, subscription['items']['data'][0]['price']['nickname'])
+
+def handle_subscription_deleted(subscription):
+    customer_email = get_email_from_subscription(subscription)
+    remove_user_subscription(customer_email)
+
+def get_email_from_subscription(subscription):
+    customer_id = subscription['customer']
+    customer = stripe.Customer.retrieve(customer_id)
+    return customer['email']
+
+def update_user_subscription(email, subscription_name):
+    print(f"Updating subscription for {email} to {subscription_name}")
+    try:
+        user = User.objects.get(email=email)
+        subscription_tier = SubscriptionTier.objects.get(name=subscription_name)
+        user.subscription_tier = subscription_tier
+        user.save()
+    except User.DoesNotExist:
+        print(f"User with email {email} does not exist.")
+    except SubscriptionTier.DoesNotExist:
+        print(f"SubscriptionTier {subscription_name} does not exist.")
+
+def remove_user_subscription(email):
+    try:
+        user = User.objects.get(email=email)
+        # Remove the subscription by setting a default tier or null (depends on your logic)
+        hobby_tier = SubscriptionTier.objects.get(name="hobby")
+        user.subscription_tier = hobby_tier
+        user.save()
+    except User.DoesNotExist:
+        print(f"User with email {email} does not exist.")
+    except SubscriptionTier.DoesNotExist:
+        print("Hobby subscription tier does not exist.")
