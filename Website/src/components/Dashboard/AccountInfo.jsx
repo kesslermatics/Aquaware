@@ -147,7 +147,7 @@ const AccountInfo = () => {
       case 2:
         return "Advanced Plan";
       case 3:
-        return "Business Plan";
+        return "Premium Plan";
       default:
         return "Unknown Plan";
     }
