@@ -94,8 +94,7 @@ INSTALLED_APPS = [
     "environments",
     "water",
     "logs",
-    'corsheaders',
-    "order",
+    'corsheaders'
 ]
 
 SIMPLE_JWT = {

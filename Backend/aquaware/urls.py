@@ -39,7 +39,6 @@ urlpatterns = [
     path("api/users/", include('users.urls')),
     path("api/environments/", include('environments.urls')),
     path("api/measurements/", include('water.urls')),
-    path("api/orders/", include('order.urls')),
 ]
 
 if settings.DEBUG:
