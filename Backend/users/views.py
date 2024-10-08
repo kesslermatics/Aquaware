@@ -384,11 +384,11 @@ def stripe_webhook(request):
 
 def handle_subscription_created(subscription):
     customer_email = get_email_from_subscription(subscription)
-    update_user_subscription(customer_email, subscription['object']['items']['data'][0]['plan']['product'])
+    update_user_subscription(customer_email, subscription['items']['data'][0]['plan']['product'])
 
 def handle_subscription_updated(subscription):
     customer_email = get_email_from_subscription(subscription)
-    update_user_subscription(customer_email, subscription['object']['items']['data'][0]['plan']['product'])
+    update_user_subscription(customer_email, subscription['items']['data'][0]['plan']['product'])
 
 def handle_subscription_deleted(subscription):
     customer_email = get_email_from_subscription(subscription)
