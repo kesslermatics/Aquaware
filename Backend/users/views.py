@@ -352,6 +352,7 @@ def send_feedback(request):
 
 
 def stripe_webhook(request):
+    print("Stripe webhook received")
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
@@ -361,10 +362,12 @@ def stripe_webhook(request):
             payload, sig_header, endpoint_secret
         )
     except ValueError:
+        print("Invalid payload")
         return JsonResponse({'error': 'Invalid payload'}, status=400)
     except stripe.error.SignatureVerificationError:
+        print("Invalid signature")
         return JsonResponse({'error': 'Invalid signature'}, status=400)
-
+    print("Event constructed:" + event['type'])
     # Handle the event
     if event['type'] == 'customer.subscription.created':
         handle_subscription_created(event['data']['object'])
