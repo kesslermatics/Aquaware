@@ -256,9 +256,13 @@ def delete_account_view(request):
 @csrf_protect
 def confirm_delete_account(request):
     user = request.user
-    user.delete()
+    user.email = None
+    user.first_name = None
+    user.last_name = None
+    user.save()
+
     logout(request)
-    return Response({'message': 'Your account has been deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+    return Response({'message': 'Your account has been anonymized successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['DELETE'])
@@ -369,8 +373,6 @@ def stripe_webhook(request):
     except stripe.error.SignatureVerificationError:
         print("Invalid signature")
         return JsonResponse({'error': 'Invalid signature'}, status=400)
-    print("Event constructed:" + event['type'])
-    # Handle the event
     if event['type'] == 'customer.subscription.created':
         handle_subscription_created(event['data']['object'])
 
@@ -400,7 +402,6 @@ def get_email_from_subscription(subscription):
     return customer['email']
 
 def update_user_subscription(email, product_id):
-    print(f"Updating subscription for {email} to product {product_id}")
     try:
         user = User.objects.get(email=email)
         subscription_tier = "Hobby"

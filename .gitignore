@@ -30,3 +30,4 @@ Website/.env
 Website/index.html
 /Backend/order/__pycache__
 /Backend/order/migrations
+/Backend/users/migrations

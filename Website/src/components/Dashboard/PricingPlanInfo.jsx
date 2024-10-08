@@ -193,21 +193,6 @@ const PricingPlanInfo = () => {
           </div>
         ))}
       </div>
-      {/* Display selected plan details */}
-      {selectedPlan && (
-        <div className="mt-8 w-full max-w-7xl mx-auto p-6 border border-n-6 rounded-xl shadow-lg bg-n-8">
-          <h3 className="text-xl font-semibold mb-4">Selected Plan</h3>
-          <p>
-            <strong>Plan:</strong> {selectedPlan.title}
-          </p>
-          <p>
-            <strong>Price:</strong> ${selectedPlan.price} / month
-          </p>
-          <p>
-            <strong>Description:</strong> {selectedPlan.description}
-          </p>
-        </div>
-      )}
     </div>
   );
 };
