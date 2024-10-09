@@ -381,7 +381,7 @@ def send_tailored_request_email(request):
             subject,
             full_message,
             settings.DEFAULT_FROM_EMAIL,
-            ['info@kesslermatics.com'],
+            [email],
             fail_silently=False,
         )
 
