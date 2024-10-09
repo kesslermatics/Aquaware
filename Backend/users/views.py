@@ -380,8 +380,8 @@ def send_tailored_request_email(request):
         send_mail(
             subject,
             full_message,
-            settings.DEFAULT_FROM_EMAIL,
-            [email],
+            email,
+            ['info@kesslermatics.com'],
             fail_silently=False,
         )
 
