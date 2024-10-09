@@ -3,6 +3,7 @@ import { pricing } from "../../constants";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Confetti from "react-confetti";
+import ComparePlans from "../ComparePlans";
 
 const PricingPlanInfo = () => {
   const [userPlan, setUserPlan] = useState(null);
@@ -127,7 +128,7 @@ const PricingPlanInfo = () => {
 
   return (
     <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
-      <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl">
+      <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl mb-16">
         <h2 className="text-2xl font-semibold">Plan Information</h2>
         <p className="text-center mt-4 mb-4">
           We use Stripe for payment processing. Please ensure you use the same
@@ -163,8 +164,10 @@ const PricingPlanInfo = () => {
             <div className="flex justify-center items-center mb-4">
               {item.price && (
                 <>
-                  <span className="text-xl font-semibold">$</span>
-                  <span className="text-4xl font-bold ml-1">{item.price}</span>
+                  <span className="text-xl font-semibold">€</span>
+                  <span className="text-4xl font-bold ml-1">
+                    {item.price} /m
+                  </span>
                 </>
               )}
             </div>
@@ -193,6 +196,7 @@ const PricingPlanInfo = () => {
           </div>
         ))}
       </div>
+      <ComparePlans />
     </div>
   );
 };

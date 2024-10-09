@@ -17,6 +17,10 @@ import Success from "./components/Success";
 import Pricing from "./components/Pricing";
 import TermsAndConditions from "./components/TermsAndConditions";
 import { useEffect } from "react";
+import PricingPlanInfo from "./components/Dashboard/PricingPlanInfo";
+import ComparePlans from "./components/ComparePlans";
+import Section from "./components/Section";
+import TailoredTool from "./components/TailoredTool";
 
 const App = () => {
   return (
@@ -33,6 +37,10 @@ const App = () => {
                 <Benefits />
                 <ApiInfo />
                 <Pricing />
+                <Section>
+                  <ComparePlans />
+                </Section>
+                <TailoredTool />
               </>
             }
           />
