@@ -19,7 +19,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -355,6 +355,40 @@ def send_feedback(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def send_tailored_request_email(request):
+    try:
+        first_name = request.data.get('firstName')
+        last_name = request.data.get('lastName')
+        organization = request.data.get('organization', 'Not provided')
+        email = request.data.get('email')
+        message = request.data.get('message')
+
+        if not (first_name and last_name and email and message):
+            return Response({"detail": "All required fields must be filled."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Email content
+        subject = f"Tailored Application Request from {first_name} {last_name}"
+        full_message = f"Name: {first_name} {last_name}\n"
+        full_message += f"Organization: {organization}\n"
+        full_message += f"Email: {email}\n\n"
+        full_message += f"Message:\n{message}"
+
+        # Send the email
+        send_mail(
+            subject,
+            full_message,
+            settings.DEFAULT_FROM_EMAIL,
+            ['info@kesslermatics.com'],
+            fail_silently=False,
+        )
+
+        return Response({"detail": "Email sent successfully."}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @csrf_exempt
 def stripe_webhook(request):
