@@ -63,6 +63,12 @@ export default {
           "sidebarId": "tutorialSidebar",
           "position": "left",
           "label": "Getting Started"
+        },
+        {
+          "type": "docSidebar",
+          "sidebarId": "realWorldSidebar",
+          "position": "left",
+          "label": "Real World Example"
         }
       ],
       "hideOnScroll": false

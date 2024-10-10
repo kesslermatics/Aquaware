@@ -78,6 +78,12 @@ const config = {
             position: "left",
             label: "Getting Started",
           },
+          {
+            type: "docSidebar",
+            sidebarId: "realWorldSidebar",
+            position: "left",
+            label: "Real World Example",
+          },
         ],
       },
     }),
