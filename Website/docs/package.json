@@ -19,6 +19,7 @@
     "@mdx-js/react": "^3.0.0",
     "autoprefixer": "^10.4.20",
     "clsx": "^2.0.0",
+    "docusaurus": "^1.14.7",
     "postcss": "^8.4.47",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.0.0",

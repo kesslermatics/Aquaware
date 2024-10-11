@@ -2,7 +2,7 @@ const Docs = () => {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <iframe
-        src="/docs/quick-start-guide/index.html"
+        src="/docs/getting-started/quick-start-guide/index.html"
         title="Docusaurus Documentation"
         style={{
           width: "100vw",
