@@ -1,23 +1,23 @@
-import os
 import requests
 import json
-from openai import OpenAI
+import time
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+import openai
 from django.conf import settings
-
-client = OpenAI()
+from users.models import SubscriptionTier
+from PIL import Image
+import io
+import base64
+from .models import DiseaseDetection
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def diagnosis_from_image(request):
     user = request.user
-
     # Check if the user has the required subscription tier
     if user.subscription_tier.id != 3:
         return Response({"detail": "This feature is only available for Premium subscribers."},
@@ -27,25 +27,26 @@ def diagnosis_from_image(request):
     if 'image' not in request.FILES:
         return Response({"error": "No image file provided."}, status=status.HTTP_400_BAD_REQUEST)
 
-    try:
-        image = request.FILES['image']
+    # Retrieve the uploaded image
+    image = request.FILES['image']
 
-        # Save the image file to the media folder (or a custom path)
-        path = default_storage.save(f'images/{image.name}', ContentFile(image.read()))
-        print(path)
-        image_url = os.path.join(settings.MEDIA_URL, path)
+    try:
+        # Open and convert to base64 for the API call
+        image_data = image.read()
+        base64_image = base64.b64encode(image_data).decode('utf-8')
 
         # Define the prompt for diagnosing the fish disease
         prompt = (
-            "You will receive an image of a fish. Your sole task is to determine the disease of the fish. "
-            "If there is a fish in the image, identify whether the fish has a disease or is healthy. "
-            "Respond **only** in the following JSON format **without any additional text or explanations as clear text**:\n"
+            "You will receive an image of a fish. Your task is to carefully and thoroughly determine whether the fish has any disease. "
+            "Only provide a diagnosis if you are highly certain of the condition. In case of doubt, carefully review every detail before making a judgment. "
+            "If there is any uncertainty, increase your attention to the smallest visual cues of disease. "
+            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text**:\n"
             "{\n"
             '  "fish_detected": true or false,\n'
             '  "condition": "healthy" or the identified disease with their name,\n'
             '  "symptoms": "In two sentences, explain the symptoms of the identified disease",\n'
             '  "curing": "In two sentences, suggest treatments for the identified disease",\n'
-            '  "certainty": percentage of how certain you are of the diagnosis\n'
+            '  "certainty": percentage of how certain you are of the diagnosis, with 100% reserved for clear and obvious cases.\n'
             "}"
         )
 
@@ -55,34 +56,60 @@ def diagnosis_from_image(request):
         }
 
         payload = {
-            "model": "gpt-4o-mini",
+            "model": "gpt-4o",
             "messages": [
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": prompt},
-                        {"type": "image_url", "image_url": {"url": image_url}}
+                        {
+                            "type": "text",
+                            "text": f"{prompt}"
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{base64_image}",
+                                "detail": "low"
+                            }
+                        }
                     ]
                 }
             ],
             "max_tokens": 300
         }
 
-        # Send the request to the OpenAI API
+        # Measure time taken for API request
+        start_time = time.time()
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-        print(response.json())
+        end_time = time.time()
+
+        # Extract the diagnosis from the response
         diagnosis = response.json()['choices'][0]['message']['content'].strip()
 
-        # Parse the diagnosis string as JSON
-        diagnosis_json = json.loads(diagnosis)
+        # Extract the diagnosis from the response and clean the JSON
+        diagnosis_cleaned = diagnosis.replace('```', '').strip()
+        diagnosis_json = json.loads(diagnosis_cleaned)
 
-        # Return the diagnosis as a JSON response
+        # Save the disease detection results to the database
+        detection = DiseaseDetection.objects.create(
+            fish_detected=diagnosis_json['fish_detected'],
+            condition=diagnosis_json['condition'],
+            symptoms=diagnosis_json['symptoms'],
+            curing=diagnosis_json['curing'],
+            certainty=diagnosis_json['certainty'],
+            prompt_tokens=response.json()['usage']['prompt_tokens'],
+            completion_tokens=response.json()['usage']['completion_tokens'],
+            total_tokens=response.json()['usage']['total_tokens'],
+            model_used=response.json()['model'],
+            time_taken=end_time - start_time,
+            base64_image_size=len(base64_image),
+            user=user
+        )
+
         return Response(diagnosis_json, status=status.HTTP_200_OK)
 
+    except json.JSONDecodeError as e:
+        return Response({"error": "Failed to parse the response as JSON", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Exception as e:
+        # Handle any errors that occur during processing
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    finally:
-        # Delete the uploaded image after processing
-        if os.path.exists(image_url):
-            os.remove(image_url)
