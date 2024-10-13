@@ -22,6 +22,7 @@ SWAGGER_SETTINGS = {
    'USE_SESSION_AUTH': False
 }
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,9 +44,16 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Base URL for serving media files
+MEDIA_URL = '/media/'
+
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+
+OPENAI_API_KEY_DISEASE_DETECTION = os.environ.get('OPENAI_API_KEY')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
@@ -94,11 +102,12 @@ INSTALLED_APPS = [
     "environments",
     "water",
     "logs",
-    'corsheaders'
+    'corsheaders',
+    "disease"
 ]
 
 SIMPLE_JWT = {
-'UPDATE_LAST_LOGIN': True,
+    'UPDATE_LAST_LOGIN': True,
 }
 
 STATIC_URL = "/static/"
