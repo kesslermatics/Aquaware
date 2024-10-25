@@ -17,7 +17,7 @@ POST /api/diseases/diagnosis-from-image/
 ### Example Request (using cURL):
 
 ```bash
-curl -X POST http://your-api-url.com/api/diseases/diagnosis-from-image/ \
+curl -X POST https://dev.aquaware.cloud/api/diseases/diagnosis-from-image/ \
   -H 'Authorization: Bearer your-access-token' \
   -F 'image=@/path-to-your-image/fish_image.jpg'
 ```

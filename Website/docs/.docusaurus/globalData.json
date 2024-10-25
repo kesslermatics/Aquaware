@@ -36,6 +36,11 @@
               "sidebar": "tutorialSidebar"
             },
             {
+              "id": "getting-started/fish-detection/how_to_identify_any_fish",
+              "path": "/docs/getting-started/fish-detection/how_to_identify_any_fish",
+              "sidebar": "tutorialSidebar"
+            },
+            {
               "id": "getting-started/fish-disease-detection/how_to_check_fish_for_diseases",
               "path": "/docs/getting-started/fish-disease-detection/how_to_check_fish_for_diseases",
               "sidebar": "tutorialSidebar"
@@ -123,6 +128,11 @@
             {
               "id": "/category/measurements",
               "path": "/docs/category/measurements",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "/category/fish-detection",
+              "path": "/docs/category/fish-detection",
               "sidebar": "tutorialSidebar"
             },
             {

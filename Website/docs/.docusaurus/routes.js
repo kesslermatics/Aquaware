@@ -114,19 +114,25 @@ export default [
   },
   {
     path: '/docs',
-    component: ComponentCreator('/docs', 'c72'),
+    component: ComponentCreator('/docs', '059'),
     routes: [
       {
         path: '/docs',
-        component: ComponentCreator('/docs', 'e16'),
+        component: ComponentCreator('/docs', 'fa4'),
         routes: [
           {
             path: '/docs',
-            component: ComponentCreator('/docs', '323'),
+            component: ComponentCreator('/docs', 'a8d'),
             routes: [
               {
                 path: '/docs/category/environments',
                 component: ComponentCreator('/docs/category/environments', 'e65'),
+                exact: true,
+                sidebar: "tutorialSidebar"
+              },
+              {
+                path: '/docs/category/fish-detection',
+                component: ComponentCreator('/docs/category/fish-detection', 'b95'),
                 exact: true,
                 sidebar: "tutorialSidebar"
               },
@@ -175,6 +181,12 @@ export default [
               {
                 path: '/docs/getting-started/environment-management/update-environment',
                 component: ComponentCreator('/docs/getting-started/environment-management/update-environment', 'd5b'),
+                exact: true,
+                sidebar: "tutorialSidebar"
+              },
+              {
+                path: '/docs/getting-started/fish-detection/how_to_identify_any_fish',
+                component: ComponentCreator('/docs/getting-started/fish-detection/how_to_identify_any_fish', '325'),
                 exact: true,
                 sidebar: "tutorialSidebar"
               },

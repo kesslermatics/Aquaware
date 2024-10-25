@@ -80,6 +80,16 @@ const ComparePlans = () => {
             </tr>
             <tr>
               <td className="p-4 text-start">
+                Identify Fish with AI
+              </td>
+              <td className="p-4">—</td>
+              <td className="p-4">—</td>
+              <td className="p-4">
+                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
+              </td>
+            </tr>
+            <tr>
+              <td className="p-4 text-start">
                 Fish Disease Detection
               </td>
               <td className="p-4">—</td>

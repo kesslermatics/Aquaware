@@ -57,8 +57,7 @@ export const pricing = [
     features: [
       "Everything from the Hobby and Advanced plan",
       "Add public water bodies for public data sharing",
-      "Priority customer support",
-      "Perfect for individuals needing detailed water insights with high accuracy",
+      "Identify any Fish with AI",
       "Fish Disease Detection",
       "Parameter Prediction (coming soon)"
     ],

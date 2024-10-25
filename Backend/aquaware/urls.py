@@ -28,6 +28,7 @@ urlpatterns = [
     path("api/environments/", include('environments.urls')),
     path("api/measurements/", include('water.urls')),
     path("api/diseases/", include('disease.urls')),
+    path("api/fish-detection/", include('fish-detection.urls')),
 ]
 
 if settings.DEBUG:
