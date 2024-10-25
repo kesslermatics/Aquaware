@@ -13,7 +13,7 @@ import base64
 from .models import FishDetection
 
 # Configure OpenAI API Key
-openai.api_key = settings.OPENAI_API_KEY
+openai.api_key = settings.OPENAI_API_KEY_FISH_DETECTION
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
