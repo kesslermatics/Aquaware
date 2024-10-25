@@ -70,7 +70,7 @@ const ComparePlans = () => {
             </tr>
             <tr>
               <td className="p-4 text-start">
-                AI tools included (coming soon)
+                Public environments for data sharing
               </td>
               <td className="p-4">—</td>
               <td className="p-4">—</td>
@@ -80,7 +80,17 @@ const ComparePlans = () => {
             </tr>
             <tr>
               <td className="p-4 text-start">
-                Public environments for data sharing
+                Fish Disease Detection
+              </td>
+              <td className="p-4">—</td>
+              <td className="p-4">—</td>
+              <td className="p-4">
+                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
+              </td>
+            </tr>
+            <tr>
+              <td className="p-4 text-start">
+                Water Parameter Prediction (coming soon)
               </td>
               <td className="p-4">—</td>
               <td className="p-4">—</td>

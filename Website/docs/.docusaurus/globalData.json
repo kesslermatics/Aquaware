@@ -36,6 +36,11 @@
               "sidebar": "tutorialSidebar"
             },
             {
+              "id": "getting-started/fish-disease-detection/how_to_check_fish_for_diseases",
+              "path": "/docs/getting-started/fish-disease-detection/how_to_check_fish_for_diseases",
+              "sidebar": "tutorialSidebar"
+            },
+            {
               "id": "getting-started/measurement-management/add_water_values",
               "path": "/docs/getting-started/measurement-management/add_water_values",
               "sidebar": "tutorialSidebar"
@@ -118,6 +123,11 @@
             {
               "id": "/category/measurements",
               "path": "/docs/category/measurements",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "/category/fish-disease-detection",
+              "path": "/docs/category/fish-disease-detection",
               "sidebar": "tutorialSidebar"
             }
           ],

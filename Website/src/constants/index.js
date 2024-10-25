@@ -59,7 +59,8 @@ export const pricing = [
       "Add public water bodies for public data sharing",
       "Priority customer support",
       "Perfect for individuals needing detailed water insights with high accuracy",
-      "AI tools included (coming soon)",
+      "Fish Disease Detection",
+      "Parameter Prediction (coming soon)"
     ],
     buttonText: "Upgrade to premium features",
     buttonRef: "/dashboard#pricingplans",
