@@ -88,6 +88,7 @@ def diagnosis_from_image(request):
 
         # Extract the diagnosis from the response and clean the JSON
         diagnosis_cleaned = diagnosis.replace('```', '').strip()
+        diagnosis_cleaned = diagnosis_cleaned.replace('json', '').strip()
         diagnosis_json = json.loads(diagnosis_cleaned)
 
         # Save the disease detection results to the database

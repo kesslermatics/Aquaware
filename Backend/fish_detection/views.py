@@ -12,9 +12,6 @@ import io
 import base64
 from .models import FishDetection
 
-# Configure OpenAI API Key
-openai.api_key = settings.OPENAI_API_KEY_FISH_DETECTION
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def identify_fish_from_image(request):
@@ -41,7 +38,7 @@ def identify_fish_from_image(request):
         prompt = (
             "You will receive an image of a fish. Your task is to identify the species of the fish in the image. "
             "If there is a fish, determine what type of fish it is. "
-            "Respond only in the following JSON format without any additional text or explanations as clear text:\n"
+            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text**:\n"            
             "{\n"
             '  "fish_detected": true or false,\n'
             '  "species": "name of the fish species",\n'
@@ -85,7 +82,9 @@ def identify_fish_from_image(request):
         # Handle the response from OpenAI
         response_data = response.json()
         fish_info = response_data['choices'][0]['message']['content'].strip()
+        print(fish_info)
         fish_info_cleaned = fish_info.replace('```', '').strip()
+        fish_info_cleaned = fish_info_cleaned.replace('json', '').strip()
 
         # Parse the JSON response
         try:

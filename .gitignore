@@ -35,3 +35,5 @@ Website/index.html
 /Backend/disease/__pycache__
 /Backend/disease/migrations
 /Backend/disease/__pycache__
+/Backend/fish_detection/migrations
+/Backend/fish_detection/__pycache__

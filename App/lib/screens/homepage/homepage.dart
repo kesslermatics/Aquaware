@@ -5,6 +5,7 @@ import 'package:aquaware/screens/dashboard/details_screen.dart';
 import 'package:aquaware/screens/dashboard/dashboard_screen.dart';
 import 'package:aquaware/screens/disease_detection/disease_detection_screen.dart';
 import 'package:aquaware/screens/feedback/feedback_screen.dart';
+import 'package:aquaware/screens/fish_detection/fish_detection_screen.dart';
 import 'package:aquaware/screens/navigation/navigation_drawer.dart';
 import 'package:aquaware/screens/privacy/privacy_screen.dart';
 import 'package:aquaware/screens/profile/profile_screen.dart';
@@ -105,6 +106,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     List<Widget> pages = !_isLoading
         ? [
             DashboardScreen(onEnvironmentTapped: _onEnvironmentTapped),
+            const FishDetectionScreen(),
             const DiseaseDetectionScreen(),
             const ProfileScreen(),
             const PrivacyScreen(),
@@ -119,6 +121,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
     List<String> titles = [
       'Dashboard',
+      "Fish Detection",
       "Disease Detection",
       'Profile',
       "Privacy",
