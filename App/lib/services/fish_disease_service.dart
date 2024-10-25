@@ -39,7 +39,9 @@ class FishDiseaseService {
           streamedResponse); // Convert StreamedResponse to Response
     });
 
-    // Handle response
+    if (response.statusCode == 500) {
+      throw Exception('Servers are overloaded. Please try again..');
+    }
 
     if (response.statusCode == 200) {
       final responseBody = response.body;
