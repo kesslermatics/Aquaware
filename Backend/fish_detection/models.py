@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+User = get_user_model()
+
 class FishDetection(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)  # The user who made the request
     fish_detected = models.BooleanField()  # Whether a fish was detected in the image
