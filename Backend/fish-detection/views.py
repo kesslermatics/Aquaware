@@ -51,7 +51,7 @@ def identify_fish_from_image(request):
 
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {settings.OPENAI_API_KEY_DISEASE_DETECTION}"
+            "Authorization": f"Bearer {settings.OPENAI_API_KEY_FISH_DETECTION}"
         }
 
         payload = {

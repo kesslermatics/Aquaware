@@ -48,7 +48,8 @@ STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 
-OPENAI_API_KEY_DISEASE_DETECTION = os.environ.get('OPENAI_API_KEY')
+OPENAI_API_KEY_DISEASE_DETECTION = os.environ.get('OPENAI_API_KEY_DISEASE_DETECTION')
+OPENAI_API_KEY_FISH_DETECTION = os.environ.get('OPENAI_API_KEY_FISH_DETECTION')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
@@ -98,7 +99,8 @@ INSTALLED_APPS = [
     "water",
     "logs",
     'corsheaders',
-    "disease"
+    "disease",
+    "fish-detection"
 ]
 
 SIMPLE_JWT = {
