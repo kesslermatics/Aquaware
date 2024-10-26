@@ -34,15 +34,20 @@ def identify_fish_from_image(request):
         image_data = image.read()
         base64_image = base64.b64encode(image_data).decode('utf-8')
 
-        # Define the prompt for identifying the fish
+        # Define the prompt for identifying the fish with extended information
         prompt = (
-            "You will receive an image of a fish. Your task is to identify the species of the fish in the image. "
-            "If there is a fish, determine what type of fish it is. "
+            "You will receive an image of an aquatic animal. Your task is to identify the species of the fish in the image. "
+            "If there is an aquatic animal, determine what exact type it is. "
             "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text**:\n"            
             "{\n"
-            '  "fish_detected": true or false,\n'
-            '  "species": "name of the fish species",\n'
-            '  "certainty": percentage of how certain you are about the fish species,\n'
+            '  "animal_detected": true or false,\n'
+            '  "species": "name of the species",\n'
+            '  "habitat": "typical habitat of the fish species",\n'
+            '  "diet": "dietary habits of the fish species",\n'
+            '  "average_size": "average size of the species in cm",\n'
+            '  "behavior": "common behaviors of the fish",\n'
+            '  "lifespan": "average lifespan of the fish species",\n'
+            '  "visual_characteristics": "distinct visual features like color patterns, fins, or body shape"\n'
             "}"
         )
 
@@ -71,7 +76,7 @@ def identify_fish_from_image(request):
                     ]
                 }
             ],
-            "max_tokens": 150
+            "max_tokens": 300  # Increased to accommodate the additional details
         }
 
         # Measure the time taken for the request
@@ -94,9 +99,14 @@ def identify_fish_from_image(request):
 
         # Save the fish detection data to the database
         FishDetection.objects.create(
-            fish_detected=fish_info_json['fish_detected'],
+            animal_detected=fish_info_json['animal_detected'],
             species=fish_info_json['species'],
-            confidence=fish_info_json['certainty'],
+            habitat=fish_info_json['habitat'],
+            diet=fish_info_json['diet'],
+            average_size=fish_info_json['average_size'],
+            behavior=fish_info_json['behavior'],
+            lifespan=fish_info_json['lifespan'],
+            visual_characteristics=fish_info_json['visual_characteristics'],
             prompt_tokens=response_data['usage']['prompt_tokens'],
             completion_tokens=response_data['usage']['completion_tokens'],
             total_tokens=response_data['usage']['total_tokens'],

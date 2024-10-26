@@ -6,11 +6,10 @@ User = get_user_model()
 
 class DiseaseDetection(models.Model):
     # Basic diagnostic information
-    fish_detected = models.BooleanField()
+    animal_detected = models.BooleanField()
     condition = models.CharField(max_length=255)
     symptoms = models.TextField()
     curing = models.TextField()
-    certainty = models.DecimalField(max_digits=5, decimal_places=2)  # store as percentage
 
     # OpenAI API usage information
     prompt_tokens = models.IntegerField()

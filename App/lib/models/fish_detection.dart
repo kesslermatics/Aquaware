@@ -13,8 +13,8 @@ class FishDetection {
   factory FishDetection.fromJson(Map<String, dynamic> json) {
     return FishDetection(
       fishDetected: json['fish_detected'] as bool,
-      species: json['species'] as String,
-      confidence: (json['certa'] as num).toDouble(),
+      species: (json['species'] ?? "") as String,
+      confidence: ((json['certainty'] ?? 0) as num).toDouble(),
     );
   }
 

@@ -101,8 +101,6 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
-
-            // Image preview area
             GestureDetector(
               onTap: _pickImage,
               child: Container(
@@ -113,10 +111,7 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: _selectedImage != null
-                    ? Image.file(
-                        _selectedImage!,
-                        fit: BoxFit.cover,
-                      )
+                    ? Image.file(_selectedImage!, fit: BoxFit.cover)
                     : const Center(
                         child: Icon(Icons.camera_alt,
                             size: 50, color: Colors.grey),
@@ -124,8 +119,6 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
               ),
             ),
             const SizedBox(height: 10),
-
-            // Buttons for uploading and capturing image
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -142,8 +135,6 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
               ],
             ),
             const SizedBox(height: 20),
-
-            // Analyze button
             _isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
@@ -153,8 +144,6 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
                     ),
                     child: const Text('Analyze'),
                   ),
-
-            // Display detected fish species or error message
             if (_errorMessage != null)
               Padding(
                 padding: const EdgeInsets.only(top: 10),

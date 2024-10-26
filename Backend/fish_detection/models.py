@@ -1,14 +1,21 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class FishDetection(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)  # The user who made the request
-    fish_detected = models.BooleanField()  # Whether a fish was detected in the image
+    animal_detected = models.BooleanField()  # Whether a fish was detected in the image
     species = models.CharField(max_length=255)  # The identified fish species
-    confidence = models.DecimalField(max_digits=5, decimal_places=2)  # Confidence percentage of the identification
+
+    # Additional fish information
+    habitat = models.CharField(max_length=255, blank=True, null=True)  # Typical habitat of the fish species
+    diet = models.CharField(max_length=255, blank=True, null=True)  # Dietary habits of the fish species
+    average_size = models.CharField(max_length=50, blank=True, null=True)  # Average size of the species
+    behavior = models.TextField(blank=True, null=True)  # Common behaviors of the fish
+    lifespan = models.CharField(max_length=50, blank=True, null=True)  # Average lifespan of the fish species
+    visual_characteristics = models.TextField(blank=True, null=True)  # Distinct visual features
 
     # Meta information about the OpenAI response
     prompt_tokens = models.IntegerField()  # Number of tokens used in the prompt

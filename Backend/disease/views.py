@@ -37,16 +37,15 @@ def diagnosis_from_image(request):
 
         # Define the prompt for diagnosing the fish disease
         prompt = (
-            "You will receive an image of a fish. Your task is to carefully and thoroughly determine whether the fish has any disease. "
+            "You will receive an image of an aquatic animal. Your task is to carefully and thoroughly determine whether the animal has any disease. "
             "Only provide a diagnosis if you are highly certain of the condition. In case of doubt, carefully review every detail before making a judgment. "
             "If there is any uncertainty, increase your attention to the smallest visual cues of disease. "
             "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text**:\n"
             "{\n"
-            '  "fish_detected": true or false,\n'
+            '  "animal_detected": true or false,\n'
             '  "condition": "healthy" or the identified disease with their name,\n'
             '  "symptoms": "In two sentences, explain the symptoms of the identified disease",\n'
             '  "curing": "In two sentences, suggest treatments for the identified disease",\n'
-            '  "certainty": percentage of how certain you are of the diagnosis, with 100% reserved for clear and obvious cases.\n'
             "}"
         )
 
@@ -93,11 +92,10 @@ def diagnosis_from_image(request):
 
         # Save the disease detection results to the database
         detection = DiseaseDetection.objects.create(
-            fish_detected=diagnosis_json['fish_detected'],
+            animal_detected=diagnosis_json['animal_detected'],
             condition=diagnosis_json['condition'],
             symptoms=diagnosis_json['symptoms'],
             curing=diagnosis_json['curing'],
-            certainty=diagnosis_json['certainty'],
             prompt_tokens=response.json()['usage']['prompt_tokens'],
             completion_tokens=response.json()['usage']['completion_tokens'],
             total_tokens=response.json()['usage']['total_tokens'],
