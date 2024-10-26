@@ -43,7 +43,7 @@ def diagnosis_from_image(request):
             "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text**:\n"
             "{\n"
             '  "animal_detected": true or false,\n'
-            '  "condition": "healthy" or the identified disease with their name,\n'
+            '  "condition": "Healthy" or the identified disease with their name,\n'
             '  "symptoms": "In two sentences, explain the symptoms of the identified disease",\n'
             '  "curing": "In two sentences, suggest treatments for the identified disease",\n'
             "}"
