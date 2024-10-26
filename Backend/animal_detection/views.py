@@ -44,9 +44,9 @@ def identify_animal_from_image(request):
             '  "species": "name of the species",\n'
             '  "habitat": "typical habitat of the fish species",\n'
             '  "diet": "dietary habits of the fish species",\n'
-            '  "average_size": "average size of the species in cm",\n'
+            '  "average_size": "average size of the species in cm in the following format (minSize-maxSize cm)",\n'
             '  "behavior": "common behaviors of the fish",\n'
-            '  "lifespan": "average lifespan of the fish species",\n'
+            '  "lifespan": "average lifespan of the fish species in the following format (min-max time)",\n'
             '  "visual_characteristics": "distinct visual features like color patterns, fins, or body shape"\n'
             "}"
         )
