@@ -11,6 +11,16 @@
           "mainDocId": "getting-started/quick-start-guide",
           "docs": [
             {
+              "id": "getting-started/animal-detection/how_to_identify_any_fish",
+              "path": "/docs/getting-started/animal-detection/how_to_identify_any_fish",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "getting-started/animal-disease-detection/how_to_check_animal_for_diseases",
+              "path": "/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases",
+              "sidebar": "tutorialSidebar"
+            },
+            {
               "id": "getting-started/environment-management/adding-an-environment",
               "path": "/docs/getting-started/environment-management/adding-an-environment",
               "sidebar": "tutorialSidebar"
@@ -33,16 +43,6 @@
             {
               "id": "getting-started/environment-management/update-environment",
               "path": "/docs/getting-started/environment-management/update-environment",
-              "sidebar": "tutorialSidebar"
-            },
-            {
-              "id": "getting-started/fish-detection/how_to_identify_any_fish",
-              "path": "/docs/getting-started/fish-detection/how_to_identify_any_fish",
-              "sidebar": "tutorialSidebar"
-            },
-            {
-              "id": "getting-started/fish-disease-detection/how_to_check_fish_for_diseases",
-              "path": "/docs/getting-started/fish-disease-detection/how_to_check_fish_for_diseases",
               "sidebar": "tutorialSidebar"
             },
             {
@@ -131,13 +131,13 @@
               "sidebar": "tutorialSidebar"
             },
             {
-              "id": "/category/fish-detection",
-              "path": "/docs/category/fish-detection",
+              "id": "/category/animal-detection",
+              "path": "/docs/category/animal-detection",
               "sidebar": "tutorialSidebar"
             },
             {
-              "id": "/category/fish-disease-detection",
-              "path": "/docs/category/fish-disease-detection",
+              "id": "/category/animal-disease-detection",
+              "path": "/docs/category/animal-disease-detection",
               "sidebar": "tutorialSidebar"
             }
           ],

@@ -1,5 +1,4 @@
-
-# How to check fish for diseases
+# How to check animals for diseases
 
 This guide explains how to use the **Aquaware API** to check fish for diseases based on uploaded images. The API is available only to users with the **Premium Subscription Tier (Tier 3)**.
 
@@ -12,6 +11,7 @@ POST /api/diseases/diagnosis-from-image/
 ```
 
 ### Parameters:
+
 - **image**: A form-data field that must contain the image file of the fish. The image should be in a supported format (JPEG, PNG, etc.).
 
 ### Example Request (using cURL):
@@ -23,6 +23,7 @@ curl -X POST https://dev.aquaware.cloud/api/diseases/diagnosis-from-image/ \
 ```
 
 ### Subscription Tier Requirement:
+
 This endpoint is restricted to users with a **Premium Subscription (Tier 3)**. If a user with a lower-tier subscription attempts to access this endpoint, the API will return a 403 status code with a message:
 
 ```
@@ -46,6 +47,7 @@ If the fish is detected and analyzed successfully, the API will return a 200 sta
 ```
 
 ### Status Codes:
+
 - **200 OK**: The fish was successfully detected and diagnosed.
 - **400 Bad Request**: If no image was uploaded or if the image format is invalid, the API will return a 400 status code.
 - **403 Forbidden**: If the user is not subscribed to Tier 3 (Premium), the API will return this status code.
@@ -56,6 +58,7 @@ If the fish is detected and analyzed successfully, the API will return a 200 sta
 :::warning[Keep in Mind]
 
 Please note that this API uses machine learning models to analyze the fish and its condition. While it is generally accurate, there may be **edge cases** where:
+
 - Symptoms of disease are subtle or not easily detectable.
 - The fish’s natural patterns or appearance may resemble disease symptoms but are not harmful.
 

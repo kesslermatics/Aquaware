@@ -22,20 +22,32 @@ class DiseaseResultScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (isHealthy) ...[
-                const Text(
-                  'The captured animal seems to be healthy!',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const Row(
+                  children: [
+                    Icon(Icons.check_circle, color: Colors.green, size: 24),
+                    SizedBox(width: 8),
+                    Text(
+                      'The captured animal seems to be healthy!',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ] else ...[
-                const Text(
-                  'Condition',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const Row(
+                  children: [
+                    Icon(Icons.info, size: 24),
+                    SizedBox(width: 8),
+                    Text(
+                      'Condition',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8.0),
                 Text(
@@ -45,12 +57,18 @@ class DiseaseResultScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                const Text(
-                  'Symptoms',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const Row(
+                  children: [
+                    Icon(Icons.healing, size: 24),
+                    SizedBox(width: 8),
+                    Text(
+                      'Symptoms',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8.0),
                 Text(
@@ -60,12 +78,18 @@ class DiseaseResultScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                const Text(
-                  'Suggested Treatment',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const Row(
+                  children: [
+                    Icon(Icons.medical_services, size: 24),
+                    SizedBox(width: 8),
+                    Text(
+                      'Suggested Treatment',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8.0),
                 Text(

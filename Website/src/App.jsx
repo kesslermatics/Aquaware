@@ -21,6 +21,7 @@ import PricingPlanInfo from "./components/Dashboard/PricingPlanInfo";
 import ComparePlans from "./components/ComparePlans";
 import Section from "./components/Section";
 import TailoredTool from "./components/TailoredTool";
+import AquawareApp from "./components/AquawareApp";
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
                 <Section>
                   <ComparePlans />
                 </Section>
+                <AquawareApp />
                 <TailoredTool />
               </>
             }

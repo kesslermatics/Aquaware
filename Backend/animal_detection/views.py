@@ -87,7 +87,6 @@ def identify_animal_from_image(request):
         # Handle the response from OpenAI
         response_data = response.json()
         animal_info = response_data['choices'][0]['message']['content'].strip()
-        print(animal_info)
         animal_info_cleaned = animal_info.replace('```', '').strip()
         animal_info_cleaned = animal_info_cleaned.replace('json', '').strip()
 
