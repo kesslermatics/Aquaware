@@ -67,7 +67,7 @@ class MenuDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.fish),
-            title: const Text("Fish Detection"),
+            title: const Text("Animal Detection"),
             onTap: () => onItemTapped(1),
           ),
           ListTile(

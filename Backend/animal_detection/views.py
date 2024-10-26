@@ -10,11 +10,11 @@ from django.conf import settings
 from PIL import Image
 import io
 import base64
-from .models import FishDetection
+from .models import AnimalDetection
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def identify_fish_from_image(request):
+def identify_animal_from_image(request):
     user = request.user
 
     # Check if user has the correct subscription tier (e.g., Tier 3 - Premium)
@@ -86,27 +86,27 @@ def identify_fish_from_image(request):
 
         # Handle the response from OpenAI
         response_data = response.json()
-        fish_info = response_data['choices'][0]['message']['content'].strip()
-        print(fish_info)
-        fish_info_cleaned = fish_info.replace('```', '').strip()
-        fish_info_cleaned = fish_info_cleaned.replace('json', '').strip()
+        animal_info = response_data['choices'][0]['message']['content'].strip()
+        print(animal_info)
+        animal_info_cleaned = animal_info.replace('```', '').strip()
+        animal_info_cleaned = animal_info_cleaned.replace('json', '').strip()
 
         # Parse the JSON response
         try:
-            fish_info_json = json.loads(fish_info_cleaned)
+            animal_info_json = json.loads(animal_info_cleaned)
         except json.JSONDecodeError as e:
             return Response({"error": "Failed to parse the response as JSON", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Save the fish detection data to the database
-        FishDetection.objects.create(
-            animal_detected=fish_info_json['animal_detected'],
-            species=fish_info_json['species'],
-            habitat=fish_info_json['habitat'],
-            diet=fish_info_json['diet'],
-            average_size=fish_info_json['average_size'],
-            behavior=fish_info_json['behavior'],
-            lifespan=fish_info_json['lifespan'],
-            visual_characteristics=fish_info_json['visual_characteristics'],
+        AnimalDetection.objects.create(
+            animal_detected=animal_info_json['animal_detected'],
+            species=animal_info_json['species'],
+            habitat=animal_info_json['habitat'],
+            diet=animal_info_json['diet'],
+            average_size=animal_info_json['average_size'],
+            behavior=animal_info_json['behavior'],
+            lifespan=animal_info_json['lifespan'],
+            visual_characteristics=animal_info_json['visual_characteristics'],
             prompt_tokens=response_data['usage']['prompt_tokens'],
             completion_tokens=response_data['usage']['completion_tokens'],
             total_tokens=response_data['usage']['total_tokens'],
@@ -117,7 +117,7 @@ def identify_fish_from_image(request):
         )
 
         # Return the parsed response
-        return Response(fish_info_json, status=status.HTTP_200_OK)
+        return Response(animal_info_json, status=status.HTTP_200_OK)
 
     except Exception as e:
         # Handle errors and exceptions

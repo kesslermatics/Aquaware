@@ -1,20 +1,20 @@
 import 'dart:io';
-import 'package:aquaware/services/fish_detection_service.dart';
+import 'package:aquaware/screens/animal_detection/animal_result_screen.dart';
+import 'package:aquaware/services/animal_detection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class FishDetectionScreen extends StatefulWidget {
-  const FishDetectionScreen({super.key});
+class AnimalDetectionScreen extends StatefulWidget {
+  const AnimalDetectionScreen({super.key});
 
   @override
-  _FishDetectionScreenState createState() => _FishDetectionScreenState();
+  _AnimalDetectionScreenState createState() => _AnimalDetectionScreenState();
 }
 
-class _FishDetectionScreenState extends State<FishDetectionScreen> {
+class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
   File? _selectedImage;
   String? _errorMessage;
   bool _isLoading = false;
-  String? _detectedFishSpecies; // Holds the detected fish species
 
   final ImagePicker _picker = ImagePicker();
 
@@ -26,7 +26,6 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
         setState(() {
           _selectedImage = File(pickedFile.path);
           _errorMessage = null;
-          _detectedFishSpecies = null; // Reset detected species
         });
       }
     } catch (e) {
@@ -44,7 +43,6 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
         setState(() {
           _selectedImage = File(pickedFile.path);
           _errorMessage = null;
-          _detectedFishSpecies = null; // Reset detected species
         });
       }
     } catch (e) {
@@ -66,19 +64,23 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
-      _detectedFishSpecies = null; // Clear detected species for new analysis
     });
 
     try {
-      final service = FishDetectionService();
+      final service = AnimalDetectionService();
       final detection = await service.detectFish(XFile(_selectedImage!.path));
 
       setState(() {
         _isLoading = false;
-        if (detection.fishDetected) {
-          _detectedFishSpecies = detection.species; // Display detected species
+        if (detection.animalDetected) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AnimalResultScreen(animalResult: detection),
+            ),
+          );
         } else {
-          _errorMessage = 'No fish was detected in the image.';
+          _errorMessage = 'No aquatic animal was detected in the image.';
         }
       });
     } catch (e) {
@@ -97,7 +99,7 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
         child: Column(
           children: [
             const Text(
-              'Upload or capture an image of the fish to identify its species.',
+              'Upload or capture an image of the aquatic animal to identify its species.',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
@@ -150,15 +152,6 @@ class _FishDetectionScreenState extends State<FishDetectionScreen> {
                 child: Text(
                   _errorMessage!,
                   style: const TextStyle(color: Colors.red),
-                ),
-              ),
-            if (_detectedFishSpecies != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(
-                  'Detected Fish Species: $_detectedFishSpecies',
-                  style: const TextStyle(
-                      color: Colors.green, fontWeight: FontWeight.bold),
                 ),
               ),
           ],

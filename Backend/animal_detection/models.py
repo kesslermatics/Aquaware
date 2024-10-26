@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class FishDetection(models.Model):
+class AnimalDetection(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)  # The user who made the request
     animal_detected = models.BooleanField()  # Whether a fish was detected in the image
     species = models.CharField(max_length=255)  # The identified fish species

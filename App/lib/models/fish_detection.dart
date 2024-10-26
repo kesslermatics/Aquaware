@@ -1,29 +1,49 @@
-class FishDetection {
-  final bool fishDetected;
+class AnimalDetection {
+  final bool animalDetected;
   final String species;
-  final double confidence;
+  final String habitat;
+  final String diet;
+  final String averageSize;
+  final String behavior;
+  final String lifespan;
+  final String visualCharacteristics;
 
-  FishDetection({
-    required this.fishDetected,
+  AnimalDetection({
+    required this.animalDetected,
     required this.species,
-    required this.confidence,
+    this.habitat = "",
+    this.diet = "",
+    this.averageSize = "",
+    this.behavior = "",
+    this.lifespan = "",
+    this.visualCharacteristics = "",
   });
 
   // Factory constructor to parse JSON response from API
-  factory FishDetection.fromJson(Map<String, dynamic> json) {
-    return FishDetection(
-      fishDetected: json['fish_detected'] as bool,
+  factory AnimalDetection.fromJson(Map<String, dynamic> json) {
+    return AnimalDetection(
+      animalDetected: json['animal_detected'] as bool,
       species: (json['species'] ?? "") as String,
-      confidence: ((json['certainty'] ?? 0) as num).toDouble(),
+      habitat: (json['habitat'] ?? "") as String,
+      diet: (json['diet'] ?? "") as String,
+      averageSize: (json['average_size'] ?? "") as String,
+      behavior: (json['behavior'] ?? "") as String,
+      lifespan: (json['lifespan'] ?? "") as String,
+      visualCharacteristics: (json['visual_characteristics'] ?? "") as String,
     );
   }
 
   // Convert the instance to JSON if needed
   Map<String, dynamic> toJson() {
     return {
-      'fish_detected': fishDetected,
+      'animal_detected': animalDetected,
       'species': species,
-      'confidence': confidence,
+      'habitat': habitat,
+      'diet': diet,
+      'average_size': averageSize,
+      'behavior': behavior,
+      'lifespan': lifespan,
+      'visual_characteristics': visualCharacteristics,
     };
   }
 }

@@ -100,7 +100,7 @@ INSTALLED_APPS = [
     "logs",
     'corsheaders',
     "disease",
-    "fish_detection"
+    "animal_detection"
 ]
 
 SIMPLE_JWT = {
