@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:aquaware/services/fish_disease_service.dart';
+import 'package:aquaware/services/animal_disease_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'disease_result_screen.dart';
@@ -67,23 +67,23 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
     });
 
     try {
-      final service = FishDiseaseService();
-      final diagnosis = await service.diagnoseFishDisease(_selectedImage!);
+      final service = AnimalDiseaseService();
+      final diagnosis = await service.diagnoseAnimalDisease(_selectedImage!);
 
       setState(() {
         _isLoading = false;
       });
 
-      if (diagnosis.fishDetected) {
+      if (diagnosis.animalDetected) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DiseaseResultScreen(fishDisease: diagnosis),
+            builder: (context) => DiseaseResultScreen(animalDisease: diagnosis),
           ),
         );
       } else {
         setState(() {
-          _errorMessage = 'Not fish was found in this image';
+          _errorMessage = 'No aquatic animal was found in this image';
         });
       }
     } catch (e) {
@@ -102,7 +102,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
         child: Column(
           children: [
             const Text(
-              'Upload or capture an image of the fish to analyze its health.',
+              'Upload or capture an image of the aquatic animal to analyze its health.',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),

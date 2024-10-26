@@ -7,8 +7,8 @@ import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
 import 'user_service.dart';
 
-class FishDiseaseService {
-  Future<FishDisease> diagnoseFishDisease(File imageFile) async {
+class AnimalDiseaseService {
+  Future<AnimalDisease> diagnoseAnimalDisease(File imageFile) async {
     // Ensure the image file is valid
     final mimeType = lookupMimeType(imageFile.path);
 
@@ -47,10 +47,9 @@ class FishDiseaseService {
       final responseBody = response.body;
       final Map<String, dynamic> jsonResponse = json.decode(responseBody);
 
-      // Return FishDisease object from the JSON response
-      return FishDisease.fromJson(jsonResponse);
+      return AnimalDisease.fromJson(jsonResponse);
     } else {
-      throw Exception('Failed to diagnose fish disease');
+      throw Exception('Failed to diagnose animal disease');
     }
   }
 }

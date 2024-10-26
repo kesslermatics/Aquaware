@@ -13,7 +13,7 @@ class AnimalDetectionService {
         await UserService().makeAuthenticatedRequest((token) async {
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse('$baseUrl/api/animal-detection/identify_animal_from_image/'),
+        Uri.parse('$baseUrl/api/animal-detection/identify-animal-from-image/'),
       )
         ..headers['Authorization'] = 'Bearer $token'
         ..files.add(
@@ -40,7 +40,7 @@ class AnimalDetectionService {
       return AnimalDetection.fromJson(responseBody);
     } else {
       throw Exception(
-          'Failed to detect fish. Status code: ${response.statusCode}');
+          'Failed to detect animal. Status code: ${response.statusCode}');
     }
   }
 }
