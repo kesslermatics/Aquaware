@@ -40,7 +40,7 @@ def diagnosis_from_image(request):
             "You will receive an image of an aquatic animal. Your task is to carefully and thoroughly determine whether the animal has any disease. "
             "Only provide a diagnosis if you are highly certain of the condition. In case of doubt, carefully review every detail before making a judgment. "
             "If there is any uncertainty, increase your attention to the smallest visual cues of disease. "
-            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these json-keys:\n"
+            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these json-values as a normal text to display:\n"
             "{\n"
             '  "animal_detected": true or false,\n'
             '  "condition": "Healthy" or the identified disease with their name,\n'
