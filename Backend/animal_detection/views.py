@@ -38,7 +38,7 @@ def identify_animal_from_image(request):
         prompt = (
             "You will receive an image of an aquatic animal. Your task is to identify the species of the fish in the image. "
             "If there is an aquatic animal, determine what exact type it is. "
-            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text**:\n"            
+            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these json-keys:\n"            
             "{\n"
             '  "animal_detected": true or false,\n'
             '  "species": "name of the species",\n'
