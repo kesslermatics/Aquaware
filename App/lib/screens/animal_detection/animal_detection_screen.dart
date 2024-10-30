@@ -21,7 +21,8 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
   // Method to pick image from gallery
   Future<void> _pickImage() async {
     try {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await _picker.pickImage(
+          source: ImageSource.gallery, maxWidth: 1024, maxHeight: 1024);
       if (pickedFile != null) {
         setState(() {
           _selectedImage = File(pickedFile.path);
@@ -38,7 +39,8 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
   // Method to capture image from camera
   Future<void> _captureImage() async {
     try {
-      final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+      final pickedFile = await _picker.pickImage(
+          source: ImageSource.camera, maxWidth: 1024, maxHeight: 1024);
       if (pickedFile != null) {
         setState(() {
           _selectedImage = File(pickedFile.path);

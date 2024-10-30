@@ -27,6 +27,8 @@ class AnimalDetectionService {
         );
 
       // Send the request and wait for the response
+      print('File path: ${imageFile.path}');
+      print('File size: ${await imageFile.length()} bytes');
       final streamedResponse = await request.send();
       return http.Response.fromStream(streamedResponse);
     });
