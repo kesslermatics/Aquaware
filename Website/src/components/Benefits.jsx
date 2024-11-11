@@ -13,7 +13,7 @@ import {
   faBookOpen,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
-import { benefitImage } from "../../src/assets";
+import benefitImage from "../../src/assets/benefits/image-2.png";
 
 const Benefits = () => {
   const { t } = useTranslation();
@@ -92,15 +92,13 @@ const Benefits = () => {
                 style={{ clipPath: "url(#benefits)" }}
               >
                 <div className="absolute inset-0 opacity-0 transition-opacity hover:opacity-10">
-                  {item.imageUrl && (
-                    <img
-                      src={benefitImage}
-                      width={380}
-                      height={362}
-                      alt={t(`benefits.${index}.title`)}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
+                  <img
+                    src={benefitImage}
+                    width={380}
+                    height={362}
+                    alt={t(`benefits.${index}.title`)}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 
