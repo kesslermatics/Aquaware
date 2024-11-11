@@ -1,0 +1,388 @@
+{
+    "hero": {
+        "title": "Entdecke die beste Entwickler-API zur Wasserüberwachung mit",
+        "highlight": "Aquaware",
+        "subtitle": "Nutze die Kraft der Echtzeit-Überwachung für Deine Wasserqualität mit Aquaware.",
+        "cta": "Loslegen",
+        "water_quality": "Bleib immer über Deine Wasserqualität informiert",
+        "notification": "Temperaturschwelle erreicht!"
+    },
+    "apiInfo": {
+        "title": "Intuitive API-Doku für einen schnellen Start",
+        "clearDocumentationTitle": "Übersichtliche Dokumentation",
+        "clearDocumentationDescription": "Unsere API-Doku ist simpel und verständlich, damit Du sofort loslegen kannst.",
+        "seamlessIntegrationTitle": "Einfache Integration",
+        "seamlessIntegrationDescription": "Integriere Deine Systeme schnell und mühelos mit unserer gut dokumentierten API.",
+        "cta": "API-Doku ansehen",
+        "summary": "Mit unserer Doku kannst Du im Handumdrehen starten. Schau rein und integriere Aquaware im Nu."
+    },
+    "aquawareApp": {
+        "title": "Die offizielle Aquaware-App",
+        "description": "Teste die Aquaware-App, um Deine Wasserqualität unterwegs zu checken.",
+        "downloadAlt": "Jetzt im Google Play Store herunterladen"
+    },
+    "benefits": [
+        {
+            "title": "Überwache Dein Wasser",
+            "text": "Behalte wichtige Wasserwerte wie pH, Temperatur und Salzgehalt in Echtzeit im Blick."
+        },
+        {
+            "title": "Einfache API-Dokumentation",
+            "text": "Integriere Deine Systeme nahtlos mit unserer API und klaren Doku."
+        },
+        {
+            "title": "Intuitive Datenvisualisierung",
+            "text": "Visualisiere Deine Wasserdaten mit klaren, anpassbaren Charts für schnelle Einblicke."
+        },
+        {
+            "title": "Erfahre mehr über Wasserparameter",
+            "text": "Finde heraus, warum die Überwachung von Wasserparametern wichtig für die Gesundheit Deines Aquariums ist."
+        },
+        {
+            "title": "KI-gestützte Vorhersage von Wasserparametern (Demnächst verfügbar)",
+            "text": "Nutze KI, um Änderungen der Wasserparameter vorherzusagen und proaktiv zu reagieren."
+        },
+        {
+            "title": "Sieh Dir öffentliche Seen und Aquarien in Deiner Nähe an (Demnächst verfügbar)",
+            "text": "Entdecke Wasserqualitätsdaten von öffentlichen Seen und Aquarien in Deiner Umgebung."
+        }
+    ],
+    "comparePlans": {
+        "headingTag": "Für Deine individuellen Bedürfnisse",
+        "headingTitle": "Pläne vergleichen",
+        "plans": {
+            "hobby": {
+                "name": "Hobby-Plan",
+                "price": "0 € pro Monat"
+            },
+            "advanced": {
+                "name": "Advanced-Plan",
+                "price": "2,99 € pro Monat"
+            },
+            "premium": {
+                "name": "Premium-Plan",
+                "price": "5,99 € pro Monat"
+            }
+        },
+        "features": [
+            "Alle Wasserparameter überwachen",
+            "Echtzeit-Datenvisualisierung",
+            "Upload-Frequenz",
+            "Benachrichtigungen und Alarme",
+            "Datenfreigabe für öffentliche Umgebungen",
+            "Fische mit KI erkennen",
+            "Fischkrankheiten diagnostizieren",
+            "Wasserparameter vorhersagen (bald verfügbar)"
+        ],
+        "uploadFrequency": {
+            "hobby": "Alle 2 Stunden",
+            "advanced": "Alle 30 Minuten",
+            "premium": "Alle 30 Minuten"
+        },
+        "notAvailable": "—"
+    },
+    "footer": {
+        "copyright": "Alle Rechte vorbehalten.",
+        "links": {
+            "impressum": "Impressum",
+            "privacy": "Datenschutz",
+            "termsAndConditions": "AGB"
+        }
+    },
+    "forgotPassword": {
+        "title": "Passwort vergessen",
+        "description": "Gib Deine E-Mail ein, um einen Link zum Zurücksetzen zu bekommen.",
+        "emailPlaceholder": "E-Mail-Adresse",
+        "sendButton": "Link senden",
+        "successMessage": "E-Mail zum Zurücksetzen erfolgreich gesendet!",
+        "errorMessage": "Da lief was schief. Versuche es bitte nochmal.",
+        "requestFailed": "Anfrage fehlgeschlagen. Bitte erneut versuchen."
+    },
+    "header": {
+        "links": {
+            "features": "Funktionen",
+            "pricing": "Preise",
+            "officialApp": "Offizielle App",
+            "apiDocumentation": "API-Doku",
+            "github": "GitHub-Repository",
+            "profile": "Profil",
+            "createAccount": "Konto erstellen",
+            "signIn": "Anmelden"
+        }
+    },
+    "impressum": {
+        "title": "Rechtliche Hinweise (Impressum)",
+        "section5": "Informationen gemäß § 5 TMG",
+        "provider": "Anbieter:",
+        "contactInfo": "Kontakt:",
+        "vatNumber": "USt-IdNr.",
+        "vatText": "Gemäß § 27a des Umsatzsteuergesetzes:",
+        "businessForm": "Rechtsform:",
+        "soleProprietorship": "Einzelunternehmen",
+        "website": "Website:",
+        "disclaimer": "Haftungsausschluss:",
+        "disclaimerText": "Trotz sorgfältiger Kontrolle übernehmen wir keine Haftung für Inhalte externer Links. Die Betreiber der verlinkten Seiten sind allein verantwortlich.",
+        "terms": "AGB:",
+        "termsText": "Unsere AGB findest Du hier:",
+        "termsLink": "AGB",
+        "privacy": "Datenschutzrichtlinie:",
+        "privacyText": "Unsere Datenschutzrichtlinie findest Du hier:",
+        "privacyLink": "Datenschutzrichtlinie",
+        "notice": "Diese rechtlichen Hinweise gelten ab heute."
+    },
+    "login": {
+        "title": "Anmeldung",
+        "welcomeMessage": "Willkommen zurück! Gib bitte Deine Daten ein.",
+        "emailPlaceholder": "E-Mail",
+        "passwordPlaceholder": "Passwort",
+        "forgotPassword": "Passwort vergessen?",
+        "loginButton": "Anmelden",
+        "or": "oder",
+        "googleLoginFailed": "Google-Anmeldung fehlgeschlagen",
+        "invalidCredentials": "Ungültige Anmeldedaten",
+        "videoNotSupported": "Dein Browser unterstützt das Video-Tag nicht.",
+        "noAccount": "Noch kein Konto?",
+        "signUp": "Kostenlos registrieren"
+    },
+    "pricing": {
+        "headingTag": "Starte mit Aquaware",
+        "headingTitle": "Jetzt ausprobieren und später upgraden",
+        "sphereAlt": "Kugel",
+        "starsAlt": "Sterne",
+        "hobbyPlan": {
+            "title": "Hobby-Plan",
+            "description": "Kostenlos für den privaten Gebrauch, überwache alle Wasserparameter mit begrenzten Uploads",
+            "price": "0",
+            "buttonText": "Kostenlos starten",
+            "features": [
+                "Überwache alle Wasserparameter (z. B. pH-Wert, Temperatur, Salzgehalt, etc.)",
+                "Lade Wasserwerte alle 2 Stunden hoch, um Ressourcen zu sparen",
+                "Basis-Wasserqualitätsüberwachung",
+                "Zugang zu Echtzeit-Datenvisualisierung"
+            ]
+        },
+        "advancedPlan": {
+            "title": "Advanced-Plan",
+            "description": "Erweiterte Überwachungstools für präzises Wasser-Tracking",
+            "price": "2.99",
+            "buttonText": "Tracking erweitern",
+            "features": [
+                "Alles aus dem Hobby-Plan",
+                "Werte alle 30 Minuten hochladen für genaues Tracking",
+                "Benachrichtigungen und Alarme für spezifische Wasserparameter hinzufügen" 
+            ]
+        },
+        "premiumPlan": {
+            "title": "Premium-Plan",
+            "description": "Häufige Wasserüberwachung mit KI-Tools für detaillierte Einblicke und mehr",
+            "price": "5.99",
+            "buttonText": "Upgrade auf Premium-Funktionen",
+            "features": [
+                "Alles aus dem Hobby- und Advanced-Plan",
+                "Öffentliche Gewässer für gemeinschaftliches Daten-Sharing hinzufügen",
+                "Fische mit KI identifizieren",
+                "Fischkrankheitenerkennung",
+                "Parameterprognose (kommt bald)"
+            ]
+        }
+    },
+    "privacy": {
+        "title": "Datenschutzrichtlinie",
+        "effectiveDate": "Gültig ab: September 2024",
+        "introduction": {
+            "title": "1. Einführung",
+            "text": "Bei Aquaware schützen wir Deine Privatsphäre und gehen sorgfältig mit Deinen Daten um. Hier erfährst Du, wie wir Deine Informationen sammeln, speichern und nutzen."
+        },
+        "infoWeCollect": {
+            "title": "2. Daten, die wir sammeln",
+            "description": "Wir sammeln folgende Daten:",
+            "personalInfo": {
+                "title": "Persönliche Daten:",
+                "text": "Beim Erstellen eines Kontos erfassen wir Deine E-Mail, Deinen Vor- und Nachnamen sowie Dein Passwort."
+            },
+            "waterData": {
+                "title": "Wasserdaten:",
+                "text": "Wasserqualitätsdaten wie Temperatur, pH-Wert und andere Parameter werden gespeichert und genutzt."
+            },
+            "cookies": {
+                "title": "Cookies:",
+                "text": "Wir verwenden Cookies, um Sitzungstokens zu verwalten und Deinen Anmeldestatus zu speichern. Cookies sind sicher gespeichert und enthalten keine sensiblen Infos."
+            }
+        },
+        "useOfInfo": {
+            "title": "3. So nutzen wir Deine Daten",
+            "description": "Deine Daten werden zu folgenden Zwecken verwendet:",
+            "purpose1": "Um Dein Konto zu verwalten und unsere Services bereitzustellen.",
+            "purpose2": "Um Wasserdaten zu überwachen und Analysen über die Plattform anzubieten.",
+            "purpose3": "Für sichere Logins mit verschlüsselten Passwörtern und Cookies.",
+            "purpose4": "Um Dich über Updates oder Änderungen zu informieren."
+        },
+        "thirdParty": {
+            "title": "4. Login über Drittanbieter & Cookies",
+            "googleLogin": "Du kannst Dich auch über Google anmelden. Wir greifen nur auf grundlegende Profilinfos und E-Mail zu, um Dein Konto zu verwalten.",
+            "cookiesUsage": "Wir verwenden Cookies, um Sitzungstokens zu speichern. Sie authentifizieren Dich und halten Deine Sitzung aktiv. Cookies sind sicher gespeichert und verfallen, wenn Du Dich abmeldest oder nach einer bestimmten Zeit."
+        },
+        "dataRetention": {
+            "title": "5. Datenspeicherung & Löschung",
+            "text1": "Wir speichern Deine Daten, solange Dein Konto aktiv ist. Bei Löschung Deines Kontos werden alle persönlichen Daten entfernt und Wasserdaten anonymisiert.",
+            "text2": "Du kannst jederzeit die Löschung oder das Schließen des Kontos anfordern. Schreib uns einfach an"
+        },
+        "dataSecurity": {
+            "title": "6. Datensicherheit",
+            "text": "Wir setzen Sicherheitsmaßnahmen nach Industriestandards ein, um Deine Daten zu schützen. Passwörter werden verschlüsselt gespeichert, und sensible Infos sind nur für autorisiertes Personal zugänglich."
+        },
+        "policyChanges": {
+            "title": "7. Änderungen dieser Richtlinie",
+            "text": "Wir behalten uns das Recht vor, diese Datenschutzrichtlinie anzupassen, wenn nötig. Wichtige Änderungen teilen wir Dir per E-Mail oder innerhalb der Plattform mit."
+        },
+        "contactUs": "Bei Fragen zum Datenschutz schreib uns an"
+    },
+    "resetPassword": {
+        "title": "Passwort zurücksetzen",
+        "newPasswordPlaceholder": "Neues Passwort",
+        "confirmPasswordPlaceholder": "Neues Passwort bestätigen",
+        "resetButton": "Passwort zurücksetzen",
+        "passwordMismatch": "Passwörter stimmen nicht überein",
+        "successMessage": "Passwort erfolgreich zurückgesetzt!",
+        "errorMessage": "Passwort konnte nicht zurückgesetzt werden. Versuche es bitte nochmal.",
+        "genericError": "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
+    },
+    "signup": {
+        "title": "Registrieren",
+        "subtitle": "Werde Teil einer neuen Generation",
+        "firstNamePlaceholder": "Vorname",
+        "lastNamePlaceholder": "Nachname",
+        "emailPlaceholder": "E-Mail",
+        "passwordPlaceholder": "Passwort",
+        "confirmPasswordPlaceholder": "Passwort bestätigen",
+        "signupButton": "Registrieren",
+        "or": "oder",
+        "alreadyHaveAccount": "Schon ein Konto?",
+        "loginLink": "Hier anmelden",
+        "passwordMismatch": "Passwörter stimmen nicht überein!",
+        "emailInUse": "Diese E-Mail ist bereits vergeben",
+        "invalidInput": "Ungültige Eingabe",
+        "googleSignupFailed": "Google-Registrierung fehlgeschlagen.",
+        "googleSignupError": "Google-Registrierung fehlgeschlagen. Bitte erneut versuchen.",
+        "googleLoginFailed": "Google-Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
+        "videoNotSupported": "Dein Browser unterstützt das Video-Tag nicht."
+    },
+    "success": {
+        "welcomeMessage": "Willkommen in der Aquaware-Community :D",
+        "redirectMessage": "Du wirst gleich weitergeleitet..."
+    },
+    "tailoredTool": {
+        "title": "Maßgeschneiderte Anwendung für Dein Unternehmen oder Deine Organisation",
+        "description": "Falls Du eine individuelle Anwendung (Desktop oder App) benötigst, kontaktiere uns gerne über das Formular. Wir freuen uns, Dir zu helfen!",
+        "firstNameLabel": "Vorname",
+        "lastNameLabel": "Nachname",
+        "organizationLabel": "Organisation (optional)",
+        "emailLabel": "E-Mail",
+        "messageLabel": "Nachricht",
+        "submitButton": "Absenden",
+        "successMessage": "Deine Nachricht wurde erfolgreich gesendet! Danke für Dein Vertrauen!",
+        "error": "Da ist etwas schiefgelaufen.",
+        "submitError": "Senden fehlgeschlagen. Bitte später nochmal versuchen."
+    },
+    "terms": {
+        "title": "Allgemeine Geschäftsbedingungen",
+        "effectiveDate": "Gültig ab: September 2024",
+        "overview": {
+            "title": "1. Überblick",
+            "text": "Aquaware ist eine SaaS-Plattform für die Überwachung und Analyse der Wasserqualität. Durch die Nutzung stimmst Du den folgenden Bedingungen zu."
+        },
+        "subscription": {
+            "title": "2. Abonnement und Zahlungen",
+            "description": "Aquaware bietet ein monatliches Abonnementmodell. Zahlungen erfolgen über PayPal.",
+            "paymentMethod": {
+                "title": "Zahlungsmethode:",
+                "text": "Die Abonnements werden monatlich über PayPal abgerechnet."
+            },
+            "noRefunds": {
+                "title": "Keine Rückerstattungen:",
+                "text": "Nach erfolgter Zahlung gibt es keine Rückerstattungen."
+            },
+            "cancellation": {
+                "title": "Kündigung:",
+                "text": "Kündigungen werden zum Ende des aktuellen Abrechnungszeitraums wirksam."
+            }
+        },
+        "documentation": {
+            "title": "3. Dokumentation",
+            "text": "Alle Funktionen und Anleitungen findest Du in unserer",
+            "linkText": "Dokumentation"
+        },
+        "userData": {
+            "title": "4. Nutzerdaten & Datenschutz",
+            "accountCreation": {
+                "title": "Kontoerstellung:",
+                "text": "Nutzerdaten, einschließlich E-Mail und Passwort, werden sicher gespeichert. Passwörter sind verschlüsselt und geschützt."
+            },
+            "dataAnonymization": {
+                "title": "Anonymisierung bei Löschung:",
+                "text": "Bei Kontolöschung werden persönliche Daten entfernt, und Wasserdaten anonymisiert."
+            },
+            "moreDetails": "Mehr Infos findest Du in unserer",
+            "privacyLink": "Datenschutzerklärung"
+        },
+        "thirdPartyLogin": {
+            "title": "5. Login über Drittanbieter",
+            "text": "Aquaware bietet die Möglichkeit zur Anmeldung über Google. Hierbei werden Cookies zur Authentifizierung verwendet.",
+            "cookieInfo": "Mehr Infos zu Cookies findest Du in unserer",
+            "cookieLinkText": "Cookie-Richtlinie"
+        },
+        "contactUs": "Bei weiteren Fragen kontaktiere uns unter"
+    },
+    "accountInfo": {
+        "title": "Kontoeinstellungen",
+        "loading": "Lade...",
+        "fetchError": "Fehler beim Laden des Profils.",
+        "noRefreshToken": "Kein Refresh-Token verfügbar. Bitte erneut anmelden.",
+        "tokenRefreshError": "Token konnte nicht aktualisiert werden.",
+        "updateError": "Profil konnte nicht aktualisiert werden.",
+        "updateSuccess": "Profil erfolgreich aktualisiert.",
+        "firstName": "Vorname",
+        "lastName": "Nachname",
+        "email": "E-Mail",
+        "subscriptionTier": "Abonnement-Stufe",
+        "dateJoined": "Registrierungsdatum",
+        "updateProfile": "Profil aktualisieren",
+        "logout": "Abmelden",
+        "plans": {
+            "free": "Kostenloser Plan",
+            "advanced": "Advanced-Plan",
+            "premium": "Premium-Plan",
+            "unknown": "Unbekannter Plan"
+        }
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "tabs": {
+            "account": "Konto",
+            "pricingPlans": "Preispläne"
+        }
+    },
+    "pricingPlanInfo": {
+        "title": "Planinformationen",
+        "paymentInstruction": "Wir nutzen Stripe für Zahlungen. Nutze die gleiche E-Mail-Adresse wie bei Deiner Registrierung, um Dein Abo korrekt zuzuordnen.",
+        "manageSubscription": "Verwalte Dein aktives Abo",
+        "buttonText": {
+            "alwaysActive": "Immer aktiv",
+            "currentPlan": "Aktueller Plan",
+            "upgrade": "Upgrade",
+            "downgrade": "Downgrade"
+        },
+        "errors": {
+            "tokenRefresh": "Token konnte nicht aktualisiert werden",
+            "tokenRefreshError": "Fehler beim Aktualisieren des Tokens:",
+            "fetchError": "Fehler beim Abrufen der Daten:",
+            "fetchPlanError": "Fehler beim Laden des Nutzerplans:"
+        }
+    },
+    "app": {
+        "404": {
+            "title": "404 - Seite nicht gefunden",
+            "message": "Die gesuchte Seite existiert nicht."
+        }
+    }
+}
