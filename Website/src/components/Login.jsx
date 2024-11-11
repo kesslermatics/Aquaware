@@ -4,14 +4,15 @@ import Cookies from "js-cookie";
 import backgroundVideo from "../assets/bg-aquarium2.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Toggle for password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  // Handle regular login
   const handleLogin = async () => {
     const response = await fetch(
       "https://dev.aquaware.cloud/api/users/login/",
@@ -33,13 +34,12 @@ const Login = () => {
     if (response.ok) {
       Cookies.set("access_token", data.access, { expires: 1 });
       Cookies.set("refresh_token", data.refresh, { expires: 7 });
-      window.location.href = "/dashboard"; // Redirect after successful login
+      window.location.href = "/dashboard";
     } else {
-      setError("Invalid login credentials");
+      setError(t("login.invalidCredentials"));
     }
   };
 
-  // Handle Google login
   const handleGoogleLogin = async (tokenResponse) => {
     const token = tokenResponse.credential;
 
@@ -62,9 +62,9 @@ const Login = () => {
     if (response.ok) {
       Cookies.set("access_token", data.access, { expires: 1 });
       Cookies.set("refresh_token", data.refresh, { expires: 7 });
-      window.location.href = "/dashboard"; // Redirect after successful Google login
+      window.location.href = "/dashboard";
     } else {
-      setError(data.error || "Google login failed");
+      setError(data.error || t("login.googleLoginFailed"));
     }
   };
 
@@ -77,28 +77,30 @@ const Login = () => {
         className="absolute left-0 w-full h-full object-cover opacity-10 z-1"
       >
         <source src={backgroundVideo} type="video/mp4" />
-        Your browser does not support the video tag.
+        {t("login.videoNotSupported")}
       </video>
       <div className="w-full max-w-[500px] bg-n-1 rounded-lg shadow-lg p-8 z-2">
-        <h1 className="text-3xl font-bold text-center text-n-8 mb-6">Login</h1>
+        <h1 className="text-3xl font-bold text-center text-n-8 mb-6">
+          {t("login.title")}
+        </h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <div className="w-full flex flex-col mb-4">
           <p className="text-base text-center mb-4 text-n-8">
-            Welcome Back! Please enter your details.
+            {t("login.welcomeMessage")}
           </p>
           <input
             type="email"
-            placeholder="Email"
+            placeholder={t("login.emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
           />
           <div className="relative">
             <input
-              type={showPassword ? "text" : "password"} // Toggle between password and text
-              placeholder="Password"
+              type={showPassword ? "text" : "password"}
+              placeholder={t("login.passwordPlaceholder")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -112,12 +114,12 @@ const Login = () => {
                 <FontAwesomeIcon icon={faEyeSlash} className="mr-4 text-n-8" />
               ) : (
                 <FontAwesomeIcon icon={faEye} className="mr-4 text-n-8" />
-              )}{" "}
+              )}
             </button>
           </div>
           <div className="text-right mt-2">
             <a href="/forgot-password" className="text-blue-500 font-semibold">
-              Forgot Password?
+              {t("login.forgotPassword")}
             </a>
           </div>
         </div>
@@ -126,29 +128,31 @@ const Login = () => {
           onClick={handleLogin}
           className="w-full bg-n-15 text-white font-semibold rounded-md py-3 mb-4"
         >
-          Log in
+          {t("login.loginButton")}
         </button>
 
         <div className="w-full flex items-center justify-center relative mb-4">
           <div className="w-full h-[1px] bg-gray-300"></div>
-          <p className="absolute bg-white px-4 text-gray-500">or</p>
+          <p className="absolute bg-white px-4 text-gray-500">
+            {t("login.or")}
+          </p>
         </div>
 
         <div className="w-full flex items-center justify-center text-n-8 font-semibold rounded-md py-3 mb-6">
           <GoogleLogin
             onSuccess={handleGoogleLogin}
-            onError={() => setError("Google login failed")}
+            onError={() => setError(t("login.googleLoginFailed"))}
             useOneTap
           />
         </div>
 
         <p className="text-center text-sm text-gray-600 mt-6">
-          Don’t have an account?{" "}
+          {t("login.noAccount")}{" "}
           <a
             className="text-blue-500 font-semibold cursor-pointer"
             href="/signup"
           >
-            Sign up for free
+            {t("login.signUp")}
           </a>
         </p>
       </div>

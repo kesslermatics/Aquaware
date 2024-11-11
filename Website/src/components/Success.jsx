@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
+import { useTranslation } from "react-i18next";
 
 const Success = () => {
-  const navigate = useNavigate(); // Verwende useNavigate anstelle von useHistory
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  // Automatische Weiterleitung zum Dashboard nach 5 Sekunden
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/dashboard#pricingplans"); // Verwende navigate anstelle von history.push
+      navigate("/dashboard#pricingplans");
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -16,11 +17,11 @@ const Success = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <Confetti /> {/* Konfetti-Anzeige */}
+      <Confetti />
       <h1 className="text-4xl font-bold mb-4">
-        A warm welcome to the Aquaware community :D
+        {t("success.welcomeMessage")}
       </h1>
-      <p className="text-xl">You will be redirected shortly...</p>
+      <p className="text-xl">{t("success.redirectMessage")}</p>
     </div>
   );
 };

@@ -1,112 +1,81 @@
 import React from "react";
 import { check } from "../assets";
 import Heading from "./Heading";
+import { useTranslation } from 'react-i18next';
 
 const ComparePlans = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col items-center justify-center text-center mb-8">
-      <Heading tag="To your tailored needs" title="Compare Plans" />
+      <Heading tag={t("comparePlans.headingTag")} title={t("comparePlans.headingTitle")} />
       <div className="overflow-x-auto w-full">
         <table className="table-auto bg-n-8 border-collapse text-center mx-auto">
           <thead>
             <tr>
               <th className="p-4"></th>
               <th className="p-4 text-xl font-bold">
-                Hobby Plan
-                <div className="text-sm font-normal">$0 per month</div>
+                {t("comparePlans.plans.hobby.name")}
+                <div className="text-sm font-normal">{t("comparePlans.plans.hobby.price")}</div>
               </th>
               <th className="p-4 text-xl font-bold">
-                Advanced Plan
-                <div className="text-sm font-normal">$2.99 per month</div>
+                {t("comparePlans.plans.advanced.name")}
+                <div className="text-sm font-normal">{t("comparePlans.plans.advanced.price")}</div>
               </th>
               <th className="p-4 text-xl font-bold">
-                Premium Plan
-                <div className="text-sm font-normal">$5.99 per month</div>
+                {t("comparePlans.plans.premium.name")}
+                <div className="text-sm font-normal">{t("comparePlans.plans.premium.price")}</div>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="p-4 text-start">Monitor all water parameters</td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
+              <td className="p-4 text-start">{t("comparePlans.features.0")}</td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
             </tr>
             <tr>
-              <td className="p-4 text-start">
-                Access to real-time data visualization
-              </td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
+              <td className="p-4 text-start">{t("comparePlans.features.1")}</td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
             </tr>
             <tr>
-              <td className="p-4 text-start">Upload frequency</td>
-              <td className="p-4">Every 2 hours</td>
-              <td className="p-4">Every 30 minutes</td>
-              <td className="p-4">Every 30 minutes</td>
+              <td className="p-4 text-start">{t("comparePlans.features.2")}</td>
+              <td className="p-4">{t("comparePlans.uploadFrequency.hobby")}</td>
+              <td className="p-4">{t("comparePlans.uploadFrequency.advanced")}</td>
+              <td className="p-4">{t("comparePlans.uploadFrequency.premium")}</td>
             </tr>
             <tr>
-              <td className="p-4 text-start">Add alerts and notifications</td>
-              <td className="p-4">—</td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
+              <td className="p-4 text-start">{t("comparePlans.features.3")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
             </tr>
             <tr>
-              <td className="p-4 text-start">
-                Public environments for data sharing
-              </td>
-              <td className="p-4">—</td>
-              <td className="p-4">—</td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
+              <td className="p-4 text-start">{t("comparePlans.features.4")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
             </tr>
             <tr>
-              <td className="p-4 text-start">
-                Identify Fish with AI
-              </td>
-              <td className="p-4">—</td>
-              <td className="p-4">—</td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
+              <td className="p-4 text-start">{t("comparePlans.features.5")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
             </tr>
             <tr>
-              <td className="p-4 text-start">
-                Fish Disease Detection
-              </td>
-              <td className="p-4">—</td>
-              <td className="p-4">—</td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
+              <td className="p-4 text-start">{t("comparePlans.features.6")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
             </tr>
             <tr>
-              <td className="p-4 text-start">
-                Water Parameter Prediction (coming soon)
-              </td>
-              <td className="p-4">—</td>
-              <td className="p-4">—</td>
-              <td className="p-4">
-                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
-              </td>
+              <td className="p-4 text-start">{t("comparePlans.features.7")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4"><img src={check} alt="Check" className="w-6 h-6 mx-auto" /></td>
             </tr>
           </tbody>
         </table>

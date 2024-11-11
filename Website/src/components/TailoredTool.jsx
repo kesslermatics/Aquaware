@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import confetti from "canvas-confetti";
 import Heading from "./Heading";
 import Section from "./Section";
+import { useTranslation } from "react-i18next";
 
 const TailoredTool = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -37,21 +39,20 @@ const TailoredTool = () => {
       );
 
       if (response.ok) {
-        // Show confetti animation
         confetti({
           particleCount: 150,
           spread: 60,
           origin: { y: 0.6 },
         });
-        setIsSubmitted(true); // Mark form as submitted
-        setErrorMessage(""); // Clear any error message
+        setIsSubmitted(true);
+        setErrorMessage("");
       } else {
         const data = await response.json();
-        setErrorMessage(data.detail || "Something went wrong.");
+        setErrorMessage(data.detail || t("tailoredTool.error"));
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      setErrorMessage("Failed to submit. Please try again later.");
+      setErrorMessage(t("tailoredTool.submitError"));
     } finally {
       setIsLoading(false);
     }
@@ -60,19 +61,16 @@ const TailoredTool = () => {
   return (
     <Section crosses>
       <div className="max-w-3xl mx-auto p-6 rounded-lg">
-        <Heading title="Tailored Application for Your Business or Organization" />
+        <Heading title={t("tailoredTool.title")} />
         {!isSubmitted ? (
           <>
-            <p className="mb-6">
-              If you need a customized application (desktop or app) for your
-              company or organization, feel free to get in touch using the form
-              below. I’m happy to help!
-            </p>
+            <p className="mb-6">{t("tailoredTool.description")}</p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-wrap gap-4">
                 <div className="flex-1">
                   <label htmlFor="firstName" className="block font-medium mb-1">
-                    First Name <span className="text-red-500">*</span>
+                    {t("tailoredTool.firstNameLabel")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -86,7 +84,8 @@ const TailoredTool = () => {
                 </div>
                 <div className="flex-1">
                   <label htmlFor="lastName" className="block font-medium mb-1">
-                    Last Name <span className="text-red-500">*</span>
+                    {t("tailoredTool.lastNameLabel")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -100,11 +99,8 @@ const TailoredTool = () => {
                 </div>
               </div>
               <div>
-                <label
-                  htmlFor="organization"
-                  className="block font-medium mb-1"
-                >
-                  Organization (optional)
+                <label htmlFor="organization" className="block font-medium mb-1">
+                  {t("tailoredTool.organizationLabel")}
                 </label>
                 <input
                   type="text"
@@ -117,7 +113,8 @@ const TailoredTool = () => {
               </div>
               <div>
                 <label htmlFor="email" className="block font-medium mb-1">
-                  Email <span className="text-red-500">*</span>
+                  {t("tailoredTool.emailLabel")}{" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
@@ -131,7 +128,8 @@ const TailoredTool = () => {
               </div>
               <div>
                 <label htmlFor="message" className="block font-medium mb-1">
-                  Message <span className="text-red-500">*</span>
+                  {t("tailoredTool.messageLabel")}{" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="message"
@@ -171,14 +169,14 @@ const TailoredTool = () => {
                     ></path>
                   </svg>
                 ) : (
-                  "Submit"
+                  t("tailoredTool.submitButton")
                 )}
               </button>
             </form>
           </>
         ) : (
           <p className="text-green-500 text-center">
-            Your message has been sent successfully! Thank you for your trust!
+            {t("tailoredTool.successMessage")}
           </p>
         )}
       </div>

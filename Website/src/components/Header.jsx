@@ -1,22 +1,23 @@
 import { useLocation } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
-import Cookies from "js-cookie"; // Um die Cookies zu überprüfen
+import Cookies from "js-cookie";
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
 import { useState, useEffect } from "react";
 import aquawareLogo from "../assets/aquaware.png";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  const { t } = useTranslation();
   const { pathname, hash } = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Zustand für Login-Überprüfung
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Überprüfe, ob ein refresh_token in den Cookies vorhanden ist
   useEffect(() => {
     const refreshToken = Cookies.get("refresh_token");
     if (refreshToken) {
-      setIsLoggedIn(true); // Wenn ein refresh_token vorhanden ist, ist der Nutzer eingeloggt
+      setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
@@ -66,7 +67,7 @@ const Header = () => {
                   : "lg:text-n-1/50"
               } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
             >
-              Features
+              {t("header.links.features")}
             </a>
             <a
               href="/#pricing"
@@ -77,7 +78,7 @@ const Header = () => {
                   : "lg:text-n-1/50"
               } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
             >
-              Pricing
+              {t("header.links.pricing")}
             </a>
             <a
               href="/#app"
@@ -88,7 +89,7 @@ const Header = () => {
                   : "lg:text-n-1/50"
               } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
             >
-              Official App
+              {t("header.links.officialApp")}
             </a>
             <a
               href="/docs/index.html"
@@ -99,7 +100,7 @@ const Header = () => {
                   : "lg:text-n-1/50"
               } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
             >
-              Api-Documentation
+              {t("header.links.apiDocumentation")}
             </a>
             <a
               href="https://github.com/kesslermatics/Aquaware"
@@ -112,24 +113,22 @@ const Header = () => {
                   : "lg:text-n-1/50"
               } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
             >
-              GitHub Repository
+              {t("header.links.github")}
             </a>
             {openNavigation && (
               <>
                 {isLoggedIn ? (
-                  <>
-                    <a
-                      href="/dashboard"
-                      onClick={handleClick}
-                      className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
-                        pathname + hash === "/dashboard"
-                          ? "z-2 lg:text-n-1"
-                          : "lg:text-n-1/50"
-                      } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
-                    >
-                      Profile
-                    </a>
-                  </>
+                  <a
+                    href="/dashboard"
+                    onClick={handleClick}
+                    className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                      pathname + hash === "/dashboard"
+                        ? "z-2 lg:text-n-1"
+                        : "lg:text-n-1/50"
+                    } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+                  >
+                    {t("header.links.profile")}
+                  </a>
                 ) : (
                   <>
                     <a
@@ -141,7 +140,7 @@ const Header = () => {
                           : "lg:text-n-1/50"
                       } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
                     >
-                      Create Account
+                      {t("header.links.createAccount")}
                     </a>
                     <a
                       href="/login"
@@ -152,7 +151,7 @@ const Header = () => {
                           : "lg:text-n-1/50"
                       } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
                     >
-                      Sign In
+                      {t("header.links.signIn")}
                     </a>
                   </>
                 )}
@@ -166,7 +165,7 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             <Button className="hidden lg:flex" href="/dashboard">
-              Profile
+              {t("header.links.profile")}
             </Button>
             <Button
               className="ml-auto lg:hidden"
@@ -182,10 +181,10 @@ const Header = () => {
               href="/signup"
               className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
             >
-              Create Account
+              {t("header.links.createAccount")}
             </a>
             <Button className="hidden lg:flex" href="/login">
-              Sign in
+              {t("header.links.signIn")}
             </Button>
             <Button
               className="ml-auto lg:hidden"

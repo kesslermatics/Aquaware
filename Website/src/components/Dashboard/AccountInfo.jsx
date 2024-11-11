@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { format } from "date-fns"; // Nützlich zur Formatierung des Datums
-import { useNavigate } from "react-router-dom"; // Für die Navigation zur Homepage
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const AccountInfo = () => {
+  const { t } = useTranslation();
   const [userData, setUserData] = useState({
     first_name: "",
     last_name: "",
@@ -13,13 +15,13 @@ const AccountInfo = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
-  const navigate = useNavigate(); // React Router Hook für Navigation
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        await ensureAccessToken(); // Refresh access token before making any requests
+        await ensureAccessToken();
         const accessToken = Cookies.get("access_token");
 
         const response = await fetch(
@@ -34,7 +36,7 @@ const AccountInfo = () => {
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch user profile.");
+          throw new Error(t("accountInfo.fetchError"));
         }
 
         const data = await response.json();
@@ -47,19 +49,17 @@ const AccountInfo = () => {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [t]);
 
-  // Function to ensure the access token is always fresh
   const ensureAccessToken = async () => {
     const refreshToken = Cookies.get("refresh_token");
     if (!refreshToken) {
-      throw new Error("No refresh token available. Please log in again.");
+      throw new Error(t("accountInfo.noRefreshToken"));
     }
 
     await refreshAccessToken(refreshToken);
   };
 
-  // Refresh access token function
   const refreshAccessToken = async (refreshToken) => {
     try {
       const response = await fetch(
@@ -70,17 +70,16 @@ const AccountInfo = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ refresh: refreshToken }),
-          credentials: "include", // Ensure cookies are included in the request
+          credentials: "include",
         }
       );
 
       if (response.ok) {
         const data = await response.json();
-        Cookies.set("access_token", data.access); // Save new access token in cookies
+        Cookies.set("access_token", data.access);
         return true;
       } else {
-        console.error(response);
-        throw new Error("Failed to refresh access token.");
+        throw new Error(t("accountInfo.tokenRefreshError"));
       }
     } catch (error) {
       throw error;
@@ -97,9 +96,9 @@ const AccountInfo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccessMessage(""); // Clear success message before submitting
+    setSuccessMessage("");
     try {
-      await ensureAccessToken(); // Ensure token is fresh before sending data
+      await ensureAccessToken();
       const accessToken = Cookies.get("access_token");
 
       const response = await fetch(
@@ -119,50 +118,46 @@ const AccountInfo = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to update profile.");
+        throw new Error(t("accountInfo.updateError"));
       }
 
       const updatedData = await response.json();
       setUserData(updatedData);
-      setSuccessMessage("Profile updated successfully."); // Set success message
+      setSuccessMessage(t("accountInfo.updateSuccess"));
     } catch (error) {
       setError(error.message);
     }
   };
 
   const handleLogout = () => {
-    // Lösche die Tokens aus den Cookies
     Cookies.remove("access_token");
     Cookies.remove("refresh_token");
-
-    // Navigiere zur Homepage
     window.location.href = "/";
   };
 
-  // Map subscription tier to plan name
   const getSubscriptionPlan = (tier) => {
     switch (tier) {
       case 1:
-        return "Free Plan";
+        return t("accountInfo.plans.free");
       case 2:
-        return "Advanced Plan";
+        return t("accountInfo.plans.advanced");
       case 3:
-        return "Premium Plan";
+        return t("accountInfo.plans.premium");
       default:
-        return "Unknown Plan";
+        return t("accountInfo.plans.unknown");
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>{t("accountInfo.loading")}</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="w-full max-w-lg mx-auto p-6 rounded-lg">
-      <h2 className="text-2xl font-semibold mb-6">Account Settings</h2>
+      <h2 className="text-2xl font-semibold mb-6">{t("accountInfo.title")}</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="first_name" className="block text-n-1">
-            First Name
+            {t("accountInfo.firstName")}
           </label>
           <input
             type="text"
@@ -177,7 +172,7 @@ const AccountInfo = () => {
 
         <div className="mb-4">
           <label htmlFor="last_name" className="block text-n-1">
-            Last Name
+            {t("accountInfo.lastName")}
           </label>
           <input
             type="text"
@@ -192,7 +187,7 @@ const AccountInfo = () => {
 
         <div className="mb-4">
           <label htmlFor="email" className="block text-n-1">
-            Email
+            {t("accountInfo.email")}
           </label>
           <input
             type="email"
@@ -208,7 +203,7 @@ const AccountInfo = () => {
 
         <div className="mb-4">
           <label htmlFor="subscription_tier" className="block text-n-1">
-            Subscription Tier
+            {t("accountInfo.subscriptionTier")}
           </label>
           <input
             type="text"
@@ -223,7 +218,7 @@ const AccountInfo = () => {
 
         <div className="mb-4">
           <label htmlFor="date_joined" className="block text-n-1">
-            Date Joined
+            {t("accountInfo.dateJoined")}
           </label>
           <input
             type="text"
@@ -241,7 +236,7 @@ const AccountInfo = () => {
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
           >
-            Update Profile
+            {t("accountInfo.updateProfile")}
           </button>
           {successMessage && (
             <span className="text-green-500 text-sm ml-4">
@@ -251,13 +246,12 @@ const AccountInfo = () => {
         </div>
       </form>
 
-      {/* Logout Button */}
       <div className="flex justify-start mt-4">
         <button
           onClick={handleLogout}
           className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
         >
-          Logout
+          {t("accountInfo.logout")}
         </button>
       </div>
     </div>

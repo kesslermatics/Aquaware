@@ -9,9 +9,11 @@ import Notification from "./Notification";
 import CompanyLogos from "./CompanyLogos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDroplet } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
   const parallaxRef = useRef(null);
+  const { t } = useTranslation();
 
   return (
     <Section
@@ -24,9 +26,9 @@ const Hero = () => {
       <div className="container relative" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="h1 mb-6">
-            Discover the best Developer API for Water Monitoring&nbsp;with&nbsp;
+            {t('hero.title')}&nbsp;
             <span className="inline-block relative">
-              Aquaware{" "}
+              {t("hero.highlight")}
               <img
                 src={curve}
                 className="absolute top-full left-0 w-full xl:-mt-2"
@@ -37,10 +39,9 @@ const Hero = () => {
             </span>
           </h1>
           <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
-            Leverage the power of real-time water quality monitoring with
-            Aquaware.
+            {t("hero.subtitle")}
           </p>
-          <Button href="/signup">Get started</Button>
+          <Button href="/signup">{t("hero.cta")}</Button>
         </div>
         <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24">
           <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">
@@ -60,7 +61,7 @@ const Hero = () => {
                   className={`flex items-center h-[3.5rem] px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-base`}
                 >
                   <FontAwesomeIcon icon={faDroplet} className="mr-4" />
-                  Always know about your water quality
+                  {t("hero.water_quality")}
                 </div>
 
                 <ScrollParallax isAbsolutelyPositioned>
@@ -76,7 +77,7 @@ const Hero = () => {
                 <ScrollParallax isAbsolutelyPositioned>
                   <Notification
                     className="hidden absolute -right-[5.5rem] bottom-[11rem] w-[18rem] xl:flex"
-                    title="Temperature threshold reached!"
+                    title={t("hero.notification")}
                   />
                 </ScrollParallax>
               </div>
@@ -88,8 +89,8 @@ const Hero = () => {
 
           <BackgroundCircles />
         </div>
-        {/*
-        <CompanyLogos className="hidden relative z-10 mt-20 lg:block" />
+        {/* 
+        <CompanyLogos className="hidden relative z-10 mt-20 lg:block" /> 
         */}
       </div>
 

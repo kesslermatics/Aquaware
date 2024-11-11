@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ForgotPassword = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -20,15 +22,15 @@ const ForgotPassword = () => {
       );
 
       if (response.ok) {
-        setMessage("Password reset email sent successfully!");
+        setMessage(t("forgotPassword.successMessage"));
         setError("");
       } else {
         const data = await response.json();
-        setError(data.error || "Something went wrong. Please try again.");
+        setError(data.error || t("forgotPassword.errorMessage"));
         setMessage("");
       }
     } catch (error) {
-      setError("Failed to send the request. Please try again.");
+      setError(t("forgotPassword.requestFailed"));
       setMessage("");
     }
   };
@@ -37,10 +39,10 @@ const ForgotPassword = () => {
     <div className="w-full h-screen flex flex-col items-center justify-center bg-n-8">
       <div className="w-full max-w-[400px] bg-n-1 rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold text-center text-n-8 mb-6">
-          Forgot Password
+          {t("forgotPassword.title")}
         </h1>
         <p className="text-base text-center text-n-8 mb-6">
-          Enter your email address to receive a password reset link.
+          {t("forgotPassword.description")}
         </p>
 
         {message && (
@@ -50,7 +52,7 @@ const ForgotPassword = () => {
 
         <input
           type="email"
-          placeholder="Email Address"
+          placeholder={t("forgotPassword.emailPlaceholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -60,7 +62,7 @@ const ForgotPassword = () => {
           onClick={handleForgotPassword}
           className="w-full bg-blue-500 text-white font-semibold rounded-md py-3 mt-4 hover:bg-blue-600"
         >
-          Send Reset Link
+          {t("forgotPassword.sendButton")}
         </button>
       </div>
     </div>

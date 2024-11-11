@@ -4,13 +4,14 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Confetti from "react-confetti";
 import ComparePlans from "../ComparePlans";
+import { useTranslation } from "react-i18next";
 
 const PricingPlanInfo = () => {
+  const { t } = useTranslation();
   const [userPlan, setUserPlan] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [showConfetti, setShowConfetti] = useState(false); // New state for confetti
+  const [showConfetti, setShowConfetti] = useState(false);
 
-  // Function to refresh the access token
   const refreshAccessToken = async () => {
     try {
       const refreshToken = Cookies.get("refresh_token");
@@ -30,15 +31,14 @@ const PricingPlanInfo = () => {
         Cookies.set("access_token", data.access);
         return data.access;
       } else {
-        throw new Error("Failed to refresh token");
+        throw new Error(t("pricingPlanInfo.errors.tokenRefresh"));
       }
     } catch (error) {
-      console.error("Error refreshing access token:", error);
+      console.error(t("pricingPlanInfo.errors.tokenRefreshError"), error);
       throw error;
     }
   };
 
-  // Function to handle API requests with automatic token refresh
   const fetchWithTokenRefresh = async (url, options) => {
     try {
       let accessToken = Cookies.get("access_token");
@@ -57,7 +57,7 @@ const PricingPlanInfo = () => {
 
       return response;
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error(t("pricingPlanInfo.errors.fetchError"), error);
     }
   };
 
@@ -80,31 +80,30 @@ const PricingPlanInfo = () => {
           setUserPlan(data.subscription_tier);
         }
       } catch (error) {
-        console.error("Error fetching user plan:", error);
+        console.error(t("pricingPlanInfo.errors.fetchPlanError"), error);
       }
     };
 
     fetchUserPlan();
-  }, []);
+  }, [t]);
 
   const handlePlanClick = (plan) => {
     if (plan.id !== userPlan) {
       setSelectedPlan(plan);
-      // handle payment link redirection
       window.location.href = plan.stripeLink;
     }
   };
 
   const getButtonText = (planId) => {
     if (planId == 1) {
-      return "Always Active";
+      return t("pricingPlanInfo.buttonText.alwaysActive");
     }
     if (planId == userPlan) {
-      return "Current Plan";
+      return t("pricingPlanInfo.buttonText.currentPlan");
     } else if (planId > userPlan) {
-      return "Upgrade";
+      return t("pricingPlanInfo.buttonText.upgrade");
     } else if (planId < userPlan) {
-      return "Downgrade";
+      return t("pricingPlanInfo.buttonText.downgrade");
     }
   };
 
@@ -129,14 +128,10 @@ const PricingPlanInfo = () => {
   return (
     <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
       <div className="flex flex-wrap gap-4 justify-center w-full max-w-7xl mb-16">
-        <h2 className="text-2xl font-semibold">Plan Information</h2>
+        <h2 className="text-2xl font-semibold">{t("pricingPlanInfo.title")}</h2>
         <p className="text-center mt-4 mb-4">
-          We use Stripe for payment processing. Please ensure you use the same
-          email address that you have registered with through our API, app, or
-          on this website to complete your payment. This will help ensure your
-          account is correctly linked with your subscription.
+          {t("pricingPlanInfo.paymentInstruction")}
         </p>
-        {/* Display customer portal link if userPlan is not 1 */}
         {userPlan != 1 && (
           <div className=" text-center w-full max-w-7xl mx-auto p-6 rounded-xl shadow-lg bg-n-8">
             <a
@@ -145,7 +140,7 @@ const PricingPlanInfo = () => {
               rel="noopener noreferrer"
               className="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold text-center hover:bg-blue-600"
             >
-              Manage Your Active Subscription
+              {t("pricingPlanInfo.manageSubscription")}
             </a>
           </div>
         )}

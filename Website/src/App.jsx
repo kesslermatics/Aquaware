@@ -17,6 +17,7 @@ import Success from "./components/Success";
 import Pricing from "./components/Pricing";
 import TermsAndConditions from "./components/TermsAndConditions";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import PricingPlanInfo from "./components/Dashboard/PricingPlanInfo";
 import ComparePlans from "./components/ComparePlans";
 import Section from "./components/Section";
@@ -24,6 +25,8 @@ import TailoredTool from "./components/TailoredTool";
 import AquawareApp from "./components/AquawareApp";
 
 const App = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Header />
@@ -54,24 +57,19 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/reset-password/:uid/:token"
-            element={<ResetPassword />}
-          />
+          <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
           <Route path="/impressum" element={<Impressum />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route
-            path="/terms-and-conditions"
-            element={<TermsAndConditions />}
-          />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/success" element={<Success />} />
-
+          
           {/* 404 Not Found */}
           <Route
             path="*"
             element={
               <div className="text-center">
-                <h1>404 - Page Not Found</h1>
+                <h1>{t("app.404.title")}</h1>
+                <p>{t("app.404.message")}</p>
               </div>
             }
           />

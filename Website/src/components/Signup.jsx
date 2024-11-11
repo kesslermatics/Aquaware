@@ -2,10 +2,12 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
-import { GoogleLogin } from "@react-oauth/google"; // Import the GoogleLogin component
+import { GoogleLogin } from "@react-oauth/google";
 import backgroundVideo from "../assets/bg-aquarium2.mp4";
+import { useTranslation } from "react-i18next";
 
 const Signup = () => {
+  const { t } = useTranslation();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,7 +27,7 @@ const Signup = () => {
 
   const handleSignup = async () => {
     if (password !== confirmPassword) {
-      setError("Passwords do not match!");
+      setError(t("signup.passwordMismatch"));
       return;
     }
 
@@ -54,9 +56,9 @@ const Signup = () => {
       Cookies.set("refresh_token", data.refresh, { expires: 7 });
       window.location.href = "/dashboard";
     } else if (response.status === 409) {
-      setError("Email already in use");
+      setError(t("signup.emailInUse"));
     } else {
-      setError(data.error || "Invalid input");
+      setError(data.error || t("signup.invalidInput"));
     }
   };
 
@@ -72,7 +74,7 @@ const Signup = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            token: token, // Send the Google token to the backend
+            token: token,
           }),
         }
       );
@@ -80,23 +82,22 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Save JWT tokens in cookies
         Cookies.set("access_token", data.access, { expires: 1 });
         Cookies.set("refresh_token", data.refresh, { expires: 7 });
         window.location.href = "/dashboard";
       } else {
         console.error("Google signup failed:", data);
-        setError(data.error || "Google signup failed.");
+        setError(data.error || t("signup.googleSignupFailed"));
       }
     } catch (error) {
       console.error("Error during Google signup:", error);
-      setError("Google signup failed. Please try again.");
+      setError(t("signup.googleSignupError"));
     }
   };
 
   const handleGoogleFailure = (error) => {
     console.error("Google OAuth failure", error);
-    setError("Google login failed. Please try again.");
+    setError(t("signup.googleLoginFailed"));
   };
 
   return (
@@ -108,30 +109,30 @@ const Signup = () => {
         className="absolute left-0 w-full h-full object-cover opacity-10 z-1"
       >
         <source src={backgroundVideo} type="video/mp4" />
-        Your browser does not support the video tag.
+        {t("signup.videoNotSupported")}
       </video>
       <div className="w-full max-w-[500px] bg-n-1 rounded-lg shadow-lg p-8 z-2">
         <h1 className="text-3xl font-bold text-center text-n-8 mb-6">
-          Sign Up
+          {t("signup.title")}
         </h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <div className="w-full flex flex-col mb-4">
           <p className="text-base text-center mb-4 text-n-8">
-            Become a part of a new generation now
+            {t("signup.subtitle")}
           </p>
           <div className="flex space-x-4">
             <input
               type="text"
-              placeholder="First Name"
+              placeholder={t("signup.firstNamePlaceholder")}
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className="w-1/2 text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
             />
             <input
               type="text"
-              placeholder="Last Name"
+              placeholder={t("signup.lastNamePlaceholder")}
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="w-1/2 text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -139,7 +140,7 @@ const Signup = () => {
           </div>
           <input
             type="email"
-            placeholder="Email"
+            placeholder={t("signup.emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -147,7 +148,7 @@ const Signup = () => {
           <div className="relative w-full">
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder={t("signup.passwordPlaceholder")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -166,7 +167,7 @@ const Signup = () => {
           <div className="relative w-full">
             <input
               type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password"
+              placeholder={t("signup.confirmPasswordPlaceholder")}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -188,12 +189,12 @@ const Signup = () => {
           onClick={handleSignup}
           className="w-full bg-n-15 text-white font-semibold rounded-md py-3 mb-4"
         >
-          Sign Up
+          {t("signup.signupButton")}
         </button>
 
         <div className="w-full flex items-center justify-center relative mb-4">
           <div className="w-full h-[1px] bg-gray-300"></div>
-          <p className="absolute bg-white px-4 text-gray-500">or</p>
+          <p className="absolute bg-white px-4 text-gray-500">{t("signup.or")}</p>
         </div>
 
         <div className="w-full flex items-center justify-center text-n-8 font-semibold rounded-md py-3 mb-6">
@@ -205,9 +206,9 @@ const Signup = () => {
         </div>
 
         <p className="text-center text-sm text-gray-600 mt-4">
-          Already have an account?{" "}
+          {t("signup.alreadyHaveAccount")}{" "}
           <a className="text-blue-500 font-semibold" href="/login">
-            Log in here
+            {t("signup.loginLink")}
           </a>
         </p>
       </div>

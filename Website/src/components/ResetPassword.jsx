@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
+  const { t } = useTranslation();
   const { uid, token } = useParams();
   const history = useNavigate();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [showNewPassword, setShowNewPassword] = useState(false); // Toggle for new password
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Toggle for confirm password
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleResetPassword = async () => {
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("resetPassword.passwordMismatch"));
       return;
     }
 
@@ -36,16 +38,16 @@ const ResetPassword = () => {
       );
 
       if (response.ok) {
-        setSuccessMessage("Password has been reset successfully!");
+        setSuccessMessage(t("resetPassword.successMessage"));
         setTimeout(() => {
-          history("/login"); // Redirect to login page after success
+          history("/login");
         }, 2000);
       } else {
         const data = await response.json();
-        setError(data.error || "Failed to reset password. Please try again.");
+        setError(data.error || t("resetPassword.errorMessage"));
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      setError(t("resetPassword.genericError"));
     }
   };
 
@@ -53,7 +55,7 @@ const ResetPassword = () => {
     <div className="w-full h-screen flex flex-col items-center justify-center bg-n-8">
       <div className="w-full max-w-[400px] bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold text-center text-n-8 mb-6">
-          Reset Password
+          {t("resetPassword.title")}
         </h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -61,11 +63,10 @@ const ResetPassword = () => {
           <p className="text-green-500 text-center mb-4">{successMessage}</p>
         )}
 
-        {/* New Password Input */}
         <div className="relative">
           <input
-            type={showNewPassword ? "text" : "password"} // Toggle between password and text
-            placeholder="New Password"
+            type={showNewPassword ? "text" : "password"}
+            placeholder={t("resetPassword.newPasswordPlaceholder")}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -79,16 +80,14 @@ const ResetPassword = () => {
               <FontAwesomeIcon icon={faEyeSlash} className="mr-4 text-n-8" />
             ) : (
               <FontAwesomeIcon icon={faEye} className="mr-4 text-n-8" />
-            )}{" "}
-            {/* Eye icon */}
+            )}
           </button>
         </div>
 
-        {/* Confirm Password Input */}
         <div className="relative">
           <input
-            type={showConfirmPassword ? "text" : "password"} // Toggle between password and text
-            placeholder="Confirm New Password"
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder={t("resetPassword.confirmPasswordPlaceholder")}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full text-n-8 py-2 my-2 bg-transparent border-b border-gray-400 outline-none focus:border-blue-500"
@@ -98,11 +97,11 @@ const ResetPassword = () => {
             className="absolute right-2 top-1/2 transform -translate-y-1/2"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
-            {showNewPassword ? (
+            {showConfirmPassword ? (
               <FontAwesomeIcon icon={faEyeSlash} className="mr-4 text-n-8" />
             ) : (
               <FontAwesomeIcon icon={faEye} className="mr-4 text-n-8" />
-            )}{" "}
+            )}
           </button>
         </div>
 
@@ -110,7 +109,7 @@ const ResetPassword = () => {
           onClick={handleResetPassword}
           className="w-full bg-blue-500 text-white font-semibold rounded-md py-3 mt-4 hover:bg-blue-600"
         >
-          Reset Password
+          {t("resetPassword.resetButton")}
         </button>
       </div>
     </div>
