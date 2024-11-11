@@ -4,20 +4,58 @@ import Arrow from "../assets/svg/Arrow";
 import { GradientLight } from "./design/Benefits";
 import ClipPath from "../assets/svg/ClipPath";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTv, faCode, faChartLine, faRobot, faWater, faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from 'react-i18next';
+import {
+  faTv,
+  faCode,
+  faChartLine,
+  faRobot,
+  faWater,
+  faBookOpen,
+} from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+import { benefitImage } from "../../src/assets";
 
 const Benefits = () => {
   const { t } = useTranslation();
 
   // Mapping the icons and additional data with the benefits from translation
   const benefitsData = [
-    { id: "0", iconUrl: faTv, backgroundUrl: "assets/benefits/card-1.svg", light: false, imageUrl: "assets/benefits/benefitImage2" },
-    { id: "1", iconUrl: faCode, backgroundUrl: "assets/benefits/card-2.svg", light: true, imageUrl: "assets/benefits/benefitImage2" },
-    { id: "2", iconUrl: faChartLine, backgroundUrl: "assets/benefits/card-3.svg", light: false, imageUrl: "assets/benefits/benefitImage2" },
-    { id: "3", iconUrl: faBookOpen, backgroundUrl: "assets/benefits/card-4.svg", light: true, imageUrl: "assets/benefits/benefitImage2" },
-    { id: "4", iconUrl: faRobot, backgroundUrl: "assets/benefits/card-5.svg", light: false, imageUrl: "assets/benefits/benefitImage2" },
-    { id: "5", iconUrl: faWater, backgroundUrl: "assets/benefits/card-6.svg", light: true, imageUrl: "assets/benefits/benefitImage2" },
+    {
+      id: "0",
+      iconUrl: faTv,
+      backgroundUrl: "assets/benefits/card-1.svg",
+      light: false,
+    },
+    {
+      id: "1",
+      iconUrl: faCode,
+      backgroundUrl: "assets/benefits/card-2.svg",
+      light: true,
+    },
+    {
+      id: "2",
+      iconUrl: faChartLine,
+      backgroundUrl: "assets/benefits/card-3.svg",
+      light: false,
+    },
+    {
+      id: "3",
+      iconUrl: faBookOpen,
+      backgroundUrl: "assets/benefits/card-4.svg",
+      light: true,
+    },
+    {
+      id: "4",
+      iconUrl: faRobot,
+      backgroundUrl: "assets/benefits/card-5.svg",
+      light: false,
+    },
+    {
+      id: "5",
+      iconUrl: faWater,
+      backgroundUrl: "assets/benefits/card-6.svg",
+      light: true,
+    },
   ];
 
   return (
@@ -39,7 +77,9 @@ const Benefits = () => {
             >
               <div className="relative z-2 flex flex-col min-h-[22rem] p-[2.4rem] pointer-events-none">
                 <h5 className="h5 mb-5">{t(`benefits.${index}.title`)}</h5>
-                <p className="body-2 mb-6 text-n-3">{t(`benefits.${index}.text`)}</p>
+                <p className="body-2 mb-6 text-n-3">
+                  {t(`benefits.${index}.text`)}
+                </p>
                 <div className="flex items-center mt-auto">
                   <FontAwesomeIcon icon={item.iconUrl} />
                 </div>
@@ -54,7 +94,7 @@ const Benefits = () => {
                 <div className="absolute inset-0 opacity-0 transition-opacity hover:opacity-10">
                   {item.imageUrl && (
                     <img
-                      src={item.imageUrl}
+                      src={benefitImage}
                       width={380}
                       height={362}
                       alt={t(`benefits.${index}.title`)}

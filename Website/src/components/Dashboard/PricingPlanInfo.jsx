@@ -1,5 +1,4 @@
 import { check } from "../../assets";
-import { pricing } from "../../constants";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Confetti from "react-confetti";
@@ -95,10 +94,10 @@ const PricingPlanInfo = () => {
   };
 
   const getButtonText = (planId) => {
-    if (planId == 1) {
+    if (planId === 1) {
       return t("pricingPlanInfo.buttonText.alwaysActive");
     }
-    if (planId == userPlan) {
+    if (planId === userPlan) {
       return t("pricingPlanInfo.buttonText.currentPlan");
     } else if (planId > userPlan) {
       return t("pricingPlanInfo.buttonText.upgrade");
@@ -108,22 +107,19 @@ const PricingPlanInfo = () => {
   };
 
   const getButtonClass = (planId) => {
-    if (planId == 1) {
+    if (planId === 1) {
       return "text-white cursor-default";
     }
-    if (planId == userPlan) {
+    if (planId === userPlan) {
       return "bg-green-500 text-white cursor-default";
     } else if (planId > userPlan || planId < userPlan) {
       return "bg-blue-500 text-white hover:bg-blue-600";
     }
   };
 
-  const isButtonDisabled = (planId) => {
-    if (planId == 1) {
-      return true;
-    }
-    return planId == userPlan;
-  };
+  const isButtonDisabled = (planId) => planId === 1 || planId === userPlan;
+
+  const planKeys = ["hobbyPlan", "advancedPlan", "premiumPlan"];
 
   return (
     <div className="flex flex-col min-h-screen py-8 px-4 bg-n-8 overflow-y-auto">
@@ -132,7 +128,7 @@ const PricingPlanInfo = () => {
         <p className="text-center mt-4 mb-4">
           {t("pricingPlanInfo.paymentInstruction")}
         </p>
-        {userPlan != 1 && (
+        {userPlan !== 1 && (
           <div className=" text-center w-full max-w-7xl mx-auto p-6 rounded-xl shadow-lg bg-n-8">
             <a
               href="https://billing.stripe.com/p/login/fZeaGa4mc7Zi2oU8ww"
@@ -144,49 +140,47 @@ const PricingPlanInfo = () => {
             </a>
           </div>
         )}
-        {pricing.map((item) => (
+        {planKeys.map((key, index) => (
           <div
-            key={item.id}
+            key={index}
             className="w-full sm:w-[18rem] lg:w-[22rem] h-auto p-4 bg-n-8 border border-n-6 rounded-xl shadow-lg"
           >
             <h4 className="text-lg font-semibold mb-2 text-center">
-              {item.title}
+              {t(`pricing.${key}.title`)}
             </h4>
             <p className="text-sm text-gray-500 text-center mb-4">
-              {item.description}
+              {t(`pricing.${key}.description`)}
             </p>
 
             <div className="flex justify-center items-center mb-4">
-              {item.price && (
-                <>
-                  <span className="text-xl font-semibold">€</span>
-                  <span className="text-4xl font-bold ml-1">
-                    {item.price} /m
-                  </span>
-                </>
-              )}
+              <span className="text-xl font-semibold">€</span>
+              <span className="text-4xl font-bold ml-1">
+                {t(`pricing.${key}.price`)} /m
+              </span>
             </div>
 
             <button
               className={`w-full py-2 rounded-lg font-semibold text-center ${getButtonClass(
-                item.id
+                index + 1
               )}`}
-              onClick={() => handlePlanClick(item)}
-              disabled={isButtonDisabled(item.id)}
+              onClick={() => handlePlanClick({ id: index + 1 })}
+              disabled={isButtonDisabled(index + 1)}
             >
-              {getButtonText(item.id)}
+              {getButtonText(index + 1)}
             </button>
 
             <ul className="mt-4">
-              {item.features.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-center py-2 border-t border-gray-300"
-                >
-                  <img src={check} alt="Check" className="w-4 h-4" />
-                  <p className="text-sm ml-2">{feature}</p>
-                </li>
-              ))}
+              {t(`pricing.${key}.features`, { returnObjects: true }).map(
+                (feature, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center py-2 border-t border-gray-300"
+                  >
+                    <img src={check} alt="Check" className="w-4 h-4" />
+                    <p className="text-sm ml-2">{feature}</p>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         ))}

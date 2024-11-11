@@ -34,7 +34,7 @@ import benefitCard3 from "./benefits/card-3.svg";
 import benefitCard4 from "./benefits/card-4.svg";
 import benefitCard5 from "./benefits/card-5.svg";
 import benefitCard6 from "./benefits/card-6.svg";
-import benefitImage2 from "./benefits/image-2.png";
+import benefitImage from "./benefits/image-2.png";
 
 export {
   check,
@@ -68,5 +68,5 @@ export {
   benefitCard4,
   benefitCard5,
   benefitCard6,
-  benefitImage2,
+  benefitImage,
 };

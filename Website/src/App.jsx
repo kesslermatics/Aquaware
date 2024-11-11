@@ -23,6 +23,7 @@ import ComparePlans from "./components/ComparePlans";
 import Section from "./components/Section";
 import TailoredTool from "./components/TailoredTool";
 import AquawareApp from "./components/AquawareApp";
+import CookieConsent from "react-cookie-consent";
 
 const App = () => {
   const { t } = useTranslation();
@@ -57,12 +58,18 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
+          <Route
+            path="/reset-password/:uid/:token"
+            element={<ResetPassword />}
+          />
           <Route path="/impressum" element={<Impressum />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditions />}
+          />
           <Route path="/success" element={<Success />} />
-          
+
           {/* 404 Not Found */}
           <Route
             path="*"
@@ -77,6 +84,20 @@ const App = () => {
           <Route path="/docs/*" element={<Docs />} />
         </Routes>
         <Footer />
+        <CookieConsent
+          location="bottom"
+          style={{ background: "#07304F", fontSize: "17px" }}
+          buttonStyle={{
+            background: "#031726",
+            color: "#FFFFFF",
+            fontSize: "17px",
+            borderRadius: "8px", // abgerundete Ecken für den Button
+            padding: "10px 20px",
+          }}
+          buttonText={t("cookieConsent.buttonText")}
+        >
+          {t("cookieConsent.message")}
+        </CookieConsent>
       </div>
       <ButtonGradient />
     </>
