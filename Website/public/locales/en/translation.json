@@ -58,11 +58,11 @@
       },
       "advanced": {
         "name": "Advanced Plan",
-        "price": "$2.99 per month"
+        "price": "9.99€ per month"
       },
       "premium": {
         "name": "Premium Plan",
-        "price": "$5.99 per month"
+        "price": "14.99€ per month"
       }
     },
     "features": [
@@ -165,7 +165,7 @@
     "advancedPlan": {
       "title": "Advanced Plan",
       "description": "Advanced monitoring tools for precise water tracking",
-      "price": "2.99",
+      "price": "9.99",
       "buttonText": "Leverage your tracking",
       "features": [
         "Everything from the Hobby plan",
@@ -176,7 +176,7 @@
     "premiumPlan": {
       "title": "Premium Plan",
       "description": "Frequent water monitoring with AI tools for detailed insights and more",
-      "price": "5.99",
+      "price": "14.99",
       "buttonText": "Upgrade to premium features",
       "features": [
         "Everything from the Hobby and Advanced plan",

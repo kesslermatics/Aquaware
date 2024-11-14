@@ -58,11 +58,11 @@
       },
       "advanced": {
         "name": "Advanced-Plan",
-        "price": "2,99 € pro Monat"
+        "price": "9,99 € pro Monat"
       },
       "premium": {
         "name": "Premium-Plan",
-        "price": "5,99 € pro Monat"
+        "price": "14,99 € pro Monat"
       }
     },
     "features": [
@@ -165,7 +165,7 @@
     "advancedPlan": {
       "title": "Advanced-Plan",
       "description": "Erweiterte Überwachungstools für präzises Wasser-Tracking",
-      "price": "2.99",
+      "price": "9.99",
       "buttonText": "Tracking erweitern",
       "features": [
         "Alles aus dem Hobby-Plan",
@@ -176,7 +176,7 @@
     "premiumPlan": {
       "title": "Premium-Plan",
       "description": "Häufige Wasserüberwachung mit KI-Tools für detaillierte Einblicke und mehr",
-      "price": "5.99",
+      "price": "14.99",
       "buttonText": "Upgrade auf Premium-Funktionen",
       "features": [
         "Alles aus dem Hobby- und Advanced-Plan",
