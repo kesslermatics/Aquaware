@@ -33,12 +33,12 @@ Aquaware offers both free and premium options tailored to user needs:
 - **Unlimited Environments**: Monitor multiple environments simultaneously.
 - **Community Access**: Engage with the Aquaware community and access basic documentation and support.
 
-### Advanced Plan - €2.99/month
+### Advanced Plan - €9.99/month
 
 - **More frequent uploading**: Get more precise tracking by uploading every 30 minutes
 - **Alerts and notifications**: Add alerts and notification to take action when your water quality falls outside your desired ranges
 
-### Premium Plan - €5.99/month
+### Premium Plan - €14.99/month
 
 The Premium subscription unlocks advanced features that bring aquarium management to the next level:
 - **Advanced Analytics**: Get in-depth analyses of water quality trends and AI-powered predictions.
