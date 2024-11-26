@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import Benefits from "./components/Benefits";
 import ApiInfo from "./components/ApiInfo";
@@ -16,7 +17,6 @@ import Privacy from "./components/Privacy";
 import Success from "./components/Success";
 import Pricing from "./components/Pricing";
 import TermsAndConditions from "./components/TermsAndConditions";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import PricingPlanInfo from "./components/Dashboard/PricingPlanInfo";
 import ComparePlans from "./components/ComparePlans";
@@ -27,9 +27,84 @@ import CookieConsent from "react-cookie-consent";
 
 const App = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  // Dynamische Metadaten basierend auf der Route
+  const getMetaData = (path) => {
+    switch (path) {
+      case "/":
+        return {
+          title: t("seo.home.title"),
+          description: t("seo.home.description"),
+        };
+      case "/hero":
+        return {
+          title: t("seo.hero.title"),
+          description: t("seo.hero.description"),
+        };
+      case "/benefits":
+        return {
+          title: t("seo.benefits.title"),
+          description: t("seo.benefits.description"),
+        };
+      case "/api-info":
+        return {
+          title: t("seo.apiInfo.title"),
+          description: t("seo.apiInfo.description"),
+        };
+      case "/signup":
+        return {
+          title: t("seo.signup.title"),
+          description: t("seo.signup.description"),
+        };
+      case "/login":
+        return {
+          title: t("seo.login.title"),
+          description: t("seo.login.description"),
+        };
+      case "/dashboard":
+        return {
+          title: t("seo.dashboard.title"),
+          description: t("seo.dashboard.description"),
+        };
+      case "/impressum":
+        return {
+          title: t("seo.impressum.title"),
+          description: t("seo.impressum.description"),
+        };
+      case "/privacy":
+        return {
+          title: t("seo.privacy.title"),
+          description: t("seo.privacy.description"),
+        };
+      case "/terms-and-conditions":
+        return {
+          title: t("seo.terms.title"),
+          description: t("seo.terms.description"),
+        };
+      case "/success":
+        return {
+          title: t("seo.success.title"),
+          description: t("seo.success.description"),
+        };
+      default:
+        return {
+          title: t("seo.default.title"),
+          description: t("seo.default.description"),
+        };
+    }
+  };
+
+  const { title, description } = getMetaData(location.pathname);
 
   return (
     <>
+      {/* Dynamische SEO-Metadaten */}
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </Helmet>
+
       <Header />
       <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
         <Routes>
@@ -75,6 +150,10 @@ const App = () => {
             path="*"
             element={
               <div className="text-center">
+                <Helmet>
+                  <title>{t("seo.404.title")}</title>
+                  <meta name="description" content={t("seo.404.description")} />
+                </Helmet>
                 <h1>{t("app.404.title")}</h1>
                 <p>{t("app.404.message")}</p>
               </div>
@@ -91,7 +170,7 @@ const App = () => {
             background: "#031726",
             color: "#FFFFFF",
             fontSize: "17px",
-            borderRadius: "8px", // abgerundete Ecken für den Button
+            borderRadius: "8px",
             padding: "10px 20px",
           }}
           buttonText={t("cookieConsent.buttonText")}

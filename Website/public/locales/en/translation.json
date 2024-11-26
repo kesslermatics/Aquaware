@@ -54,7 +54,7 @@
     "plans": {
       "hobby": {
         "name": "Hobby Plan",
-        "price": "$0 per month"
+        "price": "0€ per month"
       },
       "advanced": {
         "name": "Advanced Plan",
@@ -389,5 +389,59 @@
   "cookieConsent": {
     "message": " This website uses cookies to enhance the user experience.",
     "buttonText": "I understand"
+  },
+  "seo": {
+    "home": {
+      "title": "Aquaware - Monitor your water values",
+      "description": "Easily monitor and analyze water quality efficiently."
+    },
+    "hero": {
+      "title": "Hero Section - Aquaware",
+      "description": "Discover the main features of Aquaware."
+    },
+    "benefits": {
+      "title": "Benefits of Aquaware",
+      "description": "Learn how Aquaware helps you monitor your water values."
+    },
+    "apiInfo": {
+      "title": "API Information - Aquaware",
+      "description": "Technical details on integrating the Aquaware API."
+    },
+    "signup": {
+      "title": "Sign up for Aquaware",
+      "description": "Create an account and monitor your water values efficiently."
+    },
+    "login": {
+      "title": "Login - Aquaware",
+      "description": "Sign in to monitor your water values."
+    },
+    "dashboard": {
+      "title": "Dashboard - Aquaware",
+      "description": "Analyze and visualize your water quality data."
+    },
+    "impressum": {
+      "title": "Impressum - Aquaware",
+      "description": "Legal information about Aquaware."
+    },
+    "privacy": {
+      "title": "Privacy Policy - Aquaware",
+      "description": "Learn how Aquaware handles your data."
+    },
+    "terms": {
+      "title": "Terms and Conditions - Aquaware",
+      "description": "Aquaware's general terms and conditions."
+    },
+    "success": {
+      "title": "Success! - Aquaware",
+      "description": "Your action was successful. Continue with Aquaware!"
+    },
+    "404": {
+      "title": "404 - Page not found",
+      "description": "The page you are looking for does not exist. Go back to the homepage."
+    },
+    "default": {
+      "title": "Aquaware - Monitor your water quality",
+      "description": "Monitor and analyze water quality efficiently with Aquaware."
+    }
   }
 }

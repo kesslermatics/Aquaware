@@ -389,5 +389,59 @@
   "cookieConsent": {
     "message": "Diese Website verwendet Cookies, um die Benutzererfahrung zu verbessern.",
     "buttonText": "Ich verstehe"
+  },
+  "seo": {
+    "home": {
+      "title": "Aquaware - Überwache deine Wasserwerte",
+      "description": "Überwache und analysiere Wasserqualität einfach und effizient."
+    },
+    "hero": {
+      "title": "Hero-Bereich - Aquaware",
+      "description": "Entdecke die Hauptfunktionen von Aquaware."
+    },
+    "benefits": {
+      "title": "Vorteile von Aquaware",
+      "description": "Erfahre, wie Aquaware dir bei der Überwachung deiner Wasserwerte hilft."
+    },
+    "apiInfo": {
+      "title": "API-Informationen - Aquaware",
+      "description": "Technische Informationen zur Integration der Aquaware API."
+    },
+    "signup": {
+      "title": "Registriere dich bei Aquaware",
+      "description": "Erstelle ein Konto und überwache deine Wasserwerte effizient."
+    },
+    "login": {
+      "title": "Login - Aquaware",
+      "description": "Melde dich an, um deine Wasserwerte zu überwachen."
+    },
+    "dashboard": {
+      "title": "Dashboard - Aquaware",
+      "description": "Analysiere und visualisiere deine Wasserqualitätsdaten."
+    },
+    "impressum": {
+      "title": "Impressum - Aquaware",
+      "description": "Rechtliche Informationen über Aquaware."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung - Aquaware",
+      "description": "Erfahre, wie Aquaware mit deinen Daten umgeht."
+    },
+    "terms": {
+      "title": "AGB - Aquaware",
+      "description": "Allgemeine Geschäftsbedingungen von Aquaware."
+    },
+    "success": {
+      "title": "Erfolg! - Aquaware",
+      "description": "Deine Aktion war erfolgreich. Weiter mit Aquaware!"
+    },
+    "404": {
+      "title": "404 - Seite nicht gefunden",
+      "description": "Die gesuchte Seite existiert nicht. Zurück zur Startseite."
+    },
+    "default": {
+      "title": "Aquaware - Wasserqualität überwachen",
+      "description": "Überwache und analysiere Wasserqualität effizient mit Aquaware."
+    }
   }
 }
