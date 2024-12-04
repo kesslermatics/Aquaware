@@ -1,0 +1,46 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.User Management": {
+    "message": "User Management",
+    "description": "The label for category User Management in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.User Management.link.generated-index.description": {
+    "message": "Learn more about all the possibilities you have outside of the Aquaware App.",
+    "description": "The generated-index page description for category User Management in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Environments": {
+    "message": "Environments",
+    "description": "The label for category Environments in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Environments.link.generated-index.description": {
+    "message": "The aquatic environment is your body of water to track all your parameters, from lakes and ponds to aquariums and puddles.",
+    "description": "The generated-index page description for category Environments in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Measurements": {
+    "message": "Measurements",
+    "description": "The label for category Measurements in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Measurements.link.generated-index.description": {
+    "message": "Learn more about the water parameters you can track in your aquatic environment.",
+    "description": "The generated-index page description for category Measurements in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Animal Detection": {
+    "message": "Animal Detection",
+    "description": "The label for category Animal Detection in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Animal Detection.link.generated-index.description": {
+    "message": "Learn more about how you can identify any aquatic animal.",
+    "description": "The generated-index page description for category Animal Detection in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Animal Disease Detection": {
+    "message": "Animal Disease Detection",
+    "description": "The label for category Animal Disease Detection in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Animal Disease Detection.link.generated-index.description": {
+    "message": "Learn more about how you can check if your aquatic pet has any disease.",
+    "description": "The generated-index page description for category Animal Disease Detection in sidebar tutorialSidebar"
+  }
+}

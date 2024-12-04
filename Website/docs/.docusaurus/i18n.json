@@ -1,10 +1,11 @@
 {
   "defaultLocale": "en",
   "locales": [
-    "en"
+    "en",
+    "de"
   ],
   "path": "i18n",
-  "currentLocale": "en",
+  "currentLocale": "de",
   "localeConfigs": {
     "en": {
       "label": "English",
@@ -12,6 +13,13 @@
       "htmlLang": "en",
       "calendar": "gregory",
       "path": "en"
+    },
+    "de": {
+      "label": "Deutsch",
+      "direction": "ltr",
+      "htmlLang": "de",
+      "calendar": "gregory",
+      "path": "de"
     }
   }
 }

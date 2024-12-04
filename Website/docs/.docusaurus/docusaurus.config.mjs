@@ -8,16 +8,26 @@ export default {
   "tagline": "Enjoy the easy to read documentation to get started quickly",
   "favicon": "img/aquaware.png",
   "url": "https://aquaware.cloud",
-  "baseUrl": "/",
+  "baseUrl": "/de/",
   "onBrokenLinks": "throw",
   "onBrokenMarkdownLinks": "warn",
   "i18n": {
     "defaultLocale": "en",
     "locales": [
-      "en"
+      "en",
+      "de"
     ],
-    "path": "i18n",
-    "localeConfigs": {}
+    "localeConfigs": {
+      "en": {
+        "label": "English",
+        "direction": "ltr"
+      },
+      "de": {
+        "label": "Deutsch",
+        "direction": "ltr"
+      }
+    },
+    "path": "i18n"
   },
   "plugins": [
     null
@@ -69,6 +79,12 @@ export default {
           "sidebarId": "realWorldSidebar",
           "position": "left",
           "label": "Real World Example"
+        },
+        {
+          "type": "localeDropdown",
+          "position": "right",
+          "dropdownItemsBefore": [],
+          "dropdownItemsAfter": []
         }
       ],
       "hideOnScroll": false

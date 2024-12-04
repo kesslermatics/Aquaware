@@ -1,5 +1,5 @@
 {
-  "/blog-b2f": {
+  "/de/blog-668": {
     "__comp": "a6aa9e1f",
     "__context": {
       "plugin": "36994c47"
@@ -19,16 +19,16 @@
         "content": "925b3f96"
       }
     ],
-    "__props": "c15d9823"
+    "__props": "aa90c9d1"
   },
-  "/blog/archive-182": {
+  "/de/blog/archive-647": {
     "__comp": "9e4087bc",
     "__context": {
       "plugin": "36994c47"
     },
-    "__props": "f81c1134"
+    "__props": "42957a90"
   },
-  "/blog/authors-0b7": {
+  "/de/blog/authors-fd8": {
     "__comp": "621db11d",
     "__context": {
       "data": {
@@ -37,9 +37,9 @@
       "plugin": "36994c47"
     },
     "sidebar": "814f3328",
-    "__props": "ef8b811a"
+    "__props": "09cbbf07"
   },
-  "/blog/authors/all-sebastien-lorber-articles-4a1": {
+  "/de/blog/authors/all-sebastien-lorber-articles-5e5": {
     "__comp": "33fc5bb8",
     "__context": {
       "data": {
@@ -59,9 +59,9 @@
       }
     ],
     "sidebar": "814f3328",
-    "__props": "c9c9bef8"
+    "__props": "708fbb85"
   },
-  "/blog/authors/yangshun-a68": {
+  "/de/blog/authors/yangshun-429": {
     "__comp": "33fc5bb8",
     "__context": {
       "data": {
@@ -81,9 +81,9 @@
       }
     ],
     "sidebar": "814f3328",
-    "__props": "1dea6ca3"
+    "__props": "e72fff01"
   },
-  "/blog/first-blog-post-89a": {
+  "/de/blog/first-blog-post-04f": {
     "__comp": "ccc49370",
     "__context": {
       "data": {
@@ -94,7 +94,7 @@
     "sidebar": "814f3328",
     "content": "e273c56f"
   },
-  "/blog/long-blog-post-9ad": {
+  "/de/blog/long-blog-post-0c8": {
     "__comp": "ccc49370",
     "__context": {
       "data": {
@@ -105,7 +105,7 @@
     "sidebar": "814f3328",
     "content": "73664a40"
   },
-  "/blog/mdx-blog-post-e9f": {
+  "/de/blog/mdx-blog-post-31f": {
     "__comp": "ccc49370",
     "__context": {
       "data": {
@@ -116,15 +116,15 @@
     "sidebar": "814f3328",
     "content": "59362658"
   },
-  "/blog/tags-287": {
+  "/de/blog/tags-618": {
     "__comp": "01a85c17",
     "__context": {
       "plugin": "36994c47"
     },
     "sidebar": "814f3328",
-    "__props": "3a2db09e"
+    "__props": "08ccd46a"
   },
-  "/blog/tags/docusaurus-704": {
+  "/de/blog/tags/docusaurus-b35": {
     "__comp": "6875c492",
     "__context": {
       "plugin": "36994c47"
@@ -144,9 +144,9 @@
         "content": "925b3f96"
       }
     ],
-    "__props": "3217192f"
+    "__props": "58d7978c"
   },
-  "/blog/tags/facebook-858": {
+  "/de/blog/tags/facebook-48f": {
     "__comp": "6875c492",
     "__context": {
       "plugin": "36994c47"
@@ -157,9 +157,9 @@
         "content": "7661071f"
       }
     ],
-    "__props": "e5aefb32"
+    "__props": "6e410d42"
   },
-  "/blog/tags/hello-299": {
+  "/de/blog/tags/hello-d4b": {
     "__comp": "6875c492",
     "__context": {
       "plugin": "36994c47"
@@ -173,9 +173,9 @@
         "content": "8717b14a"
       }
     ],
-    "__props": "f82cd581"
+    "__props": "52e28ebf"
   },
-  "/blog/tags/hola-00d": {
+  "/de/blog/tags/hola-360": {
     "__comp": "6875c492",
     "__context": {
       "plugin": "36994c47"
@@ -186,9 +186,9 @@
         "content": "925b3f96"
       }
     ],
-    "__props": "5e90a9b3"
+    "__props": "38ff45d7"
   },
-  "/blog/welcome-d2b": {
+  "/de/blog/welcome-9a6": {
     "__comp": "ccc49370",
     "__context": {
       "data": {
@@ -199,131 +199,131 @@
     "sidebar": "814f3328",
     "content": "d9f32620"
   },
-  "/markdown-page-3d7": {
+  "/de/markdown-page-de3": {
     "__comp": "1f391b9e",
     "__context": {
       "plugin": "a7456010"
     },
     "content": "393be207"
   },
-  "/docs-671": {
+  "/de/docs-b44": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "aba21aa0"
     }
   },
-  "/docs-8a5": {
+  "/de/docs-8c6": {
     "__comp": "a7bd4aaa",
-    "__props": "0058b4c6"
+    "__props": "cd523b67"
   },
-  "/docs-b93": {
+  "/de/docs-fb3": {
     "__comp": "a94703ab"
   },
-  "/docs/category/animal-detection-95e": {
+  "/de/docs/category/animal-detection-136": {
     "__comp": "14eb3368",
-    "__props": "deb82b0f"
+    "__props": "6a657268"
   },
-  "/docs/category/animal-disease-detection-bf6": {
+  "/de/docs/category/animal-disease-detection-c87": {
     "__comp": "14eb3368",
-    "__props": "eb5af02a"
+    "__props": "7fba86b2"
   },
-  "/docs/category/environments-e65": {
+  "/de/docs/category/environments-495": {
     "__comp": "14eb3368",
-    "__props": "cbbe601c"
+    "__props": "6ab31527"
   },
-  "/docs/category/measurements-42a": {
+  "/de/docs/category/measurements-793": {
     "__comp": "14eb3368",
-    "__props": "a09d20ce"
+    "__props": "ac5e146a"
   },
-  "/docs/category/user-management-395": {
+  "/de/docs/category/user-management-e04": {
     "__comp": "14eb3368",
-    "__props": "8c33af2f"
+    "__props": "6dc0c17d"
   },
-  "/docs/getting-started/animal-detection/how_to_identify_any_fish-206": {
+  "/de/docs/getting-started/animal-detection/how_to_identify_any_fish-1e0": {
     "__comp": "17896441",
-    "content": "9a78609d"
+    "content": "54cfdb8e"
   },
-  "/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases-4bd": {
+  "/de/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases-c14": {
     "__comp": "17896441",
-    "content": "02af2074"
+    "content": "c77c9be8"
   },
-  "/docs/getting-started/environment-management/adding-an-environment-8e2": {
+  "/de/docs/getting-started/environment-management/adding-an-environment-536": {
     "__comp": "17896441",
-    "content": "2a5ffa33"
+    "content": "ffba273c"
   },
-  "/docs/getting-started/environment-management/delete-environment-2ef": {
+  "/de/docs/getting-started/environment-management/delete-environment-cd3": {
     "__comp": "17896441",
-    "content": "3e4667ec"
+    "content": "ccaf8409"
   },
-  "/docs/getting-started/environment-management/get-all-environments-681": {
+  "/de/docs/getting-started/environment-management/get-all-environments-314": {
     "__comp": "17896441",
-    "content": "a5c982a2"
+    "content": "dfcdfe47"
   },
-  "/docs/getting-started/environment-management/get-public-environments-ffc": {
+  "/de/docs/getting-started/environment-management/get-public-environments-0d3": {
     "__comp": "17896441",
-    "content": "2cab05a9"
+    "content": "d0a3d3b9"
   },
-  "/docs/getting-started/environment-management/update-environment-d5b": {
+  "/de/docs/getting-started/environment-management/update-environment-d95": {
     "__comp": "17896441",
-    "content": "51364147"
+    "content": "f80bc3e5"
   },
-  "/docs/getting-started/measurement-management/add_water_values-097": {
+  "/de/docs/getting-started/measurement-management/add_water_values-51a": {
     "__comp": "17896441",
-    "content": "ef94608e"
+    "content": "05999fb1"
   },
-  "/docs/getting-started/measurement-management/export_water_values-178": {
+  "/de/docs/getting-started/measurement-management/export_water_values-1fe": {
     "__comp": "17896441",
-    "content": "b6437a08"
+    "content": "68bdf4ff"
   },
-  "/docs/getting-started/measurement-management/get_alert_settings-a70": {
+  "/de/docs/getting-started/measurement-management/get_alert_settings-c5b": {
     "__comp": "17896441",
-    "content": "a07f03ed"
+    "content": "c61675d7"
   },
-  "/docs/getting-started/measurement-management/get_all_values_from_parameter-538": {
+  "/de/docs/getting-started/measurement-management/get_all_values_from_parameter-99c": {
     "__comp": "17896441",
-    "content": "7f65fd2b"
+    "content": "6d39d06f"
   },
-  "/docs/getting-started/measurement-management/get_latest_from_all_parameters-6ce": {
+  "/de/docs/getting-started/measurement-management/get_latest_from_all_parameters-62c": {
     "__comp": "17896441",
-    "content": "b48fb97a"
+    "content": "ed1c26d2"
   },
-  "/docs/getting-started/measurement-management/get_total_entries-148": {
+  "/de/docs/getting-started/measurement-management/get_total_entries-8ae": {
     "__comp": "17896441",
-    "content": "0d5dc76d"
+    "content": "32105f2b"
   },
-  "/docs/getting-started/measurement-management/import_water_values-b2e": {
+  "/de/docs/getting-started/measurement-management/import_water_values-095": {
     "__comp": "17896441",
-    "content": "75a8428b"
+    "content": "5f961c0e"
   },
-  "/docs/getting-started/measurement-management/save_alert_settings-35f": {
+  "/de/docs/getting-started/measurement-management/save_alert_settings-890": {
     "__comp": "17896441",
-    "content": "d36bcb92"
+    "content": "ebe41928"
   },
-  "/docs/getting-started/quick-start-guide-d3e": {
+  "/de/docs/getting-started/quick-start-guide-0a9": {
     "__comp": "17896441",
-    "content": "f5298001"
+    "content": "173b6000"
   },
-  "/docs/getting-started/user-management/create-an-account-079": {
+  "/de/docs/getting-started/user-management/create-an-account-cee": {
     "__comp": "17896441",
-    "content": "8c767b9a"
+    "content": "e5bdbd2a"
   },
-  "/docs/getting-started/user-management/jwt-tokens-575": {
+  "/de/docs/getting-started/user-management/jwt-tokens-48a": {
     "__comp": "17896441",
-    "content": "0e8992ec"
+    "content": "73f317c5"
   },
-  "/docs/getting-started/user-management/login-dca": {
+  "/de/docs/getting-started/user-management/login-cb1": {
     "__comp": "17896441",
-    "content": "0a90b056"
+    "content": "8727cc2d"
   },
-  "/docs/getting-started/user-management/refresh-access-token-5ae": {
+  "/de/docs/getting-started/user-management/refresh-access-token-610": {
     "__comp": "17896441",
-    "content": "2ef1b511"
+    "content": "831eb229"
   },
-  "/docs/real-world-example/Arduino-d1d": {
+  "/de/docs/real-world-example/Arduino-234": {
     "__comp": "17896441",
-    "content": "9fa9dfe2"
+    "content": "381a76a9"
   },
-  "/-2e1": {
+  "/de/-4d1": {
     "__comp": "c4f5d8e4",
     "__context": {
       "plugin": "a7456010"

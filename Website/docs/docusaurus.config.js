@@ -26,7 +26,11 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "de"],
+    localeConfigs: {
+      en: { label: "English" },
+      de: { label: "Deutsch" },
+    },
   },
 
   plugins: [tailwindPlugin],
@@ -83,6 +87,10 @@ const config = {
             sidebarId: "realWorldSidebar",
             position: "left",
             label: "Real World Example",
+          },
+          {
+            type: "localeDropdown",
+            position: "right",
           },
         ],
       },

@@ -1,143 +1,143 @@
 {
   "docusaurus-plugin-content-docs": {
     "default": {
-      "path": "/docs",
+      "path": "/de/docs",
       "versions": [
         {
           "name": "current",
           "label": "Next",
           "isLast": true,
-          "path": "/docs",
+          "path": "/de/docs",
           "mainDocId": "getting-started/quick-start-guide",
           "docs": [
             {
               "id": "getting-started/animal-detection/how_to_identify_any_fish",
-              "path": "/docs/getting-started/animal-detection/how_to_identify_any_fish",
+              "path": "/de/docs/getting-started/animal-detection/how_to_identify_any_fish",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/animal-disease-detection/how_to_check_animal_for_diseases",
-              "path": "/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases",
+              "path": "/de/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/environment-management/adding-an-environment",
-              "path": "/docs/getting-started/environment-management/adding-an-environment",
+              "path": "/de/docs/getting-started/environment-management/adding-an-environment",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/environment-management/delete-environment",
-              "path": "/docs/getting-started/environment-management/delete-environment",
+              "path": "/de/docs/getting-started/environment-management/delete-environment",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/environment-management/get-all-environments",
-              "path": "/docs/getting-started/environment-management/get-all-environments",
+              "path": "/de/docs/getting-started/environment-management/get-all-environments",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/environment-management/get-public-environments",
-              "path": "/docs/getting-started/environment-management/get-public-environments",
+              "path": "/de/docs/getting-started/environment-management/get-public-environments",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/environment-management/update-environment",
-              "path": "/docs/getting-started/environment-management/update-environment",
+              "path": "/de/docs/getting-started/environment-management/update-environment",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/add_water_values",
-              "path": "/docs/getting-started/measurement-management/add_water_values",
+              "path": "/de/docs/getting-started/measurement-management/add_water_values",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/export_water_values",
-              "path": "/docs/getting-started/measurement-management/export_water_values",
+              "path": "/de/docs/getting-started/measurement-management/export_water_values",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/get_alert_settings",
-              "path": "/docs/getting-started/measurement-management/get_alert_settings",
+              "path": "/de/docs/getting-started/measurement-management/get_alert_settings",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/get_all_values_from_parameter",
-              "path": "/docs/getting-started/measurement-management/get_all_values_from_parameter",
+              "path": "/de/docs/getting-started/measurement-management/get_all_values_from_parameter",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/get_latest_from_all_parameters",
-              "path": "/docs/getting-started/measurement-management/get_latest_from_all_parameters",
+              "path": "/de/docs/getting-started/measurement-management/get_latest_from_all_parameters",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/get_total_entries",
-              "path": "/docs/getting-started/measurement-management/get_total_entries",
+              "path": "/de/docs/getting-started/measurement-management/get_total_entries",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/import_water_values",
-              "path": "/docs/getting-started/measurement-management/import_water_values",
+              "path": "/de/docs/getting-started/measurement-management/import_water_values",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/measurement-management/save_alert_settings",
-              "path": "/docs/getting-started/measurement-management/save_alert_settings",
+              "path": "/de/docs/getting-started/measurement-management/save_alert_settings",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/quick-start-guide",
-              "path": "/docs/getting-started/quick-start-guide",
+              "path": "/de/docs/getting-started/quick-start-guide",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/user-management/create-an-account",
-              "path": "/docs/getting-started/user-management/create-an-account",
+              "path": "/de/docs/getting-started/user-management/create-an-account",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/user-management/jwt-tokens",
-              "path": "/docs/getting-started/user-management/jwt-tokens",
+              "path": "/de/docs/getting-started/user-management/jwt-tokens",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/user-management/login",
-              "path": "/docs/getting-started/user-management/login",
+              "path": "/de/docs/getting-started/user-management/login",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "getting-started/user-management/refresh-access-token",
-              "path": "/docs/getting-started/user-management/refresh-access-token",
+              "path": "/de/docs/getting-started/user-management/refresh-access-token",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "real-world-example/Arduino",
-              "path": "/docs/real-world-example/Arduino",
+              "path": "/de/docs/real-world-example/Arduino",
               "sidebar": "realWorldSidebar"
             },
             {
               "id": "/category/user-management",
-              "path": "/docs/category/user-management",
+              "path": "/de/docs/category/user-management",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "/category/environments",
-              "path": "/docs/category/environments",
+              "path": "/de/docs/category/environments",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "/category/measurements",
-              "path": "/docs/category/measurements",
+              "path": "/de/docs/category/measurements",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "/category/animal-detection",
-              "path": "/docs/category/animal-detection",
+              "path": "/de/docs/category/animal-detection",
               "sidebar": "tutorialSidebar"
             },
             {
               "id": "/category/animal-disease-detection",
-              "path": "/docs/category/animal-disease-detection",
+              "path": "/de/docs/category/animal-disease-detection",
               "sidebar": "tutorialSidebar"
             }
           ],
@@ -145,13 +145,13 @@
           "sidebars": {
             "tutorialSidebar": {
               "link": {
-                "path": "/docs/getting-started/quick-start-guide",
+                "path": "/de/docs/getting-started/quick-start-guide",
                 "label": "getting-started/quick-start-guide"
               }
             },
             "realWorldSidebar": {
               "link": {
-                "path": "/docs/real-world-example/Arduino",
+                "path": "/de/docs/real-world-example/Arduino",
                 "label": "real-world-example/Arduino"
               }
             }
