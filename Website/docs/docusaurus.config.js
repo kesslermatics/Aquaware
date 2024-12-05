@@ -88,10 +88,6 @@ const config = {
             position: "left",
             label: "Real World Example",
           },
-          {
-            type: "localeDropdown",
-            position: "right",
-          },
         ],
       },
     }),

@@ -79,12 +79,6 @@ export default {
           "sidebarId": "realWorldSidebar",
           "position": "left",
           "label": "Real World Example"
-        },
-        {
-          "type": "localeDropdown",
-          "position": "right",
-          "dropdownItemsBefore": [],
-          "dropdownItemsAfter": []
         }
       ],
       "hideOnScroll": false

@@ -206,17 +206,17 @@
     },
     "content": "393be207"
   },
-  "/de/docs-b44": {
+  "/de/docs-a9f": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "aba21aa0"
     }
   },
-  "/de/docs-8c6": {
+  "/de/docs-b94": {
     "__comp": "a7bd4aaa",
     "__props": "cd523b67"
   },
-  "/de/docs-fb3": {
+  "/de/docs-7a5": {
     "__comp": "a94703ab"
   },
   "/de/docs/category/animal-detection-136": {
@@ -239,89 +239,89 @@
     "__comp": "14eb3368",
     "__props": "6dc0c17d"
   },
-  "/de/docs/getting-started/animal-detection/how_to_identify_any_fish-1e0": {
+  "/de/docs/getting-started/animal-detection/how_to_identify_any_fish-375": {
     "__comp": "17896441",
-    "content": "54cfdb8e"
+    "content": "9a78609d"
   },
-  "/de/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases-c14": {
+  "/de/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases-7c2": {
     "__comp": "17896441",
-    "content": "c77c9be8"
+    "content": "02af2074"
   },
-  "/de/docs/getting-started/environment-management/adding-an-environment-536": {
+  "/de/docs/getting-started/environment-management/adding-an-environment-ebf": {
     "__comp": "17896441",
-    "content": "ffba273c"
+    "content": "2a5ffa33"
   },
-  "/de/docs/getting-started/environment-management/delete-environment-cd3": {
+  "/de/docs/getting-started/environment-management/delete-environment-1f1": {
     "__comp": "17896441",
-    "content": "ccaf8409"
+    "content": "3e4667ec"
   },
-  "/de/docs/getting-started/environment-management/get-all-environments-314": {
+  "/de/docs/getting-started/environment-management/get-all-environments-294": {
     "__comp": "17896441",
-    "content": "dfcdfe47"
+    "content": "a5c982a2"
   },
-  "/de/docs/getting-started/environment-management/get-public-environments-0d3": {
+  "/de/docs/getting-started/environment-management/get-public-environments-77f": {
     "__comp": "17896441",
-    "content": "d0a3d3b9"
+    "content": "2cab05a9"
   },
-  "/de/docs/getting-started/environment-management/update-environment-d95": {
+  "/de/docs/getting-started/environment-management/update-environment-04b": {
     "__comp": "17896441",
-    "content": "f80bc3e5"
+    "content": "51364147"
   },
-  "/de/docs/getting-started/measurement-management/add_water_values-51a": {
+  "/de/docs/getting-started/measurement-management/add_water_values-819": {
     "__comp": "17896441",
-    "content": "05999fb1"
+    "content": "ef94608e"
   },
-  "/de/docs/getting-started/measurement-management/export_water_values-1fe": {
+  "/de/docs/getting-started/measurement-management/export_water_values-1fd": {
     "__comp": "17896441",
-    "content": "68bdf4ff"
+    "content": "b6437a08"
   },
-  "/de/docs/getting-started/measurement-management/get_alert_settings-c5b": {
+  "/de/docs/getting-started/measurement-management/get_alert_settings-37d": {
     "__comp": "17896441",
-    "content": "c61675d7"
+    "content": "a07f03ed"
   },
-  "/de/docs/getting-started/measurement-management/get_all_values_from_parameter-99c": {
+  "/de/docs/getting-started/measurement-management/get_all_values_from_parameter-b65": {
     "__comp": "17896441",
-    "content": "6d39d06f"
+    "content": "7f65fd2b"
   },
-  "/de/docs/getting-started/measurement-management/get_latest_from_all_parameters-62c": {
+  "/de/docs/getting-started/measurement-management/get_latest_from_all_parameters-3d7": {
     "__comp": "17896441",
-    "content": "ed1c26d2"
+    "content": "b48fb97a"
   },
-  "/de/docs/getting-started/measurement-management/get_total_entries-8ae": {
+  "/de/docs/getting-started/measurement-management/get_total_entries-8d5": {
     "__comp": "17896441",
-    "content": "32105f2b"
+    "content": "0d5dc76d"
   },
-  "/de/docs/getting-started/measurement-management/import_water_values-095": {
+  "/de/docs/getting-started/measurement-management/import_water_values-fcd": {
     "__comp": "17896441",
-    "content": "5f961c0e"
+    "content": "75a8428b"
   },
-  "/de/docs/getting-started/measurement-management/save_alert_settings-890": {
+  "/de/docs/getting-started/measurement-management/save_alert_settings-937": {
     "__comp": "17896441",
-    "content": "ebe41928"
+    "content": "d36bcb92"
   },
-  "/de/docs/getting-started/quick-start-guide-0a9": {
+  "/de/docs/getting-started/quick-start-guide-e42": {
     "__comp": "17896441",
-    "content": "173b6000"
+    "content": "f5298001"
   },
-  "/de/docs/getting-started/user-management/create-an-account-cee": {
+  "/de/docs/getting-started/user-management/create-an-account-974": {
     "__comp": "17896441",
-    "content": "e5bdbd2a"
+    "content": "8c767b9a"
   },
-  "/de/docs/getting-started/user-management/jwt-tokens-48a": {
+  "/de/docs/getting-started/user-management/jwt-tokens-50a": {
     "__comp": "17896441",
-    "content": "73f317c5"
+    "content": "0e8992ec"
   },
-  "/de/docs/getting-started/user-management/login-cb1": {
+  "/de/docs/getting-started/user-management/login-e35": {
     "__comp": "17896441",
-    "content": "8727cc2d"
+    "content": "0a90b056"
   },
-  "/de/docs/getting-started/user-management/refresh-access-token-610": {
+  "/de/docs/getting-started/user-management/refresh-access-token-a40": {
     "__comp": "17896441",
-    "content": "831eb229"
+    "content": "2ef1b511"
   },
-  "/de/docs/real-world-example/Arduino-234": {
+  "/de/docs/real-world-example/Arduino-37a": {
     "__comp": "17896441",
-    "content": "381a76a9"
+    "content": "9fa9dfe2"
   },
   "/de/-4d1": {
     "__comp": "c4f5d8e4",
