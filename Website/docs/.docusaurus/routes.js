@@ -4,7 +4,7 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 export default [
   {
     path: '/de/blog',
-    component: ComponentCreator('/de/blog', '668'),
+    component: ComponentCreator('/de/blog', 'f0f'),
     exact: true
   },
   {
@@ -13,63 +13,8 @@ export default [
     exact: true
   },
   {
-    path: '/de/blog/authors',
-    component: ComponentCreator('/de/blog/authors', 'fd8'),
-    exact: true
-  },
-  {
-    path: '/de/blog/authors/all-sebastien-lorber-articles',
-    component: ComponentCreator('/de/blog/authors/all-sebastien-lorber-articles', '5e5'),
-    exact: true
-  },
-  {
-    path: '/de/blog/authors/yangshun',
-    component: ComponentCreator('/de/blog/authors/yangshun', '429'),
-    exact: true
-  },
-  {
-    path: '/de/blog/first-blog-post',
-    component: ComponentCreator('/de/blog/first-blog-post', '04f'),
-    exact: true
-  },
-  {
-    path: '/de/blog/long-blog-post',
-    component: ComponentCreator('/de/blog/long-blog-post', '0c8'),
-    exact: true
-  },
-  {
-    path: '/de/blog/mdx-blog-post',
-    component: ComponentCreator('/de/blog/mdx-blog-post', '31f'),
-    exact: true
-  },
-  {
-    path: '/de/blog/tags',
-    component: ComponentCreator('/de/blog/tags', '618'),
-    exact: true
-  },
-  {
-    path: '/de/blog/tags/docusaurus',
-    component: ComponentCreator('/de/blog/tags/docusaurus', 'b35'),
-    exact: true
-  },
-  {
-    path: '/de/blog/tags/facebook',
-    component: ComponentCreator('/de/blog/tags/facebook', '48f'),
-    exact: true
-  },
-  {
-    path: '/de/blog/tags/hello',
-    component: ComponentCreator('/de/blog/tags/hello', 'd4b'),
-    exact: true
-  },
-  {
-    path: '/de/blog/tags/hola',
-    component: ComponentCreator('/de/blog/tags/hola', '360'),
-    exact: true
-  },
-  {
-    path: '/de/blog/welcome',
-    component: ComponentCreator('/de/blog/welcome', '9a6'),
+    path: '/de/blog/nitrification-process',
+    component: ComponentCreator('/de/blog/nitrification-process', 'c12'),
     exact: true
   },
   {

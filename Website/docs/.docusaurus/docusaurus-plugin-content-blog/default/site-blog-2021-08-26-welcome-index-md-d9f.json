@@ -1,5 +1,5 @@
 {
-  "permalink": "/de/blog/welcome",
+  "permalink": "/blog/welcome",
   "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/blog/2021-08-26-welcome/index.md",
   "source": "@site/blog/2021-08-26-welcome/index.md",
   "title": "Welcome",
@@ -9,19 +9,19 @@
     {
       "inline": false,
       "label": "Facebook",
-      "permalink": "/de/blog/tags/facebook",
+      "permalink": "/blog/tags/facebook",
       "description": "Facebook tag description"
     },
     {
       "inline": false,
       "label": "Hello",
-      "permalink": "/de/blog/tags/hello",
+      "permalink": "/blog/tags/hello",
       "description": "Hello tag description"
     },
     {
       "inline": false,
       "label": "Docusaurus",
-      "permalink": "/de/blog/tags/docusaurus",
+      "permalink": "/blog/tags/docusaurus",
       "description": "Docusaurus tag description"
     }
   ],
@@ -29,42 +29,23 @@
   "hasTruncateMarker": true,
   "authors": [
     {
-      "name": "Sébastien Lorber",
-      "title": "Docusaurus maintainer",
-      "url": "https://sebastienlorber.com",
+      "name": "Robert Kessler",
+      "title": "Software Developer and Aquarist",
+      "url": "https://github.com/kesslermatics",
       "page": {
-        "permalink": "/de/blog/authors/all-sebastien-lorber-articles"
+        "permalink": "/blog/authors/rkessler"
       },
       "socials": {
-        "x": "https://x.com/sebastienlorber",
-        "linkedin": "https://www.linkedin.com/in/sebastienlorber/",
-        "github": "https://github.com/slorber",
-        "newsletter": "https://thisweekinreact.com"
+        "github": "https://github.com/kesslermatics"
       },
-      "imageURL": "https://github.com/slorber.png",
-      "key": "slorber"
-    },
-    {
-      "name": "Yangshun Tay",
-      "title": "Front End Engineer @ Facebook",
-      "url": "https://github.com/yangshun",
-      "page": {
-        "permalink": "/de/blog/authors/yangshun"
-      },
-      "socials": {
-        "x": "https://x.com/yangshunz",
-        "github": "https://github.com/yangshun"
-      },
-      "imageURL": "https://github.com/yangshun.png",
-      "key": "yangshun"
+      "key": "rkessler"
     }
   ],
   "frontMatter": {
     "slug": "welcome",
     "title": "Welcome",
     "authors": [
-      "slorber",
-      "yangshun"
+      "rkessler"
     ],
     "tags": [
       "facebook",
@@ -73,8 +54,8 @@
     ]
   },
   "unlisted": false,
-  "nextItem": {
-    "title": "MDX Blog Post",
-    "permalink": "/de/blog/mdx-blog-post"
+  "prevItem": {
+    "title": "test-blog",
+    "permalink": "/blog/test-blog"
   }
 }
