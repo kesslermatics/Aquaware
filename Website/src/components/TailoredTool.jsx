@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import confetti from "canvas-confetti";
 import Heading from "./Heading";
 import Section from "./Section";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const TailoredTool = () => {
   const { t } = useTranslation();

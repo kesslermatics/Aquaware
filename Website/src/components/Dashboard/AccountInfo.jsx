@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const AccountInfo = () => {
   const { t } = useTranslation();
@@ -16,7 +15,6 @@ const AccountInfo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -61,7 +59,7 @@ const AccountInfo = () => {
   };
 
   const refreshAccessToken = async (refreshToken) => {
-    try {
+    
       const response = await fetch(
         "https://dev.aquaware.cloud/api/users/token/refresh/",
         {
@@ -81,9 +79,6 @@ const AccountInfo = () => {
       } else {
         throw new Error(t("accountInfo.tokenRefreshError"));
       }
-    } catch (error) {
-      throw error;
-    }
   };
 
   const handleInputChange = (e) => {

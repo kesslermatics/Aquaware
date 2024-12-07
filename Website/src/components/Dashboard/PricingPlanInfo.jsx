@@ -1,15 +1,13 @@
 import { check } from "../../assets";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import Confetti from "react-confetti";
 import ComparePlans from "../ComparePlans";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const PricingPlanInfo = () => {
   const { t } = useTranslation();
   const [userPlan, setUserPlan] = useState(null);
-  const [selectedPlan, setSelectedPlan] = useState(null);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [setSelectedPlan] = useState(null);
 
   const refreshAccessToken = async () => {
     try {
