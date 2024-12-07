@@ -3,7 +3,7 @@ import { smallSphere, stars } from "../assets";
 import Heading from "./Heading";
 import PricingList from "./PricingList";
 import { LeftLine, RightLine } from "./design/Pricing";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
 
 const Pricing = () => {
   const { t } = useTranslation();

@@ -1,3 +1,4 @@
+import React from "react";
 import { check } from "../assets";
 import Heading from "./Heading";
 import { useTranslation } from 'react-i18next';
