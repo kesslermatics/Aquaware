@@ -8,6 +8,7 @@ import {
   faClover,
   faShrimp,
 } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 import PlusSvg from "../../assets/svg/PlusSvg";
 

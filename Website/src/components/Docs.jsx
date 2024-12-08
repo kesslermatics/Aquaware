@@ -1,3 +1,5 @@
+import React from "react";
+
 const Docs = () => {
   return (
     <div style={{ height: "100vh", width: "100%" }}>

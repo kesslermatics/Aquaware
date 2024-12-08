@@ -1,4 +1,5 @@
 import { lines } from "../../assets";
+import React from "react";
 
 export const LeftLine = () => {
   return (

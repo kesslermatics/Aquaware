@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import benefitImage from "../../src/assets/benefits/image-2.png";
+import React from "react";
 
 const Benefits = () => {
   const { t } = useTranslation();

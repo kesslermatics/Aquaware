@@ -1,3 +1,4 @@
+import React from "react";
 const ChatBubbleWing = ({ className, pathClassName }) => {
   return (
     <svg

@@ -1,3 +1,4 @@
+import React from "react";
 const ClipPath = () => {
   return (
     <svg className="block" width={0} height={0}>

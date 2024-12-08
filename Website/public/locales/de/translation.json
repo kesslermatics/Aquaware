@@ -207,7 +207,7 @@
       },
       "cookies": {
         "title": "Cookies:",
-        "text": "Wir verwenden Cookies, um Sitzungstokens zu verwalten und Deinen Anmeldestatus zu speichern. Cookies sind sicher gespeichert und enthalten keine sensiblen Infos."
+        "text": "Wir verwenden Cookies, um Sitzungstokens zu verwalten und Deinen Anmeldestatus zu speichern. Google Analytics hilft uns, dir die beste Erfahrung zu bieten."
       }
     },
     "useOfInfo": {
@@ -387,7 +387,7 @@
     }
   },
   "cookieConsent": {
-    "message": "Diese Website verwendet Cookies, um die Benutzererfahrung zu verbessern.",
+    "message": "Diese Website verwendet Cookies, um die Benutzererfahrung zu verbessern. Google Analytics hilft uns, dir die beste Erfahrung zu bieten.",
     "buttonText": "Ich verstehe"
   },
   "seo": {

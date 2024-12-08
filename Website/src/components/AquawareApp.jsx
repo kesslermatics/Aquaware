@@ -14,7 +14,7 @@ const AquawareApp = () => {
       id="hero"
     >
       <div className="flex flex-col items-center justify-center p-4" id="app">
-        <h1 className="text-4xl font-bold mb-4">{t("aquawareApp.title")}</h1>
+        <h2 className="text-4xl font-bold mb-4">{t("aquawareApp.title")}</h2>
         <p className="text-lg text-center mb-8">
           {t("aquawareApp.description")}
         </p>

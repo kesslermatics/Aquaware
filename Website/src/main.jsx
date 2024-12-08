@@ -1,3 +1,4 @@
+import React from "react";
 import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.jsx";
@@ -8,8 +9,6 @@ import "./i18n";
 
 const rootElement = document.getElementById("root");
 
-// Prüfe, ob bereits vorgerenderte (statische) Inhalte vorhanden sind.
-// Wenn ja, dann "hydraten", ansonsten normal rendern.
 if (rootElement && rootElement.hasChildNodes()) {
   hydrateRoot(
     rootElement,

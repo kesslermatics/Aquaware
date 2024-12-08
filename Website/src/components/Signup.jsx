@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { GoogleLogin } from "@react-oauth/google";
 import backgroundVideo from "../assets/bg-aquarium2.mp4";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -194,7 +195,9 @@ const Signup = () => {
 
         <div className="w-full flex items-center justify-center relative mb-4">
           <div className="w-full h-[1px] bg-gray-300"></div>
-          <p className="absolute bg-white px-4 text-gray-500">{t("signup.or")}</p>
+          <p className="absolute bg-white px-4 text-gray-500">
+            {t("signup.or")}
+          </p>
         </div>
 
         <div className="w-full flex items-center justify-center text-n-8 font-semibold rounded-md py-3 mb-6">

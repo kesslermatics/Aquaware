@@ -1,4 +1,5 @@
 import { stars } from "../../assets";
+import React from "react";
 
 export const Rings = () => {
   return (

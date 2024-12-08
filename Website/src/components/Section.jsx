@@ -1,4 +1,5 @@
 import SectionSvg from "../assets/svg/SectionSvg";
+import React from "react";
 
 const Section = ({
   className,

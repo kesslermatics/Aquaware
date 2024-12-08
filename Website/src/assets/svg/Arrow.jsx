@@ -1,3 +1,5 @@
+import React from "react";
+
 const Arrow = () => {
   return (
     <svg className="ml-5 fill-n-1" width="24" height="24">

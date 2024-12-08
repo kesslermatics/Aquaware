@@ -4,7 +4,8 @@ import Section from "./Section";
 import { LeftCurve, RightCurve } from "./design/ApiInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import React from "react";
 
 const ApiInfo = () => {
   const { t } = useTranslation();
@@ -13,15 +14,15 @@ const ApiInfo = () => {
     <Section crosses>
       <div className="container lg:flex">
         <div className="max-w-[25rem]">
-          <h2 className="h2 mb-4 md:mb-8">
-            {t("apiInfo.title")}
-          </h2>
+          <h2 className="h2 mb-4 md:mb-8">{t("apiInfo.title")}</h2>
 
           <ul className="max-w-[22rem] mb-10 md:mb-14">
             <li className="mb-3 py-3">
               <div className="flex items-center">
                 <img src={check} width={24} height={24} alt="check" />
-                <h6 className="body-2 ml-5">{t("apiInfo.clearDocumentationTitle")}</h6>
+                <h6 className="body-2 ml-5">
+                  {t("apiInfo.clearDocumentationTitle")}
+                </h6>
               </div>
               <p className="body-2 mt-3 text-n-4">
                 {t("apiInfo.clearDocumentationDescription")}
@@ -30,7 +31,9 @@ const ApiInfo = () => {
             <li className="mb-3 py-3">
               <div className="flex items-center">
                 <img src={check} width={24} height={24} alt="check" />
-                <h6 className="body-2 ml-5">{t("apiInfo.seamlessIntegrationTitle")}</h6>
+                <h6 className="body-2 ml-5">
+                  {t("apiInfo.seamlessIntegrationTitle")}
+                </h6>
               </div>
               <p className="body-2 mt-3 text-n-4">
                 {t("apiInfo.seamlessIntegrationDescription")}

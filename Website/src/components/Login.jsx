@@ -5,6 +5,7 @@ import backgroundVideo from "../assets/bg-aquarium2.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 const Login = () => {
   const { t } = useTranslation();

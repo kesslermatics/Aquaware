@@ -3,17 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <link href="./src/assets/aquaware.png" rel="icon" type="image/svg+xml" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
     <meta
       name="keywords"
       content="Aquarium, SaaS, Fish, Water, Monitoring, Arduino, DIY"
     />
     <meta
       name="description"
-      content="Monitor and analyze water quality effortlessly with Aquaware."
+      content="Aquaware makes it effortless to monitor and analyze water quality for a healthier aquatic environment."
     />
 
-    <title>Aquaware</title>
+    <title>Aquaware - Monitor your water values</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ED92M9CQYP"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-ED92M9CQYP");
+    </script>
   </head>
   <body>
     <div id="root"></div>

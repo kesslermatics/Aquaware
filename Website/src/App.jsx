@@ -1,3 +1,4 @@
+import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import ButtonGradient from "./assets/svg/ButtonGradient";
@@ -95,13 +96,61 @@ const App = () => {
     }
   };
 
-  const { title, description } = getMetaData(location.pathname);
+  const { title } = getMetaData(location.pathname);
+
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Aquaware",
+    description:
+      "Monitor and analyze water quality effortlessly with Aquaware – your all-in-one solution for aquarium and water environment insights.",
+    applicationCategory: "Utility",
+    operatingSystem: "All",
+    softwareVersion: "1.2.3",
+    url: "https://www.aquaware.cloud/",
+    image: "https://www.aquaware.cloud/assets/aquaware.png",
+    offers: {
+      "@type": "Offer",
+      price: "0.00",
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+      url: "https://www.aquaware.cloud/#pricing",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      ratingCount: "128",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Kesslermatics",
+      url: "https://kesslermatics.com/",
+      logo: "https://kesslermatics.com/assets/kesslermaticsLogoTransparent-UDeASpjR.png",
+    },
+  };
 
   return (
     <>
       <Helmet>
         <title>{title}</title>
-        <meta name="description" content={description} />
+        <link rel="canonical" href="https://www.aquaware.cloud/" />
+        <meta
+          property="og:title"
+          content="Aquaware – Monitor and Analyze Your Water Quality"
+        />
+        <meta
+          property="og:description"
+          content="Easily monitor and analyze water quality to ensure a healthy environment for your aquatic life. Aquaware simplifies tracking essential parameters, giving you insights and control."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.aquaware.cloud/" />
+        <meta
+          property="og:image"
+          content="https://www.aquaware.cloud/assets/aquaware.png"
+        />
+        <meta property="og:site_name" content="Aquaware" />
+        <meta property="og:locale" content="en_US" />
+        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
       </Helmet>
 
       <Header />

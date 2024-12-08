@@ -6,10 +6,10 @@ import { heroIcons } from "../constants";
 import { ScrollParallax } from "react-just-parallax";
 import { useRef } from "react";
 import Notification from "./Notification";
-import CompanyLogos from "./CompanyLogos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDroplet } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import React from "react";
 
 const Hero = () => {
   const parallaxRef = useRef(null);
@@ -26,7 +26,7 @@ const Hero = () => {
       <div className="container relative" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="h1 mb-6">
-            {t('hero.title')}&nbsp;
+            {t("hero.title")}&nbsp;
             <span className="inline-block relative">
               {t("hero.highlight")}
               <img

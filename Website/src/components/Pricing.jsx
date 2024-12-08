@@ -4,6 +4,7 @@ import Heading from "./Heading";
 import PricingList from "./PricingList";
 import { LeftLine, RightLine } from "./design/Pricing";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 const Pricing = () => {
   const { t } = useTranslation();

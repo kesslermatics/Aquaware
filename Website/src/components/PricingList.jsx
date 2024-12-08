@@ -1,6 +1,7 @@
 import { check } from "../assets";
 import Button from "./Button";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 const PricingList = () => {
   const { t } = useTranslation();
@@ -13,7 +14,7 @@ const PricingList = () => {
       price: t("pricing.hobbyPlan.price"),
       buttonText: t("pricing.hobbyPlan.buttonText"),
       buttonRef: "/signup",
-      features: t("pricing.hobbyPlan.features", { returnObjects: true })
+      features: t("pricing.hobbyPlan.features", { returnObjects: true }),
     },
     {
       id: "2",
@@ -22,7 +23,7 @@ const PricingList = () => {
       price: t("pricing.advancedPlan.price"),
       buttonText: t("pricing.advancedPlan.buttonText"),
       buttonRef: "/dashboard#pricingplans",
-      features: t("pricing.advancedPlan.features", { returnObjects: true })
+      features: t("pricing.advancedPlan.features", { returnObjects: true }),
     },
     {
       id: "3",
@@ -31,8 +32,8 @@ const PricingList = () => {
       price: t("pricing.premiumPlan.price"),
       buttonText: t("pricing.premiumPlan.buttonText"),
       buttonRef: "/dashboard#pricingplans",
-      features: t("pricing.premiumPlan.features", { returnObjects: true })
-    }
+      features: t("pricing.premiumPlan.features", { returnObjects: true }),
+    },
   ];
 
   return (
