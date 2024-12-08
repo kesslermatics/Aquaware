@@ -1,6 +1,6 @@
 import React from "react";
 import Section from "./Section";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const AquawareApp = () => {
   const { t } = useTranslation();

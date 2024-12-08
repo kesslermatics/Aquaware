@@ -99,7 +99,6 @@ const App = () => {
 
   return (
     <>
-      {/* Dynamische SEO-Metadaten */}
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
