@@ -104,6 +104,7 @@
       "features": "Features",
       "pricing": "Pricing",
       "officialApp": "Official App",
+      "articles": "Articles",
       "apiDocumentation": "API Documentation",
       "github": "GitHub Repository",
       "profile": "Profile",
@@ -387,7 +388,7 @@
     }
   },
   "cookieConsent": {
-    "message": " This website uses cookies to enhance the user experience. Google Analytics help us to deliver the best experience to you",
+    "message": " This website uses cookies to enhance the user experience. Google Analytics help us to deliver the best experience to you.",
     "buttonText": "I understand"
   },
   "seo": {
@@ -442,6 +443,27 @@
     "default": {
       "title": "Aquaware - Monitor your water quality",
       "description": "Monitor and analyze water quality efficiently with Aquaware."
+    }
+  },
+
+  "blog": {
+    "guides_title": "Everything you need to know",
+    "search_placeholder": "Search articles...",
+    "filter": {
+      "all": "All Categories"
+    },
+    "category": "Category",
+    "date": "Published on",
+    "article_not_found": "Article not found.",
+    "no_results": "No results found.",
+    "reading_time": "min read",
+    "articles": {
+      "healthy-aquariums": {
+        "title": "The Ultimate Guide to Healthy Aquariums",
+        "slug": "healthy-aquariums",
+        "category": "Guides",
+        "date": "2024-12-10"
+      }
     }
   }
 }

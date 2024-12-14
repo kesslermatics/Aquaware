@@ -25,6 +25,8 @@ import Section from "./components/Section";
 import TailoredTool from "./components/TailoredTool";
 import AquawareApp from "./components/AquawareApp";
 import CookieConsent from "react-cookie-consent";
+import BlogPost from "./components/BlogPost";
+import Articles from "./components/Articles";
 
 const App = () => {
   const { t } = useTranslation();
@@ -180,6 +182,8 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/articles/:category/:slug" element={<BlogPost />} />
+          <Route path="/articles" element={<Articles />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
             path="/reset-password/:uid/:token"
@@ -192,7 +196,6 @@ const App = () => {
             element={<TermsAndConditions />}
           />
           <Route path="/success" element={<Success />} />
-
           {/* 404 Not Found */}
           <Route
             path="*"
@@ -207,7 +210,6 @@ const App = () => {
               </div>
             }
           />
-
           <Route path="/docs/*" element={<Docs />} />
         </Routes>
         <Footer />

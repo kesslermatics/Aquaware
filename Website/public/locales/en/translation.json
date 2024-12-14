@@ -104,6 +104,7 @@
       "features": "Features",
       "pricing": "Pricing",
       "officialApp": "Official App",
+      "articles": "Articles",
       "apiDocumentation": "API Documentation",
       "github": "GitHub Repository",
       "profile": "Profile",
@@ -442,6 +443,51 @@
     "default": {
       "title": "Aquaware - Monitor your water quality",
       "description": "Monitor and analyze water quality efficiently with Aquaware."
+    }
+  },
+
+  "blog": {
+    "guides_title": "Everything you need to know",
+    "search_placeholder": "Search articles...",
+    "filter": {
+      "all": "All Categories"
+    },
+    "category": "Category",
+    "date": "Published on",
+    "article_not_found": "Article not found.",
+    "no_results": "No results found.",
+    "reading_time": "min read",
+    "articles": {
+      "healthy-aquariums": {
+        "title": "The Ultimate Guide to Healthy Aquariums",
+        "slug": "healthy-aquariums",
+        "category": "Guides",
+        "date": "2024-12-10"
+      },
+      "perfect-aquarium-size": {
+        "title": "The Perfect Aquarium Size",
+        "slug": "perfect-aquarium-size",
+        "category": "Guides",
+        "date": "2024-12-09"
+      },
+      "nano-tanks": {
+        "title": "Nano Tanks: What you need to know",
+        "slug": "nano-tanks",
+        "category": "Guides",
+        "date": "2024-12-10"
+      },
+      "algae-in-aquarium": {
+        "title": "Algae in the Aquarium: What to Do?",
+        "slug": "algae-in-aquarium",
+        "category": "Guides",
+        "date": "2024-12-10"
+      },
+      "water-quality-guide": {
+        "title": "The Ultimate Guide to Water Quality",
+        "slug": "water-quality-guide",
+        "category": "Guides",
+        "date": "2024-12-10"
+      }
     }
   }
 }

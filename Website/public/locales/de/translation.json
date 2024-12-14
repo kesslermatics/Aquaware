@@ -104,6 +104,7 @@
       "features": "Funktionen",
       "pricing": "Preise",
       "officialApp": "Offizielle App",
+      "articles": "Artikel",
       "apiDocumentation": "API-Doku",
       "github": "GitHub-Repository",
       "profile": "Profil",
@@ -442,6 +443,50 @@
     "default": {
       "title": "Aquaware - Wasserqualität überwachen",
       "description": "Überwache und analysiere Wasserqualität effizient mit Aquaware."
+    }
+  },
+  "blog": {
+    "guides_title": "Alles, was du wissen musst hier an einem Ort",
+    "search_placeholder": "Artikel suchen...",
+    "filter": {
+      "all": "Alle Kategorien"
+    },
+    "category": "Kategorie",
+    "date": "Veröffentlicht am",
+    "article_not_found": "Dieser Artikel wurde nicht gefunden. Bitte überprüfe die URL.",
+    "no_results": "Keine Ergebnisse gefunden.",
+    "reading_time": "Minuten Lesezeit",
+    "articles": {
+      "healthy-aquariums": {
+        "title": "Der ultimative Leitfaden für gesunde Aquarien",
+        "slug": "gesunde-aquarien",
+        "category": "Anleitungen",
+        "date": "2024-12-10"
+      },
+      "perfect-aquarium-size": {
+        "title": "Die perfekte Aquariengröße",
+        "slug": "perfekte-aquariengroesse",
+        "category": "Anleitungen",
+        "date": "2024-12-09"
+      },
+      "nano-tanks": {
+        "title": "Nano-Aquarien: Was du wissen musst",
+        "slug": "nano-aquarien",
+        "category": "Anleitungen",
+        "date": "2024-12-10"
+      },
+      "algae-in-aquarium": {
+        "title": "Algen im Aquarium: Was tun?",
+        "slug": "algen-im-aquarium",
+        "category": "Anleitungen",
+        "date": "2024-12-10"
+      },
+      "water-quality-guide": {
+        "title": "Der ultimative Leitfaden zur Wasserqualität",
+        "slug": "wasserqualitaet-guide",
+        "category": "Anleitungen",
+        "date": "2024-12-10"
+      }
     }
   }
 }
