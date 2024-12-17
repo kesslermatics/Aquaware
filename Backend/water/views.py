@@ -39,26 +39,39 @@ def add_water_values(request, environment_id):
         return Response({'error': 'Environment not found or does not belong to this user.'},
                         status=status.HTTP_404_NOT_FOUND)
 
-        # Fetch the user's subscription tier upload frequency
+    # Fetch the user's subscription tier upload frequency and environment limit
     user_subscription_tier = request.user.subscription_tier
     if not user_subscription_tier:
         return Response({'error': 'User does not have a valid subscription tier.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+                        status=status.HTTP_400_BAD_REQUEST)
 
-        # Use the upload frequency from the user's subscription tier
     upload_frequency_minutes = user_subscription_tier.upload_frequency_minutes
+    environment_limit = user_subscription_tier.environment_limit
 
-    last_value = WaterValue.objects.filter(environment=environment).aggregate(last_measured_at=Max('added_at'))
-    last_measured_at = last_value['last_measured_at']
+    # Check the number of recent uploads across environments
+    now = timezone.now()
+    recent_uploads = WaterValue.objects.filter(
+        environment__user=request.user,
+        added_at__gte=now - timedelta(minutes=upload_frequency_minutes)
+    ).values('environment').distinct().count()
 
-    print(timezone.now() - timedelta(upload_frequency_minutes - 1))
-
-    if last_measured_at and last_measured_at >= timezone.now() - timedelta(minutes=(upload_frequency_minutes - 1)):
+    if recent_uploads >= environment_limit:
         return Response(
-            {'error': 'You can only submit water values once every ' + str(upload_frequency_minutes) + ' minutes.'},
+            {'error': f'You have reached the upload limit of {environment_limit} environments within the last {upload_frequency_minutes} minutes.'},
             status=status.HTTP_429_TOO_MANY_REQUESTS
         )
 
+    # Check upload frequency for the specific environment
+    last_value = WaterValue.objects.filter(environment=environment).aggregate(last_measured_at=Max('added_at'))
+    last_measured_at = last_value['last_measured_at']
+
+    if last_measured_at and last_measured_at >= now - timedelta(minutes=(upload_frequency_minutes - 1)):
+        return Response(
+            {'error': 'You can only submit water values once every ' + str(upload_frequency_minutes) + ' minutes for this environment.'},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+
+    # Process data and save
     data = request.data.copy()
     data['environment_id'] = environment_id
     serializer = FlexibleWaterValuesSerializer(data=data)
