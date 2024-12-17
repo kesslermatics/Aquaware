@@ -37,7 +37,7 @@ const Footer = () => {
           </a>
           <select
             onChange={handleLanguageChange}
-            defaultValue={i18n.language}
+            value={i18n.language}
             className="text-n-4 text-sm hover:text-n-1 transition-colors border-b border-n-4 focus:outline-none"
             style={{
               background: "#07304F",

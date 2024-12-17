@@ -11,17 +11,35 @@
     "preview": "vite preview"
   },
   "reactSnap": {
+    "concurrency": 100,
     "source": "dist",
     "minifyHtml": {
       "collapseWhitespace": false,
       "removeComments": false
     },
-    "puppeteerArgs": [
-      "--no-sandbox",
-      "--disable-setuid-sandbox"
-    ],
+    "skipThirdPartyRequests": true,
     "include": [
-      "/articles/guides/healthy-aquariums"
+      "/",
+      "/signup",
+      "/login",
+      "/impressum",
+      "/privacy",
+      "/terms-and-conditions",
+      "/dashboard",
+      "/docs/index.html",
+      "/articles",
+      "/articles/guides/healthy-aquariums",
+      "/articles/guides/perfect-aquarium-size",
+      "/articles/guides/nano-tanks",
+      "/articles/guides/algae-in-aquarium",
+      "/articles/guides/water-quality-guide",
+      "/articles/guides/how-to-aquascape",
+      "/articles/anleitungen/gesunde-aquarien",
+      "/articles/anleitungen/perfekte-aquariengroesse",
+      "/articles/anleitungen/nano-aquarien",
+      "/articles/anleitungen/algen-im-aquarium",
+      "/articles/anleitungen/wasserqualitaet-guide",
+      "/articles/anleitungen/aquascaping-guide"
     ]
   },
   "dependencies": {

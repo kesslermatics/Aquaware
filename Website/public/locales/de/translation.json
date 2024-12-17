@@ -58,26 +58,30 @@
       },
       "advanced": {
         "name": "Advanced-Plan",
-        "price": "9,99 € pro Monat"
+        "price": "14,99 € pro Monat"
       },
       "premium": {
         "name": "Premium-Plan",
-        "price": "14,99 € pro Monat"
+        "price": "39,99 € pro Monat"
       }
     },
     "features": [
       "Alle Wasserparameter überwachen",
       "Echtzeit-Datenvisualisierung",
+      "Anzahl an hochladbaren Umgebungen",
       "Upload-Frequenz",
       "Benachrichtigungen und Alarme",
-      "Datenfreigabe für öffentliche Umgebungen",
       "Fische mit KI erkennen",
-      "Fischkrankheiten diagnostizieren",
-      "Wasserparameter vorhersagen (bald verfügbar)"
+      "Fischkrankheiten diagnostizieren"
     ],
+    "numberEnvironments": {
+      "hobby": "1",
+      "advanced": "3",
+      "premium": "Unbegrenzt"
+    },
     "uploadFrequency": {
-      "hobby": "Alle 2 Stunden",
-      "advanced": "Alle 30 Minuten",
+      "hobby": "Alle 12 Stunden",
+      "advanced": "Alle 3 Stunden",
       "premium": "Alle 30 Minuten"
     },
     "notAvailable": "—"
@@ -153,38 +157,39 @@
     "starsAlt": "Sterne",
     "hobbyPlan": {
       "title": "Hobby-Plan",
-      "description": "Kostenlos für den privaten Gebrauch, überwache alle Wasserparameter mit begrenzten Uploads",
+      "description": "Kostenlos für den privaten Gebrauch. Perfekt zum Starten und ein Gefühl zu bekommen.",
       "price": "0",
       "buttonText": "Kostenlos starten",
       "features": [
         "Überwache alle Wasserparameter (z. B. pH-Wert, Temperatur, Salzgehalt, etc.)",
-        "Lade Wasserwerte alle 2 Stunden hoch, um Ressourcen zu sparen",
+        "Lade Wasserwerte alle 12 Stunden hoch",
+        "Begrenzt auf eine Umgebung",
         "Basis-Wasserqualitätsüberwachung",
-        "Zugang zu Echtzeit-Datenvisualisierung"
+        "Zugang zur kostenfreien App mit Echtzeit-Datenvisualisierung"
       ]
     },
     "advancedPlan": {
       "title": "Advanced-Plan",
-      "description": "Erweiterte Überwachungstools für präzises Wasser-Tracking",
-      "price": "9.99",
+      "description": "Erweiterte Überwachungstools für präzises Wasser-Tracking mit Alerts und mehr Umgebungen.",
+      "price": "14.99",
       "buttonText": "Tracking erweitern",
       "features": [
         "Alles aus dem Hobby-Plan",
-        "Werte alle 30 Minuten hochladen für genaues Tracking",
+        "Werte alle 3 Stunden hochladen für genaues Tracking",
         "Benachrichtigungen und Alarme für spezifische Wasserparameter hinzufügen"
       ]
     },
     "premiumPlan": {
       "title": "Premium-Plan",
-      "description": "Häufige Wasserüberwachung mit KI-Tools für detaillierte Einblicke und mehr",
-      "price": "14.99",
+      "description": "Perfekt für Profi Aquarianer mit vielen Gewässern und KI Funktionen",
+      "price": "39.99",
       "buttonText": "Upgrade auf Premium-Funktionen",
       "features": [
         "Alles aus dem Hobby- und Advanced-Plan",
-        "Öffentliche Gewässer für gemeinschaftliches Daten-Sharing hinzufügen",
+        "Hochladen von Wasserwerten alle 30 Minuten für präzise Überwachung",
+        "Unbegrenzte Anzahl an Umgebungen",
         "Fische mit KI identifizieren",
-        "Fischkrankheitenerkennung",
-        "Parameterprognose (kommt bald)"
+        "Fischkrankheitenerkennung"
       ]
     }
   },
@@ -484,6 +489,12 @@
       "water-quality-guide": {
         "title": "Der ultimative Leitfaden zur Wasserqualität",
         "slug": "wasserqualitaet-guide",
+        "category": "Anleitungen",
+        "date": "2024-12-10"
+      },
+      "how-to-aquascape": {
+        "title": "Aquascaping: So gestaltest du dein Aquarium",
+        "slug": "aquascaping-guide",
         "category": "Anleitungen",
         "date": "2024-12-10"
       }

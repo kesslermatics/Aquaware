@@ -88,10 +88,10 @@ const PricingPlanInfo = () => {
 
   const handlePlanClick = (plan) => {
     const stripeLinks = {
-      2: "https://buy.stripe.com/fZe3dk8Gvd8Mbp6aEG", 
-      3: "https://buy.stripe.com/5kA4hof4T4CgfFm9AD", 
+      2: "https://buy.stripe.com/6oEbJQaODc4Idxe14a",
+      3: "https://buy.stripe.com/4gwdRYaODc4Idxe6ov",
     };
-  
+
     if (plan.id !== userPlan) {
       setSelectedPlan(plan);
       window.location.href = stripeLinks[plan.id];

@@ -58,26 +58,30 @@
       },
       "advanced": {
         "name": "Advanced Plan",
-        "price": "9.99€ per month"
+        "price": "14.99€ per month"
       },
       "premium": {
         "name": "Premium Plan",
-        "price": "14.99€ per month"
+        "price": "39.99€ per month"
       }
     },
     "features": [
       "Monitor all water parameters",
       "Access to real-time data visualization",
+      "Number of environments uploadable",
       "Upload frequency",
       "Add alerts and notifications",
-      "Public environments for data sharing",
       "Identify Fish with AI",
-      "Fish Disease Detection",
-      "Water Parameter Prediction (coming soon)"
+      "Fish Disease Detection"
     ],
+    "numberEnvironments": {
+      "hobby": "1",
+      "advanced": "3",
+      "premium": "Unlimited"
+    },
     "uploadFrequency": {
-      "hobby": "Every 2 hours",
-      "advanced": "Every 30 minutes",
+      "hobby": "Every 12 hours",
+      "advanced": "Every 3 hours",
       "premium": "Every 30 minutes"
     },
     "notAvailable": "—"
@@ -147,44 +151,45 @@
     "signUp": "Sign up for free"
   },
   "pricing": {
-    "headingTag": "Get started with Aquaware",
-    "headingTitle": "Try it now and upgrade later",
+    "headingTag": "Start with Aquaware",
+    "headingTitle": "Try now and upgrade later",
     "sphereAlt": "Sphere",
     "starsAlt": "Stars",
     "hobbyPlan": {
       "title": "Hobby Plan",
-      "description": "Free for personal use, monitor all water parameters with limited uploads",
+      "description": "Free for personal use. Perfect to get started and get a feel for it.",
       "price": "0",
-      "buttonText": "Get started for Free",
+      "buttonText": "Start for free",
       "features": [
-        "Monitor all water parameters (e.g., pH, temperature, salinity, etc.)",
-        "Upload water values every 2 hours to conserve resources",
-        "Basic water quality tracking",
-        "Access to real-time data visualization"
+        "Monitor all water parameters (e.g., pH level, temperature, salinity, etc.)",
+        "Upload water values every 12 hours",
+        "Limited to one environment",
+        "Basic water quality monitoring",
+        "Access to the free app with real-time data visualization"
       ]
     },
     "advancedPlan": {
       "title": "Advanced Plan",
-      "description": "Advanced monitoring tools for precise water tracking",
-      "price": "9.99",
-      "buttonText": "Leverage your tracking",
+      "description": "Advanced monitoring tools for precise water tracking with alerts and more environments.",
+      "price": "14.99",
+      "buttonText": "Extend tracking",
       "features": [
-        "Everything from the Hobby plan",
-        "Upload water values every 30 minutes for precise tracking",
-        "Add alerts and notifications for specific water parameter thresholds"
+        "Everything from the Hobby Plan",
+        "Upload values every 3 hours for accurate tracking",
+        "Add notifications and alarms for specific water parameters"
       ]
     },
     "premiumPlan": {
       "title": "Premium Plan",
-      "description": "Frequent water monitoring with AI tools for detailed insights and more",
-      "price": "14.99",
+      "description": "Perfect for professional aquarists with many environments and AI functions.",
+      "price": "39.99",
       "buttonText": "Upgrade to premium features",
       "features": [
-        "Everything from the Hobby and Advanced plan",
-        "Add public water bodies for public data sharing",
-        "Identify any Fish with AI",
-        "Fish Disease Detection",
-        "Parameter Prediction (coming soon)"
+        "Everything from the Hobby and Advanced Plans",
+        "Upload water values every 30 minutes for precise monitoring",
+        "Unlimited number of environments",
+        "Identify fish with AI",
+        "Fish disease detection"
       ]
     }
   },
@@ -461,6 +466,36 @@
       "healthy-aquariums": {
         "title": "The Ultimate Guide to Healthy Aquariums",
         "slug": "healthy-aquariums",
+        "category": "Guides",
+        "date": "2024-12-10"
+      },
+      "perfect-aquarium-size": {
+        "title": "The Perfect Aquarium Size",
+        "slug": "perfect-aquarium-size",
+        "category": "Guides",
+        "date": "2024-12-09"
+      },
+      "nano-tanks": {
+        "title": "Nano Tanks: What you need to know",
+        "slug": "nano-tanks",
+        "category": "Guides",
+        "date": "2024-12-10"
+      },
+      "algae-in-aquarium": {
+        "title": "Algae in the Aquarium: What to Do?",
+        "slug": "algae-in-aquarium",
+        "category": "Guides",
+        "date": "2024-12-10"
+      },
+      "water-quality-guide": {
+        "title": "The Ultimate Guide to Water Quality",
+        "slug": "water-quality-guide",
+        "category": "Guides",
+        "date": "2024-12-10"
+      },
+      "how-to-aquascape": {
+        "title": "How to Aquascape",
+        "slug": "how-to-aquascape",
         "category": "Guides",
         "date": "2024-12-10"
       }
