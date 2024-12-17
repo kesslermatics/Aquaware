@@ -17,6 +17,7 @@ class SubscriptionTier(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField(blank=True)
     upload_frequency_minutes = models.PositiveIntegerField()
+    environment_limit = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.name
