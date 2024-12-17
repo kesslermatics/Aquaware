@@ -1,79 +1,84 @@
 # 🌊 Aquaware
 
-**Aquaware** is a cutting-edge platform designed for the efficient, data-driven management of aquariums. Whether you are a home aquarist or manage aquariums professionally, Aquaware provides the insights and tools necessary to maintain healthy water ecosystems through continuous monitoring and AI-driven diagnostics.
+**Aquaware** is a cutting-edge platform designed for the efficient, data-driven management of aquariums and natural water bodies. Whether you are a home aquarist or manage aquariums professionally, Aquaware provides the tools necessary to maintain healthy aquatic ecosystems through continuous monitoring and AI-driven diagnostics.
 
 ## 🐠 What is Aquaware?
 
-Aquaware is a smart water monitoring solution built to streamline water quality management for aquariums and natural bodies of water. With Aquaware, users can easily track water parameters, receive early alerts for abnormalities, and access data-driven insights on water conditions. Powered by artificial intelligence, Aquaware can also provide actionable recommendations and predictive analytics, allowing users to stay one step ahead in maintaining optimal conditions for aquatic life.
+Aquaware is a smart water monitoring solution designed to simplify water quality management. With Aquaware, users can monitor key water parameters, receive timely alerts for abnormalities, and access AI-driven insights for improved water management. Advanced features such as disease detection and fish species identification ensure professional-grade monitoring for aquarists of all levels.
 
 ## 🌟 Key Features
 
-- **Real-Time Water Monitoring**: Track essential parameters like temperature, pH, and TDS (Total Dissolved Solids) to ensure safe and ideal conditions for aquatic habitats.
-  
-- **Data Logging & Visualization**: Automatically record all water quality data, display it in graphs, and analyze trends to make informed decisions.
-
-- **Personalized Alerts**: Configure custom alerts and get notified when parameters fall outside desired ranges—delivered straight to your device.
-
-- **AI-Powered Insights**: Gain valuable insights from machine learning models that assess water quality data and provide recommendations based on both your and other users' data.
-
-- **Species Identification & Disease Detection**: Upload fish images for disease detection and species identification, leveraging AI models for precise analysis. Note: This feature is limited to users with a **Premium Subscription (Tier 3)**.
-
-- **Secure Data Access**: Access your data from anywhere, at any time. Aquaware prioritizes data security and privacy, with measures to ensure user data is protected.
-
-- **API Access**: Connect Aquaware with other platforms or tools via API for advanced automation, data integration, and extended capabilities.
-
-## 💸 Pricing
-
-Aquaware offers both free and premium options tailored to user needs:
-
-### Free Tier
-
-- **Essential Monitoring**: Basic water parameter uploads and monitoring.
-- **Aquaware App Access**: Download the app for Android and enjoy core features for aquarium management.
-- **Unlimited Environments**: Monitor multiple environments simultaneously.
-- **Community Access**: Engage with the Aquaware community and access basic documentation and support.
-
-### Advanced Plan - €9.99/month
-
-- **More frequent uploading**: Get more precise tracking by uploading every 30 minutes
-- **Alerts and notifications**: Add alerts and notification to take action when your water quality falls outside your desired ranges
-
-### Premium Plan - €14.99/month
-
-The Premium subscription unlocks advanced features that bring aquarium management to the next level:
-- **Advanced Analytics**: Get in-depth analyses of water quality trends and AI-powered predictions.
-- **Species & Disease Detection**: Upload images of fish to receive diagnoses and species identification.
-- **Public environments**: Add public environments for all people to see
-- **Parameter Prediction (coming soon)**: Let AI predict other dependant water parameters based on your water quality
-
-## 🚀 Getting Started
-
-1. **Download the App**: Available on Android. Register your Aquaware account and set up your first environment.
-2. **Connect Your Sensors**: Begin monitoring by connecting compatible sensors to log and analyze water parameters.
-3. **Upload Fish Images**: Premium users can submit fish images to diagnose diseases or identify species.
-4. **Receive Alerts & Recommendations**: Configure alerts for real-time updates and explore the AI-powered insights and recommendations.
-
-## 🔐 Data Privacy
-
-At Aquaware, we prioritize user privacy. Water quality data is anonymized and used solely to enhance the AI’s accuracy and service quality.
-
-- **Data Anonymization**: No personal identifiers are linked to data used in AI training.
-- **Secure Infrastructure**: User data is protected with strict privacy protocols.
-  
-Users are advised to exercise caution when interpreting AI predictions, as Aquaware may not detect subtle disease markers in some cases. Aquaware does not assume liability for misdiagnoses and recommends consulting experts for critical concerns.
-
-## 💬 Support & Community
-
-Join the vibrant Aquaware community of aquatic enthusiasts. Share tips, get support, and contribute to a growing database of aquarium data.
-
-- **[Documentation](https://aquaware.kesslermatics.com/docs/)**: Complete API documentation.
-- **[Support](https://github.com/kesslermatics/Aquaware/issues)**: Report issues directly on our GitHub repository.
-- **[Discussions](https://github.com/kesslermatics/Aquaware/discussions)**: Engage with other users and share experiences.
-
-## 📄 License
-
-Aquaware is released for personal use only. Unauthorized commercial use, reproduction, or distribution is prohibited without explicit permission from the Aquaware team. For licensing inquiries, contact [info@kesslermatics.com](mailto:info@kesslermatics.com).
+- **Real-Time Water Monitoring**: Monitor essential parameters like temperature, pH, and TDS (Total Dissolved Solids) to ensure ideal conditions.  
+- **Data Logging & Visualization**: Record water quality data, visualize it in graphs, and analyze long-term trends for informed decision-making.  
+- **Custom Alerts**: Receive notifications when water parameters deviate from safe ranges.  
+- **AI-Powered Insights**: Advanced machine learning models analyze your data to provide actionable recommendations.  
+- **Fish Species & Disease Detection**: Upload fish images for AI-based identification of species and detection of common diseases. *(Premium feature)*  
+- **Secure & Remote Data Access**: Your water data is accessible anywhere, with strong privacy protocols ensuring data protection.  
+- **API Access**: Use Aquaware's API to integrate with third-party tools or automate your monitoring processes.
 
 ---
 
-Thank you for choosing Aquaware. We’re excited to help you provide the best possible environment for your aquatic life!
+## 💸 Pricing
+
+Aquaware offers three flexible plans to meet diverse needs:
+
+### Hobby-Plan - **Free**
+
+- **Essential Monitoring**: Track basic water parameters.  
+- **12-Hour Upload Interval**: Upload water values every 12 hours.  
+- **Single Environment**: Monitor one aquarium or water body.  
+- **Basic Visualization**: Access real-time data through the app.  
+
+### Advanced-Plan - **€14.99/month**
+
+- **Everything in the Hobby-Plan**  
+- **Frequent Uploads**: Update water values every 3 hours for precision tracking.  
+- **Alerts & Notifications**: Configure alerts for specific parameters to receive actionable updates.  
+
+### Premium-Plan - **€39.99/month**
+
+- **Everything in the Hobby- and Advanced-Plans**  
+- **High-Frequency Updates**: Upload water values every 30 minutes for real-time monitoring.  
+- **Unlimited Environments**: Track multiple water bodies simultaneously.  
+- **Fish Disease Detection**: AI-based fish health diagnostics.  
+- **Fish Species Identification**: Identify fish species using image uploads.  
+
+---
+
+## 🚀 Getting Started
+
+1. **Download the App**: Get Aquaware on Android and create your free account.  
+2. **Set Up Sensors**: Connect compatible water sensors for real-time data monitoring.  
+3. **Upload Water Values**: Use the app to log and visualize your water data.  
+4. **Upgrade for Premium Features**: Unlock AI-powered fish health diagnostics and more frequent updates.  
+
+---
+
+## 🔐 Data Privacy
+
+Aquaware prioritizes your privacy:  
+
+- **Data Anonymization**: Water quality data is anonymized to improve AI models.  
+- **Secure Infrastructure**: All user data is stored securely and protected by encryption protocols.  
+
+*Note*: While Aquaware provides AI-based insights, it is recommended to consult professionals for critical fish health concerns.
+
+---
+
+## 💬 Support & Community
+
+Join our growing community of aquatic enthusiasts and stay up-to-date with Aquaware’s developments:  
+
+- **[Documentation](https://aquaware.kesslermatics.com/docs/)**: Comprehensive setup and API guide.  
+- **[Support](https://github.com/kesslermatics/Aquaware/issues)**: Report bugs or feature requests.  
+- **[Community Discussions](https://github.com/kesslermatics/Aquaware/discussions)**: Share experiences, tips, and feedback.  
+
+---
+
+## 📄 License
+
+Aquaware is licensed for personal and non-commercial use. For commercial licensing inquiries, contact us at [info@kesslermatics.com](mailto:info@kesslermatics.com).
+
+---
+
+Thank you for choosing Aquaware! Together, we’re building healthier and smarter aquatic ecosystems.
