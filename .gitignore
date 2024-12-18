@@ -32,3 +32,5 @@ Website/index.html
 /Backend/fish_detection/__pycache__
 /Backend/animal_detection/__pycache__
 /Backend/.venv
+/Backend/__pycache__
+/Backend/environments/__pycache__
