@@ -12,6 +12,7 @@ const AccountInfo = () => {
     email: "",
     subscription_tier: "",
     date_joined: "",
+    api_key: "",
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -151,6 +152,7 @@ const AccountInfo = () => {
   if (loading) return <p>{t("accountInfo.loading")}</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
+  console.log(userData);
   return (
     <div className="w-full max-w-lg mx-auto p-6 rounded-lg">
       <h2 className="text-2xl font-semibold mb-6">{t("accountInfo.title")}</h2>
@@ -226,6 +228,20 @@ const AccountInfo = () => {
             name="date_joined"
             value={format(new Date(userData.date_joined), "MMMM dd, yyyy")}
             onChange={handleInputChange}
+            className="w-full p-2 border border-gray-300 text-gray-500 rounded"
+            disabled
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="api_key" className="block text-n-1">
+            {t("accountInfo.apiKey")}
+          </label>
+          <input
+            type="text"
+            id="api_key"
+            name="api_key"
+            value={userData.api_key}
             className="w-full p-2 border border-gray-300 text-gray-500 rounded"
             disabled
           />

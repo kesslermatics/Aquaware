@@ -42,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'date_joined', "subscription_tier"]
+        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'date_joined', "subscription_tier", "api_key"]
         read_only_fields = ['id', 'date_joined']
 
     def validate(self, attrs):
