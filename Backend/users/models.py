@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
-
+import secrets
+from django.utils import timezone
 
 class SubscriptionTier(models.Model):
     HOBBY = 'hobby'
@@ -30,6 +31,7 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
+        user.api_key = secrets.token_hex(20)  # Generate API key at creation
         user.save(using=self._db)
         return user
 
@@ -47,6 +49,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+
+    # API Key for automated requests
+    api_key = models.CharField(max_length=40, unique=True, editable=False)
 
     groups = models.ManyToManyField(
         Group,
@@ -70,6 +75,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def regenerate_api_key(self):
+        """Regenerate the API key for the user."""
+        self.api_key = secrets.token_hex(20)
+        self.save(update_fields=['api_key'])
 
     def __str__(self):
         return self.email

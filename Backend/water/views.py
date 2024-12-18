@@ -14,13 +14,14 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from requests.compat import chardet
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes, parser_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes, authentication_classes
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from pathlib import Path
 
 from aquaware import settings
+from users.authentication import APIKeyAuthentication
 from .serializers import WaterParameterSerializer, WaterValueSerializer, FlexibleWaterValuesSerializer, \
     UserAlertSettingSerializer
 
@@ -31,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@authentication_classes([APIKeyAuthentication])
 def add_water_values(request, environment_id):
     try:
         environment = Environment.objects.get(id=environment_id, user=request.user)
@@ -82,6 +83,7 @@ def add_water_values(request, environment_id):
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 def check_alerts_and_notify(water_values):
@@ -141,7 +143,7 @@ def send_alert_email(user, environment, parameter_name, current_value, threshold
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@authentication_classes([APIKeyAuthentication])
 def get_latest_from_all_parameters(request, environment_id, number_of_entries):
     try:
         # Check if user owns the environment or is subscribed
@@ -181,10 +183,8 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@authentication_classes([APIKeyAuthentication])
 def get_all_values_from_parameter(request, environment_id, parameter_name, number_of_entries):
     try:
         # Check if user owns the environment or is subscribed
@@ -202,7 +202,11 @@ def get_all_values_from_parameter(request, environment_id, parameter_name, numbe
             parameter=parameter
         ).order_by('-measured_at')[:number_of_entries]
 
-        measurements = [{'measured_at': water_value.measured_at.isoformat(), 'value': water_value.value, 'unit': water_value.parameter.unit} for water_value in water_values]
+        measurements = [{
+            'measured_at': water_value.measured_at.isoformat(),
+            'value': water_value.value,
+            'unit': water_value.parameter.unit
+        } for water_value in water_values]
 
         return Response(measurements, status=status.HTTP_200_OK)
     except WaterParameter.DoesNotExist:
@@ -212,7 +216,7 @@ def get_all_values_from_parameter(request, environment_id, parameter_name, numbe
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@authentication_classes([APIKeyAuthentication])
 def get_total_entries(request, environment_id, parameter_name):
     try:
         # Check if user owns the environment or is subscribed
@@ -237,9 +241,8 @@ def get_total_entries(request, environment_id, parameter_name):
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def export_water_values(request, environment_id):
     try:
         # Check if the environment exists and belongs to the logged-in user
@@ -305,7 +308,7 @@ def export_water_values(request, environment_id):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def import_water_values(request, environment_id):
     try:
         # Ensure the environment exists and belongs to the user
@@ -386,7 +389,7 @@ def import_water_values(request, environment_id):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def save_alert_settings(request, environment_id):
     try:
         user = request.user
@@ -425,7 +428,7 @@ def save_alert_settings(request, environment_id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def get_alert_settings(request, environment_id, parameter_name):
     try:
         user = request.user

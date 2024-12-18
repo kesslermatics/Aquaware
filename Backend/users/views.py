@@ -39,8 +39,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 from django.contrib.auth import get_user_model
 
-
-
 @api_view(['POST'])
 def signup(request):
     try:
@@ -122,14 +120,6 @@ def get_csrf_token(request):
     return Response({'csrfToken': token})
 
 
-@swagger_auto_schema(
-    method='post',
-    request_body=UserSerializer,
-    responses={
-        202: 'Login successful',
-        400: 'Invalid credentials'
-    }
-)
 @api_view(['POST'])
 def login(request):
     email = request.data.get('email')
@@ -460,3 +450,13 @@ def remove_user_subscription(email):
         print(f"User with email {email} does not exist.")
     except SubscriptionTier.DoesNotExist:
         print("Hobby subscription tier does not exist.")
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def regenerate_api_key(request):
+    user = request.user
+    user.regenerate_api_key()
+    return Response(
+        {"message": "API key successfully regenerated.", "api_key": user.api_key},
+        status=status.HTTP_200_OK
+    )

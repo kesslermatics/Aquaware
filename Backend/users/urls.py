@@ -27,6 +27,9 @@ urlpatterns = [
     path('login/', user_views.login, name='user-login'),
     path('google-login/', user_views.google_login, name='user-login'),
     path('token/refresh/', user_views.refresh_access_token, name='user-login'),
+    
+    path('regenerate_api_key/', user_views.regenerate_api_key, name='regenerate-api-key'),
+
     path('get-csrf-token/', user_views.get_csrf_token, name='get-csrf-token'),
     path('profile/', user_views.get_user_profile, name='user-profile'),
     path('profile/update/', user_views.update_user_profile, name='update-user-profile'),
