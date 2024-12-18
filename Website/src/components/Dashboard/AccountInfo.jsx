@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FaEye, FaEyeSlash, FaClipboard } from "react-icons/fa";
 
 const AccountInfo = () => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ const AccountInfo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [apiKeyVisible, setApiKeyVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,6 +89,12 @@ const AccountInfo = () => {
     }
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(userData.api_key);
+    setSuccessMessage(t("accountInfo.apiKeyCopied"));
+    setTimeout(() => setSuccessMessage(""), 2000);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({
@@ -136,6 +144,33 @@ const AccountInfo = () => {
     window.location.href = "/";
   };
 
+  const handleRegenerateApiKey = async () => {
+    try {
+      const accessToken = Cookies.get("access_token");
+
+      const response = await fetch(
+        "https://dev.aquaware.cloud/api/users/regenerate_api_key/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData((prevData) => ({ ...prevData, api_key: data.api_key }));
+        setSuccessMessage(t("accountInfo.regenerateApiKeySuccess"));
+      } else {
+        throw new Error(t("accountInfo.regenerateApiKeyError"));
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const getSubscriptionPlan = (tier) => {
     switch (tier) {
       case 1:
@@ -152,7 +187,6 @@ const AccountInfo = () => {
   if (loading) return <p>{t("accountInfo.loading")}</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-  console.log(userData);
   return (
     <div className="w-full max-w-lg mx-auto p-6 rounded-lg">
       <h2 className="text-2xl font-semibold mb-6">{t("accountInfo.title")}</h2>
@@ -237,28 +271,52 @@ const AccountInfo = () => {
           <label htmlFor="api_key" className="block text-n-1">
             {t("accountInfo.apiKey")}
           </label>
-          <input
-            type="text"
-            id="api_key"
-            name="api_key"
-            value={userData.api_key}
-            className="w-full p-2 border border-gray-300 text-gray-500 rounded"
-            disabled
-          />
+          <div className="flex items-center">
+            <input
+              type={apiKeyVisible ? "text" : "password"}
+              id="api_key"
+              value={userData.api_key}
+              className="w-full p-2 border border-gray-300 text-gray-500 rounded"
+              disabled
+            />
+            <button
+              type="button"
+              onClick={() => setApiKeyVisible(!apiKeyVisible)}
+              className="bg-gray-500 text-white px-2 py-1 rounded-lg hover:bg-gray-600 flex items-center"
+            >
+              {apiKeyVisible ? <FaEyeSlash /> : <FaEye />}{" "}
+            </button>
+            <button
+              type="button"
+              onClick={copyToClipboard}
+              className="bg-blue-500 text-white px-2 py-1 ml-2 rounded-lg hover:bg-blue-600 flex items-center"
+            >
+              <FaClipboard />
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-4">
           <button
-            type="submit"
+            onClick={handleRegenerateApiKey}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
           >
-            {t("accountInfo.updateProfile")}
+            {t("accountInfo.regenerateApiKey")}
           </button>
           {successMessage && (
             <span className="text-green-500 text-sm ml-4">
               {successMessage}
             </span>
           )}
+        </div>
+
+        <div className="flex items-center justify-between mt-4">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            {t("accountInfo.updateProfile")}
+          </button>
         </div>
       </form>
 

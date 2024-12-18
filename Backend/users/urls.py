@@ -9,7 +9,6 @@ urlpatterns = [
     path('auth/login/', user_views.login, name='auth-login'),  # POST
     path('auth/login/google/', user_views.google_login, name='auth-google-login'),  # POST
     path('auth/token/refresh/', user_views.refresh_access_token, name='auth-token-refresh'),  # POST
-    path('auth/logout/', user_views.logout_user, name='auth-logout'),  # POST
 
     # User Profile
     path('<int:user_id>/', user_views.get_user_profile, name='user-detail'),  # GET
