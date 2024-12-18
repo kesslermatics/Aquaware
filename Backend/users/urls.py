@@ -2,49 +2,41 @@ from django.urls import path
 from . import views as user_views
 from django.contrib.auth import views as auth_views
 
-from django.contrib import admin
-from django.urls import path, include
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
-
-schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
-)
-
 urlpatterns = [
-    path('signup/', user_views.signup, name='user-signup'),
-    path('google-signup/', user_views.google_signup, name='user-signup'),
-    path('login/', user_views.login, name='user-login'),
-    path('google-login/', user_views.google_login, name='user-login'),
-    path('token/refresh/', user_views.refresh_access_token, name='user-login'),
-    
-    path('regenerate_api_key/', user_views.regenerate_api_key, name='regenerate-api-key'),
+    # Authentication
+    path('auth/signup/', user_views.signup, name='auth-signup'),  # POST
+    path('auth/signup/google/', user_views.google_signup, name='auth-google-signup'),  # POST
+    path('auth/login/', user_views.login, name='auth-login'),  # POST
+    path('auth/login/google/', user_views.google_login, name='auth-google-login'),  # POST
+    path('auth/token/refresh/', user_views.refresh_access_token, name='auth-token-refresh'),  # POST
+    path('auth/logout/', user_views.logout_user, name='auth-logout'),  # POST
 
-    path('get-csrf-token/', user_views.get_csrf_token, name='get-csrf-token'),
-    path('profile/', user_views.get_user_profile, name='user-profile'),
-    path('profile/update/', user_views.update_user_profile, name='update-user-profile'),
-    path('change-password/', user_views.change_password, name='change-password'),
-    path('reset-password/', user_views.reset_password, name='reset-password'),
-    path('delete-account-from-web/', user_views.delete_account_view, name='delete-user-account'),
-    path('delete-account/', user_views.delete_user_account, name='delete-user-account'),
-    path('confirm-delete-account/', user_views.confirm_delete_account, name='confirm_delete_account'),
-    path('forgot-password/', user_views.forgot_password, name='forgot-password'),
-    path('reset-password/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('reset-password/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-    path('feedback/', user_views.send_feedback, name='send-feedback'),
-    path('send-tailored-request/', user_views.send_tailored_request_email, name='send_tailored_request_email'),
+    # User Profile
+    path('<int:user_id>/', user_views.get_user_profile, name='user-detail'),  # GET
+    path('<int:user_id>/', user_views.update_user_profile, name='user-update'),  # PUT/PATCH
+    path('<int:user_id>/', user_views.delete_user_account, name='user-delete'),  # DELETE
 
-    path('stripe-webhook/', user_views.stripe_webhook, name='stripe-webhook'),
+    # Password Management
+    path('auth/password/change/', user_views.change_password, name='auth-password-change'),  # POST
+    path('auth/password/forgot/', user_views.forgot_password, name='auth-password-forgot'),  # POST
+    path('auth/password/reset/', auth_views.PasswordResetView.as_view(), name='auth-password-reset'),  # POST
+    path('auth/password/reset/done/', auth_views.PasswordResetDoneView.as_view(), name='auth-password-reset-done'),
+    # GET
+    path('auth/password/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(),
+         name='auth-password-reset-confirm'),  # POST
+    path('auth/password/reset/complete/', auth_views.PasswordResetCompleteView.as_view(),
+         name='auth-password-reset-complete'),  # GET
+
+    # API Key Management
+    path('auth/api-key/regenerate/', user_views.regenerate_api_key, name='auth-api-key-regenerate'),  # POST
+
+    # CSRF Token
+    path('auth/csrf-token/', user_views.get_csrf_token, name='auth-csrf-token'),  # GET
+
+    # Feedback and Requests
+    path('feedback/', user_views.send_feedback, name='feedback'),  # POST
+    path('feedback/tailored-request/', user_views.send_tailored_request_email, name='tailored-request'),  # POST
+
+    # Webhooks
+    path('webhooks/stripe/', user_views.stripe_webhook, name='webhook-stripe'),  # POST
 ]

@@ -26,9 +26,9 @@ from django.conf import settings
 urlpatterns = [
     path("api/users/", include('users.urls')),
     path("api/environments/", include('environments.urls')),
-    path("api/measurements/", include('water.urls')),
+    path("api/environments/<int:environment_id>/values/", include('water.urls')),
     path("api/diseases/", include('disease.urls')),
-    path("api/animal-detection/", include('animal_detection.urls')),
+    path("api/animal/", include('animal_detection.urls')),
 ]
 
 if settings.DEBUG:
