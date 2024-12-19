@@ -10,7 +10,7 @@ from .serializers import EnvironmentSerializer
 
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
-def profile_views(request, id):
+def environment_views(request, id):
     if request.method == 'GET':
         return get_environment(request, id)
     elif request.method == 'PUT':
