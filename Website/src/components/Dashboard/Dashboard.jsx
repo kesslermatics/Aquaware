@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AccountInfo from "./AccountInfo";
 import PricingPlanInfo from "./PricingPlanInfo";
+import EnvironmentInfo from "./EnvironmentInfo";
 import Cookies from "js-cookie";
 import MenuSvg from "../../assets/svg/MenuSvg";
 import { useTranslation } from "react-i18next";
@@ -54,7 +55,9 @@ const Dashboard = () => {
     <div className="flex flex-col lg:flex-row min-h-screen bg-n-8">
       <div className="lg:hidden">
         <div className="flex items-center justify-between pt-5 pb-2 pl-5 border-b border-n-6 bg-n-8">
-          <h3 className="text-lg font-semibold text-n-1">{t("dashboard.title")}</h3>
+          <h3 className="text-lg font-semibold text-n-1">
+            {t("dashboard.title")}
+          </h3>
           <button
             onClick={toggleNavigation}
             className="p-4 text-n-1 hover:text-n-6"
@@ -74,7 +77,19 @@ const Dashboard = () => {
             </li>
             <li
               className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
-                activeTab === "pricingplans" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
+                activeTab === "environments"
+                  ? "bg-n-6 text-n-1"
+                  : "hover:bg-n-6"
+              }`}
+              onClick={() => handleTabChange("environments")}
+            >
+              {t("dashboard.tabs.environments")}
+            </li>
+            <li
+              className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
+                activeTab === "pricingplans"
+                  ? "bg-n-6 text-n-1"
+                  : "hover:bg-n-6"
               }`}
               onClick={() => handleTabChange("pricingplans")}
             >
@@ -86,7 +101,9 @@ const Dashboard = () => {
 
       <div className="hidden lg:block lg:w-1/4 p-6 rounded-l-lg flex flex-col items-center border-r-2 border-n-6">
         <div className="mb-6">
-          <h3 className="mt-4 text-lg font-semibold text-n-1">{t("dashboard.title")}</h3>
+          <h3 className="mt-4 text-lg font-semibold text-n-1">
+            {t("dashboard.title")}
+          </h3>
         </div>
         <ul className="w-full">
           <li
@@ -96,6 +113,14 @@ const Dashboard = () => {
             onClick={() => handleTabChange("account")}
           >
             {t("dashboard.tabs.account")}
+          </li>
+          <li
+            className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${
+              activeTab === "environments" ? "bg-n-6 text-n-1" : "hover:bg-n-6"
+            }`}
+            onClick={() => handleTabChange("environments")}
+          >
+            {t("dashboard.tabs.environments")}
           </li>
           <li
             className={`py-3 px-4 mb-2 text-n-1 rounded-lg cursor-pointer transition ${

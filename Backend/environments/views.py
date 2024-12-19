@@ -8,8 +8,19 @@ from .models import Environment, UserEnvironmentSubscription
 from .serializers import EnvironmentSerializer
 
 
-@api_view(['POST'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
+def profile_views(request, id):
+    if request.method == 'GET':
+        return get_environment(request, id)
+    elif request.method == 'PUT':
+        return update_environment(request, id)
+    elif request.method == 'DELETE':
+        return delete_environment(request, id)
+    elif request.method == 'POST':
+        return create_environment(request)
+
+
 def create_environment(request):
     try:
         serializer = EnvironmentSerializer(data=request.data)
@@ -23,8 +34,6 @@ def create_environment(request):
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_environment(request, id):
     try:
         environment = Environment.objects.get(id=id, user=request.user)
@@ -35,16 +44,6 @@ def get_environment(request, id):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_public_environments(request):
-    public_environments = Environment.objects.filter(public=True).exclude(user=request.user)
-    serializer = EnvironmentSerializer(public_environments, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
 def update_environment(request, id):
     try:
         environment = Environment.objects.get(id=id, user=request.user)
@@ -58,8 +57,6 @@ def update_environment(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
 def delete_environment(request, id):
     user = request.user
 
@@ -85,6 +82,12 @@ def delete_environment(request, id):
     except Exception as e:
         return Response({'error': f'An error occurred: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_public_environments(request):
+    public_environments = Environment.objects.filter(public=True).exclude(user=request.user)
+    serializer = EnvironmentSerializer(public_environments, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def subscribe_to_environment(request, environment_id):
