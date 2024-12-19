@@ -66,7 +66,7 @@ const AccountInfo = () => {
   const refreshAccessToken = async (refreshToken) => {
     try {
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/token/refresh/",
+        "https://dev.aquaware.cloud/api/users/auth/token/refresh/",
         {
           method: "POST",
           headers: {
@@ -111,7 +111,7 @@ const AccountInfo = () => {
       const accessToken = Cookies.get("access_token");
 
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/profile/update/",
+        "https://dev.aquaware.cloud/api/users/profile/",
         {
           method: "PUT",
           headers: {
@@ -149,7 +149,7 @@ const AccountInfo = () => {
       const accessToken = Cookies.get("access_token");
 
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/regenerate_api_key/",
+        "https://dev.aquaware.cloud/api/users/auth/api-key/regenerate/",
         {
           method: "POST",
           headers: {

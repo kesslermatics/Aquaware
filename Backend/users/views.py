@@ -193,16 +193,21 @@ def refresh_access_token(request):
         return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
+def profile_views(request):
+    if request.method == 'GET':
+        return get_user_profile(request)
+    elif request.method == 'PUT':
+        return update_user_profile(request)
+
+
 def get_user_profile(request):
     user = request.user
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
 
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
 def update_user_profile(request):
     user = request.user
     serializer = UserSerializer(user, data=request.data, partial=True)

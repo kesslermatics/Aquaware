@@ -11,9 +11,7 @@ urlpatterns = [
     path('auth/token/refresh/', user_views.refresh_access_token, name='auth-token-refresh'),  # POST
 
     # User Profile
-    path('profile/', user_views.get_user_profile, name='user-detail'),  # GET
-    path('profile/', user_views.update_user_profile, name='user-update'),  # PUT/PATCH
-    path('profile/', user_views.delete_user_account, name='user-delete'),  # DELETE
+    path('profile/', user_views.profile_views, name='profile-views'),  # GET and PUT
 
     # Password Management
     path('auth/password/change/', user_views.change_password, name='auth-password-change'),  # POST

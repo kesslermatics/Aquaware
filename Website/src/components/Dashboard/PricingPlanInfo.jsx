@@ -15,7 +15,7 @@ const PricingPlanInfo = () => {
     try {
       const refreshToken = Cookies.get("refresh_token");
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/token/refresh/",
+        "https://dev.aquaware.cloud/api/users/auth/token/refresh/",
         {
           method: "POST",
           headers: {
