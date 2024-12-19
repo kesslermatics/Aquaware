@@ -1,66 +1,28 @@
-import React, { useState, useEffect } from "react";
-import Cookies from "js-cookie";
-import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaEye, FaEyeSlash, FaClipboard } from "react-icons/fa";
+import Cookies from "js-cookie";
 
-const AccountInfo = () => {
+const EnvironmentInfo = () => {
   const { t } = useTranslation();
-  const [userData, setUserData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    subscription_tier: "",
-    date_joined: "",
-    api_key: "",
+  const [environments, setEnvironments] = useState([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(null); // Track the ID of the environment being edited
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null); // Track the ID of the environment being deleted
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    environment_type: "aquarium",
+    public: false,
+    city: "",
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [apiKeyVisible, setApiKeyVisible] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        await ensureAccessToken();
-        const accessToken = Cookies.get("access_token");
-
-        const response = await fetch(
-          "https://dev.aquaware.cloud/api/users/profile/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(t("accountInfo.fetchError"));
-        }
-
-        const data = await response.json();
-        setUserData(data);
-        setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-
-    fetchUserProfile();
-  }, [t]);
 
   const ensureAccessToken = async () => {
+    const accessToken = Cookies.get("access_token");
     const refreshToken = Cookies.get("refresh_token");
-    if (!refreshToken) {
-      throw new Error(t("accountInfo.noRefreshToken"));
-    }
 
-    await refreshAccessToken(refreshToken);
+    if (!accessToken && refreshToken) {
+      await refreshAccessToken(refreshToken);
+    }
   };
 
   const refreshAccessToken = async (refreshToken) => {
@@ -82,76 +44,22 @@ const AccountInfo = () => {
         Cookies.set("access_token", data.access);
         return true;
       } else {
-        throw new Error(t("accountInfo.tokenRefreshError"));
+        throw new Error(t("environment.tokenRefreshError"));
       }
     } catch (error) {
       throw error;
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(userData.api_key);
-    setSuccessMessage(t("accountInfo.apiKeyCopied"));
-    setTimeout(() => setSuccessMessage(""), 2000);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSuccessMessage("");
+  const fetchEnvironments = async () => {
     try {
       await ensureAccessToken();
       const accessToken = Cookies.get("access_token");
 
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/profile/",
+        "https://dev.aquaware.cloud/api/environments/",
         {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            first_name: userData.first_name,
-            last_name: userData.last_name,
-          }),
-          credentials: "include",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(t("accountInfo.updateError"));
-      }
-
-      const updatedData = await response.json();
-      setUserData(updatedData);
-      setSuccessMessage(t("accountInfo.updateSuccess"));
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleLogout = () => {
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
-    window.location.href = "/";
-  };
-
-  const handleRegenerateApiKey = async () => {
-    try {
-      const accessToken = Cookies.get("access_token");
-
-      const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/auth/api-key/regenerate/",
-        {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
@@ -161,175 +69,194 @@ const AccountInfo = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setUserData((prevData) => ({ ...prevData, api_key: data.api_key }));
-        setSuccessMessage(t("accountInfo.regenerateApiKeySuccess"));
+        setEnvironments(data);
       } else {
-        throw new Error(t("accountInfo.regenerateApiKeyError"));
+        throw new Error(t("environment.fetchError"));
       }
     } catch (error) {
-      setError(error.message);
+      console.error("Error fetching environments:", error);
     }
   };
 
-  const getSubscriptionPlan = (tier) => {
-    switch (tier) {
-      case 1:
-        return t("accountInfo.plans.free");
-      case 2:
-        return t("accountInfo.plans.advanced");
-      case 3:
-        return t("accountInfo.plans.premium");
+  const handleCreateEnvironment = async () => {
+    try {
+      await ensureAccessToken();
+      const accessToken = Cookies.get("access_token");
+
+      const response = await fetch(
+        "https://dev.aquaware.cloud/api/environments/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (response.ok) {
+        fetchEnvironments();
+        setIsCreateModalOpen(false);
+      } else {
+        throw new Error(t("environment.createError"));
+      }
+    } catch (error) {
+      console.error("Error creating environment:", error);
+    }
+  };
+
+  const handleUpdateEnvironment = async (id) => {
+    try {
+      await ensureAccessToken();
+      const accessToken = Cookies.get("access_token");
+
+      const response = await fetch(
+        `https://dev.aquaware.cloud/api/environments/${id}/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (response.ok) {
+        fetchEnvironments();
+        setIsEditModalOpen(null);
+      } else {
+        throw new Error(t("environment.updateError"));
+      }
+    } catch (error) {
+      console.error("Error updating environment:", error);
+    }
+  };
+
+  const handleDeleteEnvironment = async (id) => {
+    try {
+      await ensureAccessToken();
+      const accessToken = Cookies.get("access_token");
+
+      const response = await fetch(
+        `https://dev.aquaware.cloud/api/environments/${id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        fetchEnvironments();
+        setIsDeleteModalOpen(null);
+      } else {
+        throw new Error(t("environment.deleteError"));
+      }
+    } catch (error) {
+      console.error("Error deleting environment:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEnvironments();
+  }, []);
+
+  const renderIcon = (type) => {
+    switch (type) {
+      case "aquarium":
+        return "🐠";
+      case "lake":
+        return "🏞️";
+      case "sea":
+        return "🌊";
+      case "pool":
+        return "🏊";
+      case "other":
+        return "🌍";
       default:
-        return t("accountInfo.plans.unknown");
+        return "❓";
     }
   };
-
-  if (loading) return <p>{t("accountInfo.loading")}</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="w-full max-w-lg mx-auto p-6 rounded-lg">
-      <h2 className="text-2xl font-semibold mb-6">{t("accountInfo.title")}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="first_name" className="block text-n-1">
-            {t("accountInfo.firstName")}
-          </label>
+    <div>
+      <button onClick={() => setIsCreateModalOpen(true)}>
+        {t("create_new_environment")}
+      </button>
+
+      {isCreateModalOpen && (
+        <div className="modal">
+          <h3>{t("environment.create_environment")}</h3>
           <input
             type="text"
-            id="first_name"
-            name="first_name"
-            value={userData.first_name}
-            onChange={handleInputChange}
-            className="w-full p-2 border bg-n-6 border-gray-300 rounded"
-            required
+            placeholder={t("environment.name")}
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="last_name" className="block text-n-1">
-            {t("accountInfo.lastName")}
-          </label>
+          <textarea
+            placeholder={t("environment.description")}
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+          />
+          <select
+            value={formData.environment_type}
+            onChange={(e) =>
+              setFormData({ ...formData, environment_type: e.target.value })
+            }
+          >
+            <option value="aquarium">{t("environment.aquarium")}</option>
+            <option value="lake">{t("environment.lake")}</option>
+            <option value="sea">{t("environment.sea")}</option>
+            <option value="pool">{t("environment.pool")}</option>
+            <option value="other">{t("environment.other")}</option>
+          </select>
+          <input
+            type="checkbox"
+            checked={formData.public}
+            onChange={(e) =>
+              setFormData({ ...formData, public: e.target.checked })
+            }
+          />
+          {t("environment.make_public")}
           <input
             type="text"
-            id="last_name"
-            name="last_name"
-            value={userData.last_name}
-            onChange={handleInputChange}
-            className="w-full p-2 border bg-n-6 border-gray-300 rounded"
-            required
+            placeholder={t("environment.city")}
+            value={formData.city}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
           />
+          <button onClick={handleCreateEnvironment}>
+            {t("environment.create")}
+          </button>
+          <button onClick={() => setIsCreateModalOpen(false)}>
+            {t("environment.cancel")}
+          </button>
         </div>
+      )}
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-n-1">
-            {t("accountInfo.email")}
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={userData.email}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 text-gray-500 rounded"
-            required
-            disabled
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="subscription_tier" className="block text-n-1">
-            {t("accountInfo.subscriptionTier")}
-          </label>
-          <input
-            type="text"
-            id="subscription_tier"
-            name="subscription_tier"
-            value={getSubscriptionPlan(userData.subscription_tier)}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 text-gray-500 rounded"
-            disabled
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="date_joined" className="block text-n-1">
-            {t("accountInfo.dateJoined")}
-          </label>
-          <input
-            type="text"
-            id="date_joined"
-            name="date_joined"
-            value={format(new Date(userData.date_joined), "MMMM dd, yyyy")}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 text-gray-500 rounded"
-            disabled
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="api_key" className="block text-n-1">
-            {t("accountInfo.apiKey")}
-          </label>
-          <div className="flex items-center">
-            <input
-              type={apiKeyVisible ? "text" : "password"}
-              id="api_key"
-              value={userData.api_key}
-              className="w-full p-2 border border-gray-300 text-gray-500 rounded"
-              disabled
-            />
-            <button
-              type="button"
-              onClick={() => setApiKeyVisible(!apiKeyVisible)}
-              className="bg-gray-500 text-white px-2 py-1 rounded-lg hover:bg-gray-600 flex items-center"
-            >
-              {apiKeyVisible ? <FaEyeSlash /> : <FaEye />}{" "}
+      {Array.isArray(environments) &&
+        environments.map((env) => (
+          <div key={env.id} className="card">
+            <h3>
+              {renderIcon(env.environment_type)} {env.id}
+            </h3>
+            <p>{env.name}</p>
+            <p>{env.description}</p>
+            <p>{env.city}</p>
+            <button onClick={() => setIsEditModalOpen(env.id)}>
+              {t("environment.edit")}
             </button>
-            <button
-              type="button"
-              onClick={copyToClipboard}
-              className="bg-blue-500 text-white px-2 py-1 ml-2 rounded-lg hover:bg-blue-600 flex items-center"
-            >
-              <FaClipboard />
+            <button onClick={() => setIsDeleteModalOpen(env.id)}>
+              {t("environment.delete")}
             </button>
           </div>
-        </div>
-
-        <div className="flex items-center justify-between mt-4">
-          <button
-            onClick={handleRegenerateApiKey}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          >
-            {t("accountInfo.regenerateApiKey")}
-          </button>
-          {successMessage && (
-            <span className="text-green-500 text-sm ml-4">
-              {successMessage}
-            </span>
-          )}
-        </div>
-
-        <div className="flex items-center justify-between mt-4">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          >
-            {t("accountInfo.updateProfile")}
-          </button>
-        </div>
-      </form>
-
-      <div className="flex justify-start mt-4">
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-        >
-          {t("accountInfo.logout")}
-        </button>
-      </div>
+        ))}
     </div>
   );
 };
 
-export default AccountInfo;
+export default EnvironmentInfo;

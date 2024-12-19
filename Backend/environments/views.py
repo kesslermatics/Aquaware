@@ -8,17 +8,24 @@ from .models import Environment, UserEnvironmentSubscription
 from .serializers import EnvironmentSerializer
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-def environment_views(request, id):
+def environment_views(request):
+    if request.method == 'GET':
+        return get_user_environments(request)
+    if request.method == 'POST':
+        return create_environment(request)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def environment_id_views(request, id):
     if request.method == 'GET':
         return get_environment(request, id)
     elif request.method == 'PUT':
         return update_environment(request, id)
     elif request.method == 'DELETE':
         return delete_environment(request, id)
-    elif request.method == 'POST':
-        return create_environment(request)
 
 
 def create_environment(request):
@@ -102,7 +109,6 @@ def subscribe_to_environment(request, environment_id):
         return Response({'error': 'Already subscribed'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
 def get_user_environments(request):
     user = request.user
 

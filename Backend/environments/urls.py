@@ -3,11 +3,10 @@ from . import views as environment_views
 
 urlpatterns = [
     # Create and list environments
-    path('', environment_views.environment_views, name='get-environments'),  # GET and POST and DELETE and PUT
+    path('', environment_views.environment_views, name='get-environments'),
 
     # Retrieve, update, delete an environment by ID
-    path('<int:id>/', environment_views.update_environment, name='update-environment'),  # PUT
-    path('<int:id>/', environment_views.delete_environment, name='delete-environment'),  # DELETE
+    path('<int:id>/', environment_views.environment_id_views, name='update-environment'),
 
     # Public environments
     path('public/', environment_views.get_public_environments, name='get-public-environments'),  # GET

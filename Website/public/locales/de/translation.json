@@ -392,6 +392,35 @@
       "fetchPlanError": "Fehler beim Laden des Nutzerplans:"
     }
   },
+  "environment": {
+    "create_new_environment": "Neue Umgebung erstellen",
+    "create_environment": "Umgebung erstellen",
+    "name": "Name",
+    "description": "Beschreibung",
+    "environment_type": "Umgebungstyp",
+    "aquarium": "Aquarium",
+    "lake": "See",
+    "sea": "Meer",
+    "pool": "Schwimmbad",
+    "other": "Andere",
+    "make_public": "Öffentlich machen",
+    "city": "Stadt",
+    "create": "Erstellen",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "update_environment": "Umgebung aktualisieren",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "confirm_delete_environment": "Löschen der Umgebung bestätigen",
+    "type_delete_to_confirm": "Geben Sie 'DELETE' ein, um zu bestätigen",
+    "environment_id": "Umgebungs-ID",
+    "public": "Öffentlich",
+    "manage_environments": "Umgebungen verwalten",
+    "fetch_error": "Fehler beim Abrufen der Umgebungen",
+    "create_success": "Umgebung erfolgreich erstellt",
+    "update_success": "Umgebung erfolgreich aktualisiert",
+    "delete_success": "Umgebung erfolgreich gelöscht"
+  },
   "app": {
     "404": {
       "title": "404 - Seite nicht gefunden",
