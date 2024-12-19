@@ -9,6 +9,7 @@ class Environment(models.Model):
 
     ENVIRONMENT_TYPES = [
         ('aquarium', 'Aquarium'),
+        ('pond', 'Pond'),
         ('lake', 'Lake'),
         ('sea', 'Sea'),
         ('pool', 'Pool'),
