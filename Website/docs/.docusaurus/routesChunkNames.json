@@ -37,118 +37,126 @@
     },
     "content": "393be207"
   },
-  "/de/docs-a9f": {
+  "/de/docs-cb5": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "aba21aa0"
     }
   },
-  "/de/docs-b94": {
+  "/de/docs-de1": {
     "__comp": "a7bd4aaa",
     "__props": "cd523b67"
   },
-  "/de/docs-7a5": {
+  "/de/docs-c9d": {
     "__comp": "a94703ab"
   },
-  "/de/docs/category/animal-detection-136": {
-    "__comp": "14eb3368",
-    "__props": "6a657268"
-  },
-  "/de/docs/category/animal-disease-detection-c87": {
-    "__comp": "14eb3368",
-    "__props": "7fba86b2"
-  },
-  "/de/docs/category/environments-495": {
-    "__comp": "14eb3368",
-    "__props": "6ab31527"
-  },
-  "/de/docs/category/measurements-793": {
-    "__comp": "14eb3368",
-    "__props": "ac5e146a"
-  },
-  "/de/docs/category/user-management-e04": {
-    "__comp": "14eb3368",
-    "__props": "6dc0c17d"
-  },
-  "/de/docs/getting-started/animal-detection/how_to_identify_any_fish-375": {
+  "/de/docs/dev-docs/animal-detection/how_to_identify_any_fish-8ed": {
     "__comp": "17896441",
-    "content": "9a78609d"
+    "content": "bbed2049"
   },
-  "/de/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases-7c2": {
+  "/de/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases-fe4": {
     "__comp": "17896441",
-    "content": "02af2074"
+    "content": "a2624331"
   },
-  "/de/docs/getting-started/environment-management/adding-an-environment-ebf": {
+  "/de/docs/dev-docs/environment-management/adding-an-environment-372": {
     "__comp": "17896441",
-    "content": "2a5ffa33"
+    "content": "0301d732"
   },
-  "/de/docs/getting-started/environment-management/delete-environment-1f1": {
+  "/de/docs/dev-docs/environment-management/delete-environment-197": {
     "__comp": "17896441",
-    "content": "3e4667ec"
+    "content": "58a7d98c"
   },
-  "/de/docs/getting-started/environment-management/get-all-environments-294": {
+  "/de/docs/dev-docs/environment-management/get-all-environments-bef": {
     "__comp": "17896441",
-    "content": "a5c982a2"
+    "content": "5fc360b6"
   },
-  "/de/docs/getting-started/environment-management/get-public-environments-77f": {
+  "/de/docs/dev-docs/environment-management/get-public-environments-214": {
     "__comp": "17896441",
-    "content": "2cab05a9"
+    "content": "304f216d"
   },
-  "/de/docs/getting-started/environment-management/update-environment-04b": {
+  "/de/docs/dev-docs/environment-management/update-environment-bc5": {
     "__comp": "17896441",
-    "content": "51364147"
+    "content": "1f35fa70"
   },
-  "/de/docs/getting-started/measurement-management/add_water_values-819": {
+  "/de/docs/dev-docs/measurement-management/add_water_values-798": {
     "__comp": "17896441",
-    "content": "ef94608e"
+    "content": "6d252039"
   },
-  "/de/docs/getting-started/measurement-management/export_water_values-1fd": {
+  "/de/docs/dev-docs/measurement-management/export_water_values-649": {
     "__comp": "17896441",
-    "content": "b6437a08"
+    "content": "97603514"
   },
-  "/de/docs/getting-started/measurement-management/get_alert_settings-37d": {
+  "/de/docs/dev-docs/measurement-management/get_alert_settings-e32": {
     "__comp": "17896441",
-    "content": "a07f03ed"
+    "content": "1169ee84"
   },
-  "/de/docs/getting-started/measurement-management/get_all_values_from_parameter-b65": {
+  "/de/docs/dev-docs/measurement-management/get_all_values_from_parameter-b90": {
     "__comp": "17896441",
-    "content": "7f65fd2b"
+    "content": "5faceb0e"
   },
-  "/de/docs/getting-started/measurement-management/get_latest_from_all_parameters-3d7": {
+  "/de/docs/dev-docs/measurement-management/get_latest_from_all_parameters-8b4": {
     "__comp": "17896441",
-    "content": "b48fb97a"
+    "content": "2011e36c"
   },
-  "/de/docs/getting-started/measurement-management/get_total_entries-8d5": {
+  "/de/docs/dev-docs/measurement-management/get_total_entries-6cb": {
     "__comp": "17896441",
-    "content": "0d5dc76d"
+    "content": "31da4ddc"
   },
-  "/de/docs/getting-started/measurement-management/import_water_values-fcd": {
+  "/de/docs/dev-docs/measurement-management/import_water_values-6a0": {
     "__comp": "17896441",
-    "content": "75a8428b"
+    "content": "d79afb1a"
   },
-  "/de/docs/getting-started/measurement-management/save_alert_settings-937": {
+  "/de/docs/dev-docs/measurement-management/save_alert_settings-a80": {
     "__comp": "17896441",
-    "content": "d36bcb92"
+    "content": "3e3818b1"
   },
-  "/de/docs/getting-started/quick-start-guide-e42": {
+  "/de/docs/dev-docs/quick-start-guide-695": {
     "__comp": "17896441",
-    "content": "f5298001"
+    "content": "190c6a92"
   },
-  "/de/docs/getting-started/user-management/create-an-account-974": {
+  "/de/docs/dev-docs/user-management/create-an-account-fe4": {
     "__comp": "17896441",
-    "content": "8c767b9a"
+    "content": "8f6e4214"
   },
-  "/de/docs/getting-started/user-management/jwt-tokens-50a": {
+  "/de/docs/dev-docs/user-management/jwt-tokens-065": {
     "__comp": "17896441",
-    "content": "0e8992ec"
+    "content": "05b1435c"
   },
-  "/de/docs/getting-started/user-management/login-e35": {
+  "/de/docs/dev-docs/user-management/login-56d": {
     "__comp": "17896441",
-    "content": "0a90b056"
+    "content": "011b9d0e"
   },
-  "/de/docs/getting-started/user-management/refresh-access-token-a40": {
+  "/de/docs/dev-docs/user-management/refresh-access-token-c1c": {
     "__comp": "17896441",
-    "content": "2ef1b511"
+    "content": "4f8eba5f"
+  },
+  "/de/docs/getting-started/adding-water-values-f9c": {
+    "__comp": "17896441",
+    "content": "f884a2d6"
+  },
+  "/de/docs/getting-started/create-an-account-d65": {
+    "__comp": "17896441",
+    "content": "8678e2bc"
+  },
+  "/de/docs/getting-started/create-new-environment-7b2": {
+    "__comp": "17896441",
+    "content": "5d0967ac"
+  },
+  "/de/docs/getting-started/explore-the-dashboard-cab": {
+    "__comp": "17896441",
+    "content": "9a160713"
+  },
+  "/de/docs/getting-started/thank-you-d5c": {
+    "__comp": "17896441",
+    "content": "c4ab9197"
+  },
+  "/de/docs/getting-started/use-the-app-239": {
+    "__comp": "17896441",
+    "content": "fba00e92"
+  },
+  "/de/docs/getting-started/welcome-399": {
+    "__comp": "17896441",
+    "content": "4263531e"
   },
   "/de/docs/real-world-example/Arduino-37a": {
     "__comp": "17896441",

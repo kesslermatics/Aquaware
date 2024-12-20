@@ -23,7 +23,7 @@ const ResetPassword = () => {
 
     try {
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/reset-password/",
+        "https://dev.aquaware.cloud/api/users/auth/password/reset/",
         {
           method: "POST",
           headers: {

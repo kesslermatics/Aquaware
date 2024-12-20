@@ -24,165 +24,177 @@ export default [
   },
   {
     path: '/de/docs',
-    component: ComponentCreator('/de/docs', 'a9f'),
+    component: ComponentCreator('/de/docs', 'cb5'),
     routes: [
       {
         path: '/de/docs',
-        component: ComponentCreator('/de/docs', 'b94'),
+        component: ComponentCreator('/de/docs', 'de1'),
         routes: [
           {
             path: '/de/docs',
-            component: ComponentCreator('/de/docs', '7a5'),
+            component: ComponentCreator('/de/docs', 'c9d'),
             routes: [
               {
-                path: '/de/docs/category/animal-detection',
-                component: ComponentCreator('/de/docs/category/animal-detection', '136'),
+                path: '/de/docs/dev-docs/animal-detection/how_to_identify_any_fish',
+                component: ComponentCreator('/de/docs/dev-docs/animal-detection/how_to_identify_any_fish', '8ed'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/category/animal-disease-detection',
-                component: ComponentCreator('/de/docs/category/animal-disease-detection', 'c87'),
+                path: '/de/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases',
+                component: ComponentCreator('/de/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases', 'fe4'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/category/environments',
-                component: ComponentCreator('/de/docs/category/environments', '495'),
+                path: '/de/docs/dev-docs/environment-management/adding-an-environment',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/adding-an-environment', '372'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/category/measurements',
-                component: ComponentCreator('/de/docs/category/measurements', '793'),
+                path: '/de/docs/dev-docs/environment-management/delete-environment',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/delete-environment', '197'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/category/user-management',
-                component: ComponentCreator('/de/docs/category/user-management', 'e04'),
+                path: '/de/docs/dev-docs/environment-management/get-all-environments',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/get-all-environments', 'bef'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/animal-detection/how_to_identify_any_fish',
-                component: ComponentCreator('/de/docs/getting-started/animal-detection/how_to_identify_any_fish', '375'),
+                path: '/de/docs/dev-docs/environment-management/get-public-environments',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/get-public-environments', '214'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases',
-                component: ComponentCreator('/de/docs/getting-started/animal-disease-detection/how_to_check_animal_for_diseases', '7c2'),
+                path: '/de/docs/dev-docs/environment-management/update-environment',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/update-environment', 'bc5'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/environment-management/adding-an-environment',
-                component: ComponentCreator('/de/docs/getting-started/environment-management/adding-an-environment', 'ebf'),
+                path: '/de/docs/dev-docs/measurement-management/add_water_values',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/add_water_values', '798'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/environment-management/delete-environment',
-                component: ComponentCreator('/de/docs/getting-started/environment-management/delete-environment', '1f1'),
+                path: '/de/docs/dev-docs/measurement-management/export_water_values',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/export_water_values', '649'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/environment-management/get-all-environments',
-                component: ComponentCreator('/de/docs/getting-started/environment-management/get-all-environments', '294'),
+                path: '/de/docs/dev-docs/measurement-management/get_alert_settings',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_alert_settings', 'e32'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/environment-management/get-public-environments',
-                component: ComponentCreator('/de/docs/getting-started/environment-management/get-public-environments', '77f'),
+                path: '/de/docs/dev-docs/measurement-management/get_all_values_from_parameter',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_all_values_from_parameter', 'b90'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/environment-management/update-environment',
-                component: ComponentCreator('/de/docs/getting-started/environment-management/update-environment', '04b'),
+                path: '/de/docs/dev-docs/measurement-management/get_latest_from_all_parameters',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_latest_from_all_parameters', '8b4'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/add_water_values',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/add_water_values', '819'),
+                path: '/de/docs/dev-docs/measurement-management/get_total_entries',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_total_entries', '6cb'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/export_water_values',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/export_water_values', '1fd'),
+                path: '/de/docs/dev-docs/measurement-management/import_water_values',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/import_water_values', '6a0'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/get_alert_settings',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/get_alert_settings', '37d'),
+                path: '/de/docs/dev-docs/measurement-management/save_alert_settings',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/save_alert_settings', 'a80'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/get_all_values_from_parameter',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/get_all_values_from_parameter', 'b65'),
+                path: '/de/docs/dev-docs/quick-start-guide',
+                component: ComponentCreator('/de/docs/dev-docs/quick-start-guide', '695'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/get_latest_from_all_parameters',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/get_latest_from_all_parameters', '3d7'),
+                path: '/de/docs/dev-docs/user-management/create-an-account',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/create-an-account', 'fe4'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/get_total_entries',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/get_total_entries', '8d5'),
+                path: '/de/docs/dev-docs/user-management/jwt-tokens',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/jwt-tokens', '065'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/import_water_values',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/import_water_values', 'fcd'),
+                path: '/de/docs/dev-docs/user-management/login',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/login', '56d'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/measurement-management/save_alert_settings',
-                component: ComponentCreator('/de/docs/getting-started/measurement-management/save_alert_settings', '937'),
+                path: '/de/docs/dev-docs/user-management/refresh-access-token',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/refresh-access-token', 'c1c'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/quick-start-guide',
-                component: ComponentCreator('/de/docs/getting-started/quick-start-guide', 'e42'),
+                path: '/de/docs/getting-started/adding-water-values',
+                component: ComponentCreator('/de/docs/getting-started/adding-water-values', 'f9c'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/de/docs/getting-started/user-management/create-an-account',
-                component: ComponentCreator('/de/docs/getting-started/user-management/create-an-account', '974'),
+                path: '/de/docs/getting-started/create-an-account',
+                component: ComponentCreator('/de/docs/getting-started/create-an-account', 'd65'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/de/docs/getting-started/user-management/jwt-tokens',
-                component: ComponentCreator('/de/docs/getting-started/user-management/jwt-tokens', '50a'),
+                path: '/de/docs/getting-started/create-new-environment',
+                component: ComponentCreator('/de/docs/getting-started/create-new-environment', '7b2'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/de/docs/getting-started/user-management/login',
-                component: ComponentCreator('/de/docs/getting-started/user-management/login', 'e35'),
+                path: '/de/docs/getting-started/explore-the-dashboard',
+                component: ComponentCreator('/de/docs/getting-started/explore-the-dashboard', 'cab'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/de/docs/getting-started/user-management/refresh-access-token',
-                component: ComponentCreator('/de/docs/getting-started/user-management/refresh-access-token', 'a40'),
+                path: '/de/docs/getting-started/thank-you',
+                component: ComponentCreator('/de/docs/getting-started/thank-you', 'd5c'),
                 exact: true,
-                sidebar: "tutorialSidebar"
+                sidebar: "gettingStartedSidebar"
+              },
+              {
+                path: '/de/docs/getting-started/use-the-app',
+                component: ComponentCreator('/de/docs/getting-started/use-the-app', '239'),
+                exact: true,
+                sidebar: "gettingStartedSidebar"
+              },
+              {
+                path: '/de/docs/getting-started/welcome',
+                component: ComponentCreator('/de/docs/getting-started/welcome', '399'),
+                exact: true,
+                sidebar: "gettingStartedSidebar"
               },
               {
                 path: '/de/docs/real-world-example/Arduino',

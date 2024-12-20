@@ -10,7 +10,7 @@ const ForgotPassword = () => {
   const handleForgotPassword = async () => {
     try {
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/forgot-password/",
+        "https://dev.aquaware.cloud/api/users/auth/password/forgot/",
         {
           method: "POST",
           headers: {

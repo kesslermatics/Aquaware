@@ -33,7 +33,7 @@ const Signup = () => {
     }
 
     const response = await fetch(
-      "https://dev.aquaware.cloud/api/users/signup/",
+      "https://dev.aquaware.cloud/api/users/auth/signup/",
       {
         method: "POST",
         headers: {
@@ -68,7 +68,7 @@ const Signup = () => {
 
     try {
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/google-signup/",
+        "https://dev.aquaware.cloud/api/users/auth/signup/google/",
         {
           method: "POST",
           headers: {

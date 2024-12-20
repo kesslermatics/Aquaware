@@ -13,10 +13,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false);
+  const [isLoadingGoogleLogin, setIsLoadingGoogleLogin] = useState(false);
 
   const handleLogin = async () => {
     const response = await fetch(
-      "https://dev.aquaware.cloud/api/users/login/",
+      "https://dev.aquaware.cloud/api/users/auth/login/",
       {
         method: "POST",
         headers: {
@@ -45,7 +47,7 @@ const Login = () => {
     const token = tokenResponse.credential;
 
     const response = await fetch(
-      "https://dev.aquaware.cloud/api/users/google-login/",
+      "https://dev.aquaware.cloud/api/users/auth/login/google/",
       {
         method: "POST",
         headers: {

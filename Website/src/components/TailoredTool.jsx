@@ -28,7 +28,7 @@ const TailoredTool = () => {
 
     try {
       const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/send-tailored-request/",
+        "https://dev.aquaware.cloud/api/users/feedback/tailored-request/",
         {
           method: "POST",
           headers: {
@@ -99,7 +99,10 @@ const TailoredTool = () => {
                 </div>
               </div>
               <div>
-                <label htmlFor="organization" className="block font-medium mb-1">
+                <label
+                  htmlFor="organization"
+                  className="block font-medium mb-1"
+                >
                   {t("tailoredTool.organizationLabel")}
                 </label>
                 <input
