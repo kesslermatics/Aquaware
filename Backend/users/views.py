@@ -193,13 +193,15 @@ def refresh_access_token(request):
         return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def profile_views(request):
     if request.method == 'GET':
         return get_user_profile(request)
     elif request.method == 'PUT':
         return update_user_profile(request)
+    elif request.method == 'DELETE':
+        return delete_account(request)
 
 
 def get_user_profile(request):
@@ -217,6 +219,12 @@ def update_user_profile(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+def delete_account(request):
+    user = request.user
+    user.delete()
+    logout(request)
+    return Response({"detail": "Your account has been deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def change_password(request):
@@ -230,43 +238,6 @@ def change_password(request):
     user.set_password(new_password)
     user.save()
     return Response({"detail": "Password has been changed."})
-
-
-@csrf_protect
-def delete_account_view(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
-
-        if user is not None and user == request.user:
-            return redirect(reverse('confirm_delete_account'))
-        else:
-            return render(request, 'delete_account.html', {'error_message': 'Invalid email or password.'})
-    return render(request, 'delete_account.html')
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@csrf_protect
-def confirm_delete_account(request):
-    user = request.user
-    user.email = None
-    user.first_name = None
-    user.last_name = None
-    user.save()
-
-    logout(request)
-    return Response({'message': 'Your account has been anonymized successfully.'}, status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def delete_user_account(request):
-    user = request.user
-
-    user.delete()
-    return Response({"detail": "User account has been deleted."}, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
