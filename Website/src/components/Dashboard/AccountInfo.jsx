@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FaEye, FaEyeSlash, FaClipboard } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaClipboard, FaSpinner } from "react-icons/fa";
 
 const AccountInfo = () => {
   const { t } = useTranslation();
@@ -103,6 +103,22 @@ const AccountInfo = () => {
     });
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-4xl text-blue-500" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-500 text-4xl">{error}</p>
+      </div>
+    );
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage("");
@@ -184,9 +200,6 @@ const AccountInfo = () => {
         return t("accountInfo.plans.unknown");
     }
   };
-
-  if (loading) return <p>{t("accountInfo.loading")}</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="w-full max-w-lg mx-auto p-6 rounded-lg">

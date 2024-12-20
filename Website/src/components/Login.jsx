@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import React from "react";
+import { FaSpinner } from "react-icons/fa";
 
 const Login = () => {
   const { t } = useTranslation();
@@ -14,60 +15,73 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoadingLogin, setIsLoadingLogin] = useState(false);
-  const [isLoadingGoogleLogin, setIsLoadingGoogleLogin] = useState(false);
 
   const handleLogin = async () => {
-    const response = await fetch(
-      "https://dev.aquaware.cloud/api/users/auth/login/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-        credentials: "include",
+    setIsLoadingLogin(true);
+    try {
+      const response = await fetch(
+        "https://dev.aquaware.cloud/api/users/auth/login/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Cookies.set("access_token", data.access, { expires: 1 });
+        Cookies.set("refresh_token", data.refresh, { expires: 7 });
+        window.location.href = "/dashboard";
+      } else {
+        setError(t("login.invalidCredentials"));
       }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
-      Cookies.set("access_token", data.access, { expires: 1 });
-      Cookies.set("refresh_token", data.refresh, { expires: 7 });
-      window.location.href = "/dashboard";
-    } else {
-      setError(t("login.invalidCredentials"));
+    } catch (error) {
+      setError(t("login.loginFailed"));
+    } finally {
+      setIsLoadingLogin(false);
     }
   };
 
   const handleGoogleLogin = async (tokenResponse) => {
-    const token = tokenResponse.credential;
+    setIsLoadingLogin(true);
+    try {
+      const token = tokenResponse.credential;
 
-    const response = await fetch(
-      "https://dev.aquaware.cloud/api/users/auth/login/google/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: token,
-        }),
-        credentials: "include",
+      const response = await fetch(
+        "https://dev.aquaware.cloud/api/users/auth/login/google/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token,
+          }),
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Cookies.set("access_token", data.access, { expires: 1 });
+        Cookies.set("refresh_token", data.refresh, { expires: 7 });
+        window.location.href = "/dashboard";
+      } else {
+        setError(data.error || t("login.googleLoginFailed"));
       }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
-      Cookies.set("access_token", data.access, { expires: 1 });
-      Cookies.set("refresh_token", data.refresh, { expires: 7 });
-      window.location.href = "/dashboard";
-    } else {
-      setError(data.error || t("login.googleLoginFailed"));
+    } catch (error) {
+      setError(t("login.googleLoginFailed"));
+    } finally {
+      setIsLoadingLogin(false);
     }
   };
 
@@ -129,17 +143,17 @@ const Login = () => {
 
         <button
           onClick={handleLogin}
-          className="w-full bg-n-15 text-white font-semibold rounded-md py-3 mb-4"
+          disabled={isLoadingLogin}
+          className={`w-full bg-n-15 text-white font-semibold rounded-md py-3 mb-4 ${
+            isLoadingLogin ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          {t("login.loginButton")}
+          {isLoadingLogin ? (
+            <FaSpinner className="animate-spin text-center mx-auto text-2xl text-n-1" />
+          ) : (
+            t("login.loginButton")
+          )}
         </button>
-
-        <div className="w-full flex items-center justify-center relative mb-4">
-          <div className="w-full h-[1px] bg-gray-300"></div>
-          <p className="absolute bg-white px-4 text-gray-500">
-            {t("login.or")}
-          </p>
-        </div>
 
         <div className="w-full flex items-center justify-center text-n-8 font-semibold rounded-md py-3 mb-6">
           <GoogleLogin
