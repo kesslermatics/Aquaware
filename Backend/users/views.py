@@ -223,7 +223,7 @@ def delete_account(request):
     user = request.user
     user.email = f"Deleted user {user.id}"
     user.first_name = "Deleted"
-    user.last_name = "Deleted user"
+    user.last_name = "User"
     user.save()
 
     logout(request)
