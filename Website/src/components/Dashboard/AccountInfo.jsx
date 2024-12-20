@@ -17,6 +17,9 @@ const AccountInfo = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deleteInput, setDeleteInput] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [apiKeyVisible, setApiKeyVisible] = useState(false);
   const navigate = useNavigate();
@@ -118,6 +121,40 @@ const AccountInfo = () => {
       </div>
     );
   }
+
+  const handleDeleteAccount = async () => {
+    ensureAccessToken();
+    setIsDeleting(true);
+    try {
+      const accessToken = Cookies.get("access_token");
+
+      const response = await fetch(
+        "https://dev.aquaware.cloud/api/users/profile/",
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        alert(t("accountInfo.deleted_successfully"));
+        Cookies.remove("access_token");
+        Cookies.remove("refresh_token");
+        window.location.href = "/";
+      } else {
+        const data = await response.json();
+        alert(data.detail || t("accountInfo.deletion_failed"));
+      }
+    } catch (error) {
+      alert(t("accountInfo.deletion_failed"));
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteDialogOpen(false);
+      setDeleteInput("");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -342,6 +379,59 @@ const AccountInfo = () => {
           {t("accountInfo.logout")}
         </button>
       </div>
+      <div className="flex justify-start mt-4">
+        <button
+          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700"
+          onClick={() => setIsDeleteDialogOpen(true)}
+        >
+          {t("accountInfo.delete_account")}
+        </button>
+      </div>
+
+      {/* Delete Dialog */}
+      {isDeleteDialogOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg w-96">
+            <h3 className="text-lg font-bold mb-4 text-red-500">
+              {t("accountInfo.confirm_delete_title")}
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              {t("accountInfo.confirm_delete_message")}
+            </p>
+            <input
+              type="text"
+              value={deleteInput}
+              onChange={(e) => setDeleteInput(e.target.value)}
+              placeholder={t("accountInfo.type_delete_to_confirm")}
+              className="w-full border border-gray-300 rounded-md px-4 py-2 mb-4"
+            />
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => {
+                  setIsDeleteDialogOpen(false);
+                  setDeleteInput("");
+                }}
+                className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700"
+              >
+                {t("accountInfo.cancel")}
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleteInput !== "DELETE ACCOUNT" || isDeleting}
+                className={`px-4 py-2 text-white rounded-md ${
+                  deleteInput === "DELETE ACCOUNT" && !isDeleting
+                    ? "bg-red-500 hover:bg-red-700"
+                    : "bg-red-300 cursor-not-allowed"
+                }`}
+              >
+                {isDeleting
+                  ? t("accountInfo.deleting")
+                  : t("accountInfo.delete")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -221,7 +221,11 @@ def update_user_profile(request):
 
 def delete_account(request):
     user = request.user
-    user.delete()
+    user.email = None
+    user.first_name = None
+    user.last_name = None
+    user.save()
+
     logout(request)
     return Response({"detail": "Your account has been deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
