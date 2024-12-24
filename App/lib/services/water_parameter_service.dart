@@ -12,7 +12,7 @@ class WaterParameterService {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(
-            '$baseUrl/api/measurements/environments/$environmentId/water-values/$number_of_entries/'),
+            '$baseUrl/api/environments/$environmentId/values/latest/$number_of_entries/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -34,7 +34,7 @@ class WaterParameterService {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(
-            '$baseUrl/api/measurements/environments/$environmentId/water-values/$parameter/$numberOfEntries'),
+            '$baseUrl/api/environments/$environmentId/values/parameters/$parameter/$numberOfEntries'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -54,7 +54,7 @@ class WaterParameterService {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.get(
         Uri.parse(
-            '$baseUrl/api/measurements/environments/$aquariumId/water-values/$parameter/total-entries'),
+            '$baseUrl/api/environments/$aquariumId/values/parameters/$parameter/total'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

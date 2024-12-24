@@ -13,7 +13,7 @@ class AnimalDetectionService {
         await UserService().makeAuthenticatedRequest((token) async {
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse('$baseUrl/api/animal-detection/identify-animal-from-image/'),
+        Uri.parse('$baseUrl/api/animal/identify/'),
       )
         ..headers['Authorization'] = 'Bearer $token'
         ..files.add(

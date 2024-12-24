@@ -19,7 +19,7 @@ class AnimalDiseaseService {
     // Make authenticated request
     final response =
         await UserService().makeAuthenticatedRequest((token) async {
-      final uri = Uri.parse('$baseUrl/api/diseases/diagnosis-from-image/');
+      final uri = Uri.parse('$baseUrl/api/diseases/diagnosis/');
 
       final request = http.MultipartRequest('POST', uri)
         ..headers['Authorization'] = 'Bearer $token'

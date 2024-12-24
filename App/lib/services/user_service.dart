@@ -6,14 +6,16 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  static const String signupUrl = '$baseUrl/api/users/signup/';
-  static const String loginUrl = '$baseUrl/api/users/login/';
-  static const String refreshTokenUrl = '$baseUrl/api/users/token/refresh/';
+  static const String signupUrl = '$baseUrl/api/users/auth/signup/';
+  static const String loginUrl = '$baseUrl/api/users/auth/login/';
+  static const String refreshTokenUrl =
+      '$baseUrl/api/users/auth/token/refresh/';
   static const String profileUrl = '$baseUrl/api/users/profile/';
-  static const String updateProfileUrl = '$baseUrl/api/users/profile/update/';
-  static const String changePasswordUrl = '$baseUrl/api/users/change-password/';
-  static const String deleteAccountUrl = '$baseUrl/api/users/delete-account/';
-  static const String googleSignupUrl = '$baseUrl/api/users/google-signup/';
+  static const String updateProfileUrl = '$baseUrl/api/users/profile/';
+  static const String changePasswordUrl = '$baseUrl/api/users/password/change/';
+  static const String deleteAccountUrl = '$baseUrl/api/users/profile/';
+  static const String googleSignupUrl =
+      '$baseUrl/api/users/auth/signup/google/';
 
   Future<String?> signup(String email, String password, String password2,
       String firstName, String lastName) async {
@@ -91,7 +93,7 @@ class UserService {
 
   Future<String?> googleLogin(String googleToken) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/users/google-login/'),
+      Uri.parse('$baseUrl/api/users/auth/login/google/'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'token': googleToken}),
     );

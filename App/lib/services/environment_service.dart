@@ -15,7 +15,7 @@ class EnvironmentService {
   ) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.post(
-        Uri.parse('$baseUrl/api/environments/create/'),
+        Uri.parse('$baseUrl/api/environments/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -59,7 +59,7 @@ class EnvironmentService {
       int id, Map<String, dynamic> updates) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.put(
-        Uri.parse('$baseUrl/api/environments/$id/update/'),
+        Uri.parse('$baseUrl/api/environments/$id/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -78,7 +78,7 @@ class EnvironmentService {
   Future<void> deleteEnvironment(int id) async {
     final response = await UserService().makeAuthenticatedRequest((token) {
       return http.delete(
-        Uri.parse('$baseUrl/api/environments/$id/delete/'),
+        Uri.parse('$baseUrl/api/environments/$id/'),
         headers: {
           'Authorization': 'Bearer $token',
         },
