@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/models/water_parameter.dart';
 import 'package:aquaware/models/water_value.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class WaterParameterService {
             '$baseUrl/api/environments/$environmentId/values/latest/$number_of_entries/'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'x-api-key': UserProfile.getInstance().apiKey,
         },
       );
     });
@@ -37,7 +38,7 @@ class WaterParameterService {
             '$baseUrl/api/environments/$environmentId/values/parameters/$parameter/$numberOfEntries'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'x-api-key': UserProfile.getInstance().apiKey,
         },
       );
     });
@@ -57,7 +58,7 @@ class WaterParameterService {
             '$baseUrl/api/environments/$aquariumId/values/parameters/$parameter/total'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'x-api-key': UserProfile.getInstance().apiKey,
         },
       );
     });

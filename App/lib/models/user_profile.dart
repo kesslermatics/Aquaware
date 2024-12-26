@@ -5,6 +5,7 @@ class UserProfile {
   final String lastName;
   final DateTime dateJoined;
   final int subscriptionTier;
+  final String apiKey;
 
   // Private constructor
   UserProfile._internal({
@@ -14,6 +15,7 @@ class UserProfile {
     required this.lastName,
     required this.dateJoined,
     required this.subscriptionTier,
+    required this.apiKey,
   });
 
   // Static variable to hold the single instance
@@ -27,6 +29,7 @@ class UserProfile {
     required String lastName,
     required DateTime dateJoined,
     required int subscriptionTier,
+    required String apiKey,
   }) {
     _instance ??= UserProfile._internal(
       id: id,
@@ -35,6 +38,7 @@ class UserProfile {
       lastName: lastName,
       dateJoined: dateJoined,
       subscriptionTier: subscriptionTier,
+      apiKey: apiKey,
     );
     return _instance!;
   }
@@ -48,6 +52,7 @@ class UserProfile {
       lastName: json['last_name'],
       dateJoined: DateTime.parse(json['date_joined']),
       subscriptionTier: json['subscription_tier'],
+      apiKey: json['api_key'],
     );
   }
 
@@ -69,6 +74,7 @@ class UserProfile {
       'last_name': lastName,
       'date_joined': dateJoined.toIso8601String(),
       'subscription_tier': subscriptionTier,
+      'api_key': apiKey,
     };
   }
 }
