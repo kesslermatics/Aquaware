@@ -143,7 +143,7 @@ def send_alert_email(user, environment, parameter_name, current_value, threshold
 
 
 @api_view(['GET'])
-@authentication_classes([APIKeyAuthentication])
+@authentication_classes([IsAuthenticated])
 def get_latest_from_all_parameters(request, environment_id, number_of_entries):
     try:
         # Check if user owns the environment or is subscribed
@@ -184,7 +184,7 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
 
 
 @api_view(['GET'])
-@authentication_classes([APIKeyAuthentication])
+@authentication_classes([IsAuthenticated])
 def get_all_values_from_parameter(request, environment_id, parameter_name, number_of_entries):
     try:
         # Check if user owns the environment or is subscribed
@@ -216,7 +216,7 @@ def get_all_values_from_parameter(request, environment_id, parameter_name, numbe
 
 
 @api_view(['GET'])
-@authentication_classes([APIKeyAuthentication])
+@authentication_classes([IsAuthenticated])
 def get_total_entries(request, environment_id, parameter_name):
     try:
         # Check if user owns the environment or is subscribed
@@ -242,7 +242,7 @@ def get_total_entries(request, environment_id, parameter_name):
 
 
 @api_view(['GET'])
-@permission_classes([APIKeyAuthentication])
+@permission_classes([IsAuthenticated])
 def export_water_values(request, environment_id):
     try:
         # Check if the environment exists and belongs to the logged-in user
@@ -308,7 +308,7 @@ def export_water_values(request, environment_id):
 
 
 @api_view(['POST'])
-@permission_classes([APIKeyAuthentication])
+@permission_classes([IsAuthenticated])
 def import_water_values(request, environment_id):
     try:
         # Ensure the environment exists and belongs to the user
@@ -389,7 +389,7 @@ def import_water_values(request, environment_id):
 
 
 @api_view(['POST'])
-@permission_classes([APIKeyAuthentication])
+@permission_classes([IsAuthenticated])
 def save_alert_settings(request, environment_id):
     try:
         user = request.user
@@ -428,7 +428,7 @@ def save_alert_settings(request, environment_id):
 
 
 @api_view(['GET'])
-@permission_classes([APIKeyAuthentication])
+@permission_classes([IsAuthenticated])
 def get_alert_settings(request, environment_id, parameter_name):
     try:
         user = request.user
