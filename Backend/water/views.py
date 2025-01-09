@@ -143,7 +143,7 @@ def send_alert_email(user, environment, parameter_name, current_value, threshold
 
 
 @api_view(['GET'])
-@authentication_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_latest_from_all_parameters(request, environment_id, number_of_entries):
     try:
         # Check if user owns the environment or is subscribed
@@ -184,7 +184,7 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
 
 
 @api_view(['GET'])
-@authentication_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_all_values_from_parameter(request, environment_id, parameter_name, number_of_entries):
     try:
         # Check if user owns the environment or is subscribed
@@ -216,7 +216,7 @@ def get_all_values_from_parameter(request, environment_id, parameter_name, numbe
 
 
 @api_view(['GET'])
-@authentication_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_total_entries(request, environment_id, parameter_name):
     try:
         # Check if user owns the environment or is subscribed
