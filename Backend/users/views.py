@@ -307,6 +307,7 @@ def verify_reset_code(request):
 
         # Setze das neue Passwort
         user.set_password(new_password)
+        user.save()
         user.clear_reset_code()
 
         return Response({'detail': 'Password has been reset successfully'}, status=status.HTTP_200_OK)
