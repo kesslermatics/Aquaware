@@ -105,7 +105,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: ColorProvider.textDark,
+                    color: ColorProvider.n1,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -116,7 +116,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                   "Filter: ",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: ColorProvider.textDark,
+                    color: ColorProvider.n1,
                   ),
                 ),
                 DropdownButton<String>(
@@ -152,7 +152,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                             touchedSpot.y
                                 .toStringAsFixed(widget.fractionDigits),
                             const TextStyle(
-                              color: ColorProvider.textLight,
+                              color: ColorProvider.n1,
                               fontWeight: FontWeight.bold,
                             ),
                           );
@@ -201,7 +201,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                                 textAlign: TextAlign.end,
                                 formattedDate,
                                 style: const TextStyle(
-                                  color: ColorProvider.textDark,
+                                  color: ColorProvider.n1,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
@@ -219,7 +219,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                         getTitlesWidget: (value, meta) => Text(
                           value.toStringAsFixed(widget.fractionDigits),
                           style: const TextStyle(
-                            color: ColorProvider.textDark,
+                            color: ColorProvider.n1,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -252,7 +252,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                     LineChartBarData(
                       spots: spots,
                       isCurved: true,
-                      color: ColorProvider.primary,
+                      color: ColorProvider.n1,
                       barWidth: 4,
                       isStrokeCapRound: true,
                       dotData: FlDotData(

@@ -2,90 +2,92 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 
 class PotassiumKnowledgeScreen extends StatelessWidget {
+  const PotassiumKnowledgeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "The Importance of Potassium in Aquarium for Ecosystem and Fish Health",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Potassium (K) is a vital macronutrient in aquariums, essential for the growth and health of aquatic plants and overall ecosystem stability. It plays a crucial role in various biological processes, including nutrient uptake, enzyme activation, and osmoregulation.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "The Role of Potassium in Aquariums",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Potassium is integral to the health and growth of many aquarium inhabitants. Maintaining appropriate potassium levels is essential for the following reasons:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Plant Growth",
               "Potassium is crucial for photosynthesis, protein synthesis, and overall plant health. Adequate potassium levels ensure robust, healthy plant growth (Raven et al., 1999)."),
           _buildBulletPoint(context, "Enzyme Activation",
               "Potassium acts as a cofactor for various enzymes, facilitating essential biochemical reactions in both plants and animals (Evans, 2009)."),
           _buildBulletPoint(context, "Osmoregulation",
               "Potassium helps maintain osmotic balance in fish and invertebrates, which is crucial for proper cellular function and fluid balance (Boyd, 1990)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Effects of Potassium on Other Water Parameters",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Potassium levels can influence several key water parameters, each of which can impact the health of the aquarium's inhabitants:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Nutrient Balance",
               "Potassium interacts with other nutrients, and its deficiency or excess can affect the uptake of other essential elements, such as nitrogen and phosphorus (Raven et al., 1999)."),
           _buildBulletPoint(context, "Water Hardness",
               "While not a major contributor, potassium can slightly influence water hardness. Maintaining balanced potassium levels helps ensure overall water quality (APHA, 1998)."),
           _buildBulletPoint(context, "pH Stability",
               "Potassium can act as a buffer, helping to stabilize pH levels in the aquarium. Proper potassium levels contribute to a balanced pH environment (Stumm & Morgan, 1981)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Good to Know Facts about Potassium",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Potassium Sources",
               "Potassium can be introduced into the aquarium through tap water, substrates, and fertilizers. Understanding these sources helps in managing its levels effectively (APHA, 1998)."),
           _buildBulletPoint(context, "Potassium Supplements",
               "If potassium levels are low, supplements specifically designed for aquariums can be used to ensure adequate supply for plant and animal health (Boyd, 1990)."),
           _buildBulletPoint(context, "Testing Potassium Levels",
               "Regular testing for potassium levels ensures they remain within the optimal range, preventing both deficiency and toxicity (Evans, 2009)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "References",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildReference(
             "APHA (1998). Standard Methods for the Examination of Water and Wastewater. American Public Health Association.",
           ),
@@ -112,9 +114,9 @@ class PotassiumKnowledgeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             '• ',
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
           Expanded(
             child: RichText(
@@ -122,15 +124,15 @@ class PotassiumKnowledgeScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: "$title: ",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: ColorProvider.primaryDark),
+                        color: ColorProvider.n1),
                   ),
                   TextSpan(
                     text: text,
                     style:
-                        TextStyle(fontSize: 16, color: ColorProvider.textDark),
+                        const TextStyle(fontSize: 16, color: ColorProvider.n1),
                   ),
                 ],
               ),
@@ -146,7 +148,7 @@ class PotassiumKnowledgeScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+        style: const TextStyle(fontSize: 16, color: ColorProvider.n1),
       ),
     );
   }

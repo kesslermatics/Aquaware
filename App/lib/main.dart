@@ -1,10 +1,13 @@
+import 'package:aquaware/screens/onboarding/components/login_screen.dart';
+import 'package:aquaware/screens/onboarding/components/register_screen.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'screens/homepage/homepage.dart';
-import 'screens/onboarding/onboding_screen.dart';
+import 'screens/onboarding/onboarding_screen.dart';
 
 // in pubspec.yaml Version increment
 // in build.gradle version code incremetn
@@ -62,42 +65,70 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Aquaware',
       theme: ThemeData(
+        fontFamily: 'Sora',
         colorScheme: ColorProvider.colorScheme,
+        scaffoldBackgroundColor: ColorProvider.n8, // Hintergrundfarbe
         appBarTheme: const AppBarTheme(
-          backgroundColor:
-              ColorProvider.primaryDark, // Hintergrundfarbe der AppBar
-          foregroundColor: ColorProvider.textLight, // Textfarbe der AppBar
-          iconTheme: IconThemeData(
-              color: ColorProvider.textLight), // Icon-Farbe der AppBar
-          actionsIconTheme: IconThemeData(
-              color: ColorProvider.textLight), // Aktions-Icon-Farbe der AppBar
+          backgroundColor: ColorProvider.n6, // AppBar Hintergrundfarbe
+          foregroundColor: ColorProvider.n1, // AppBar Textfarbe
+          iconTheme: IconThemeData(color: ColorProvider.n1), // AppBar Icons
           titleTextStyle: TextStyle(
-            color: ColorProvider.textLight, // Textfarbe des Titels
-            fontSize: 20, // Schriftgröße des Titels
-            fontWeight: FontWeight.bold, // Schriftstil des Titels
+            color: ColorProvider.n1, // AppBar Titel
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        scaffoldBackgroundColor: ColorProvider.background,
         textTheme: const TextTheme(
-          displayLarge: TextStyle(color: ColorProvider.textDark),
-          displayMedium: TextStyle(color: ColorProvider.textDark),
-          displaySmall: TextStyle(color: ColorProvider.textDark),
-          headlineLarge: TextStyle(color: ColorProvider.textDark),
-          headlineMedium: TextStyle(color: ColorProvider.textDark),
-          headlineSmall: TextStyle(color: ColorProvider.textDark),
-          titleLarge: TextStyle(color: ColorProvider.textDark),
-          titleMedium: TextStyle(color: ColorProvider.textDark),
-          titleSmall: TextStyle(color: ColorProvider.textDark),
-          bodyLarge: TextStyle(color: ColorProvider.textDark),
-          bodyMedium: TextStyle(color: ColorProvider.textDark),
-          bodySmall: TextStyle(color: ColorProvider.textDark),
-          labelLarge: TextStyle(color: ColorProvider.textDark),
-          labelMedium: TextStyle(color: ColorProvider.textDark),
-          labelSmall: TextStyle(color: ColorProvider.textDark),
+          titleLarge: TextStyle(color: ColorProvider.n1),
+          titleMedium: TextStyle(color: ColorProvider.n1),
+          titleSmall: TextStyle(color: ColorProvider.n1),
+          bodyLarge: TextStyle(color: ColorProvider.n2),
+          bodyMedium: TextStyle(color: ColorProvider.n2),
+          bodySmall: TextStyle(color: ColorProvider.n2),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: ColorProvider.n17, // Textfarbe Button
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: ColorProvider.n1,
+            backgroundColor: ColorProvider.n17,
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: ColorProvider.n5, // Rahmenfarbe
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: ColorProvider.n17, // Hintergrundfarbe FAB
+          foregroundColor: ColorProvider.n1, // Textfarbe FAB
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: ColorProvider.n12, // Hintergrund Input
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: ColorProvider.n5),
+          ),
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.selected)
+                ? ColorProvider.n17
+                : ColorProvider.n12,
+          ),
+          checkColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.selected)
+                ? ColorProvider.n1
+                : ColorProvider.n12,
+          ),
         ),
       ),
       home: _isLoading

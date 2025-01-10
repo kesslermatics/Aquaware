@@ -2,90 +2,92 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 
 class StrontiumKnowledgeScreen extends StatelessWidget {
+  const StrontiumKnowledgeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "The Importance of Strontium in Aquarium for Ecosystem and Fish Health",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Strontium (Sr) is a trace element crucial for the health of marine aquariums, particularly those with coral and invertebrates. It plays a significant role in the growth and development of coral skeletons and other calcareous organisms.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "The Role of Strontium in Aquariums",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Strontium is essential for the health and growth of many marine aquarium inhabitants. Maintaining appropriate strontium levels is crucial for the following reasons:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Coral Growth",
               "Strontium is a vital component of aragonite, the mineral used by corals to build their skeletons. Adequate strontium levels ensure robust and healthy coral growth (Delbeek & Sprung, 1994)."),
           _buildBulletPoint(context, "Invertebrate Health",
               "Strontium supports the development of the exoskeletons of various marine invertebrates, including crustaceans and mollusks (Shimek, 2002)."),
           _buildBulletPoint(context, "Calcification",
               "Strontium enhances the process of calcification, which is essential for the structural integrity of corals and other calcareous organisms (Furuta, 1997)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Effects of Strontium on Other Water Parameters",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Strontium levels can influence several key water parameters, each of which can impact the health of the aquarium's inhabitants:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Calcium Levels",
               "Strontium works synergistically with calcium in promoting the growth of corals and other calcareous organisms. Maintaining balanced levels of both elements is essential (Raven et al., 1999)."),
           _buildBulletPoint(context, "pH Stability",
               "Strontium can act as a buffer, helping to stabilize pH levels in marine aquariums. Proper strontium levels contribute to a balanced pH environment (Stumm & Morgan, 1981)."),
           _buildBulletPoint(context, "Water Hardness",
               "Strontium contributes to the overall hardness of the water, which is important for maintaining the health of marine organisms (APHA, 1998)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Good to Know Facts about Strontium",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Strontium Sources",
               "Strontium can be introduced into the aquarium through synthetic sea salts, strontium supplements, and certain types of rocks and substrates. Understanding these sources helps in managing its levels effectively (APHA, 1998)."),
           _buildBulletPoint(context, "Strontium Supplements",
               "If strontium levels are low, supplements specifically designed for marine aquariums can be used to ensure adequate supply for coral and invertebrate health (Delbeek & Sprung, 1994)."),
           _buildBulletPoint(context, "Testing Strontium Levels",
               "Regular testing for strontium ensures they remain within the optimal range, preventing both deficiency and toxicity (Shimek, 2002)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "References",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildReference(
             "APHA (1998). Standard Methods for the Examination of Water and Wastewater. American Public Health Association.",
           ),
@@ -115,9 +117,9 @@ class StrontiumKnowledgeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             '• ',
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
           Expanded(
             child: RichText(
@@ -125,15 +127,15 @@ class StrontiumKnowledgeScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: "$title: ",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: ColorProvider.primaryDark),
+                        color: ColorProvider.n1),
                   ),
                   TextSpan(
                     text: text,
                     style:
-                        TextStyle(fontSize: 16, color: ColorProvider.textDark),
+                        const TextStyle(fontSize: 16, color: ColorProvider.n1),
                   ),
                 ],
               ),
@@ -149,7 +151,7 @@ class StrontiumKnowledgeScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+        style: const TextStyle(fontSize: 16, color: ColorProvider.n1),
       ),
     );
   }

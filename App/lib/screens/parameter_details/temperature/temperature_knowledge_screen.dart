@@ -2,60 +2,62 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 
 class TemperatureKnowledgeScreen extends StatelessWidget {
+  const TemperatureKnowledgeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "The Importance of Temperature in Aquarium for Ecosystem and Fish Health",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Temperature is a critical parameter in aquarium management, impacting the health and well-being of fish and other aquatic organisms. Maintaining the correct temperature ensures a balanced ecosystem and supports various biological and chemical processes within the aquatic environment.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "The Role of Temperature in Aquariums",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Temperature influences the metabolic rates of fish and other aquatic organisms. Most tropical fish thrive in water temperatures between 24-28°C (75-82°F), while cold-water species prefer temperatures ranging from 10-20°C (50-68°F) (Axelrod, 1996). Maintaining the appropriate temperature range is crucial for the following reasons:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Metabolic Rates",
               "Fish are ectothermic (cold-blooded) animals, meaning their body temperature is regulated by the surrounding water temperature. Higher temperatures increase metabolic rates, leading to faster growth and activity levels, while lower temperatures slow down these processes (Jobling, 1994)."),
           _buildBulletPoint(context, "Oxygen Solubility",
               "Water temperature directly affects the solubility of oxygen. Colder water holds more dissolved oxygen compared to warmer water. Hence, maintaining an optimal temperature ensures adequate oxygen availability for respiration (Brett, 1971)."),
           _buildBulletPoint(context, "Immune Function",
               "The immune response of fish is temperature-dependent. At optimal temperatures, fish exhibit robust immune responses, reducing the risk of infections. Deviations from the ideal temperature range can weaken their immune systems, making them more susceptible to diseases (Bly & Clem, 1992)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Effects of Temperature on Other Water Parameters",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Temperature influences several key water parameters, each of which can impact the health of an aquarium's inhabitants:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "pH Levels",
               "The pH of water can fluctuate with changes in temperature. Generally, as water temperature increases, the pH decreases slightly due to increased CO2 solubility forming carbonic acid (Emerson et al., 1975)."),
           _buildBulletPoint(context, "Ammonia Toxicity",
@@ -68,30 +70,30 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
               "Water viscosity decreases with increasing temperature, affecting the movement of fish and the distribution of nutrients and waste products. This change can impact feeding and waste removal efficiency (Schmidt-Nielsen, 1997)."),
           _buildBulletPoint(context, "Carbon Dioxide (CO2) Levels",
               "Similar to oxygen, the solubility of CO2 decreases with rising temperatures. This can affect plant growth and the overall carbon cycle within the aquarium (Raven & Johnston, 1991)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Good to Know Facts about Temperature",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Temperature Stability",
               "Sudden temperature fluctuations can stress fish and other aquatic organisms. Using a reliable heater and thermometer helps maintain a stable temperature environment (Axelrod, 1996)."),
           _buildBulletPoint(context, "Species-Specific Requirements",
               "Different species have different temperature preferences. It's important to research the specific needs of your aquarium inhabitants to ensure they are kept within their optimal temperature range (Jobling, 1994)."),
           _buildBulletPoint(context, "Seasonal Variations",
               "In natural habitats, many fish experience seasonal temperature changes. Simulating these changes in the aquarium can promote natural behaviors such as breeding (Brett, 1971)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "References",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildReference(
             "Axelrod, H. R. (1996). The Complete Book of Tropical Fish. T.F.H. Publications.",
           ),
@@ -133,9 +135,9 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             '• ',
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
           Expanded(
             child: RichText(
@@ -143,15 +145,15 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: "$title: ",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: ColorProvider.primaryDark),
+                        color: ColorProvider.n1),
                   ),
                   TextSpan(
                     text: text,
                     style:
-                        TextStyle(fontSize: 16, color: ColorProvider.textDark),
+                        const TextStyle(fontSize: 16, color: ColorProvider.n1),
                   ),
                 ],
               ),
@@ -167,7 +169,7 @@ class TemperatureKnowledgeScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+        style: const TextStyle(fontSize: 16, color: ColorProvider.n1),
       ),
     );
   }

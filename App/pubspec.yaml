@@ -6,18 +6,18 @@ publish_to: "none"
 
 version: 1.2.0+1
 
-flutter_launcher_icons:
+flutter_launcher_icons: # dart run flutter_launcher_icons:generate
   android: "launcher_icon"
-  image_path: "assets/Aquaware_logo_filled_cropped.png"
+  image_path: "assets/aquaware.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter_native_splash:
   android_12:
-    color: "#ffffff"
-    image: assets/Aquaware_logo_filled_wtext_bigger_margin.png
+    color: "#031726"
+    image: assets/aquaware.png
     android: true
-  color: "#ffffff"
-  image: assets/Aquaware_logo_filled_wtext_bigger_margin.png
+  color: "#031726"
+  image: assets/aquaware.png
   android: true
 
 environment:
@@ -35,13 +35,16 @@ dependencies:
   flutter_signin_button: ^2.0.0
   flutter_svg: ^2.0.10+1
   font_awesome_flutter: ^9.0.0
+  get: ^4.6.6
   google_sign_in: ^6.2.1
   image_picker: ^1.1.2
   package_info: ^2.0.2
   package_info_plus: ^8.0.2
   rive: ^0.13.5
   shared_preferences: ^2.2.3
+  smooth_page_indicator: ^1.2.0+3
   syncfusion_flutter_charts: ^26.1.42
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +61,27 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/
+    - assets/fonts/
+    - assets/images/
     - assets/icons/
-    - assets/Backgrounds/Spline.png
     - assets/RiveAssets/
+
+  fonts:
+    - family: Sora
+      fonts:
+        - asset: assets/fonts/Sora-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Sora-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Sora-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Sora-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Sora-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Sora-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Sora-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Sora-ExtraBold.ttf
+          weight: 800

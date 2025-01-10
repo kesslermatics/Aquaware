@@ -32,8 +32,13 @@ class UserService {
     );
 
     if (response.statusCode == 201) {
-      login(email, password);
-      return null; // Erfolgreiche Registrierung
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
+      String accessToken = data['access'];
+      String refreshToken = data['refresh'];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('accessToken', accessToken);
+      await prefs.setString('refreshToken', refreshToken);
+      return null;
     } else if (response.statusCode == 500) {
       return "Server Error. Try again later";
     } else {
@@ -219,7 +224,7 @@ class UserService {
   }
 
   Future<String?> forgotPassword(String email) async {
-    final url = Uri.parse('$baseUrl/api/users/forgot-password/');
+    final url = Uri.parse('$baseUrl/api/users/auth/password/forgot/');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -230,6 +235,28 @@ class UserService {
       return null; // Success
     } else {
       return response.body; // Return error message
+    }
+  }
+
+  Future<String?> resetPassword(
+      String email, String resetCode, String newPassword) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/users/auth/password/reset/'),
+        body: {
+          'email': email,
+          'reset_code': resetCode,
+          'new_password': newPassword,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return null; // Erfolgreich
+      } else {
+        return response.body; // Fehlernachricht
+      }
+    } catch (e) {
+      return 'An error occurred: $e';
     }
   }
 

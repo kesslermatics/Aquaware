@@ -11,7 +11,8 @@ class HistogramWidget extends StatelessWidget {
   final String xAxisLabel;
   final String yAxisLabel;
 
-  HistogramWidget({
+  const HistogramWidget({
+    super.key,
     required this.waterValues,
     required this.range,
     this.title = '',
@@ -29,7 +30,7 @@ class HistogramWidget extends StatelessWidget {
         x: (entry.key * (1 / range)).toInt(), // Scale to int
         barRods: [
           BarChartRodData(
-            color: ColorProvider.primary,
+            color: ColorProvider.n1,
             toY: entry.value.toDouble(),
             width: 16,
             borderRadius: BorderRadius.circular(4),
@@ -49,7 +50,7 @@ class HistogramWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -66,8 +67,8 @@ class HistogramWidget extends StatelessWidget {
                       getTooltipItem: (group, groupIndex, rod, rodIndex) {
                         return BarTooltipItem(
                           rod.toY.toString(),
-                          TextStyle(
-                            color: ColorProvider.textLight,
+                          const TextStyle(
+                            color: ColorProvider.n1,
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -81,8 +82,8 @@ class HistogramWidget extends StatelessWidget {
                         reservedSize: 40,
                         getTitlesWidget: (value, meta) => Text(
                           value.toInt().toString(),
-                          style: TextStyle(
-                            color: ColorProvider.textDark,
+                          style: const TextStyle(
+                            color: ColorProvider.n1,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -102,8 +103,8 @@ class HistogramWidget extends StatelessWidget {
                               child: Text(
                                 originalValue.toStringAsFixed(fractionDigits) +
                                     waterValues.first.unit,
-                                style: TextStyle(
-                                  color: ColorProvider.textDark,
+                                style: const TextStyle(
+                                  color: ColorProvider.n1,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
@@ -113,23 +114,23 @@ class HistogramWidget extends StatelessWidget {
                         },
                       ),
                     ),
-                    topTitles: AxisTitles(
+                    topTitles: const AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
-                    rightTitles: AxisTitles(
+                    rightTitles: const AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
                   ),
                   gridData: FlGridData(
                     show: true,
                     getDrawingHorizontalLine: (value) {
-                      return FlLine(
+                      return const FlLine(
                         color: Colors.grey,
                         strokeWidth: 1,
                       );
                     },
                     getDrawingVerticalLine: (value) {
-                      return FlLine(
+                      return const FlLine(
                         color: Colors.grey,
                         strokeWidth: 1,
                       );
@@ -137,7 +138,7 @@ class HistogramWidget extends StatelessWidget {
                   ),
                   borderData: FlBorderData(
                     show: true,
-                    border: Border(
+                    border: const Border(
                       bottom: BorderSide(color: Colors.transparent),
                       left: BorderSide(color: Colors.transparent),
                       right: BorderSide(color: Colors.transparent),

@@ -9,7 +9,8 @@ class ParameterScreen extends StatelessWidget {
   final Widget knowledgeScreen;
   final Widget alertScreen;
 
-  ParameterScreen({
+  const ParameterScreen({
+    super.key,
     required this.aquariumId,
     required this.parameterName,
     required this.dataScreen,
@@ -25,7 +26,7 @@ class ParameterScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(parameterName),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -33,9 +34,9 @@ class ParameterScreen extends StatelessWidget {
           bottom: const TabBar(
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorWeight: 4,
-            indicatorColor: ColorProvider.primary,
-            labelColor: ColorProvider.textLight,
-            unselectedLabelColor: ColorProvider.primary,
+            indicatorColor: ColorProvider.n1,
+            labelColor: ColorProvider.n1,
+            unselectedLabelColor: ColorProvider.n1,
             tabs: [
               Tab(text: 'Data'),
               Tab(text: 'Knowledge'),

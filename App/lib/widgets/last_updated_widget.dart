@@ -6,7 +6,7 @@ import 'package:intl/intl.dart'; // Package to format date strings
 class LastUpdatedWidget extends StatelessWidget {
   final WaterValue lastWaterValue;
 
-  LastUpdatedWidget({required this.lastWaterValue});
+  const LastUpdatedWidget({super.key, required this.lastWaterValue});
 
   String _formatDate(DateTime dateTime) {
     return DateFormat('dd-MM-yyyy HH:mm').format(dateTime);
@@ -19,11 +19,11 @@ class LastUpdatedWidget extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Icon(Icons.circle, color: Colors.blue),
-            SizedBox(width: 8),
+            const Icon(Icons.circle, color: Colors.blue),
+            const SizedBox(width: 8),
             Text(
               'Last updated on ${_formatDate(lastWaterValue.measuredAt)}',
-              style: TextStyle(color: ColorProvider.textDark),
+              style: const TextStyle(color: ColorProvider.n1),
             ),
           ],
         ),

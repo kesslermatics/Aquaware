@@ -2,62 +2,64 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 
 class OxygenKnowledgeScreen extends StatelessWidget {
+  const OxygenKnowledgeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "The Importance of Oxygen in Aquarium for Ecosystem and Fish Health",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Oxygen (O2) is essential for the survival of all aerobic aquatic organisms, including fish, invertebrates, and beneficial bacteria. In an aquarium, maintaining adequate oxygen levels is crucial for creating a healthy and stable environment.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "The Role of Oxygen in Aquariums",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Oxygen supports various biological processes in an aquarium. It is necessary for respiration, which is the process by which organisms convert oxygen and glucose into energy, carbon dioxide, and water. Adequate oxygen levels are crucial for the following reasons:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Respiration",
               "Fish and other aquatic organisms require oxygen for cellular respiration. Insufficient oxygen can lead to stress, reduced growth, and even death (Brett, 1971)."),
           _buildBulletPoint(context, "Nitrification",
               "Beneficial nitrifying bacteria that convert ammonia to nitrite and then to nitrate require oxygen to perform these processes. Adequate oxygen levels are essential for effective biological filtration (Hagopian & Riley, 1998)."),
           _buildBulletPoint(context, "Decomposition",
               "Oxygen is required for the decomposition of organic matter by aerobic bacteria. This process helps in breaking down waste products and maintaining water quality (Wetzel, 2001)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Effects of Oxygen on Other Water Parameters",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Oxygen levels in an aquarium can influence several key water parameters, each of which can impact the health of the aquarium's inhabitants:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Temperature",
               "Oxygen solubility decreases with increasing water temperature. Warmer water holds less dissolved oxygen, which can lead to hypoxic conditions if not managed properly (Wetzel, 2001)."),
           _buildBulletPoint(context, "Carbon Dioxide (CO2) Levels",
@@ -68,46 +70,46 @@ class OxygenKnowledgeScreen extends StatelessWidget {
               "Dissolved oxygen is a key factor in determining the redox potential of water. Higher oxygen levels lead to a more positive redox potential, which is beneficial for the oxidation of harmful substances (Hargreaves & Tucker, 2004)."),
           _buildBulletPoint(context, "Organic Carbon",
               "Oxygen is required for the breakdown of organic carbon in the water. High levels of organic matter can deplete oxygen, leading to poor water quality and stressing aquatic life (Boyd, 1990)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Good to Know Facts about Oxygen",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Oxygen Diffusion",
               "Oxygen enters the aquarium water through surface diffusion and photosynthesis. Ensuring good water circulation and surface agitation can help increase oxygen levels (Brett, 1971)."),
           _buildBulletPoint(context, "Overstocking",
               "High fish stocking densities can lead to rapid oxygen depletion. It's important to balance the number of fish with the tank's oxygen supply capacity (Boyd, 1990)."),
           _buildBulletPoint(context, "Nighttime Oxygen Levels",
               "Plants and algae produce oxygen during the day through photosynthesis but consume oxygen at night. Monitoring oxygen levels at different times of the day can help maintain a healthy balance (Raven et al., 1999)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Key Takeaways",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Maintaining adequate oxygen levels is essential for a healthy and stable aquarium environment. Oxygen supports respiration, nitrification, and decomposition processes, and influences various water parameters. Understanding and managing oxygen levels are crucial for the well-being of all aquatic life.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "References",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildReference(
             "Brett, J. R. (1971). Energetic responses of salmon to temperature. A study of some thermal relations in the physiology and freshwater ecology of sockeye salmon (Oncorhynchus nerka). American Zoologist, 11(1), 99-113.",
           ),
@@ -143,9 +145,9 @@ class OxygenKnowledgeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             '• ',
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
           Expanded(
             child: RichText(
@@ -153,15 +155,15 @@ class OxygenKnowledgeScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: "$title: ",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: ColorProvider.primaryDark),
+                        color: ColorProvider.n1),
                   ),
                   TextSpan(
                     text: text,
                     style:
-                        TextStyle(fontSize: 16, color: ColorProvider.textDark),
+                        const TextStyle(fontSize: 16, color: ColorProvider.n1),
                   ),
                 ],
               ),
@@ -177,7 +179,7 @@ class OxygenKnowledgeScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+        style: const TextStyle(fontSize: 16, color: ColorProvider.n1),
       ),
     );
   }

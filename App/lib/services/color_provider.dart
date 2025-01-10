@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 
 class ColorProvider {
-  // Primary Colors
-  static const Color primary = Color(0xFF1E88E5);
-  static const Color primaryDark = Color(0xFF0D47A1);
+  // n1 bis n16 aus Tailwind
+  static const n1 = Color(0xFFFFFFFF); // Weiß
+  static const n2 = Color(0xFFCAC6DD); // Sehr helles Grau
+  static const n3 = Color(0xFFADA8C3); // Helles Grau mit leichtem Violett-Stich
+  static const n4 = Color(0xFF757185); // Mittelgrau
+  static const n5 =
+      Color(0xFF3F3A52); // Dunkles Grau mit einem leichten Blau-Stich
+  static const n6 = Color(0xFF07304f); // Sehr dunkles Grau
+  static const n7 = Color(0xFF051521); // Fast Schwarz
+  static const n8 = Color(0xFF031726); // Sehr dunkles Schwarz
+  static const n9 = Color(0xFF474060); // Dunkles Grau mit Blau-Violett-Ton
+  static const n10 = Color(0xFF43435C); // Blau-Grau, etwas dunkler als 9
+  static const n11 = Color(0xFF1B1B2E); // Sehr dunkles Blau-Schwarz
+  static const n12 = Color(0xFF2E2A41); // Dunkles Blau-Grau
+  static const n13 = Color(0xFF6C7275); // Grau mit leichtem Blau-Grün-Ton
+  static const n14 = Color(0xFF031726); // Marineblau
+  static const n15 = Color(0xFF575ab2); // Blauviolett
+  static const n16 = Color(0xFF9c9eed); // Helles Blauviolett
+  static const n17 = Color(0xFF2563EB); // Mittleres Blau
 
-  // Secondary Colors
-  static const Color secondary = Color(0xFF00ACC1);
-  static const Color secondaryDark = Color(0xFF004D40);
-
-  // Accent Colors
-  static const Color accentRed = Color(0xFFE53935);
-  static const Color accentOrange = Color(0xFFFB8C00);
-
-  // Neutral Colors
-  static const Color background = Color(0xFFECEFF1);
-  static const Color textDark = Color(0xFF455A64);
-  static const Color textLight = Color(0xFFFFFFFF);
-
+  // Farbschema für ThemeData
   static ColorScheme get colorScheme => const ColorScheme(
-        primary: primary,
-        primaryContainer: primaryDark,
-        secondary: secondary,
-        secondaryContainer: secondaryDark,
-        surface: Colors.white,
-        background: background,
-        error: accentRed,
-        onPrimary: textLight,
-        onSecondary: textLight,
-        onSurface: textDark,
-        onBackground: textDark,
-        onError: textLight,
-        brightness: Brightness.light,
+        brightness: Brightness.dark,
+        primary: n1, // Primärfarbe
+        onPrimary: n1, // Text auf Primärfarbe
+        secondary: n2, // Sekundärfarbe
+        onSecondary: n1, // Text auf Hintergrund
+        surface: n9, // Oberfläche
+        onSurface: n1, // Text auf Oberfläche
+        error: n13, // Fehlerfarbe
+        onError: n1, // Text auf Fehlerfarbe
       );
 }

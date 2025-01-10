@@ -2,60 +2,62 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 
 class PHKnowledgeScreen extends StatelessWidget {
+  const PHKnowledgeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "The Importance of pH in Aquarium for Ecosystem and Fish Health",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "pH is a measure of the acidity or alkalinity of water, and it plays a crucial role in maintaining a healthy aquarium environment. The pH scale ranges from 0 to 14, with 7 being neutral. Values below 7 are considered acidic, and values above 7 are alkaline. Different species of fish and plants require specific pH levels to thrive.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "The Role of pH in Aquariums",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Maintaining the correct pH level is essential for the overall health and well-being of fish and other aquatic organisms. Most freshwater fish thrive in a pH range of 6.5-7.5, while marine species typically prefer a pH between 8.0-8.4 (Spotte, 1979). Maintaining the appropriate pH range is crucial for the following reasons:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Biological Functions",
               "The pH level influences various biological processes in fish, including respiration, metabolism, and reproduction. Drastic changes in pH can stress fish, impair their physiological functions, and even lead to death (Schreck, 1990)."),
           _buildBulletPoint(context, "Toxicity of Chemicals",
               "The toxicity of certain chemicals, such as ammonia, is pH-dependent. At higher pH levels, ammonia becomes more toxic, posing a greater risk to fish (Hargreaves & Tucker, 2004)."),
           _buildBulletPoint(context, "Microbial Activity",
               "The activity of beneficial bacteria that break down waste products is influenced by pH. Optimal pH levels ensure efficient biological filtration and a stable nitrogen cycle (Hovanec & DeLong, 1996)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Effects of pH on Other Water Parameters",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "pH levels can affect several key water parameters, each of which can impact the health of the aquarium's inhabitants:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Ammonia Toxicity",
               "As previously mentioned, ammonia's toxicity increases with pH. In alkaline conditions (high pH), more ammonia is present in its toxic form (NH3) rather than the less harmful ammonium ion (NH4+) (Emerson et al., 1975)."),
           _buildBulletPoint(context, "Hardness and Alkalinity",
@@ -66,30 +68,30 @@ class PHKnowledgeScreen extends StatelessWidget {
               "Aquatic plants require specific pH levels for optimal growth. Extreme pH levels can hinder nutrient uptake and photosynthesis, affecting plant health and growth (Raven et al., 1999)."),
           _buildBulletPoint(context, "Metal Solubility",
               "pH affects the solubility of metals in water. In acidic conditions (low pH), metals become more soluble and potentially toxic to fish and other aquatic life (Sprague, 1985)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Good to Know Facts about pH",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "pH Stability",
               "Sudden changes in pH can be harmful to fish and other aquatic organisms. Using buffers can help maintain stable pH levels (Boyd, 1990)."),
           _buildBulletPoint(context, "Species-Specific Requirements",
               "Different species have different pH preferences. It's important to research the specific needs of your aquarium inhabitants to ensure they are kept within their optimal pH range (Spotte, 1979)."),
           _buildBulletPoint(context, "Testing and Monitoring",
               "Regular testing and monitoring of pH levels are essential for maintaining a healthy aquarium. pH test kits and electronic pH meters can provide accurate measurements (APHA, 1998)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "References",
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorProvider.textDark),
+                color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildReference(
             "APHA (1998). Standard Methods for the Examination of Water and Wastewater. American Public Health Association.",
           ),
@@ -131,9 +133,9 @@ class PHKnowledgeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             '• ',
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
           Expanded(
             child: RichText(
@@ -141,15 +143,15 @@ class PHKnowledgeScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: "$title: ",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: ColorProvider.primaryDark),
+                        color: ColorProvider.n1),
                   ),
                   TextSpan(
                     text: text,
                     style:
-                        TextStyle(fontSize: 16, color: ColorProvider.textDark),
+                        const TextStyle(fontSize: 16, color: ColorProvider.n1),
                   ),
                 ],
               ),
@@ -165,7 +167,7 @@ class PHKnowledgeScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+        style: const TextStyle(fontSize: 16, color: ColorProvider.n1),
       ),
     );
   }

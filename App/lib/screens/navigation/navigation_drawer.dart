@@ -27,7 +27,7 @@ class MenuDrawer extends StatelessWidget {
 
   Widget buildHeader(BuildContext context) {
     return Container(
-      color: ColorProvider.primaryDark,
+      color: ColorProvider.n1,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Padding(
         padding: const EdgeInsets.all(24.0),

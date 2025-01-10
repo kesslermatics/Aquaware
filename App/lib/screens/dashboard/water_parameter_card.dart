@@ -43,7 +43,8 @@ class WaterParameterCard extends StatefulWidget {
   final WaterParameter waterParameter;
   final int aquariumId;
 
-  WaterParameterCard({required this.aquariumId, required this.waterParameter});
+  const WaterParameterCard(
+      {super.key, required this.aquariumId, required this.waterParameter});
 
   @override
   _WaterParameterCardState createState() => _WaterParameterCardState();
@@ -93,7 +94,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
       onTap: () =>
           _navigateToDetailScreen(context, widget.waterParameter.parameter),
       child: Card(
-        margin: EdgeInsets.fromLTRB(14, 10, 14, 0),
+        margin: const EdgeInsets.fromLTRB(14, 10, 14, 0),
         child: IntrinsicHeight(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -101,7 +102,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 14, 0),
-                  child: Container(
+                  child: SizedBox(
                     width: 100,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -124,7 +125,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
                           child: Text(
                             latestValue.value.toString(),
                             key: ValueKey<double>(latestValue.value),
-                            style: TextStyle(fontSize: 24),
+                            style: const TextStyle(fontSize: 24),
                           ),
                         ),
                       ],
@@ -144,7 +145,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
                     children: [
                       Text(
                         maxY.toStringAsFixed(2),
-                        style: TextStyle(fontSize: 10),
+                        style: const TextStyle(fontSize: 10),
                       ),
                       Expanded(
                         child: SizedBox(
@@ -154,16 +155,16 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
                       ),
                       Text(
                         minY.toStringAsFixed(2),
-                        style: TextStyle(fontSize: 10),
+                        style: const TextStyle(fontSize: 10),
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    color: ColorProvider.textDark,
+                    color: ColorProvider.n1,
                   ),
                 ),
               ],
@@ -181,13 +182,13 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     }
 
     return LineChartData(
-      clipData: FlClipData.all(),
-      gridData: FlGridData(show: false),
+      clipData: const FlClipData.all(),
+      gridData: const FlGridData(show: false),
       minY: minY - (maxY - minY),
       maxY: maxY + (maxY - minY),
       minX: 1,
       maxX: data.length.toDouble(),
-      titlesData: FlTitlesData(show: false),
+      titlesData: const FlTitlesData(show: false),
       borderData: FlBorderData(show: false),
       lineBarsData: [
         LineChartBarData(
@@ -196,7 +197,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           color: _getColorForParameter(widget.waterParameter.parameter),
           barWidth: 3,
           isStrokeCapRound: true,
-          dotData: FlDotData(show: false),
+          dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(show: false),
         ),
       ],
@@ -353,7 +354,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.1,
           ),
-          knowledgeScreen: AmmoniaKnowledgeScreen(),
+          knowledgeScreen: const AmmoniaKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Ammonia levels that are too high can be dangerous for your fish, leading to stress, illness, and even death. '
@@ -378,7 +379,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.1,
           ),
-          knowledgeScreen: BoronKnowledgeScreen(),
+          knowledgeScreen: const BoronKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High levels of boron can be toxic to plants and invertebrates in your aquarium. '
@@ -403,7 +404,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.1,
           ),
-          knowledgeScreen: BromineKnowledgeScreen(),
+          knowledgeScreen: const BromineKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Elevated bromine levels can be harmful to fish, leading to respiratory problems and stress. '
@@ -428,7 +429,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.1,
           ),
-          knowledgeScreen: CalciumKnowledgeScreen(),
+          knowledgeScreen: const CalciumKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High calcium levels can lead to water hardness issues, which might cause stress in soft water fish. '
@@ -453,7 +454,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.1,
           ),
-          knowledgeScreen: CarbonDioxideKnowledgeScreen(),
+          knowledgeScreen: const CarbonDioxideKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Excessive carbon dioxide (CO2) can lower the pH of your aquarium, leading to stress and respiratory issues in fish. '
@@ -478,7 +479,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 2,
             lineChartDeviation: 0.2,
           ),
-          knowledgeScreen: CarbonateHardnessKnowledgeScreen(),
+          knowledgeScreen: const CarbonateHardnessKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High carbonate hardness (KH) levels can cause pH stability issues, making it difficult to adjust pH levels. '
@@ -503,7 +504,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 2,
             lineChartDeviation: 0.2,
           ),
-          knowledgeScreen: ChlorideKnowledgeScreen(),
+          knowledgeScreen: const ChlorideKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High chloride levels can indicate contamination and may lead to stress in freshwater fish. '
@@ -527,7 +528,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 2,
             lineChartDeviation: 0.2,
           ),
-          knowledgeScreen: ChlorineKnowledgeScreen(),
+          knowledgeScreen: const ChlorineKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Excess chlorine can be toxic to all aquatic life, leading to severe stress, gill damage, and death. '
@@ -551,7 +552,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 0,
             lineChartDeviation: 50.0,
           ),
-          knowledgeScreen: ConductivityKnowledgeScreen(),
+          knowledgeScreen: const ConductivityKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High conductivity often indicates high levels of dissolved salts, which can be harmful to fish not adapted to such conditions. '
@@ -575,7 +576,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.05,
           ),
-          knowledgeScreen: CopperKnowledgeScreen(),
+          knowledgeScreen: const CopperKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Elevated copper levels can be highly toxic to invertebrates and sensitive fish species, leading to death. '
@@ -599,7 +600,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 2,
             lineChartDeviation: 0.2,
           ),
-          knowledgeScreen: FluorideKnowledgeScreen(),
+          knowledgeScreen: const FluorideKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High fluoride levels can be harmful to fish, causing stress and potential organ damage over time. '
@@ -623,7 +624,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 1.0,
           ),
-          knowledgeScreen: GeneralHardnessKnowledgeScreen(),
+          knowledgeScreen: const GeneralHardnessKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'General hardness (GH) measures the total concentration of calcium and magnesium. '
@@ -648,7 +649,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.05,
           ),
-          knowledgeScreen: IodineKnowledgeScreen(),
+          knowledgeScreen: const IodineKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Iodine is necessary for invertebrate health but in high concentrations, it can be toxic to both fish and invertebrates. '
@@ -672,7 +673,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.05,
           ),
-          knowledgeScreen: IronKnowledgeScreen(),
+          knowledgeScreen: const IronKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High iron levels can lead to excessive algae growth and may be toxic to invertebrates and some fish species. '
@@ -696,7 +697,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 0,
             lineChartDeviation: 50.0,
           ),
-          knowledgeScreen: MagnesiumKnowledgeScreen(),
+          knowledgeScreen: const MagnesiumKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Magnesium is crucial for coral and invertebrate health, but excessive levels can disrupt water chemistry and harm aquatic life. '
@@ -720,7 +721,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.005,
           ),
-          knowledgeScreen: MolybdenumKnowledgeScreen(),
+          knowledgeScreen: const MolybdenumKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Molybdenum in excess can be toxic to fish and invertebrates, potentially leading to health issues or death. '
@@ -744,7 +745,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 5.0,
           ),
-          knowledgeScreen: NitrateKnowledgeScreen(),
+          knowledgeScreen: const NitrateKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High nitrate levels can cause stress, weaken immune systems, and lead to algae overgrowth. '
@@ -768,7 +769,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.05,
           ),
-          knowledgeScreen: NitriteKnowledgeScreen(),
+          knowledgeScreen: const NitriteKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Nitrite is highly toxic to fish and even small amounts can lead to stress, illness, or death. '
@@ -792,7 +793,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 0.5,
           ),
-          knowledgeScreen: OrganicCarbonKnowledgeScreen(),
+          knowledgeScreen: const OrganicCarbonKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High levels of organic carbon can indicate poor water quality, leading to oxygen depletion and stress for fish. '
@@ -816,7 +817,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 0.5,
           ),
-          knowledgeScreen: OxygenKnowledgeScreen(),
+          knowledgeScreen: const OxygenKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Low oxygen levels can lead to suffocation and death for fish, especially those in densely stocked tanks. '
@@ -840,7 +841,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 2,
             lineChartDeviation: 0.2,
           ),
-          knowledgeScreen: PHKnowledgeScreen(),
+          knowledgeScreen: const PHKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'pH levels that are too high or too low can lead to stress, disease, and even death in fish. '
@@ -865,7 +866,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 2,
             lineChartDeviation: 0.2,
           ),
-          knowledgeScreen: PhosphateKnowledgeScreen(),
+          knowledgeScreen: const PhosphateKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Excess phosphate can lead to algae overgrowth, causing oxygen depletion and stress in fish. '
@@ -889,7 +890,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 5.0,
           ),
-          knowledgeScreen: PotassiumKnowledgeScreen(),
+          knowledgeScreen: const PotassiumKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Potassium is necessary for plant health, but high levels can be harmful to fish and other aquatic life. '
@@ -913,7 +914,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 0,
             lineChartDeviation: 50.0,
           ),
-          knowledgeScreen: RedoxPotentialKnowledgeScreen(),
+          knowledgeScreen: const RedoxPotentialKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Redox potential that is too low can indicate poor water quality and lack of oxygen, while too high can cause oxidative stress in fish. '
@@ -937,7 +938,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 3,
             lineChartDeviation: 0.005,
           ),
-          knowledgeScreen: SalinityKnowledgeScreen(),
+          knowledgeScreen: const SalinityKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High salinity can cause osmotic stress in freshwater fish, leading to dehydration and death. '
@@ -961,7 +962,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 0.5,
           ),
-          knowledgeScreen: SilicaKnowledgeScreen(),
+          knowledgeScreen: const SilicaKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Silica can promote diatom algae growth, which can be problematic in aquariums. '
@@ -985,7 +986,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 5.0,
           ),
-          knowledgeScreen: StrontiumKnowledgeScreen(),
+          knowledgeScreen: const StrontiumKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Strontium is important for coral growth, but excessive levels can be harmful to invertebrates. '
@@ -1009,7 +1010,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 0,
             lineChartDeviation: 50.0,
           ),
-          knowledgeScreen: SulfateKnowledgeScreen(),
+          knowledgeScreen: const SulfateKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Sulfate in high concentrations can contribute to water hardness and be toxic to fish and invertebrates. '
@@ -1033,7 +1034,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 5.0,
           ),
-          knowledgeScreen: SuspendedSolidsKnowledgeScreen(),
+          knowledgeScreen: const SuspendedSolidsKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High levels of suspended solids can cause cloudy water, reduce light penetration, and stress fish by clogging their gills. '
@@ -1057,7 +1058,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 0,
             lineChartDeviation: 50.0,
           ),
-          knowledgeScreen: TDSKnowledgeScreen(),
+          knowledgeScreen: const TDSKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Total Dissolved Solids (TDS) that are too high can indicate poor water quality and stress aquatic life. '
@@ -1081,7 +1082,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 0.5,
           ),
-          knowledgeScreen: TemperatureKnowledgeScreen(),
+          knowledgeScreen: const TemperatureKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'Temperature that is too high or too low can cause thermal stress, weaken immune systems, and lead to death. '
@@ -1106,7 +1107,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             fractionDigits: 1,
             lineChartDeviation: 5.0,
           ),
-          knowledgeScreen: TurbidityKnowledgeScreen(),
+          knowledgeScreen: const TurbidityKnowledgeScreen(),
           alertScreen: AlertScreen(
             infotext:
                 'High turbidity can reduce light penetration, disrupt photosynthesis, and stress fish by clogging their gills. '

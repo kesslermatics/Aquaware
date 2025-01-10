@@ -2,62 +2,64 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 
 class AmmoniaKnowledgeScreen extends StatelessWidget {
+  const AmmoniaKnowledgeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "The Importance of Ammonia in Aquarium for Ecosystem and Fish Health",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Ammonia (NH3) is a toxic compound that is produced in aquariums primarily from fish waste, uneaten food, and decomposing organic matter. Monitoring and managing ammonia levels are critical for maintaining a healthy aquatic environment.",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "The Role of Ammonia in Aquariums",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Ammonia is the first compound in the nitrogen cycle, which is essential for breaking down waste products in the aquarium. However, high levels of ammonia are harmful to fish and other aquatic organisms. Understanding and controlling ammonia is crucial for the following reasons:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Toxicity",
               "Ammonia is highly toxic to fish. Even low concentrations can cause stress, damage gills, and impair the immune system, leading to illness or death (Hargreaves & Tucker, 2004)."),
           _buildBulletPoint(context, "Nitrogen Cycle",
               "Ammonia is converted by beneficial bacteria into nitrite (NO2-) and then into nitrate (NO3-), which is less harmful. Maintaining this cycle is essential for a stable and healthy aquarium (Hagopian & Riley, 1998)."),
           _buildBulletPoint(context, "Indicator of Water Quality",
               "Ammonia levels can indicate the overall health of the aquarium. Elevated ammonia levels suggest overfeeding, overcrowding, or inadequate filtration (Boyd, 1990)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Effects of Ammonia on Other Water Parameters",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Ammonia levels can influence several key water parameters, each of which can impact the health of the aquarium's inhabitants:",
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "pH Levels",
               "The toxicity of ammonia increases with higher pH levels. In alkaline conditions, a greater proportion of ammonia is present in its un-ionized, toxic form (NH3) (Emerson et al., 1975)."),
           _buildBulletPoint(context, "Temperature",
@@ -66,32 +68,32 @@ class AmmoniaKnowledgeScreen extends StatelessWidget {
               "High ammonia levels can reduce the oxygen-carrying capacity of fish blood, leading to respiratory distress. It is crucial to maintain adequate oxygen levels to mitigate ammonia toxicity (Wetzel, 2001)."),
           _buildBulletPoint(context, "Nitrite and Nitrate Levels",
               "As part of the nitrogen cycle, ammonia levels can affect nitrite and nitrate concentrations. Proper bacterial filtration ensures ammonia is efficiently converted to less harmful compounds (Hargreaves & Tucker, 2004)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "Good to Know Facts about Ammonia",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildBulletPoint(context, "Ammonia Detoxifiers",
               "Products that detoxify ammonia can provide temporary relief in emergencies, but they do not replace the need for proper biological filtration and regular maintenance (APHA, 1998)."),
           _buildBulletPoint(context, "Fishless Cycling",
               "Cycling an aquarium without fish allows beneficial bacteria to establish and process ammonia, creating a safer environment before introducing fish (Hagopian & Riley, 1998)."),
           _buildBulletPoint(context, "Ammonia Test Kits",
               "Regular use of ammonia test kits helps monitor water quality and detect problems early, allowing for timely corrective actions (Boyd, 1990)."),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             "References",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: ColorProvider.textDark,
+              color: ColorProvider.n1,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildReference(
             "APHA (1998). Standard Methods for the Examination of Water and Wastewater. American Public Health Association.",
           ),
@@ -124,9 +126,9 @@ class AmmoniaKnowledgeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             '• ',
-            style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+            style: TextStyle(fontSize: 16, color: ColorProvider.n1),
           ),
           Expanded(
             child: RichText(
@@ -134,15 +136,15 @@ class AmmoniaKnowledgeScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: "$title: ",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: ColorProvider.primaryDark),
+                        color: ColorProvider.n1),
                   ),
                   TextSpan(
                     text: text,
                     style:
-                        TextStyle(fontSize: 16, color: ColorProvider.textDark),
+                        const TextStyle(fontSize: 16, color: ColorProvider.n1),
                   ),
                 ],
               ),
@@ -158,7 +160,7 @@ class AmmoniaKnowledgeScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 16, color: ColorProvider.textDark),
+        style: const TextStyle(fontSize: 16, color: ColorProvider.n1),
       ),
     );
   }

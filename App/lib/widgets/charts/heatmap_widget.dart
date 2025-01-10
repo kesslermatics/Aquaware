@@ -10,7 +10,8 @@ class HeatmapWidget extends StatelessWidget {
   final String title;
   final int fractionDigits;
 
-  HeatmapWidget({
+  const HeatmapWidget({
+    super.key,
     required this.waterValues,
     this.title = '',
     required this.fractionDigits,
@@ -31,10 +32,10 @@ class HeatmapWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: ColorProvider.textDark,
+                    color: ColorProvider.n1,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -44,7 +45,7 @@ class HeatmapWidget extends StatelessWidget {
               heatmapData: heatmapData,
               showXAxisLabels: false,
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             _buildLegend(
@@ -109,16 +110,16 @@ class HeatmapWidget extends StatelessWidget {
       columns: columns,
       items: items,
       colorPalette: [
-        Color(0xffF5F5F5), // 0
-        Color(0xffBBDEFB), // 100
-        Color(0xff90CAF9), // 200
-        Color(0xff64B5F6), // 300
-        Color(0xff42A5F5), // 400
-        Color(0xff2196F3), // 500
-        Color(0xff1E88E5), // 600
-        Color(0xff1976D2), // 700
-        Color(0xff1565C0), // 800
-        Color(0xff0D47A1), // 900
+        const Color(0xffF5F5F5), // 0
+        const Color(0xffBBDEFB), // 100
+        const Color(0xff90CAF9), // 200
+        const Color(0xff64B5F6), // 300
+        const Color(0xff42A5F5), // 400
+        const Color(0xff2196F3), // 500
+        const Color(0xff1E88E5), // 600
+        const Color(0xff1976D2), // 700
+        const Color(0xff1565C0), // 800
+        const Color(0xff0D47A1), // 900
       ],
     );
   }
@@ -137,11 +138,11 @@ class HeatmapWidget extends StatelessWidget {
       children: [
         Text(
           minValue.toStringAsFixed(fractionDigits) + waterValues.first.unit,
-          style: TextStyle(
-            color: ColorProvider.textDark,
+          style: const TextStyle(
+            color: ColorProvider.n1,
           ),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Container(
           width: 100,
           height: 20,
@@ -165,8 +166,8 @@ class HeatmapWidget extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           maxValue.toStringAsFixed(fractionDigits) + waterValues.first.unit,
-          style: TextStyle(
-            color: ColorProvider.textDark,
+          style: const TextStyle(
+            color: ColorProvider.n1,
           ),
         ),
       ],
