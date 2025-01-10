@@ -35,7 +35,7 @@ class _SignInFormState extends State<SignInForm> {
   final UserService _userService = UserService();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       clientId:
-          "191107134677-01dnm67luaua0bpalbkia3jucktqggoi.apps.googleusercontent.com");
+          "191107134677-vo049j2kfoho5v5hjtfmiug3i2tafdtv.apps.googleusercontent.com");
 
   @override
   void initState() {

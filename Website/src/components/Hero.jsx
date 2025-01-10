@@ -16,13 +16,7 @@ const Hero = () => {
   const { t } = useTranslation();
 
   return (
-    <Section
-      className="pt-[12rem] -mt-[5.25rem]"
-      crosses
-      crossesOffset="lg:translate-y-[5.25rem]"
-      customPaddings
-      id="hero"
-    >
+    <div>
       <div className="container relative" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="h1 mb-6">
@@ -86,16 +80,12 @@ const Hero = () => {
             <Gradient />
           </div>
           <div className="absolute -top-[54%] left-1/2 w-[234%] -translate-x-1/2 md:-top-[46%] md:w-[138%] lg:-top-[104%]"></div>
-
-          <BackgroundCircles />
         </div>
         {/* 
         <CompanyLogos className="hidden relative z-10 mt-20 lg:block" /> 
         */}
       </div>
-
-      <BottomLine />
-    </Section>
+    </div>
   );
 };
 
