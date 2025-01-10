@@ -49,6 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+    reset_code = models.CharField(max_length=8, blank=True, null=True)
+    reset_code_expiration = models.DateTimeField(blank=True, null=True)
 
     # API Key for automated requests
     api_key = models.CharField(
@@ -84,6 +86,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Regenerate the API key for the user."""
         self.api_key = secrets.token_hex(20)
         self.save(update_fields=['api_key'])
+
+    def clear_reset_code(self):
+        """Clear the reset code after it's used or expired."""
+        self.reset_code = None
+        self.reset_code_expiration = None
+        self.save(update_fields=['reset_code', 'reset_code_expiration'])
 
     def __str__(self):
         return self.email

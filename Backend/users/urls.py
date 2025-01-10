@@ -16,8 +16,7 @@ urlpatterns = [
     # Password Management
     path('auth/password/change/', user_views.change_password, name='auth-password-change'),  # POST
     path('auth/password/forgot/', user_views.forgot_password, name='auth-password-forgot'),  # POST
-    path('auth/password/reset/', auth_views.PasswordResetView.as_view(), name='auth-password-reset'),  # POST
-    path('auth/password/reset/done/', auth_views.PasswordResetDoneView.as_view(), name='auth-password-reset-done'),
+    path('auth/password/reset/', user_views.verify_reset_code, name='verify_reset_code'),  # POST
     # GET
     path('auth/password/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(),
          name='auth-password-reset-confirm'),  # POST
