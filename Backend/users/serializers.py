@@ -25,11 +25,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        user = User(
+        user = User.objects.create_user(
             email=validated_data['email'],
+            password=validated_data['password'],
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
-            subscription_tier = SubscriptionTier.objects.get(id=1),
+            subscription_tier=SubscriptionTier.objects.get(id=1),
         )
         user.set_password(validated_data['password'])
         user.save()

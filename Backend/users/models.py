@@ -54,7 +54,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     api_key = models.CharField(
         max_length=40,
         unique=True,
-        editable=False,
         default=secrets.token_hex(20)
     )
 
