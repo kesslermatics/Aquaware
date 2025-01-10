@@ -51,7 +51,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
 
     # API Key for automated requests
-    api_key = models.CharField(max_length=40, unique=True, editable=False)
+    api_key = models.CharField(
+        max_length=40,
+        unique=True,
+        editable=False,
+        default=secrets.token_hex(20)
+    )
 
     groups = models.ManyToManyField(
         Group,
