@@ -18,7 +18,7 @@ def identify_animal_from_image(request):
     user = request.user
 
     # Check if user has the correct subscription tier (e.g., Tier 3 - Premium)
-    if user.subscription_tier.id != 3:
+    if user.subscription_tier.id == 1:
         return Response({"detail": "This feature is only available for Premium subscribers."},
                         status=status.HTTP_403_FORBIDDEN)
 
@@ -86,6 +86,7 @@ def identify_animal_from_image(request):
 
         # Handle the response from OpenAI
         response_data = response.json()
+        print(response_data)
         animal_info = response_data['choices'][0]['message']['content'].strip()
         animal_info_cleaned = animal_info.replace('```', '').strip()
         animal_info_cleaned = animal_info_cleaned.replace('json', '').strip()
