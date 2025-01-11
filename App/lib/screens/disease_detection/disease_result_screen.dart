@@ -26,11 +26,13 @@ class DiseaseResultScreen extends StatelessWidget {
                   children: [
                     Icon(Icons.check_circle, color: Colors.green, size: 24),
                     SizedBox(width: 8),
-                    Text(
-                      'The captured animal seems to be healthy!',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Text(
+                        'The captured animal seems to be healthy!',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -103,7 +105,6 @@ class DiseaseResultScreen extends StatelessWidget {
               // Admonition
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.yellow[100],
                   border: Border.all(
                     color: Colors.yellow[700]!,
                     width: 1,

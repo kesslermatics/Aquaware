@@ -177,10 +177,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
-                                  'Hmm, seems like there’s no environment yet. Why don\'t you click here for a quick guide on how to start:',
-                                  style: TextStyle(fontSize: 16),
-                                  textAlign: TextAlign.center,
+                                const Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Text(
+                                    'Hmm, seems like there’s no environment yet. Why don\'t you click here for a quick guide on how to start:',
+                                    style: TextStyle(fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 ElevatedButton(

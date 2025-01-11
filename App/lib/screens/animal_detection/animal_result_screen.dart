@@ -199,7 +199,6 @@ class _AnimalResultScreenState extends State<AnimalResultScreen> {
               // Admonition
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.yellow[100],
                   border: Border.all(
                     color: Colors.yellow[700]!,
                     width: 1,

@@ -25,10 +25,6 @@ class AnimalDetectionService {
             contentType: MediaType('image', 'jpeg'), // Adjust type if necessary
           ),
         );
-
-      // Send the request and wait for the response
-      print('File path: ${imageFile.path}');
-      print('File size: ${await imageFile.length()} bytes');
       final streamedResponse = await request.send();
       return http.Response.fromStream(streamedResponse);
     });
@@ -41,8 +37,7 @@ class AnimalDetectionService {
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       return AnimalDetection.fromJson(responseBody);
     } else {
-      throw Exception(
-          'Failed to detect animal. Status code: ${response.statusCode}');
+      throw Exception('Failed to detect animal. Please try again later.');
     }
   }
 }
