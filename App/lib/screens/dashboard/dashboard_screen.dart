@@ -147,7 +147,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const CircularProgressIndicator(color: Colors.blue),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Getting all environments...',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 : _error != null
                     ? const Center(
                         child: Text(

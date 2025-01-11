@@ -26,44 +26,99 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder<List<WaterParameter>>(
-        future: _futureWaterParameters,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No water parameters found.'));
-          } else {
-            DateTime sevenDaysAgo =
-                DateTime.now().subtract(const Duration(days: 7));
+    return FutureBuilder<List<WaterParameter>>(
+      future: _futureWaterParameters,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(color: Colors.blue),
+                const SizedBox(height: 16),
+                Text(
+                  'Getting all parameters...',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error, color: Colors.red),
+                const SizedBox(width: 8),
+                Text(
+                  'Error: There was an error loading the water parameters.',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          );
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.info, color: Colors.grey),
+                const SizedBox(width: 8),
+                Text(
+                  'No water parameters found.',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          );
+        } else {
+          DateTime sevenDaysAgo =
+              DateTime.now().subtract(const Duration(days: 7));
 
-            List<WaterParameter> recentParameters =
-                snapshot.data!.where((param) {
-              return param.values.any(
-                  (waterValue) => waterValue.measuredAt.isAfter(sevenDaysAgo));
-            }).toList();
+          List<WaterParameter> recentParameters = snapshot.data!.where((param) {
+            return param.values.any(
+                (waterValue) => waterValue.measuredAt.isAfter(sevenDaysAgo));
+          }).toList();
 
-            if (recentParameters.isEmpty) {
-              return const Center(
-                  child: Text('No water parameters found in the last 7 days.'));
-            }
+          bool hasRecentData = recentParameters.isNotEmpty;
 
-            return ListView.builder(
-              itemCount: recentParameters.length,
-              itemBuilder: (context, index) {
-                final waterParameter = recentParameters[index];
-                return WaterParameterCard(
-                  aquariumId: widget.aquarium.id,
-                  waterParameter: waterParameter,
-                );
-              },
-            );
-          }
-        },
-      ),
+          return Column(
+            children: [
+              if (!hasRecentData)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.warning, color: Colors.amber),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'No water parameters found in the last 7 days. The data shown may be outdated.',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final waterParameter = snapshot.data![index];
+                    return WaterParameterCard(
+                      aquariumId: widget.aquarium.id,
+                      waterParameter: waterParameter,
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }

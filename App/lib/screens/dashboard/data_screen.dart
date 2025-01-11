@@ -65,8 +65,6 @@ class _DataScreenState extends State<DataScreen> {
       _progress = 1.0;
       _statusText = "Loading complete!";
     });
-
-    await Future.delayed(const Duration(milliseconds: 50)); // Pause for UX
   }
 
   @override
@@ -86,34 +84,48 @@ class _DataScreenState extends State<DataScreen> {
           } else {
             List<WaterValue> waterValues = snapshot.data!.reversed.toList();
             WaterValue lastWaterValue = waterValues.last;
-            return FutureBuilder<int>(
-              future: widget.futureTotalEntries,
-              builder: (context, totalEntriesSnapshot) {
-                if (totalEntriesSnapshot.hasError) {
-                  return const Center(
-                      child: Text('Failed to load total entries'));
-                } else if (!totalEntriesSnapshot.hasData) {
-                  return const Center(child: Text('No total entries found'));
-                } else {
-                  int totalEntries = totalEntriesSnapshot.data!;
-                  return SingleChildScrollView(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        LastUpdatedWidget(lastWaterValue: lastWaterValue),
-                        TotalEntriesWidget(totalEntries: totalEntries),
-                        if (widget.isLineChartVisible)
-                          _makeLineChartWidget(waterValues),
-                        if (widget.isHeatmapVisible)
-                          _makeHeatmapWidget(waterValues),
-                        if (widget.isHistogrammVisible)
-                          _makeHistogramWidget(waterValues),
-                      ],
-                    ),
-                  );
-                }
-              },
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  LastUpdatedWidget(lastWaterValue: lastWaterValue),
+                  FutureBuilder<int>(
+                    future: widget.futureTotalEntries,
+                    builder: (context, totalEntriesSnapshot) {
+                      if (totalEntriesSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: ColorProvider.n17,
+                          ),
+                        );
+                      } else if (totalEntriesSnapshot.hasError) {
+                        return const Center(
+                            child: Text('Failed to load total entries'));
+                      } else if (!totalEntriesSnapshot.hasData) {
+                        return const Center(
+                            child: Text('No total entries found'));
+                      } else {
+                        int totalEntries = totalEntriesSnapshot.data!;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            TotalEntriesWidget(totalEntries: totalEntries),
+                            if (widget.isLineChartVisible)
+                              _makeLineChartWidget(waterValues),
+                            if (widget.isHeatmapVisible)
+                              _makeHeatmapWidget(waterValues),
+                            if (widget.isHistogrammVisible)
+                              _makeHistogramWidget(waterValues),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             );
           }
         },
