@@ -22,7 +22,7 @@ class OnboardingScreen extends StatelessWidget {
             onPageChanged: controller.updatePageIndicator,
             children: const [
               OnboardingPage(
-                imagePath: 'assets/images/onboarding_1.gif',
+                imagePath: 'assets/images/onboarding_1.png',
                 title: "Welcome to Aquaware",
                 paragraph:
                     "Monitor your aquarium's water quality effortlessly, all for free.",

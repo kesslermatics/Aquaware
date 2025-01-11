@@ -282,4 +282,22 @@ class UserService {
       return 'Failed to refresh access token';
     }
   }
+
+  Future<String> regenerateApiKey() async {
+    final response = await makeAuthenticatedRequest((token) {
+      return http.post(
+        Uri.parse('$baseUrl/api/users/auth/api-key/regenerate/'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+    });
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['api_key'];
+    } else {
+      throw Exception('Failed to regenerate API key');
+    }
+  }
 }

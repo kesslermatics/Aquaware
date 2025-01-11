@@ -1,8 +1,8 @@
 class UserProfile {
   final int id;
   final String email;
-  final String firstName;
-  final String lastName;
+  late String firstName;
+  late String lastName;
   final DateTime dateJoined;
   final int subscriptionTier;
   final String apiKey;
