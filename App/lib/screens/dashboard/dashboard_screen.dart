@@ -2,9 +2,11 @@ import 'package:aquaware/models/environment.dart';
 import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/screens/dashboard/add_public_environment_screen.dart';
 import 'package:aquaware/screens/dashboard/create_environment_screen.dart';
+import 'package:aquaware/screens/dashboard/tutorial/tutorial_page.dart';
 import 'package:aquaware/services/environment_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:get/get.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Function(Environment) onEnvironmentTapped;
@@ -42,7 +44,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  // Methode zum Löschen eines Environments
   Future<void> _deleteEnvironment(
       BuildContext context, Environment environment) async {
     TextEditingController nameController = TextEditingController();
@@ -87,16 +88,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           _fetchEnvironments();
                         });
                         Navigator.of(context).pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content:
-                                  Text('Environment deleted successfully')),
-                        );
+                        Get.snackbar(
+                            'Success', 'Environment deleted successfully',
+                            snackPosition: SnackPosition.BOTTOM);
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Environment name does not match')),
-                        );
+                        Get.snackbar('Error',
+                            'Environment name does not match. Please try again.',
+                            snackPosition: SnackPosition.BOTTOM);
                       }
                     },
               child: isDeleting
@@ -117,25 +115,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Welcome, ${UserProfile.getInstance().firstName}!',
-                style: const TextStyle(fontSize: 24),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Welcome, ${UserProfile.getInstance().firstName}!',
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? Center(child: Text('Error: $_error'))
+                    ? Center(
+                        child: Text('Error: $_error'),
+                      )
                     : _environments.isEmpty
-                        ? const Center(
-                            child:
-                                Text('No environments found. Please add one.'),
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Hmm, seems like there’s no environment yet. Why don\'t you click here for a quick guide on how to start:',
+                                  style: TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Get.to(() => const TutorialPage());
+                                  },
+                                  child: const Text('Getting Started'),
+                                ),
+                              ],
+                            ),
                           )
                         : ListView.builder(
                             padding: const EdgeInsets.all(16),
@@ -189,12 +201,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 20),
               FloatingActionButton.small(
                 heroTag: null,
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreateEnvironmentScreen(),
-                  ),
-                ).then((result) {
+                onPressed: () => Get.to(() => const CreateEnvironmentScreen())
+                    ?.then((result) {
                   if (result == true) {
                     _fetchEnvironments();
                   }
@@ -209,12 +217,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 20),
               FloatingActionButton.small(
                 heroTag: null,
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddPublicEnvironmentScreen(),
-                  ),
-                ).then((result) {
+                onPressed: () =>
+                    Get.to(() => const AddPublicEnvironmentScreen())
+                        ?.then((result) {
                   _fetchEnvironments();
                 }),
                 child: const Icon(Icons.public),

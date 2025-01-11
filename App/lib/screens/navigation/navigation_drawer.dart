@@ -12,6 +12,7 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: ColorProvider.n6,
       width: 250,
       child: SingleChildScrollView(
         child: Column(
@@ -27,7 +28,7 @@ class MenuDrawer extends StatelessWidget {
 
   Widget buildHeader(BuildContext context) {
     return Container(
-      color: ColorProvider.n1,
+      color: ColorProvider.n6,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
