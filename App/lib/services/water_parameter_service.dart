@@ -3,7 +3,6 @@ import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/models/water_parameter.dart';
 import 'package:aquaware/models/water_value.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'user_service.dart';
 import 'package:aquaware/constants.dart';
 
@@ -16,7 +15,7 @@ class WaterParameterService {
             '$baseUrl/api/environments/$environmentId/values/latest/$number_of_entries/'),
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': UserProfile.getInstance().apiKey,
+          'Authorization': 'Bearer $token', // Bearer-Token hinzugefügt
         },
       );
     });
@@ -38,7 +37,7 @@ class WaterParameterService {
             '$baseUrl/api/environments/$environmentId/values/parameters/$parameter/$numberOfEntries'),
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': UserProfile.getInstance().apiKey,
+          'Authorization': 'Bearer $token', // Bearer-Token hinzugefügt
         },
       );
     });
@@ -58,7 +57,7 @@ class WaterParameterService {
             '$baseUrl/api/environments/$aquariumId/values/parameters/$parameter/total'),
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': UserProfile.getInstance().apiKey,
+          'Authorization': 'Bearer $token', // Bearer-Token hinzugefügt
         },
       );
     });

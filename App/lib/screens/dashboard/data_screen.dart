@@ -6,9 +6,11 @@ import 'package:aquaware/widgets/total_entries_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:aquaware/models/water_value.dart';
+import 'package:aquaware/services/color_provider.dart';
 
 class DataScreen extends StatefulWidget {
-  final int aquariumId;
+  final Future<List<WaterValue>> futureWaterValues;
+  final Future<int> futureTotalEntries;
   final String parameterName;
   final bool isLineChartVisible;
   final bool isHeatmapVisible;
@@ -18,8 +20,10 @@ class DataScreen extends StatefulWidget {
   final int fractionDigits;
   final double lineChartDeviation;
 
-  DataScreen({
-    required this.aquariumId,
+  const DataScreen({
+    super.key,
+    required this.futureWaterValues,
+    required this.futureTotalEntries,
     required this.parameterName,
     this.isLineChartVisible = true,
     this.isHeatmapVisible = true,
@@ -35,61 +39,65 @@ class DataScreen extends StatefulWidget {
 }
 
 class _DataScreenState extends State<DataScreen> {
-  late Future<List<WaterValue>> _futureWaterValues;
-  late Future<int> _futureTotalEntries;
-  final WaterParameterService _waterParameterService = WaterParameterService();
+  double _progress = 0.0;
+  String _statusText = "Initializing...";
 
   @override
   void initState() {
     super.initState();
-    _futureWaterValues = _fetchWaterValues();
-    _futureTotalEntries = _fetchTotalEntries();
+    _simulateLoading();
   }
 
-  Future<List<WaterValue>> _fetchWaterValues() async {
-    return await _waterParameterService.fetchSingleWaterParameter(
-      widget.aquariumId,
-      widget.parameterName,
-      numberOfEntries: 100,
-    );
-  }
+  Future<void> _simulateLoading() async {
+    setState(() {
+      _progress = 0.2;
+      _statusText = "Fetching water values...";
+    });
+    await widget.futureWaterValues;
 
-  Future<int> _fetchTotalEntries() async {
-    return await _waterParameterService.fetchTotalEntries(
-      widget.aquariumId,
-      widget.parameterName,
-    );
+    setState(() {
+      _progress = 0.6;
+      _statusText = "Fetching total entries...";
+    });
+    await widget.futureTotalEntries;
+
+    setState(() {
+      _progress = 1.0;
+      _statusText = "Loading complete!";
+    });
+
+    await Future.delayed(const Duration(milliseconds: 50)); // Pause for UX
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<WaterValue>>(
-        future: _futureWaterValues,
+        future: widget.futureWaterValues,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Failed to load water values'));
+          if (_progress < 1.0) {
+            return _buildLoadingWidget();
+          }
+
+          if (snapshot.hasError) {
+            return const Center(child: Text('Failed to load water values'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No water values found'));
+            return const Center(child: Text('No water values found'));
           } else {
             List<WaterValue> waterValues = snapshot.data!.reversed.toList();
             WaterValue lastWaterValue = waterValues.last;
             return FutureBuilder<int>(
-              future: _futureTotalEntries,
+              future: widget.futureTotalEntries,
               builder: (context, totalEntriesSnapshot) {
-                if (totalEntriesSnapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (totalEntriesSnapshot.hasError) {
-                  return Center(child: Text('Failed to load total entries'));
+                if (totalEntriesSnapshot.hasError) {
+                  return const Center(
+                      child: Text('Failed to load total entries'));
                 } else if (!totalEntriesSnapshot.hasData) {
-                  return Center(child: Text('No total entries found'));
+                  return const Center(child: Text('No total entries found'));
                 } else {
                   int totalEntries = totalEntriesSnapshot.data!;
                   return SingleChildScrollView(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -110,6 +118,34 @@ class _DataScreenState extends State<DataScreen> {
           }
         },
       ),
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const CircularProgressIndicator(
+          color: ColorProvider.n17,
+          strokeWidth: 6.0,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          _statusText,
+          style: Theme.of(context).textTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(50, 16, 50, 16),
+          child: LinearProgressIndicator(
+            value: _progress,
+            minHeight: 4.0,
+            backgroundColor: Colors.grey[300],
+            color: Colors.blue,
+          ),
+        ),
+      ],
     );
   }
 

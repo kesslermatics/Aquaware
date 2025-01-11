@@ -1,11 +1,12 @@
-import 'package:aquaware/screens/dashboard/alert_screen.dart';
+import 'package:aquaware/models/water_value.dart';
+import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:flutter/material.dart';
-import 'package:aquaware/services/color_provider.dart';
 
 class ParameterScreen extends StatelessWidget {
   final int aquariumId;
   final String parameterName;
-  final Widget dataScreen;
+  final Widget Function(Future<List<WaterValue>>, Future<int>)
+      dataScreenBuilder;
   final Widget knowledgeScreen;
   final Widget alertScreen;
 
@@ -13,30 +14,36 @@ class ParameterScreen extends StatelessWidget {
     super.key,
     required this.aquariumId,
     required this.parameterName,
-    required this.dataScreen,
+    required this.dataScreenBuilder,
     required this.knowledgeScreen,
     required this.alertScreen,
   });
 
+  Future<List<WaterValue>> _fetchWaterValues() {
+    final WaterParameterService service = WaterParameterService();
+    return service.fetchSingleWaterParameter(
+      aquariumId,
+      parameterName,
+      numberOfEntries: 100,
+    );
+  }
+
+  Future<int> _fetchTotalEntries() {
+    final WaterParameterService service = WaterParameterService();
+    return service.fetchTotalEntries(aquariumId, parameterName);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final futureWaterValues = _fetchWaterValues();
+    final futureTotalEntries = _fetchTotalEntries();
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(parameterName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
           bottom: const TabBar(
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorWeight: 4,
-            indicatorColor: ColorProvider.n1,
-            labelColor: ColorProvider.n1,
-            unselectedLabelColor: ColorProvider.n1,
             tabs: [
               Tab(text: 'Data'),
               Tab(text: 'Knowledge'),
@@ -46,7 +53,7 @@ class ParameterScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            dataScreen,
+            dataScreenBuilder(futureWaterValues, futureTotalEntries),
             knowledgeScreen,
             alertScreen,
           ],

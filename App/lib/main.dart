@@ -130,6 +130,13 @@ class _MyAppState extends State<MyApp> {
                 : ColorProvider.n12,
           ),
         ),
+        cardTheme: const CardTheme(
+          color: ColorProvider.n6,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+        ),
       ),
       home: _isLoading
           ? const Scaffold(

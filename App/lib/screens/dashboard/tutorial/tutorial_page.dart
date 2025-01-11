@@ -116,7 +116,7 @@ We're thrilled to have you in our growing community and are here to support you 
                 style: ElevatedButton.styleFrom(shape: const CircleBorder()),
                 onPressed: () {
                   if (isLastPage) {
-                    Get.offAllNamed('/dashboard');
+                    Navigator.pop(context);
                   } else {
                     controller.nextPage();
                   }

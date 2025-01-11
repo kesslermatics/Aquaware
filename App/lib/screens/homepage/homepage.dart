@@ -9,6 +9,7 @@ import 'package:aquaware/screens/animal_detection/animal_detection_screen.dart';
 import 'package:aquaware/screens/navigation/navigation_drawer.dart';
 import 'package:aquaware/screens/privacy/privacy_screen.dart';
 import 'package:aquaware/screens/profile/profile_screen.dart';
+import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,18 +66,40 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void _showLogoutConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
+      barrierDismissible:
+          false, // Prevent closing the dialog by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirm Logout'),
-          content: const Text('Are you sure you want to logout?'),
-          actions: <Widget>[
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // Rounded corners
+          ),
+          title: const Row(
+            children: [
+              Icon(Icons.logout, color: ColorProvider.n1),
+              SizedBox(width: 8),
+              Text('Confirm Logout'),
+            ],
+          ),
+          content: const Text(
+            'Are you sure you want to logout?\n\nYou will need to sign in again to access your account.',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red, // Red for "No"
+              ),
               child: const Text('No'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
-            TextButton(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8), // Rounded corners
+                ),
+              ),
               child: const Text('Yes'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
