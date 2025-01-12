@@ -37,6 +37,9 @@ export default {
           12: "#2E2A41", // Dunkles Blau-Grau
           13: "#6C7275", // Grau mit leichtem Blau-Grün-Ton
           14: "#031726", // Marineblau
+          15: "#575ab2",
+          16: "#9c9eed",
+          17: "#2563EB",
         },
       },
       fontFamily: {
