@@ -85,7 +85,7 @@ const Signup = () => {
       if (response.ok) {
         Cookies.set("access_token", data.access, { expires: 1 });
         Cookies.set("refresh_token", data.refresh, { expires: 7 });
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       } else {
         console.error("Google signup failed:", data);
         setError(data.error || t("signup.googleSignupFailed"));

@@ -19,7 +19,7 @@ const GreetingWidget = ({ userData }) => {
   return (
     <div className="p-6 rounded">
       <h2 className="text-xl font-semibold">
-        {greeting}, {userData ? `${userData.first_name} ${userData.last_name}` : t("greeting.guest")}
+        {greeting}, {userData ? `${userData.first_name}` : t("greeting.guest")}
       </h2>
       <p className="text-sm text-n-2 mt-2">
         {t("greeting.subtitle")}

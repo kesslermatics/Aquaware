@@ -94,7 +94,9 @@ const ComparePlans = () => {
             <tr>
               <td className="p-4 text-start">{t("comparePlans.features.5")}</td>
               <td className="p-4">{t("comparePlans.notAvailable")}</td>
-              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4">
+                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
+              </td>
               <td className="p-4">
                 <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
               </td>
@@ -102,7 +104,9 @@ const ComparePlans = () => {
             <tr>
               <td className="p-4 text-start">{t("comparePlans.features.6")}</td>
               <td className="p-4">{t("comparePlans.notAvailable")}</td>
-              <td className="p-4">{t("comparePlans.notAvailable")}</td>
+              <td className="p-4">
+                <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
+              </td>
               <td className="p-4">
                 <img src={check} alt="Check" className="w-6 h-6 mx-auto" />
               </td>

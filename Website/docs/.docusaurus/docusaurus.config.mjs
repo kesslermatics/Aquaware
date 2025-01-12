@@ -8,7 +8,7 @@ export default {
   "tagline": "Enjoy the easy to read documentation to get started quickly",
   "favicon": "img/aquaware.png",
   "url": "https://aquaware.cloud",
-  "baseUrl": "/de/",
+  "baseUrl": "/",
   "onBrokenLinks": "throw",
   "onBrokenMarkdownLinks": "warn",
   "i18n": {

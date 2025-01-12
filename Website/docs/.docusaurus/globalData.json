@@ -1,153 +1,153 @@
 {
   "docusaurus-plugin-content-docs": {
     "default": {
-      "path": "/de/docs",
+      "path": "/docs",
       "versions": [
         {
           "name": "current",
           "label": "Next",
           "isLast": true,
-          "path": "/de/docs",
+          "path": "/docs",
           "mainDocId": "getting-started/welcome",
           "docs": [
             {
               "id": "dev-docs/animal-detection/how_to_identify_any_fish",
-              "path": "/de/docs/dev-docs/animal-detection/how_to_identify_any_fish",
+              "path": "/docs/dev-docs/animal-detection/how_to_identify_any_fish",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/animal-disease-detection/how_to_check_animal_for_diseases",
-              "path": "/de/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases",
+              "path": "/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/environment-management/adding-an-environment",
-              "path": "/de/docs/dev-docs/environment-management/adding-an-environment",
+              "path": "/docs/dev-docs/environment-management/adding-an-environment",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/environment-management/delete-environment",
-              "path": "/de/docs/dev-docs/environment-management/delete-environment",
+              "path": "/docs/dev-docs/environment-management/delete-environment",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/environment-management/get-all-environments",
-              "path": "/de/docs/dev-docs/environment-management/get-all-environments",
+              "path": "/docs/dev-docs/environment-management/get-all-environments",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/environment-management/get-public-environments",
-              "path": "/de/docs/dev-docs/environment-management/get-public-environments",
+              "path": "/docs/dev-docs/environment-management/get-public-environments",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/environment-management/update-environment",
-              "path": "/de/docs/dev-docs/environment-management/update-environment",
+              "path": "/docs/dev-docs/environment-management/update-environment",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/add_water_values",
-              "path": "/de/docs/dev-docs/measurement-management/add_water_values",
+              "path": "/docs/dev-docs/measurement-management/add_water_values",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/export_water_values",
-              "path": "/de/docs/dev-docs/measurement-management/export_water_values",
+              "path": "/docs/dev-docs/measurement-management/export_water_values",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/get_alert_settings",
-              "path": "/de/docs/dev-docs/measurement-management/get_alert_settings",
+              "path": "/docs/dev-docs/measurement-management/get_alert_settings",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/get_all_values_from_parameter",
-              "path": "/de/docs/dev-docs/measurement-management/get_all_values_from_parameter",
+              "path": "/docs/dev-docs/measurement-management/get_all_values_from_parameter",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/get_latest_from_all_parameters",
-              "path": "/de/docs/dev-docs/measurement-management/get_latest_from_all_parameters",
+              "path": "/docs/dev-docs/measurement-management/get_latest_from_all_parameters",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/get_total_entries",
-              "path": "/de/docs/dev-docs/measurement-management/get_total_entries",
+              "path": "/docs/dev-docs/measurement-management/get_total_entries",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/import_water_values",
-              "path": "/de/docs/dev-docs/measurement-management/import_water_values",
+              "path": "/docs/dev-docs/measurement-management/import_water_values",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/measurement-management/save_alert_settings",
-              "path": "/de/docs/dev-docs/measurement-management/save_alert_settings",
+              "path": "/docs/dev-docs/measurement-management/save_alert_settings",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/quick-start-guide",
-              "path": "/de/docs/dev-docs/quick-start-guide",
+              "path": "/docs/dev-docs/quick-start-guide",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/user-management/create-an-account",
-              "path": "/de/docs/dev-docs/user-management/create-an-account",
+              "path": "/docs/dev-docs/user-management/create-an-account",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/user-management/jwt-tokens",
-              "path": "/de/docs/dev-docs/user-management/jwt-tokens",
+              "path": "/docs/dev-docs/user-management/jwt-tokens",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/user-management/login",
-              "path": "/de/docs/dev-docs/user-management/login",
+              "path": "/docs/dev-docs/user-management/login",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "dev-docs/user-management/refresh-access-token",
-              "path": "/de/docs/dev-docs/user-management/refresh-access-token",
+              "path": "/docs/dev-docs/user-management/refresh-access-token",
               "sidebar": "devDocSidebar"
             },
             {
               "id": "getting-started/adding-water-values",
-              "path": "/de/docs/getting-started/adding-water-values",
+              "path": "/docs/getting-started/adding-water-values",
               "sidebar": "gettingStartedSidebar"
             },
             {
               "id": "getting-started/create-an-account",
-              "path": "/de/docs/getting-started/create-an-account",
+              "path": "/docs/getting-started/create-an-account",
               "sidebar": "gettingStartedSidebar"
             },
             {
               "id": "getting-started/create-new-environment",
-              "path": "/de/docs/getting-started/create-new-environment",
+              "path": "/docs/getting-started/create-new-environment",
               "sidebar": "gettingStartedSidebar"
             },
             {
               "id": "getting-started/explore-the-dashboard",
-              "path": "/de/docs/getting-started/explore-the-dashboard",
+              "path": "/docs/getting-started/explore-the-dashboard",
               "sidebar": "gettingStartedSidebar"
             },
             {
               "id": "getting-started/thank-you",
-              "path": "/de/docs/getting-started/thank-you",
+              "path": "/docs/getting-started/thank-you",
               "sidebar": "gettingStartedSidebar"
             },
             {
               "id": "getting-started/use-the-app",
-              "path": "/de/docs/getting-started/use-the-app",
+              "path": "/docs/getting-started/use-the-app",
               "sidebar": "gettingStartedSidebar"
             },
             {
               "id": "getting-started/welcome",
-              "path": "/de/docs/getting-started/welcome",
+              "path": "/docs/getting-started/welcome",
               "sidebar": "gettingStartedSidebar"
             },
             {
               "id": "real-world-example/Arduino",
-              "path": "/de/docs/real-world-example/Arduino",
+              "path": "/docs/real-world-example/Arduino",
               "sidebar": "realWorldSidebar"
             }
           ],
@@ -155,19 +155,19 @@
           "sidebars": {
             "gettingStartedSidebar": {
               "link": {
-                "path": "/de/docs/getting-started/welcome",
+                "path": "/docs/getting-started/welcome",
                 "label": "getting-started/welcome"
               }
             },
             "devDocSidebar": {
               "link": {
-                "path": "/de/docs/dev-docs/quick-start-guide",
+                "path": "/docs/dev-docs/quick-start-guide",
                 "label": "dev-docs/quick-start-guide"
               }
             },
             "realWorldSidebar": {
               "link": {
-                "path": "/de/docs/real-world-example/Arduino",
+                "path": "/docs/real-world-example/Arduino",
                 "label": "real-world-example/Arduino"
               }
             }
