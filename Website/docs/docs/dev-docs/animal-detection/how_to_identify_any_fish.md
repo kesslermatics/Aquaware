@@ -1,6 +1,6 @@
 # How to identify any aquatic animal
 
-This guide explains how to use the **Aquaware API** to identify aquatic animal species based on uploaded images. The API is available only to users with the **Premium Subscription Tier (Tier 3)**.
+This guide explains how to use the **Aquaware API** to identify aquatic animal species based on uploaded images. The API is available only to users with the **Premium Subscription Tier (Tier 2)**.
 
 ## API Endpoint
 
@@ -24,7 +24,7 @@ curl -X POST https://dev.aquaware.cloud/api/animal/identify/ \
 
 ### Subscription Tier Requirement:
 
-This endpoint is restricted to users with a **Premium Subscription (Tier 3)**. If a user with a lower-tier subscription attempts to access this endpoint, the API will return a 403 status code with a message:
+This endpoint is restricted to users with a **Premium Subscription (Tier 2)**. If a user with a lower-tier subscription attempts to access this endpoint, the API will return a 403 status code with a message:
 
 ```
 {

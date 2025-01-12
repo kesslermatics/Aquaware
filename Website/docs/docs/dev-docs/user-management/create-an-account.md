@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Create an Account
 
-Creating an account with Aquaware is simple and can be done in just a few steps. You can either sign up directly through our website or, soon, directly through the app.
+Creating an account with Aquaware is simple and can be done in just a few steps. You can either sign up directly through our website or, directly through the app.
 
 ## How to Create an Account
 
@@ -81,10 +81,6 @@ At Aquaware, we take password security seriously to ensure your data is protecte
 - **Password Validation**: Passwords are validated on the server to meet strength requirements (e.g., minimum length, complexity) to reduce the risk of weak passwords.
 
 By using industry-standard encryption and security practices, we aim to keep your account and data safe.
-
-### Upcoming Feature: Signup via the App
-
-In the near future, you will also be able to create an account directly through the Aquaware mobile app, making it even easier to get started.
 
 ---
 

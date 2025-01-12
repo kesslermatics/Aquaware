@@ -8,7 +8,7 @@ export default {
   "tagline": "Enjoy the easy to read documentation to get started quickly",
   "favicon": "img/aquaware.png",
   "url": "https://aquaware.cloud",
-  "baseUrl": "/",
+  "baseUrl": "/de/",
   "onBrokenLinks": "throw",
   "onBrokenMarkdownLinks": "warn",
   "i18n": {
@@ -66,25 +66,25 @@ export default {
       "respectPrefersColorScheme": false
     },
     "navbar": {
-      "title": "Aquaware Api Documentation",
+      "title": "Aquaware Dokumentation",
       "items": [
+        {
+          "type": "localeDropdown",
+          "position": "left",
+          "dropdownItemsBefore": [],
+          "dropdownItemsAfter": []
+        },
         {
           "type": "docSidebar",
           "sidebarId": "gettingStartedSidebar",
           "position": "left",
-          "label": "Getting Started"
+          "label": "Schnell-Anleitung"
         },
         {
           "type": "docSidebar",
           "sidebarId": "devDocSidebar",
           "position": "left",
-          "label": "Developer API Documentation"
-        },
-        {
-          "type": "docSidebar",
-          "sidebarId": "realWorldSidebar",
-          "position": "left",
-          "label": "Real World Example"
+          "label": "Entwickler API Dokumentation"
         }
       ],
       "hideOnScroll": false

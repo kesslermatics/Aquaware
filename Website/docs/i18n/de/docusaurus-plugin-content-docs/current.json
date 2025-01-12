@@ -1,0 +1,26 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.devDocSidebar.category.User Management": {
+    "message": "Profilverwaltung",
+    "description": "The label for category User Management in sidebar devDocSidebar"
+  },
+  "sidebar.devDocSidebar.category.Environments": {
+    "message": "Umgebungen",
+    "description": "The label for category Environments in sidebar devDocSidebar"
+  },
+  "sidebar.devDocSidebar.category.Values": {
+    "message": "Wasserwerte",
+    "description": "The label for category Values in sidebar devDocSidebar"
+  },
+  "sidebar.devDocSidebar.category.Animal Detection": {
+    "message": "Tiererkennung",
+    "description": "The label for category Animal Detection in sidebar devDocSidebar"
+  },
+  "sidebar.devDocSidebar.category.Animal Disease Detection": {
+    "message": "Tierkrankheitserkennung",
+    "description": "The label for category Animal Disease Detection in sidebar devDocSidebar"
+  }
+}

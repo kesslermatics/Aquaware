@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "Aquaware Dokumentation",
+    "description": "The title in the navbar"
+  },
+  "item.label.Getting Started": {
+    "message": "Schnell-Anleitung",
+    "description": "Navbar item with label Getting Started"
+  },
+  "item.label.Developer API Documentation": {
+    "message": "Entwickler API Dokumentation",
+    "description": "Navbar item with label Developer API Documentation"
+  }
+}

@@ -5,6 +5,7 @@ import Layout from "@theme/Layout";
 
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
+import Translate, { translate } from "@docusaurus/Translate";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -12,15 +13,23 @@ function HomepageHeader() {
     <header className={clsx("", styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+          <Translate>
+            Aquaware API Documentation
+          </Translate>
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          <Translate>
+            Enjoy the easy to read documentation to get started quickly
+          </Translate>
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
             to="/docs/getting-started/welcome/"
           >
-            Click here to get started
+            <Translate>
+              Click here to get started
+            </Translate>
           </Link>
         </div>
       </div>

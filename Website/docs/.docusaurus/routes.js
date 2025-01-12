@@ -3,239 +3,204 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 
 export default [
   {
-    path: '/__docusaurus/debug',
-    component: ComponentCreator('/__docusaurus/debug', '5ff'),
+    path: '/de/blog',
+    component: ComponentCreator('/de/blog', 'f0f'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/config',
-    component: ComponentCreator('/__docusaurus/debug/config', '5ba'),
+    path: '/de/blog/archive',
+    component: ComponentCreator('/de/blog/archive', '647'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/content',
-    component: ComponentCreator('/__docusaurus/debug/content', 'a2b'),
+    path: '/de/blog/nitrification-process',
+    component: ComponentCreator('/de/blog/nitrification-process', 'c12'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/globalData',
-    component: ComponentCreator('/__docusaurus/debug/globalData', 'c3c'),
+    path: '/de/markdown-page',
+    component: ComponentCreator('/de/markdown-page', 'de3'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/metadata',
-    component: ComponentCreator('/__docusaurus/debug/metadata', '156'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/registry',
-    component: ComponentCreator('/__docusaurus/debug/registry', '88c'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/routes',
-    component: ComponentCreator('/__docusaurus/debug/routes', '000'),
-    exact: true
-  },
-  {
-    path: '/blog',
-    component: ComponentCreator('/blog', '50a'),
-    exact: true
-  },
-  {
-    path: '/blog/archive',
-    component: ComponentCreator('/blog/archive', '182'),
-    exact: true
-  },
-  {
-    path: '/blog/nitrification-process',
-    component: ComponentCreator('/blog/nitrification-process', 'bcb'),
-    exact: true
-  },
-  {
-    path: '/markdown-page',
-    component: ComponentCreator('/markdown-page', '3d7'),
-    exact: true
-  },
-  {
-    path: '/docs',
-    component: ComponentCreator('/docs', '224'),
+    path: '/de/docs',
+    component: ComponentCreator('/de/docs', '4bf'),
     routes: [
       {
-        path: '/docs',
-        component: ComponentCreator('/docs', '3a8'),
+        path: '/de/docs',
+        component: ComponentCreator('/de/docs', '557'),
         routes: [
           {
-            path: '/docs',
-            component: ComponentCreator('/docs', '9b6'),
+            path: '/de/docs',
+            component: ComponentCreator('/de/docs', '975'),
             routes: [
               {
-                path: '/docs/dev-docs/animal-detection/how_to_identify_any_fish',
-                component: ComponentCreator('/docs/dev-docs/animal-detection/how_to_identify_any_fish', 'fae'),
+                path: '/de/docs/dev-docs/animal-detection/how_to_identify_any_fish',
+                component: ComponentCreator('/de/docs/dev-docs/animal-detection/how_to_identify_any_fish', '39a'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases',
-                component: ComponentCreator('/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases', '2e4'),
+                path: '/de/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases',
+                component: ComponentCreator('/de/docs/dev-docs/animal-disease-detection/how_to_check_animal_for_diseases', '5ea'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/environment-management/adding-an-environment',
-                component: ComponentCreator('/docs/dev-docs/environment-management/adding-an-environment', '5b8'),
+                path: '/de/docs/dev-docs/environment-management/adding-an-environment',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/adding-an-environment', '9f3'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/environment-management/delete-environment',
-                component: ComponentCreator('/docs/dev-docs/environment-management/delete-environment', 'be1'),
+                path: '/de/docs/dev-docs/environment-management/delete-environment',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/delete-environment', 'feb'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/environment-management/get-all-environments',
-                component: ComponentCreator('/docs/dev-docs/environment-management/get-all-environments', 'b6b'),
+                path: '/de/docs/dev-docs/environment-management/get-all-environments',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/get-all-environments', '098'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/environment-management/get-public-environments',
-                component: ComponentCreator('/docs/dev-docs/environment-management/get-public-environments', 'ee5'),
+                path: '/de/docs/dev-docs/environment-management/get-public-environments',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/get-public-environments', '4fe'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/environment-management/update-environment',
-                component: ComponentCreator('/docs/dev-docs/environment-management/update-environment', 'd44'),
+                path: '/de/docs/dev-docs/environment-management/update-environment',
+                component: ComponentCreator('/de/docs/dev-docs/environment-management/update-environment', '110'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/add_water_values',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/add_water_values', '604'),
+                path: '/de/docs/dev-docs/measurement-management/add_water_values',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/add_water_values', '8f8'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/export_water_values',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/export_water_values', 'dc0'),
+                path: '/de/docs/dev-docs/measurement-management/export_water_values',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/export_water_values', '8c2'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/get_alert_settings',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/get_alert_settings', '710'),
+                path: '/de/docs/dev-docs/measurement-management/get_alert_settings',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_alert_settings', '8e9'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/get_all_values_from_parameter',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/get_all_values_from_parameter', 'b08'),
+                path: '/de/docs/dev-docs/measurement-management/get_all_values_from_parameter',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_all_values_from_parameter', 'bc9'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/get_latest_from_all_parameters',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/get_latest_from_all_parameters', '901'),
+                path: '/de/docs/dev-docs/measurement-management/get_latest_from_all_parameters',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_latest_from_all_parameters', '45f'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/get_total_entries',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/get_total_entries', '284'),
+                path: '/de/docs/dev-docs/measurement-management/get_total_entries',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/get_total_entries', 'fbe'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/import_water_values',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/import_water_values', 'ac3'),
+                path: '/de/docs/dev-docs/measurement-management/import_water_values',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/import_water_values', 'b4f'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/measurement-management/save_alert_settings',
-                component: ComponentCreator('/docs/dev-docs/measurement-management/save_alert_settings', '306'),
+                path: '/de/docs/dev-docs/measurement-management/save_alert_settings',
+                component: ComponentCreator('/de/docs/dev-docs/measurement-management/save_alert_settings', '669'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/quick-start-guide',
-                component: ComponentCreator('/docs/dev-docs/quick-start-guide', 'c14'),
+                path: '/de/docs/dev-docs/quick-start-guide',
+                component: ComponentCreator('/de/docs/dev-docs/quick-start-guide', '132'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/user-management/create-an-account',
-                component: ComponentCreator('/docs/dev-docs/user-management/create-an-account', '804'),
+                path: '/de/docs/dev-docs/user-management/create-an-account',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/create-an-account', '740'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/user-management/jwt-tokens',
-                component: ComponentCreator('/docs/dev-docs/user-management/jwt-tokens', '57c'),
+                path: '/de/docs/dev-docs/user-management/jwt-tokens',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/jwt-tokens', 'a0e'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/user-management/login',
-                component: ComponentCreator('/docs/dev-docs/user-management/login', 'ee0'),
+                path: '/de/docs/dev-docs/user-management/login',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/login', 'c73'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/dev-docs/user-management/refresh-access-token',
-                component: ComponentCreator('/docs/dev-docs/user-management/refresh-access-token', '5b1'),
+                path: '/de/docs/dev-docs/user-management/profile',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/profile', '76a'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/docs/getting-started/adding-water-values',
-                component: ComponentCreator('/docs/getting-started/adding-water-values', '4a6'),
+                path: '/de/docs/dev-docs/user-management/refresh-access-token',
+                component: ComponentCreator('/de/docs/dev-docs/user-management/refresh-access-token', '69c'),
+                exact: true,
+                sidebar: "devDocSidebar"
+              },
+              {
+                path: '/de/docs/getting-started/adding-water-values',
+                component: ComponentCreator('/de/docs/getting-started/adding-water-values', 'ca3'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/docs/getting-started/create-an-account',
-                component: ComponentCreator('/docs/getting-started/create-an-account', '4be'),
+                path: '/de/docs/getting-started/create-an-account',
+                component: ComponentCreator('/de/docs/getting-started/create-an-account', 'e1d'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/docs/getting-started/create-new-environment',
-                component: ComponentCreator('/docs/getting-started/create-new-environment', '8fc'),
+                path: '/de/docs/getting-started/create-new-environment',
+                component: ComponentCreator('/de/docs/getting-started/create-new-environment', 'a90'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/docs/getting-started/explore-the-dashboard',
-                component: ComponentCreator('/docs/getting-started/explore-the-dashboard', 'db9'),
+                path: '/de/docs/getting-started/explore-the-dashboard',
+                component: ComponentCreator('/de/docs/getting-started/explore-the-dashboard', 'a25'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/docs/getting-started/thank-you',
-                component: ComponentCreator('/docs/getting-started/thank-you', '6d5'),
+                path: '/de/docs/getting-started/thank-you',
+                component: ComponentCreator('/de/docs/getting-started/thank-you', 'cba'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/docs/getting-started/use-the-app',
-                component: ComponentCreator('/docs/getting-started/use-the-app', '869'),
+                path: '/de/docs/getting-started/use-the-app',
+                component: ComponentCreator('/de/docs/getting-started/use-the-app', '15e'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/docs/getting-started/welcome',
-                component: ComponentCreator('/docs/getting-started/welcome', 'c89'),
+                path: '/de/docs/getting-started/welcome',
+                component: ComponentCreator('/de/docs/getting-started/welcome', 'f2b'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
-              },
-              {
-                path: '/docs/real-world-example/Arduino',
-                component: ComponentCreator('/docs/real-world-example/Arduino', 'd1d'),
-                exact: true,
-                sidebar: "realWorldSidebar"
               }
             ]
           }
@@ -244,8 +209,8 @@ export default [
     ]
   },
   {
-    path: '/',
-    component: ComponentCreator('/', '2e1'),
+    path: '/de/',
+    component: ComponentCreator('/de/', '4d1'),
     exact: true
   },
   {

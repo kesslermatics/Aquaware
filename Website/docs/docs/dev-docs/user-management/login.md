@@ -10,7 +10,7 @@ To access your Aquaware account, you can log in either through our website, the 
 
 You can log in using the following API endpoint:
 
-- **URL:** `http://dev.aquaware.cloud/api/auth/login/`
+- **URL:** `http://dev.aquaware.cloud/api/users/auth/login/`
 - **Method:** `POST`
 - **Content-Type:** `multipart/form-data`
 

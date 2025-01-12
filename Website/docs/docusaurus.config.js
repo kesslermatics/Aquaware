@@ -74,8 +74,12 @@ const config = {
         respectPrefersColorScheme: false,
       },
       navbar: {
-        title: "Aquaware Api Documentation",
+        title: "Aquaware Documentation",
         items: [
+          {
+            type: 'localeDropdown',
+            position: 'left',
+          },
           {
             type: "docSidebar",
             sidebarId: "gettingStartedSidebar",
@@ -87,13 +91,7 @@ const config = {
             sidebarId: "devDocSidebar",
             position: "left",
             label: "Developer API Documentation",
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "realWorldSidebar",
-            position: "left",
-            label: "Real World Example",
-          },
+          }
         ],
       },
     }),
