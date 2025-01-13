@@ -8,6 +8,7 @@ import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -41,13 +42,19 @@ class LoginController extends GetxController {
 
   Future<void> signIn(BuildContext context) async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      Get.snackbar("Error", "Email and password cannot be empty!",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.errorTitle,
+        AppLocalizations.of(context)!.emailPasswordEmpty,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
-    Get.snackbar("Signing In", "Please wait...",
-        snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar(
+      AppLocalizations.of(context)!.signingInTitle,
+      AppLocalizations.of(context)!.signingInMessage,
+      snackPosition: SnackPosition.BOTTOM,
+    );
 
     final errorMessage = await userService.login(
       emailController.text,
@@ -61,22 +68,32 @@ class LoginController extends GetxController {
             key: 'saved_password', value: passwordController.text);
       }
 
-      Get.snackbar("Success", "Signed in successfully!",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.successTitle,
+        AppLocalizations.of(context)!.signInSuccessMessage,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       Get.offNamed('/homepage'); // Navigate to the homepage
     } else {
-      Get.snackbar("Error", errorMessage, snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.errorTitle,
+        errorMessage,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
-  Future<void> googleSignInMethod() async {
+  Future<void> googleSignInMethod(BuildContext context) async {
     try {
       await googleSignIn.signOut();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
-        Get.snackbar("Cancelled", "Google Sign-In was cancelled!",
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          AppLocalizations.of(context)!.cancelledTitle,
+          AppLocalizations.of(context)!.googleSignInCancelledMessage,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         return;
       }
 
@@ -86,16 +103,25 @@ class LoginController extends GetxController {
       final errorMessage = await userService.googleLogin(idToken!);
 
       if (errorMessage == null) {
-        Get.snackbar("Success", "Signed in with Google successfully!",
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          AppLocalizations.of(context)!.successTitle,
+          AppLocalizations.of(context)!.googleSignInSuccessMessage,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         Get.toNamed('/homepage'); // Navigate to the homepage
       } else {
-        Get.snackbar("Error", errorMessage,
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          AppLocalizations.of(context)!.errorTitle,
+          errorMessage,
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     } catch (e) {
-      Get.snackbar("Error", "Google Sign-In failed: Please try again later!",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.errorTitle,
+        AppLocalizations.of(context)!.googleSignInErrorMessage,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
@@ -110,20 +136,20 @@ class LoginController extends GetxController {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          title: const Text('Forgot Password'),
+          title: Text(AppLocalizations.of(context)!.forgotPasswordTitle),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Enter your email address to receive a reset code.',
-                  style: TextStyle(fontSize: 14),
+                Text(
+                  AppLocalizations.of(context)!.forgotPasswordMessage,
+                  style: const TextStyle(fontSize: 14),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    labelText: 'Email Address',
+                    labelText: AppLocalizations.of(context)!.emailFieldLabel,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -134,18 +160,20 @@ class LoginController extends GetxController {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+              child: Text(
+                AppLocalizations.of(context)!.cancel,
+                style: const TextStyle(color: Colors.red),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: const Text('Send Code'),
+              child: Text(AppLocalizations.of(context)!.sendCode),
               onPressed: () async {
-                // Zeige eine Snackbar an, während der Code gesendet wird
                 Get.snackbar(
-                  'Please wait',
-                  'Code is being sent...',
+                  AppLocalizations.of(context)!.pleaseWaitTitle,
+                  AppLocalizations.of(context)!.codeBeingSentMessage,
                   snackPosition: SnackPosition.BOTTOM,
                   backgroundColor: Colors.blue,
                   colorText: Colors.white,
@@ -159,8 +187,8 @@ class LoginController extends GetxController {
                   showResetPasswordDialog(context, emailController.text);
                 } else {
                   Get.snackbar(
-                    'Error',
-                    'Failed to send code. Please check your email address and try again.',
+                    AppLocalizations.of(context)!.errorTitle,
+                    AppLocalizations.of(context)!.forgotPasswordErrorMessage,
                     snackPosition: SnackPosition.BOTTOM,
                     backgroundColor: Colors.red,
                     colorText: Colors.white,
@@ -187,20 +215,21 @@ class LoginController extends GetxController {
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          title: const Text('Reset Password'),
+          title: Text(AppLocalizations.of(context)!.resetPasswordTitle),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Enter the reset code sent to your email and set a new password.',
-                  style: TextStyle(fontSize: 14),
+                Text(
+                  AppLocalizations.of(context)!.resetPasswordMessage,
+                  style: const TextStyle(fontSize: 14),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: codeController,
                   decoration: InputDecoration(
-                    labelText: 'Reset Code',
+                    labelText:
+                        AppLocalizations.of(context)!.resetCodeFieldLabel,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -211,7 +240,8 @@ class LoginController extends GetxController {
                   controller: newPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'New Password',
+                    labelText:
+                        AppLocalizations.of(context)!.newPasswordFieldLabel,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -222,19 +252,22 @@ class LoginController extends GetxController {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+              child: Text(
+                AppLocalizations.of(context)!.cancel,
+                style: const TextStyle(color: Colors.red),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: const Text('Reset Password'),
+              child: Text(AppLocalizations.of(context)!.resetPasswordButton),
               onPressed: () async {
                 if (codeController.text.isEmpty ||
                     newPasswordController.text.isEmpty) {
                   Get.snackbar(
-                    'Error',
-                    'Please provide both the reset code and a new password.',
+                    AppLocalizations.of(context)!.errorTitle,
+                    AppLocalizations.of(context)!.resetPasswordEmptyFieldsError,
                     snackPosition: SnackPosition.BOTTOM,
                     backgroundColor: Colors.orange,
                     colorText: Colors.white,
@@ -242,10 +275,9 @@ class LoginController extends GetxController {
                   return;
                 }
 
-                // Zeige eine Snackbar an, während das Passwort zurückgesetzt wird
                 Get.snackbar(
-                  'Please wait',
-                  'Resetting your password...',
+                  AppLocalizations.of(context)!.pleaseWaitTitle,
+                  AppLocalizations.of(context)!.resettingPasswordMessage,
                   snackPosition: SnackPosition.BOTTOM,
                   backgroundColor: Colors.blue,
                   colorText: Colors.white,
@@ -258,7 +290,6 @@ class LoginController extends GetxController {
                 );
 
                 if (errorMessage == null) {
-                  // Automatisches Login nach Passwort-Reset
                   final loginErrorMessage = await userService.login(
                     email,
                     newPasswordController.text,
@@ -267,17 +298,17 @@ class LoginController extends GetxController {
                   if (loginErrorMessage == null) {
                     Navigator.of(context).pop();
                     Get.snackbar(
-                      'Success',
-                      'Your password has been reset successfully!',
+                      AppLocalizations.of(context)!.successTitle,
+                      AppLocalizations.of(context)!.resetPasswordSuccessMessage,
                       snackPosition: SnackPosition.BOTTOM,
                       backgroundColor: Colors.green,
                       colorText: Colors.white,
                     );
-                    Get.offNamed('/homepage'); // Redirect to homepage
+                    Get.offNamed('/homepage');
                   } else {
                     Get.snackbar(
-                      'Login Failed',
-                      'Your password was reset, but login failed. Please try again.',
+                      AppLocalizations.of(context)!.loginFailedTitle,
+                      AppLocalizations.of(context)!.loginFailedMessage,
                       snackPosition: SnackPosition.BOTTOM,
                       backgroundColor: Colors.red,
                       colorText: Colors.white,
@@ -285,8 +316,8 @@ class LoginController extends GetxController {
                   }
                 } else {
                   Get.snackbar(
-                    'Error',
-                    'Failed to reset password. Please check the reset code and try again.',
+                    AppLocalizations.of(context)!.errorTitle,
+                    AppLocalizations.of(context)!.resetPasswordErrorMessage,
                     snackPosition: SnackPosition.BOTTOM,
                     backgroundColor: Colors.red,
                     colorText: Colors.white,
@@ -324,12 +355,12 @@ class LoginScreen extends StatelessWidget {
                     height: 100,
                   ),
                   Text(
-                    "Welcome,",
+                    AppLocalizations.of(context)!.welcome,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Explore and manage your water quality effortlessly",
+                    AppLocalizations.of(context)!.welcomeDescription,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -344,9 +375,9 @@ class LoginScreen extends StatelessWidget {
                       // Email Input
                       TextFormField(
                         controller: loginController.emailController,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.email),
-                          labelText: "Email",
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.email),
+                          labelText: AppLocalizations.of(context)!.email,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -366,7 +397,7 @@ class LoginScreen extends StatelessWidget {
                                     !loginController.isPasswordVisible.value;
                               },
                             ),
-                            labelText: "Password",
+                            labelText: AppLocalizations.of(context)!.password,
                           ),
                         ),
                       ),
@@ -386,15 +417,19 @@ class LoginScreen extends StatelessWidget {
                                         value!;
                                   },
                                 ),
-                                const Text("Remember Me"),
+                                Text(AppLocalizations.of(context)!.rememberMe),
                               ],
                             ),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              loginController.showForgotPasswordDialog(context);
-                            },
-                            child: const Text("Forget Password"),
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                loginController
+                                    .showForgotPasswordDialog(context);
+                              },
+                              child: Text(
+                                  AppLocalizations.of(context)!.forgotPassword),
+                            ),
                           ),
                         ],
                       ),
@@ -411,7 +446,7 @@ class LoginScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text("Sign In"),
+                          child: Text(AppLocalizations.of(context)!.signIn),
                         ),
                       ),
                       // Create Account Button
@@ -426,7 +461,8 @@ class LoginScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text("Create Account"),
+                          child:
+                              Text(AppLocalizations.of(context)!.createAccount),
                         ),
                       ),
                     ],
@@ -464,8 +500,9 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   SignInButton(
                     Buttons.Google,
+                    text: AppLocalizations.of(context)!.signInWithGoogle,
                     onPressed: () {
-                      loginController.googleSignInMethod();
+                      loginController.googleSignInMethod(context);
                     },
                   ),
                 ],

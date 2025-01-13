@@ -5,10 +5,19 @@ import 'package:aquaware/models/disease.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'user_service.dart';
 
 class AnimalDiseaseService {
+  Future<String> _getCurrentLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Get the saved language, or use the default system language
+    return prefs.getString('language') ?? Platform.localeName.split('_').first;
+  }
+
   Future<AnimalDisease> diagnoseAnimalDisease(File imageFile) async {
+    final String currentLanguage = await _getCurrentLanguage();
+
     // Ensure the image file is valid
     final mimeType = lookupMimeType(imageFile.path);
 
@@ -23,7 +32,8 @@ class AnimalDiseaseService {
 
       final request = http.MultipartRequest('POST', uri)
         ..headers['Authorization'] = 'Bearer $token'
-        ..headers['Content-Type'] = 'multipart/form-data';
+        ..headers['Content-Type'] = 'multipart/form-data'
+        ..fields['language'] = currentLanguage; // Add language parameter
 
       // Add the image file to the request
       final multipartFile = http.MultipartFile.fromBytes(
@@ -44,8 +54,8 @@ class AnimalDiseaseService {
     }
 
     if (response.statusCode == 200) {
-      final responseBody = response.body;
-      final Map<String, dynamic> jsonResponse = json.decode(responseBody);
+      final String decodedBody = utf8.decode(response.bodyBytes);
+      final Map<String, dynamic> jsonResponse = json.decode(decodedBody);
 
       return AnimalDisease.fromJson(jsonResponse);
     } else {

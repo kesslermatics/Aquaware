@@ -65,6 +65,7 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/
     - assets/fonts/
+    - assets/flags/
     - assets/images/
     - assets/icons/
     - assets/RiveAssets/

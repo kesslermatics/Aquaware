@@ -6,6 +6,7 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterController extends GetxController {
   final firstNameController = TextEditingController();
@@ -27,14 +28,20 @@ class RegisterController extends GetxController {
 
   Future<void> register(BuildContext context) async {
     if (!isTermsAccepted.value) {
-      Get.snackbar("Error", "Please accept the Terms and Conditions.",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.acceptTerms,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
     if (passwordController.text != repeatPasswordController.text) {
-      Get.snackbar("Error", "Passwords do not match.",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.passwordsDoNotMatch,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
@@ -47,21 +54,31 @@ class RegisterController extends GetxController {
     );
 
     if (errorMessage == null) {
-      Get.snackbar("Success", "Account created successfully!",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.success,
+        AppLocalizations.of(context)!.accountCreated,
+        snackPosition: SnackPosition.BOTTOM,
+      );
       Get.offNamed('/homepage'); // Navigate to homepage
     } else {
-      Get.snackbar("Error", errorMessage, snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.error,
+        errorMessage,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
-  Future<void> googleSignup() async {
+  Future<void> googleSignup(BuildContext context) async {
     try {
       await googleSignIn.signOut();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
-        Get.snackbar("Cancelled", "Google Sign-Up was cancelled!",
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          AppLocalizations.of(context)!.cancelled,
+          AppLocalizations.of(context)!.googleSignUpCancelled,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         return;
       }
 
@@ -71,22 +88,35 @@ class RegisterController extends GetxController {
       final errorMessage = await userService.googleSignup(idToken!);
 
       if (errorMessage == null) {
-        Get.snackbar("Success", "Signed up with Google successfully!",
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          AppLocalizations.of(context)!.success,
+          AppLocalizations.of(context)!.googleSignUpSuccess,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         Get.offNamed('/homepage'); // Navigate to homepage
       } else {
-        Get.snackbar("Error", errorMessage,
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          AppLocalizations.of(context)!.error,
+          errorMessage,
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     } catch (e) {
-      Get.snackbar("Error", "Google Sign-Up failed: $e",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.googleSignUpFailed(e.toString()),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
-  Future<void> _launchUrl(Uri url) async {
+  Future<void> _launchUrl(Uri url, BuildContext context) async {
     if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
+      Get.snackbar(
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.urlLaunchFailed(url.toString()),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 }
@@ -109,7 +139,7 @@ class RegisterScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               Text(
-                "Let us create an account for you!",
+                AppLocalizations.of(context)!.createAccountTitle,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 20),
@@ -124,9 +154,10 @@ class RegisterScreen extends StatelessWidget {
                         Expanded(
                           child: TextFormField(
                             controller: registerController.firstNameController,
-                            decoration: const InputDecoration(
-                              labelText: "First Name",
-                              prefixIcon: Icon(Icons.person),
+                            decoration: InputDecoration(
+                              labelText:
+                                  AppLocalizations.of(context)!.firstName,
+                              prefixIcon: const Icon(Icons.person),
                             ),
                           ),
                         ),
@@ -134,9 +165,9 @@ class RegisterScreen extends StatelessWidget {
                         Expanded(
                           child: TextFormField(
                             controller: registerController.lastNameController,
-                            decoration: const InputDecoration(
-                              labelText: "Last Name",
-                              prefixIcon: Icon(Icons.person),
+                            decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.lastName,
+                              prefixIcon: const Icon(Icons.person),
                             ),
                           ),
                         ),
@@ -147,9 +178,9 @@ class RegisterScreen extends StatelessWidget {
                     // Email
                     TextFormField(
                       controller: registerController.emailController,
-                      decoration: const InputDecoration(
-                        labelText: "E-Mail",
-                        prefixIcon: Icon(Icons.email),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.email,
+                        prefixIcon: const Icon(Icons.email),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -172,7 +203,7 @@ class RegisterScreen extends StatelessWidget {
                                   !registerController.isPasswordVisible.value;
                             },
                           ),
-                          labelText: "Password",
+                          labelText: AppLocalizations.of(context)!.password,
                         ),
                       ),
                     ),
@@ -197,7 +228,8 @@ class RegisterScreen extends StatelessWidget {
                                       .isRepeatPasswordVisible.value;
                             },
                           ),
-                          labelText: "Repeat Password",
+                          labelText:
+                              AppLocalizations.of(context)!.repeatPassword,
                         ),
                       ),
                     ),
@@ -213,16 +245,20 @@ class RegisterScreen extends StatelessWidget {
                               registerController.isTermsAccepted.value = value!;
                             },
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              registerController._launchUrl(Uri.parse(
-                                  "https://aquaware.cloud/terms-and-conditions/"));
-                            },
-                            child: const Text(
-                              "I agree to the Terms and Conditions",
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: Colors.blue,
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                registerController._launchUrl(
+                                    Uri.parse(
+                                        "https://aquaware.cloud/terms-and-conditions/"),
+                                    context);
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)!.agreeTerms,
+                                style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
+                                ),
                               ),
                             ),
                           ),
@@ -242,7 +278,8 @@ class RegisterScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text("Create Account"),
+                        child:
+                            Text(AppLocalizations.of(context)!.createAccount),
                       ),
                     ),
                   ],
@@ -251,10 +288,10 @@ class RegisterScreen extends StatelessWidget {
               const SizedBox(height: 10),
 
               // Divider
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(
+                  const Flexible(
                     child: Divider(
                       color: Colors.grey,
                       thickness: 0.5,
@@ -262,8 +299,8 @@ class RegisterScreen extends StatelessWidget {
                       endIndent: 5,
                     ),
                   ),
-                  Text("Or"),
-                  Flexible(
+                  Text(AppLocalizations.of(context)!.or),
+                  const Flexible(
                     child: Divider(
                       color: Colors.grey,
                       thickness: 0.5,
@@ -281,9 +318,9 @@ class RegisterScreen extends StatelessWidget {
                 children: [
                   SignInButton(
                     Buttons.Google,
-                    text: "Sign up with Google",
+                    text: AppLocalizations.of(context)!.signUpWithGoogle,
                     onPressed: () {
-                      registerController.googleSignup();
+                      registerController.googleSignup(context);
                     },
                   ),
                 ],

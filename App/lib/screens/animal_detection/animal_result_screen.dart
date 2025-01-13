@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:aquaware/models/fish_detection.dart'; // Importiere dein FishDetection Model
+import 'package:aquaware/models/fish_detection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AnimalResultScreen extends StatefulWidget {
   final AnimalDetection animalResult;
@@ -66,8 +67,10 @@ class _AnimalResultScreenState extends State<AnimalResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Detected Animal Information')),
+      appBar: AppBar(title: Text(loc.detectedAnimalInfo)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -80,33 +83,19 @@ class _AnimalResultScreenState extends State<AnimalResultScreen> {
                     const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              const Row(
-                children: [
-                  Icon(Icons.landscape),
-                  SizedBox(width: 8),
-                  Text(
-                    'Habitat',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              _buildSectionHeader(
+                icon: Icons.landscape,
+                title: loc.habitat,
               ),
-              const SizedBox(height: 8),
               Text(
                 widget.animalResult.habitat ?? '',
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 20),
-              const Row(
-                children: [
-                  Icon(Icons.straighten),
-                  SizedBox(width: 8),
-                  Text(
-                    'Average Size',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              _buildSectionHeader(
+                icon: Icons.straighten,
+                title: loc.averageSize,
               ),
-              const SizedBox(height: 10),
               _buildRangeSlider(
                 minValue: minSize,
                 maxValue: maxSize,
@@ -122,17 +111,10 @@ class _AnimalResultScreenState extends State<AnimalResultScreen> {
                 },
               ),
               const SizedBox(height: 20),
-              const Row(
-                children: [
-                  Icon(Icons.access_time),
-                  SizedBox(width: 8),
-                  Text(
-                    'Lifespan',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              _buildSectionHeader(
+                icon: Icons.access_time,
+                title: loc.lifespan,
               ),
-              const SizedBox(height: 10),
               _buildRangeSlider(
                 minValue: minLifespan,
                 maxValue: maxLifespan,
@@ -148,91 +130,81 @@ class _AnimalResultScreenState extends State<AnimalResultScreen> {
                 },
               ),
               const SizedBox(height: 20),
-              const Row(
-                children: [
-                  Icon(Icons.color_lens),
-                  SizedBox(width: 8),
-                  Text(
-                    'Visual Characteristics',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              _buildSectionHeader(
+                icon: Icons.color_lens,
+                title: loc.visualCharacteristics,
               ),
-              const SizedBox(height: 8),
               Text(
                 widget.animalResult.visualCharacteristics ?? '',
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 20),
-              const Row(
-                children: [
-                  Icon(Icons.emoji_people),
-                  SizedBox(width: 8),
-                  Text(
-                    'Behavior',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              _buildSectionHeader(
+                icon: Icons.emoji_people,
+                title: loc.behavior,
               ),
-              const SizedBox(height: 8),
               Text(
                 widget.animalResult.behavior ?? '',
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 20),
-              const Row(
-                children: [
-                  Icon(Icons.restaurant),
-                  SizedBox(width: 8),
-                  Text(
-                    'Diet',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              _buildSectionHeader(
+                icon: Icons.restaurant,
+                title: loc.diet,
               ),
-              const SizedBox(height: 8),
               Text(
                 widget.animalResult.diet ?? '',
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 24.0),
-              // Admonition
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.yellow[700]!,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                padding: const EdgeInsets.all(12.0),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '⚠️ Keep in Mind',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      'Please note that this API uses machine learning models to analyze the species. While it is generally accurate, there may be edge cases where:\n\n'
-                      '• Species identification may not be perfect, especially if the image quality is low.\n'
-                      '• Visual characteristics of certain species may overlap, leading to misidentification.\n\n'
-                      'The species identification provided should be taken as a recommendation, not a definitive conclusion. No liability will be accepted for any incorrect identification or subsequent actions taken based on the response.\n\n',
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildAdmonition(loc.keepInMind, loc.admonitionContent),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader({required IconData icon, required String title}) {
+    return Row(
+      children: [
+        Icon(icon),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAdmonition(String title, String content) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.yellow[700]!,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.orange,
+            ),
+          ),
+          const SizedBox(height: 8.0),
+          Text(
+            content,
+            style: const TextStyle(fontSize: 12),
+          ),
+        ],
       ),
     );
   }

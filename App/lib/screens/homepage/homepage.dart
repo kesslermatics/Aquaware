@@ -12,6 +12,7 @@ import 'package:aquaware/screens/profile/profile_screen.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomepageScreen extends StatefulWidget {
@@ -64,6 +65,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   void _showLogoutConfirmationDialog(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       barrierDismissible:
@@ -73,23 +76,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12), // Rounded corners
           ),
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.logout, color: ColorProvider.n1),
-              SizedBox(width: 8),
-              Text('Confirm Logout'),
+              const Icon(Icons.logout, color: ColorProvider.n1),
+              const SizedBox(width: 8),
+              Expanded(child: Text(loc.logoutConfirmTitle)),
             ],
           ),
-          content: const Text(
-            'Are you sure you want to logout?\n\nYou will need to sign in again to access your account.',
-            style: TextStyle(fontSize: 16),
+          content: Text(
+            loc.logoutConfirmMessage,
+            style: const TextStyle(fontSize: 16),
           ),
           actions: [
             TextButton(
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red, // Red for "No"
               ),
-              child: const Text('No'),
+              child: Text(loc.no),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
@@ -100,7 +103,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   borderRadius: BorderRadius.circular(8), // Rounded corners
                 ),
               ),
-              child: const Text('Yes'),
+              child: Text(loc.yes),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
                 _logout(context); // Call the logout function
@@ -126,6 +129,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     List<Widget> pages = !_isLoading
         ? [
             DashboardScreen(onEnvironmentTapped: _onEnvironmentTapped),
@@ -143,13 +148,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ];
 
     List<String> titles = [
-      'Dashboard',
-      "Animal Detection",
-      "Disease Detection",
-      'Profile',
-      "Privacy",
-      "Send Feedback",
-      "About",
+      loc.dashboardTitle,
+      loc.animalDetectionTitle,
+      loc.diseaseDetectionTitle,
+      loc.profileTitle,
+      loc.privacyTitle,
+      loc.feedbackTitle,
+      loc.aboutTitle,
     ];
 
     return Scaffold(

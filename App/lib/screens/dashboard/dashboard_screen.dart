@@ -325,8 +325,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 20),
               FloatingActionButton.small(
                 heroTag: null,
-                onPressed: () => Get.to(() => const CreateEnvironmentScreen())
-                    ?.then((result) {
+                onPressed: () =>
+                    Get.to(() => const AddPublicEnvironmentScreen())
+                        ?.then((result) {
                   if (result == true) {
                     _fetchEnvironments();
                   }

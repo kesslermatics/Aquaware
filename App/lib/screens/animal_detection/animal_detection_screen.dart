@@ -5,6 +5,7 @@ import 'package:aquaware/screens/animal_detection/animal_result_screen.dart';
 import 'package:aquaware/services/animal_detection_service.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -50,7 +51,8 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Error picking image: $e';
+        _errorMessage =
+            AppLocalizations.of(context)!.errorPickingImage(e.toString());
       });
     }
   }
@@ -67,7 +69,8 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Error capturing image: $e';
+        _errorMessage =
+            AppLocalizations.of(context)!.errorCapturingImage(e.toString());
       });
     }
   }
@@ -75,7 +78,7 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
   Future<void> _analyzeImage() async {
     if (_selectedImage == null) {
       setState(() {
-        _errorMessage = 'Please upload or capture an image first.';
+        _errorMessage = AppLocalizations.of(context)!.uploadOrCaptureImage;
       });
       return;
     }
@@ -86,8 +89,8 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
     });
 
     Get.snackbar(
-      "Analyzing Image",
-      "Please wait while we analyze the image.",
+      AppLocalizations.of(context)!.analyzingImage,
+      AppLocalizations.of(context)!.pleaseWaitAnalyze,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: ColorProvider.n6,
       colorText: Colors.white,
@@ -107,19 +110,22 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
             ),
           );
         } else {
-          _errorMessage = 'No aquatic animal was detected in the image.';
+          _errorMessage = AppLocalizations.of(context)!.noAnimalDetected;
         }
       });
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Error analyzing image: $e';
+        _errorMessage =
+            AppLocalizations.of(context)!.errorAnalyzingImage(e.toString());
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -128,9 +134,9 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'Upload or capture an image of the aquatic animal to identify its species.',
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  loc.uploadOrCaptureToIdentify,
+                  style: const TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -151,37 +157,37 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
                               fit: BoxFit.cover,
                             ),
                           )
-                        : const Column(
+                        : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.camera_alt,
+                              const Icon(Icons.camera_alt,
                                   size: 50, color: Colors.grey),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
-                                "Upload Image",
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
+                                loc.uploadImage,
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.grey),
                               ),
                             ],
                           ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Row(
+                Row(
                   children: [
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text("OR"),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(loc.or),
                     ),
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                   ],
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
                   onPressed: _captureImage,
                   icon: const Icon(Icons.camera_alt),
-                  label: const Text('Capture Image'),
+                  label: Text(loc.captureImage),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
@@ -197,7 +203,7 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
                         ),
-                        child: const Text('Analyze'),
+                        child: Text(loc.analyze),
                       ),
                 if (_errorMessage != null)
                   Padding(
@@ -216,19 +222,19 @@ class _AnimalDetectionScreenState extends State<AnimalDetectionScreen> {
                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                 child: Container(
                   color: Colors.black.withOpacity(0.5),
-                  child: const Center(
+                  child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.lock,
                           size: 60,
                           color: Colors.white,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Text(
-                          'This feature is available only in the Advanced or Business Plan.',
-                          style: TextStyle(
+                          loc.featureLockedMessage,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                           ),

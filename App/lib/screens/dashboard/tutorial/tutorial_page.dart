@@ -4,7 +4,7 @@ import 'package:aquaware/services/tutorial_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TutorialPage extends StatelessWidget {
   const TutorialPage({super.key});
@@ -12,6 +12,7 @@ class TutorialPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(TutorialService());
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -23,69 +24,30 @@ class TutorialPage extends StatelessWidget {
           PageView(
             controller: controller.pageController,
             onPageChanged: controller.updatePageIndicator,
-            children: const [
+            children: [
               TutorialStepPage(
-                title: "Welcome to Aquaware",
-                content:
-                    """Aquaware is your ultimate solution for water monitoring. 
-Whether you're managing an aquarium, pond, or any water body, 
-Aquaware provides you with powerful tools to track water quality effortlessly.\n
-I'm Robert, the creator of Aquaware. 
-This app is designed to make water management simple, accessible, and even a bit fun!""",
+                title: loc.tutorialWelcomeTitle,
+                content: loc.tutorialWelcomeContent,
               ),
               TutorialStepPage(
-                title: "What the App Can Do",
-                content: """With Aquaware, you can monitor water parameters, 
-visualize data in real-time, and get personalized insights.
-
-It's your companion for ensuring the health and quality of your aquatic environments.
-Whether you're a hobbyist or a professional, Aquaware makes it easy.""",
+                title: loc.tutorialAppFeaturesTitle,
+                content: loc.tutorialAppFeaturesContent,
               ),
               TutorialStepPage(
-                title: "Understanding Environments",
-                content:
-                    """An environment in Aquaware represents a water body, like an aquarium, pond, or lake. 
-You can create an environment by tapping the '+' icon on the dashboard. 
-
-Public environments are also available if shared by others. 
-All water values for an environment are stored and visualized for easy monitoring.""",
+                title: loc.tutorialEnvironmentsTitle,
+                content: loc.tutorialEnvironmentsContent,
               ),
               TutorialStepPage(
-                title: "Adding Water Parameters",
-                content:
-                    """To add water parameters, you'll need a microcontroller like an Arduino with a WiFi module and sensors for temperature, pH, or other parameters. 
-
-Simply read the sensor values and upload them. 
-For a detailed guide, visit our documentation: 
-https://docs.aquaware.cloud/docs/getting-started/adding-water-values""",
+                title: loc.tutorialAddWaterParametersTitle,
+                content: loc.tutorialAddWaterParametersContent,
               ),
               TutorialStepPage(
-                title: "Subscription Plans",
-                content:
-                    """Aquaware offers three subscription plans tailored to your needs:
-
-**Hobby Plan**:
-- Free for personal use.
-- Monitor all parameters.
-- Upload values every 12 hours.
-
-**Advanced Plan**:
-- More precise tracking with uploads every 3 hours.
-- Alerts for specific parameters.
-
-**Premium Plan**:
-- Upload values every 30 minutes.
-- Unlimited environments.
-- AI-based fish identification and disease detection.""",
+                title: loc.tutorialSubscriptionPlansTitle,
+                content: loc.tutorialSubscriptionPlansContent,
               ),
               TutorialStepPage(
-                title: "Thank You!",
-                content:
-                    """Thank you for choosing Aquaware as your water monitoring solution. 
-Your trust and support mean the world to me. 
-
-Aquaware was created to make water management simple, accessible, and effective. 
-We're thrilled to have you in our growing community and are here to support you every step of the way.""",
+                title: loc.tutorialThankYouTitle,
+                content: loc.tutorialThankYouContent,
               ),
             ],
           ),

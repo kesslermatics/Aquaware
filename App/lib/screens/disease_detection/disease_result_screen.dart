@@ -1,19 +1,20 @@
 import 'package:aquaware/models/disease.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DiseaseResultScreen extends StatelessWidget {
   final AnimalDisease animalDisease;
 
-  // Konstruktor, um das FishDisease-Objekt zu akzeptieren
   const DiseaseResultScreen({super.key, required this.animalDisease});
 
   @override
   Widget build(BuildContext context) {
     final bool isHealthy = animalDisease.condition.toLowerCase() == 'healthy';
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Disease Diagnosis Result'),
+        title: Text(loc.diseaseDiagnosisResult),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -22,14 +23,15 @@ class DiseaseResultScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (isHealthy) ...[
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green, size: 24),
-                    SizedBox(width: 8),
+                    const Icon(Icons.check_circle,
+                        color: Colors.green, size: 24),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'The captured animal seems to be healthy!',
-                        style: TextStyle(
+                        loc.healthyAnimalMessage,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -38,13 +40,13 @@ class DiseaseResultScreen extends StatelessWidget {
                   ],
                 ),
               ] else ...[
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.info, size: 24),
-                    SizedBox(width: 8),
+                    const Icon(Icons.info, size: 24),
+                    const SizedBox(width: 8),
                     Text(
-                      'Condition',
-                      style: TextStyle(
+                      loc.condition,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -54,18 +56,16 @@ class DiseaseResultScreen extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Text(
                   animalDisease.condition,
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
+                  style: const TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 16.0),
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.healing, size: 24),
-                    SizedBox(width: 8),
+                    const Icon(Icons.healing, size: 24),
+                    const SizedBox(width: 8),
                     Text(
-                      'Symptoms',
-                      style: TextStyle(
+                      loc.symptoms,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -75,20 +75,20 @@ class DiseaseResultScreen extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Text(
                   animalDisease.symptoms,
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
+                  style: const TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 16.0),
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.medical_services, size: 24),
-                    SizedBox(width: 8),
-                    Text(
-                      'Suggested Treatment',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    const Icon(Icons.medical_services, size: 24),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        loc.suggestedTreatment,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -96,9 +96,7 @@ class DiseaseResultScreen extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Text(
                   animalDisease.curing,
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
               const SizedBox(height: 24.0),
@@ -112,27 +110,21 @@ class DiseaseResultScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(12.0),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '⚠️ Keep in Mind',
-                      style: TextStyle(
+                      loc.keepInMind,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.orange,
                       ),
                     ),
-                    SizedBox(height: 8.0),
+                    const SizedBox(height: 8.0),
                     Text(
-                      'Please note that this API uses machine learning models to analyze the animal and its condition. While it is generally accurate, there may be edge cases where:\n\n'
-                      '• Symptoms of disease are subtle or not easily detectable.\n'
-                      '• The animal’s natural patterns or appearance may resemble disease symptoms but are not harmful.\n\n'
-                      'The diagnosis provided should be taken as a recommendation, not a definitive conclusion. No liability will be accepted for any incorrect diagnosis or subsequent actions taken based on the response.\n\n'
-                      'It is always recommended to consult a professional veterinarian or animal health expert for any serious concerns about your pets.',
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
+                      loc.keepInMindDetails,
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),

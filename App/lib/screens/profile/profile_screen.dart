@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:aquaware/services/user_service.dart';
 import 'package:aquaware/models/user_profile.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -46,8 +47,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _isLoading = false;
       });
       Get.snackbar(
-        "Error",
-        e.toString(),
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.fetchProfileError,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -67,8 +68,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'last_name': userProfile.lastName,
       });
       Get.snackbar(
-        "Success",
-        "Profile updated successfully",
+        AppLocalizations.of(context)!.success,
+        AppLocalizations.of(context)!.profileUpdated,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
@@ -78,8 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _errorMessage = e.toString();
       });
       Get.snackbar(
-        "Error",
-        e.toString(),
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.updateProfileError,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -100,8 +101,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await _userService
           .regenerateApiKey(); // Implement this method in UserService
       Get.snackbar(
-        "Success",
-        "API Key regenerated successfully",
+        AppLocalizations.of(context)!.success,
+        AppLocalizations.of(context)!.apiKeyRegenerated,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
@@ -109,8 +110,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await _fetchUserProfile(); // Refresh user profile
     } catch (e) {
       Get.snackbar(
-        "Error",
-        e.toString(),
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.regenerateApiKeyError,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -131,8 +132,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await _userService
           .deleteUserAccount(); // Implement this method in UserService
       Get.snackbar(
-        "Success",
-        "Account deleted successfully",
+        AppLocalizations.of(context)!.success,
+        AppLocalizations.of(context)!.accountDeleted,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
@@ -141,8 +142,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .pushReplacementNamed('/onboarding'); // Redirect to onboarding
     } catch (e) {
       Get.snackbar(
-        "Error",
-        e.toString(),
+        AppLocalizations.of(context)!.error,
+        AppLocalizations.of(context)!.deleteAccountError,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -158,13 +159,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Regenerate API Key"),
-        content: const Text(
-            "Regenerating your API key will revoke the old key, and any devices using it will need to be updated with the new key. Are you sure you want to continue?"),
+        title: Text(AppLocalizations.of(context)!.regenerateApiKey),
+        content: Text(AppLocalizations.of(context)!.regenerateApiKeyMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Cancel"),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: _isRegenerating
@@ -175,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
             child: _isRegenerating
                 ? const CircularProgressIndicator()
-                : const Text("Regenerate"),
+                : Text(AppLocalizations.of(context)!.regenerate),
           ),
         ],
       ),
@@ -190,48 +190,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Delete Account"),
+        title: Text(AppLocalizations.of(context)!.deleteAccount),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-                "This action is irreversible. Please confirm your email, password, and enter 'DELETE ACCOUNT' to proceed."),
+            Text(AppLocalizations.of(context)!.deleteAccountMessage),
             const SizedBox(height: 16),
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.email),
             ),
             const SizedBox(height: 8),
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: "Password"),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.password),
             ),
             const SizedBox(height: 8),
             TextField(
               controller: confirmTextController,
-              decoration:
-                  const InputDecoration(labelText: "Enter 'DELETE ACCOUNT'"),
+              decoration: InputDecoration(
+                  labelText:
+                      AppLocalizations.of(context)!.enterDeleteAccountText),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Cancel"),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: _isDeleting
                 ? null
                 : () {
-                    if (confirmTextController.text == "DELETE ACCOUNT") {
+                    if (confirmTextController.text ==
+                        AppLocalizations.of(context)!.deleteAccountText) {
                       Navigator.of(context).pop();
                       _deleteAccount(
                           emailController.text, passwordController.text);
                     } else {
                       Get.snackbar(
-                        "Error",
-                        "You must enter 'DELETE ACCOUNT' exactly.",
+                        AppLocalizations.of(context)!.error,
+                        AppLocalizations.of(context)!.deleteAccountError2,
                         snackPosition: SnackPosition.BOTTOM,
                         backgroundColor: Colors.red,
                         colorText: Colors.white,
@@ -240,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
             child: _isDeleting
                 ? const CircularProgressIndicator()
-                : const Text("Delete"),
+                : Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -255,8 +258,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (_errorMessage.isNotEmpty) {
       return Center(
-          child:
-              Text(_errorMessage, style: const TextStyle(color: Colors.red)));
+        child: Text(
+          _errorMessage,
+          style: const TextStyle(color: Colors.red),
+        ),
+      );
     }
 
     return Scaffold(
@@ -266,7 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildTextField(
-              label: "First Name",
+              label: AppLocalizations.of(context)!.firstNameFieldLabel,
               value: userProfile.firstName,
               onChanged: (value) => setState(() {
                 userProfile.firstName = value;
@@ -274,21 +280,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               isEditable: true,
             ),
             _buildTextField(
-              label: "Last Name",
+              label: AppLocalizations.of(context)!.lastNameFieldLabel,
               value: userProfile.lastName,
               onChanged: (value) => setState(() {
                 userProfile.lastName = value;
               }),
               isEditable: true,
             ),
-            _buildTextField(label: "Email", value: userProfile.email),
             _buildTextField(
-                label: "Subscription Tier",
-                value: userProfile.subscriptionTier.toString()),
+              label: AppLocalizations.of(context)!.emailFieldLabel,
+              value: userProfile.email,
+            ),
             _buildTextField(
-                label: "Date Joined", value: userProfile.dateJoined.toString()),
+              label: AppLocalizations.of(context)!.subscriptionTierFieldLabel,
+              value: userProfile.subscriptionTier.toString(),
+            ),
             _buildTextField(
-              label: "API Key",
+              label: AppLocalizations.of(context)!.dateJoinedFieldLabel,
+              value: userProfile.dateJoined.toString(),
+            ),
+            _buildTextField(
+              label: AppLocalizations.of(context)!.apiKeyFieldLabel,
               value: userProfile.apiKey,
               isPassword: !_apiKeyVisible,
               suffixIcon: IconButton(
@@ -302,20 +314,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _showRegenerateApiKeyDialog,
-              child: const Text("Regenerate API Key"),
+              child: Text(AppLocalizations.of(context)!.regenerateApiKeyButton),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _updateProfile,
               child: _isUpdating
                   ? const CircularProgressIndicator()
-                  : const Text("Update Profile"),
+                  : Text(AppLocalizations.of(context)!.updateProfileButton),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _showDeleteAccountDialog,
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text("Delete Account"),
+              child: Text(AppLocalizations.of(context)!.deleteAccountButton),
             ),
           ],
         ),

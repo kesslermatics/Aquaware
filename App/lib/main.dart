@@ -1,14 +1,15 @@
-import 'package:aquaware/screens/onboarding/components/login_screen.dart';
-import 'package:aquaware/screens/onboarding/components/register_screen.dart';
-import 'package:aquaware/services/color_provider.dart';
+import 'dart:ui';
 import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'screens/homepage/homepage.dart';
 import 'screens/onboarding/onboarding_screen.dart';
+import 'package:aquaware/services/color_provider.dart';
 
 // in pubspec.yaml Version increment
 // in build.gradle version code incremetn
@@ -18,19 +19,38 @@ import 'screens/onboarding/onboarding_screen.dart';
 
 // keytool -genkeypair -alias my-release-key -keyalg RSA -keysize 2048 -validity 10000 -keystore my-release-key.jks
 // keytool -list -v -keystore <pfad-zu-deinem-keystore>.jks -alias <dein-alias> -storepass< dein-keystore-passwort>
-
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((_) {
-    runApp(const MyApp());
-  });
+  ]);
+
+  // Sprache laden
+  final savedLocale = await _loadSavedLocale();
+
+  runApp(MyApp(savedLocale: savedLocale));
+}
+
+Future<Locale> _loadSavedLocale() async {
+  final prefs = await SharedPreferences.getInstance();
+  final savedLanguageCode = prefs.getString('language_code');
+
+  if (savedLanguageCode != null) {
+    return Locale(savedLanguageCode);
+  } else {
+    final deviceLocale = window.locale;
+    if (['en', 'de'].contains(deviceLocale.languageCode)) {
+      return Locale(deviceLocale.languageCode);
+    }
+    return const Locale('en'); // Fallback auf Englisch
+  }
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final Locale savedLocale;
+
+  const MyApp({super.key, required this.savedLocale});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -49,17 +69,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _checkAuthentication() async {
     final refreshErrorMessage = await _userService.refreshAccessToken();
-    if (refreshErrorMessage == null) {
-      setState(() {
-        _isAuthenticated = true;
-      });
-    } else {
-      setState(() {
-        _isAuthenticated = false;
-      });
-    }
-
     setState(() {
+      _isAuthenticated = refreshErrorMessage == null;
       _isLoading = false;
     });
   }
@@ -67,27 +78,28 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      locale: widget.savedLocale,
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English
-        Locale('de'),
+        Locale('en'), // Englisch
+        Locale('de'), // Deutsch
       ],
       debugShowCheckedModeBanner: false,
       title: 'Aquaware',
       theme: ThemeData(
         fontFamily: 'Sora',
         colorScheme: ColorProvider.colorScheme,
-        scaffoldBackgroundColor: ColorProvider.n8, // Hintergrundfarbe
+        scaffoldBackgroundColor: ColorProvider.n8,
         appBarTheme: const AppBarTheme(
-          backgroundColor: ColorProvider.n6, // AppBar Hintergrundfarbe
-          foregroundColor: ColorProvider.n1, // AppBar Textfarbe
-          iconTheme: IconThemeData(color: ColorProvider.n1), // AppBar Icons
+          backgroundColor: ColorProvider.n6,
+          foregroundColor: ColorProvider.n1,
           titleTextStyle: TextStyle(
-            color: ColorProvider.n1, // AppBar Titel
+            color: ColorProvider.n1,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -100,15 +112,15 @@ class _MyAppState extends State<MyApp> {
           bodyMedium: TextStyle(color: ColorProvider.n2),
           bodySmall: TextStyle(color: ColorProvider.n2),
         ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: ColorProvider.n17, // Textfarbe Button
-          ),
-        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             foregroundColor: ColorProvider.n1,
             backgroundColor: ColorProvider.n17,
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: ColorProvider.n17, // Textfarbe Button
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
@@ -164,11 +176,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-const defaultInputBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.all(Radius.circular(16)),
-  borderSide: BorderSide(
-    color: Color(0xFFDEE3F2),
-    width: 1,
-  ),
-);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/environment_service.dart';
 import 'package:aquaware/models/environment.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddPublicEnvironmentScreen extends StatefulWidget {
   const AddPublicEnvironmentScreen({super.key});
@@ -37,7 +38,10 @@ class _AddPublicEnvironmentScreenState
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching public environments: $e')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!
+              .errorFetchingEnvironments(e.toString())),
+        ),
       );
     }
   }
@@ -56,18 +60,20 @@ class _AddPublicEnvironmentScreenState
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Public Environments'),
+        title: Text(loc.publicEnvironmentsTitle),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search Environments',
-                prefixIcon: Icon(Icons.search),
+              decoration: InputDecoration(
+                labelText: loc.searchEnvironmentsLabel,
+                prefixIcon: const Icon(Icons.search),
               ),
               onChanged: _filterEnvironments,
             ),
@@ -76,8 +82,9 @@ class _AddPublicEnvironmentScreenState
               ? const Center(child: CircularProgressIndicator())
               : Expanded(
                   child: _filteredEnvironments.isEmpty
-                      ? const Center(
-                          child: Text('No public environments found.'))
+                      ? Center(
+                          child: Text(loc.noPublicEnvironmentsFound),
+                        )
                       : ListView.builder(
                           itemCount: _filteredEnvironments.length,
                           itemBuilder: (context, index) {
@@ -125,16 +132,20 @@ class _AddPublicEnvironmentScreenState
                                               environment.id);
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Successfully subscribed!')),
+                                        SnackBar(
+                                          content:
+                                              Text(loc.subscriptionSuccess),
+                                        ),
                                       );
                                       Navigator.pop(context);
                                     } catch (e) {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  'Failed to subscribe: $e')));
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(loc.subscriptionFailed(
+                                              e.toString())),
+                                        ),
+                                      );
                                     }
                                   },
                                 ),

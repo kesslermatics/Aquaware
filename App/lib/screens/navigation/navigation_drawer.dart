@@ -3,6 +3,7 @@ import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuDrawer extends StatelessWidget {
   final Function(int) onItemTapped;
@@ -56,6 +57,8 @@ class MenuDrawer extends StatelessWidget {
   }
 
   Widget buildMenuItems(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(24),
       child: Wrap(
@@ -63,39 +66,39 @@ class MenuDrawer extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(FontAwesomeIcons.chartLine),
-            title: const Text("Dashboard"),
+            title: Text(loc.drawerDashboard),
             onTap: () => onItemTapped(0),
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.fish),
-            title: const Text("Animal Detection"),
+            title: Text(loc.drawerAnimalDetection),
             onTap: () => onItemTapped(1),
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.heart),
-            title: const Text("Disease Detection"),
+            title: Text(loc.drawerDiseaseDetection),
             onTap: () => onItemTapped(2),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(FontAwesomeIcons.user),
-            title: const Text("Profile"),
+            title: Text(loc.drawerProfile),
             onTap: () => onItemTapped(3),
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.key),
-            title: const Text("Privacy"),
+            title: Text(loc.drawerPrivacy),
             onTap: () => onItemTapped(4),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(FontAwesomeIcons.envelope),
-            title: const Text("Send Feedback"),
+            title: Text(loc.drawerSendFeedback),
             onTap: () => onItemTapped(5),
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.infoCircle),
-            title: const Text("About"),
+            title: Text(loc.drawerAbout),
             onTap: () => onItemTapped(6),
           ),
         ],
