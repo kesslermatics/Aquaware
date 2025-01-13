@@ -8,6 +8,7 @@ import 'package:aquaware/services/environment_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Function(Environment) onEnvironmentTapped;
@@ -50,6 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final TextEditingController nameController = TextEditingController();
     bool isDeleting = false;
 
+    final loc = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -58,20 +60,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          title: const Text('Delete Environment'),
+          title: Text(loc.deleteEnvironmentTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Please enter the name of the environment to confirm deletion:',
-                style: TextStyle(fontSize: 16),
+              Text(
+                loc.deleteEnvironmentPrompt,
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Environment Name',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: loc.environmentName,
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ],
@@ -79,9 +81,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.red),
+              child: Text(
+                loc.cancel,
+                style: const TextStyle(color: Colors.red),
               ),
             ),
             ElevatedButton(
@@ -98,25 +100,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         setState(() {
                           isDeleting = true;
                         });
-                        await _environmentService
-                            .deleteEnvironment(environment.id);
-                        setState(() {
-                          _environments.remove(environment);
-                          isDeleting = false;
-                          _fetchEnvironments();
-                        });
-                        Navigator.of(context).pop();
-                        Get.snackbar(
-                          'Success',
-                          'Environment "${environment.name}" deleted successfully',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.green,
-                          colorText: Colors.white,
-                        );
+                        try {
+                          await _environmentService
+                              .deleteEnvironment(environment.id);
+                          setState(() {
+                            _environments.remove(environment);
+                            isDeleting = false;
+                            _fetchEnvironments();
+                          });
+                          Navigator.of(context).pop();
+                          Get.snackbar(
+                            loc.success,
+                            loc.environmentDeleted(environment.name),
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white,
+                          );
+                        } catch (e) {
+                          setState(() {
+                            isDeleting = false;
+                          });
+                          Get.snackbar(
+                            loc.error,
+                            loc.deleteEnvironmentError(e.toString()),
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
                       } else {
                         Get.snackbar(
-                          'Error',
-                          'Environment name does not match. Please try again.',
+                          loc.error,
+                          loc.environmentNameMismatch,
                           snackPosition: SnackPosition.BOTTOM,
                           backgroundColor: Colors.red,
                           colorText: Colors.white,
@@ -125,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     },
               child: isDeleting
                   ? const CircularProgressIndicator()
-                  : const Text('Delete'),
+                  : Text(loc.delete),
             ),
           ],
         ),
@@ -135,13 +150,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Welcome, ${UserProfile.getInstance().firstName}!',
+              "${loc.welcome} ${UserProfile.getInstance().firstName}",
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
@@ -157,7 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             const CircularProgressIndicator(color: Colors.blue),
                             const SizedBox(height: 16),
                             Text(
-                              'Getting all environments...',
+                              loc.gettingEnvironments,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
@@ -166,10 +183,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   )
                 : _error != null
-                    ? const Center(
+                    ? Center(
                         child: Text(
-                          'Error: Something went wrong. Please try again later.',
-                          style: TextStyle(color: Colors.red, fontSize: 16),
+                          loc.errorOccurred,
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         ),
                       )
                     : _environments.isEmpty
@@ -177,11 +195,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(16.0),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
                                   child: Text(
-                                    'Hmm, seems like there’s no environment yet. Why don\'t you click here for a quick guide on how to start:',
-                                    style: TextStyle(fontSize: 16),
+                                    loc.noEnvironmentsFound,
+                                    style: const TextStyle(fontSize: 16),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -190,7 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   onPressed: () {
                                     Get.to(() => const TutorialPage());
                                   },
-                                  child: const Text('Getting Started'),
+                                  child: Text(loc.gettingStarted),
                                 ),
                               ],
                             ),
@@ -222,7 +240,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'ID: ${environment.id}',
+                                                loc.environmentId(
+                                                    environment.id),
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.white54,
@@ -295,9 +314,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                "Add a new Aquatic Environment",
-                style: TextStyle(
+              Text(
+                loc.addNewEnvironment,
+                style: const TextStyle(
                   color: ColorProvider.n1,
                 ),
               ),
@@ -316,9 +335,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Row(
             children: [
-              const Text(
-                "Add a publicly available Environment",
-                style: TextStyle(
+              Text(
+                loc.addPublicEnvironment,
+                style: const TextStyle(
                   color: ColorProvider.n1,
                 ),
               ),

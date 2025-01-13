@@ -191,7 +191,32 @@
   "description": "Beschreibung",
   "city": "Stadt",
   "environmentType": "Umgebungstyp",
-  "createEnvironment": "Umgebung erstellen"
+  "createEnvironment": "Umgebung erstellen",
+  "deleteEnvironmentTitle": "Umgebung löschen",
+  "deleteEnvironmentPrompt": "Bitte gib den Namen der Umgebung ein, um die Löschung zu bestätigen:",
+  "environmentName": "Umgebungsname",
+  "environmentDeleted": "Umgebung \"{name}\" erfolgreich gelöscht.",
+  "environmentNameMismatch": "Der Name der Umgebung stimmt nicht überein. Bitte versuche es erneut.",
+  "deleteEnvironmentError": "Fehler beim Löschen der Umgebung: {error}",
+  "gettingEnvironments": "Alle Umgebungen werden geladen...",
+  "errorOccurred": "Fehler: Etwas ist schiefgelaufen. Bitte versuche es später erneut.",
+  "noEnvironmentsFound": "Hmm, es scheint noch keine Umgebung zu geben. Klick hier für eine kurze Anleitung, wie du anfangen kannst:",
+  "gettingStarted": "Erste Schritte",
+  "environmentId": "ID: {id}",
+  "addNewEnvironment": "Neue Wasserumgebung hinzufügen",
+  "addPublicEnvironment": "Eine öffentlich verfügbare Umgebung hinzufügen",
+  "fetchingWaterValues": "Wasserwerte werden abgerufen...",
+  "fetchingTotalEntries": "Gesamteinträge werden abgerufen...",
+  "loadingComplete": "Laden abgeschlossen!",
+  "failedToLoadWaterValues": "Fehler beim Laden der Wasserwerte.",
+  "noWaterValuesFound": "Keine Wasserwerte gefunden.",
+  "failedToLoadTotalEntries": "Fehler beim Laden der Gesamteinträge.",
+  "noTotalEntriesFound": "Keine Gesamteinträge gefunden.",
+  "lineChartTitle": "{parameterName}-Werte über die Zeit",
+  "xAxisLabel": "Zeit",
+  "yAxisLabel": "{parameterName} ({unit})",
+  "heatmapTitle": "Heatmap der {parameterName}-Werte",
+  "histogramTitle": "Verteilung in den letzten 24 Stunden"
 }
 
   

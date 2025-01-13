@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:aquaware/models/water_value.dart';
 import 'package:aquaware/services/color_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DataScreen extends StatefulWidget {
   final Future<List<WaterValue>> futureWaterValues;
@@ -40,30 +41,39 @@ class DataScreen extends StatefulWidget {
 
 class _DataScreenState extends State<DataScreen> {
   double _progress = 0.0;
-  String _statusText = "Initializing...";
+  String _statusText = "";
 
   @override
   void initState() {
     super.initState();
+    _progress = 0.2; // Initial progress
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Lokalisierung in didChangeDependencies initialisieren
     _simulateLoading();
   }
 
   Future<void> _simulateLoading() async {
+    final loc = AppLocalizations.of(context)!;
+
     setState(() {
       _progress = 0.2;
-      _statusText = "Fetching water values...";
+      _statusText = loc.fetchingWaterValues;
     });
     await widget.futureWaterValues;
 
     setState(() {
       _progress = 0.6;
-      _statusText = "Fetching total entries...";
+      _statusText = loc.fetchingTotalEntries;
     });
     await widget.futureTotalEntries;
 
     setState(() {
       _progress = 1.0;
-      _statusText = "Loading complete!";
+      _statusText = loc.loadingComplete;
     });
   }
 
@@ -78,9 +88,12 @@ class _DataScreenState extends State<DataScreen> {
           }
 
           if (snapshot.hasError) {
-            return const Center(child: Text('Failed to load water values'));
+            return Center(
+                child: Text(
+                    AppLocalizations.of(context)!.failedToLoadWaterValues));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No water values found'));
+            return Center(
+                child: Text(AppLocalizations.of(context)!.noWaterValuesFound));
           } else {
             List<WaterValue> waterValues = snapshot.data!.reversed.toList();
             WaterValue lastWaterValue = waterValues.last;
@@ -102,11 +115,13 @@ class _DataScreenState extends State<DataScreen> {
                           ),
                         );
                       } else if (totalEntriesSnapshot.hasError) {
-                        return const Center(
-                            child: Text('Failed to load total entries'));
+                        return Center(
+                            child: Text(AppLocalizations.of(context)!
+                                .failedToLoadTotalEntries));
                       } else if (!totalEntriesSnapshot.hasData) {
-                        return const Center(
-                            child: Text('No total entries found'));
+                        return Center(
+                            child: Text(AppLocalizations.of(context)!
+                                .noTotalEntriesFound));
                       } else {
                         int totalEntries = totalEntriesSnapshot.data!;
                         return Column(
@@ -162,6 +177,7 @@ class _DataScreenState extends State<DataScreen> {
   }
 
   Widget _makeLineChartWidget(List<WaterValue> waterValues) {
+    final loc = AppLocalizations.of(context)!;
     List<DateTime> xValues =
         waterValues.map((value) => value.measuredAt).toList();
     List<double> yValues = waterValues.map((value) => value.value).toList();
@@ -170,26 +186,28 @@ class _DataScreenState extends State<DataScreen> {
       yValues: yValues,
       yDeviation: widget.lineChartDeviation,
       fractionDigits: widget.fractionDigits,
-      title: '${widget.parameterName} Levels over Time',
-      xAxisLabel: 'Time',
-      yAxisLabel: '${widget.parameterName} (${widget.unit})',
+      title: loc.lineChartTitle(widget.parameterName),
+      xAxisLabel: loc.xAxisLabel,
+      yAxisLabel: loc.yAxisLabel(widget.parameterName, widget.unit),
     );
   }
 
   Widget _makeHeatmapWidget(List<WaterValue> waterValues) {
+    final loc = AppLocalizations.of(context)!;
     return HeatmapWidget(
       waterValues: waterValues,
       fractionDigits: widget.fractionDigits,
-      title: "${widget.parameterName} Level Heatmap",
+      title: loc.heatmapTitle(widget.parameterName),
     );
   }
 
   Widget _makeHistogramWidget(List<WaterValue> waterValues) {
+    final loc = AppLocalizations.of(context)!;
     return HistogramWidget(
       waterValues: waterValues,
       range: widget.histogrammRange,
       fractionDigits: widget.fractionDigits,
-      title: 'Distribution in the last 24h',
+      title: loc.histogramTitle,
     );
   }
 }

@@ -51,6 +51,7 @@ class HistogramWidget extends StatelessWidget {
                 child: Text(
                   title,
                   style: const TextStyle(
+                    color: ColorProvider.n1,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
