@@ -45,7 +45,7 @@ def diagnosis_from_image(request):
             f"You will receive an image of an aquatic animal. Your task is to carefully and thoroughly determine whether the animal has any disease. "
             f"Only provide a diagnosis if you are highly certain of the condition. In case of doubt, carefully review every detail before making a judgment. "
             f"If there is any uncertainty, increase your attention to the smallest visual cues of disease. "
-            f"Respond **only** in the specified language '{language}' for the values and exclusively in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these JSON values:\n"
+            f"Respond **only** in the specified language '{language}' and only in this language for the values and exclusively in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these JSON values:\n"
             f"{{\n"
             f'  "animal_detected": true or false,\n'
             f'  "condition": "Healthy" or the identified disease with their name,\n'
@@ -54,7 +54,6 @@ def diagnosis_from_image(request):
             f"}}"
         )
 
-        print(prompt)
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {settings.OPENAI_API_KEY_DISEASE_DETECTION}"
