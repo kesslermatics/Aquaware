@@ -2,6 +2,7 @@ import 'package:aquaware/models/environment.dart';
 import 'package:aquaware/models/water_parameter.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'water_parameter_card.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -26,6 +27,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return FutureBuilder<List<WaterParameter>>(
       future: _futureWaterParameters,
       builder: (context, snapshot) {
@@ -37,7 +40,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const CircularProgressIndicator(color: Colors.blue),
                 const SizedBox(height: 16),
                 Text(
-                  'Getting all parameters...',
+                  loc.gettingAllParameters,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -51,7 +54,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const Icon(Icons.error, color: Colors.red),
                 const SizedBox(width: 8),
                 Text(
-                  'Error: There was an error loading the water parameters.',
+                  loc.errorLoadingParameters,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -65,7 +68,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const Icon(Icons.info, color: Colors.grey),
                 const SizedBox(width: 8),
                 Text(
-                  'No water parameters found.',
+                  loc.noParametersFound,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -95,7 +98,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'No water parameters found in the last 7 days. The data shown may be outdated.',
+                            loc.noParametersLast7Days,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),

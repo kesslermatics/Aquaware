@@ -40,6 +40,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaware/models/water_parameter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WaterParameterCard extends StatefulWidget {
   final WaterParameter waterParameter;
@@ -367,6 +368,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
 
   final Map<String, Widget Function(BuildContext, int)> parameterScreens = {
     'ammonia': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Ammonia',
@@ -374,7 +376,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Ammonia',
+          parameterName: loc.ammonia, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -385,17 +387,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const AmmoniaKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Ammonia levels that are too high can be dangerous for your fish, leading to stress, illness, and even death. '
-              'Ideally, ammonia levels should be kept at 0 ppm. '
-              "An appropriate alert can be to notify when ammonia levels are above 0.1.",
-          parameterName: "Ammonia",
+          infotext: loc.ammoniaInfo,
+          parameterName: loc.ammonia,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'boron': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Boron',
@@ -403,7 +403,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Boron',
+          parameterName: loc.boron, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -414,17 +414,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const BoronKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High levels of boron can be toxic to plants and invertebrates in your aquarium. '
-              'It can also lead to stress and illness in sensitive fish species. '
-              "An appropriate alert can be to notify when boron levels are above 1.0 ppm, depending on the species in your tank.",
-          parameterName: "Boron",
+          infotext: loc.boronInfo,
+          parameterName: loc.boron,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'bromine': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Bromine',
@@ -432,7 +430,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Bromine',
+          parameterName: loc.bromine, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -443,17 +441,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const BromineKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Elevated bromine levels can be harmful to fish, leading to respiratory problems and stress. '
-              'In extreme cases, it can be lethal. '
-              "An appropriate alert can be to notify when bromine levels are above 0.1 ppm.",
-          parameterName: "Bromine",
+          infotext: loc.bromineInfo,
+          parameterName: loc.bromine,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'calcium': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Calcium',
@@ -461,7 +457,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Calcium',
+          parameterName: loc.calcium, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -472,17 +468,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const CalciumKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High calcium levels can lead to water hardness issues, which might cause stress in soft water fish. '
-              'On the other hand, low calcium levels can lead to poor shell development in invertebrates. '
-              "An appropriate alert can be to notify when calcium levels are above 450 ppm or below 300 ppm.",
-          parameterName: "Calcium",
+          infotext: loc.calciumInfo,
+          parameterName: loc.calcium,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'carbon dioxide': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Carbon Dioxide',
@@ -490,7 +484,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Carbon Dioxide',
+          parameterName: loc.carbonDioxide, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -501,17 +495,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const CarbonDioxideKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Excessive carbon dioxide (CO2) can lower the pH of your aquarium, leading to stress and respiratory issues in fish. '
-              'In extreme cases, it can cause suffocation. '
-              "An appropriate alert can be to notify when CO2 levels are above 30 ppm.",
-          parameterName: "Carbon Dioxide",
+          infotext: loc.carbonDioxideInfo,
+          parameterName: loc.carbonDioxide,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'carbonate hardness': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Carbonate Hardness',
@@ -519,7 +511,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Carbonate Hardness',
+          parameterName: loc.carbonateHardness, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -530,17 +522,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const CarbonateHardnessKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High carbonate hardness (KH) levels can cause pH stability issues, making it difficult to adjust pH levels. '
-              'Low KH can lead to sudden pH swings, which are harmful to fish. '
-              "An appropriate alert can be to notify when carbonate hardness is above 12 dKH or below 4 dKH.",
-          parameterName: "Carbonate Hardness",
+          infotext: loc.carbonateHardnessInfo,
+          parameterName: loc.carbonateHardness,
           aquariumId: aquariumId,
           unit: 'dKH',
         ),
       );
     },
     'chloride': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Chloride',
@@ -548,7 +538,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Chloride',
+          parameterName: loc.chloride, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -559,16 +549,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const ChlorideKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High chloride levels can indicate contamination and may lead to stress in freshwater fish. '
-              "An appropriate alert can be to notify when chloride levels are above 250 mg/L.",
-          parameterName: "Chloride",
+          infotext: loc.chlorideInfo,
+          parameterName: loc.chloride,
           aquariumId: aquariumId,
           unit: 'mg/L',
         ),
       );
     },
     'chlorine': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Chlorine',
@@ -576,7 +565,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Chlorine',
+          parameterName: loc.chlorine, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -587,16 +576,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const ChlorineKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Excess chlorine can be toxic to all aquatic life, leading to severe stress, gill damage, and death. '
-              "An appropriate alert can be to notify when chlorine levels are detectable (above 0 ppm).",
-          parameterName: "Chlorine",
+          infotext: loc.chlorineInfo,
+          parameterName: loc.chlorine,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'conductivity': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Conductivity',
@@ -604,7 +592,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Conductivity',
+          parameterName: loc.conductivity, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -615,16 +603,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const ConductivityKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High conductivity often indicates high levels of dissolved salts, which can be harmful to fish not adapted to such conditions. '
-              "An appropriate alert can be to notify when conductivity exceeds 2000 µS/cm in freshwater aquariums.",
-          parameterName: "Conductivity",
+          infotext: loc.conductivityInfo,
+          parameterName: loc.conductivity,
           aquariumId: aquariumId,
           unit: 'µS/cm',
         ),
       );
     },
     'copper': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Copper',
@@ -632,7 +619,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Copper',
+          parameterName: loc.copper, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -643,16 +630,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const CopperKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Elevated copper levels can be highly toxic to invertebrates and sensitive fish species, leading to death. '
-              "An appropriate alert can be to notify when copper levels exceed 0.1 ppm.",
-          parameterName: "Copper",
+          infotext: loc.copperInfo,
+          parameterName: loc.copper,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'fluoride': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Fluoride',
@@ -660,7 +646,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Fluoride',
+          parameterName: loc.fluoride, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -671,16 +657,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const FluorideKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High fluoride levels can be harmful to fish, causing stress and potential organ damage over time. '
-              "An appropriate alert can be to notify when fluoride levels exceed 1.5 ppm.",
-          parameterName: "Fluoride",
+          infotext: loc.fluorideInfo,
+          parameterName: loc.fluoride,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'general hardness': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'General Hardness',
@@ -688,7 +673,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'General Hardness',
+          parameterName: loc.generalHardness, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -699,17 +684,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const GeneralHardnessKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'General hardness (GH) measures the total concentration of calcium and magnesium. '
-              'Water that is too hard or too soft can stress fish and affect their osmoregulation. '
-              "An appropriate alert can be to notify when GH is above 14 dGH or below 4 dGH, depending on the species.",
-          parameterName: "General Hardness",
+          infotext: loc.generalHardnessInfo,
+          parameterName: loc.generalHardness,
           aquariumId: aquariumId,
           unit: 'dGH',
         ),
       );
     },
     'iodine': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Iodine',
@@ -717,7 +700,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Iodine',
+          parameterName: loc.iodine, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -728,16 +711,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const IodineKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Iodine is necessary for invertebrate health but in high concentrations, it can be toxic to both fish and invertebrates. '
-              "An appropriate alert can be to notify when iodine levels are above 0.06 ppm.",
-          parameterName: "Iodine",
+          infotext: loc.iodineInfo,
+          parameterName: loc.iodine,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'iron': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Iron',
@@ -745,7 +727,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Iron',
+          parameterName: loc.iron, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -756,16 +738,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const IronKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High iron levels can lead to excessive algae growth and may be toxic to invertebrates and some fish species. '
-              "An appropriate alert can be to notify when iron levels exceed 0.2 ppm.",
-          parameterName: "Iron",
+          infotext: loc.ironInfo,
+          parameterName: loc.iron,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'magnesium': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Magnesium',
@@ -773,7 +754,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Magnesium',
+          parameterName: loc.magnesium, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -784,16 +765,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const MagnesiumKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Magnesium is crucial for coral and invertebrate health, but excessive levels can disrupt water chemistry and harm aquatic life. '
-              "An appropriate alert can be to notify when magnesium levels are above 1500 ppm.",
-          parameterName: "Magnesium",
+          infotext: loc.magnesiumInfo,
+          parameterName: loc.magnesium,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'molybdenum': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Molybdenum',
@@ -801,7 +781,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Molybdenum',
+          parameterName: loc.molybdenum, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -812,16 +792,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const MolybdenumKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Molybdenum in excess can be toxic to fish and invertebrates, potentially leading to health issues or death. '
-              "An appropriate alert can be to notify when molybdenum levels exceed 0.01 ppm.",
-          parameterName: "Molybdenum",
+          infotext: loc.molybdenumInfo,
+          parameterName: loc.molybdenum,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'nitrate': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Nitrate',
@@ -829,7 +808,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Nitrate',
+          parameterName: loc.nitrate, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -840,16 +819,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const NitrateKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High nitrate levels can cause stress, weaken immune systems, and lead to algae overgrowth. '
-              "An appropriate alert can be to notify when nitrate levels exceed 40 ppm.",
-          parameterName: "Nitrate",
+          infotext: loc.nitrateInfo,
+          parameterName: loc.nitrate,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'nitrite': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Nitrite',
@@ -857,7 +835,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Nitrite',
+          parameterName: loc.nitrite, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -868,16 +846,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const NitriteKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Nitrite is highly toxic to fish and even small amounts can lead to stress, illness, or death. '
-              "An appropriate alert can be to notify when nitrite levels are detectable (above 0 ppm).",
-          parameterName: "Nitrite",
+          infotext: loc.nitriteInfo,
+          parameterName: loc.nitrite,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'organic carbon': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Organic Carbon',
@@ -885,7 +862,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Organic Carbon',
+          parameterName: loc.organicCarbon, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -896,16 +873,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const OrganicCarbonKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High levels of organic carbon can indicate poor water quality, leading to oxygen depletion and stress for fish. '
-              "An appropriate alert can be to notify when organic carbon levels are above 5 mg/L.",
-          parameterName: "Organic Carbon",
+          infotext: loc.organicCarbonInfo,
+          parameterName: loc.organicCarbon,
           aquariumId: aquariumId,
           unit: 'mg/L',
         ),
       );
     },
     'oxygen': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Oxygen',
@@ -913,7 +889,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Oxygen',
+          parameterName: loc.oxygen, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -924,16 +900,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const OxygenKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Low oxygen levels can lead to suffocation and death for fish, especially those in densely stocked tanks. '
-              "An appropriate alert can be to notify when oxygen levels drop below 5 mg/L.",
-          parameterName: "Oxygen",
+          infotext: loc.oxygenInfo,
+          parameterName: loc.oxygen,
           aquariumId: aquariumId,
           unit: 'mg/L',
         ),
       );
     },
     'ph': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'PH',
@@ -941,7 +916,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'PH',
+          parameterName: loc.ph, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -952,17 +927,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const PHKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'pH levels that are too high or too low can lead to stress, disease, and even death in fish. '
-              'Different fish species require different pH levels. '
-              "An appropriate alert can be to notify when pH levels are outside the range of 6.5 to 8.0, depending on species.",
-          parameterName: "PH",
+          infotext: loc.phInfo,
+          parameterName: loc.ph,
           aquariumId: aquariumId,
           unit: '',
         ),
       );
     },
     'phosphate': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Phosphate',
@@ -970,7 +943,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Phosphate',
+          parameterName: loc.phosphate, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -981,16 +954,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const PhosphateKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Excess phosphate can lead to algae overgrowth, causing oxygen depletion and stress in fish. '
-              "An appropriate alert can be to notify when phosphate levels exceed 1.0 ppm.",
-          parameterName: "Phosphate",
+          infotext: loc.phosphateInfo,
+          parameterName: loc.phosphate,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'potassium': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Potassium',
@@ -998,7 +970,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Potassium',
+          parameterName: loc.potassium, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1009,16 +981,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const PotassiumKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Potassium is necessary for plant health, but high levels can be harmful to fish and other aquatic life. '
-              "An appropriate alert can be to notify when potassium levels exceed 30 ppm.",
-          parameterName: "Potassium",
+          infotext: loc.potassiumInfo,
+          parameterName: loc.potassium,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'redox potential': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Redox Potential',
@@ -1026,7 +997,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Redox Potential',
+          parameterName: loc.redoxPotential, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1037,16 +1008,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const RedoxPotentialKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Redox potential that is too low can indicate poor water quality and lack of oxygen, while too high can cause oxidative stress in fish. '
-              "An appropriate alert can be to notify when redox potential is outside the range of +200 to +400 mV.",
-          parameterName: "Redox Potential",
+          infotext: loc.redoxPotentialInfo,
+          parameterName: loc.redoxPotential,
           aquariumId: aquariumId,
           unit: 'mV',
         ),
       );
     },
     'salinity': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Salinity',
@@ -1054,7 +1024,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Salinity',
+          parameterName: loc.salinity, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1065,16 +1035,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const SalinityKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High salinity can cause osmotic stress in freshwater fish, leading to dehydration and death. '
-              "An appropriate alert can be to notify when salinity is above 1.005 specific gravity in freshwater tanks.",
-          parameterName: "Salinity",
+          infotext: loc.salinityInfo,
+          parameterName: loc.salinity,
           aquariumId: aquariumId,
           unit: 'specific gravity',
         ),
       );
     },
     'silica': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Silica',
@@ -1082,7 +1051,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Silica',
+          parameterName: loc.silica, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1093,16 +1062,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const SilicaKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Silica can promote diatom algae growth, which can be problematic in aquariums. '
-              "An appropriate alert can be to notify when silica levels exceed 2 mg/L.",
-          parameterName: "Silica",
+          infotext: loc.silicaInfo,
+          parameterName: loc.silica,
           aquariumId: aquariumId,
           unit: 'mg/L',
         ),
       );
     },
     'strontium': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Strontium',
@@ -1110,7 +1078,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Strontium',
+          parameterName: loc.strontium, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1121,16 +1089,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const StrontiumKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Strontium is important for coral growth, but excessive levels can be harmful to invertebrates. '
-              "An appropriate alert can be to notify when strontium levels exceed 12 ppm.",
-          parameterName: "Strontium",
+          infotext: loc.strontiumInfo,
+          parameterName: loc.strontium,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'sulfate': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Sulfate',
@@ -1138,7 +1105,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Sulfate',
+          parameterName: loc.sulfate, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1149,16 +1116,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const SulfateKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Sulfate in high concentrations can contribute to water hardness and be toxic to fish and invertebrates. '
-              "An appropriate alert can be to notify when sulfate levels exceed 500 mg/L.",
-          parameterName: "Sulfate",
+          infotext: loc.sulfateInfo,
+          parameterName: loc.sulfate,
           aquariumId: aquariumId,
           unit: 'mg/L',
         ),
       );
     },
     'suspended solids': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Suspended Solids',
@@ -1166,7 +1132,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Suspended Solids',
+          parameterName: loc.suspendedSolids, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1177,16 +1143,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const SuspendedSolidsKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High levels of suspended solids can cause cloudy water, reduce light penetration, and stress fish by clogging their gills. '
-              "An appropriate alert can be to notify when suspended solids exceed 30 mg/L.",
-          parameterName: "Suspended Solids",
+          infotext: loc.suspendedSolidsInfo,
+          parameterName: loc.suspendedSolids,
           aquariumId: aquariumId,
           unit: 'mg/L',
         ),
       );
     },
     'tds': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'TDS',
@@ -1194,7 +1159,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'TDS',
+          parameterName: loc.tds, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1205,16 +1170,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const TDSKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Total Dissolved Solids (TDS) that are too high can indicate poor water quality and stress aquatic life. '
-              "An appropriate alert can be to notify when TDS levels exceed 500 ppm in freshwater aquariums.",
-          parameterName: "TDS",
+          infotext: loc.tdsInfo,
+          parameterName: loc.tds,
           aquariumId: aquariumId,
           unit: 'ppm',
         ),
       );
     },
     'temperature': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Temperature',
@@ -1222,7 +1186,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Temperature',
+          parameterName: loc.temperature, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1233,17 +1197,15 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const TemperatureKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'Temperature that is too high or too low can cause thermal stress, weaken immune systems, and lead to death. '
-              'Different species have different temperature requirements. '
-              "An appropriate alert can be to notify when temperature is outside the range of 24-28°C, depending on species.",
-          parameterName: "Temperature",
+          infotext: loc.temperatureInfo,
+          parameterName: loc.temperature,
           aquariumId: aquariumId,
           unit: '°C',
         ),
       );
     },
     'turbidity': (context, aquariumId) {
+      final loc = AppLocalizations.of(context)!;
       return ParameterScreen(
         aquariumId: aquariumId,
         parameterName: 'Turbidity',
@@ -1251,7 +1213,7 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
             DataScreen(
           futureWaterValues: futureWaterValues,
           futureTotalEntries: futureTotalEntries,
-          parameterName: 'Turbidity',
+          parameterName: loc.turbidity, // Übersetzt
           isLineChartVisible: true,
           isHeatmapVisible: true,
           isHistogrammVisible: true,
@@ -1262,10 +1224,8 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         ),
         knowledgeScreen: const TurbidityKnowledgeScreen(),
         alertScreen: AlertScreen(
-          infotext:
-              'High turbidity can reduce light penetration, disrupt photosynthesis, and stress fish by clogging their gills. '
-              "An appropriate alert can be to notify when turbidity exceeds 5 NTU.",
-          parameterName: "Turbidity",
+          infotext: loc.turbidityInfo,
+          parameterName: loc.turbidity,
           aquariumId: aquariumId,
           unit: 'NTU',
         ),

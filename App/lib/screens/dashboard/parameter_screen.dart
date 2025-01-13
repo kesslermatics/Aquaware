@@ -1,6 +1,7 @@
 import 'package:aquaware/models/water_value.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParameterScreen extends StatelessWidget {
   final int aquariumId;
@@ -37,17 +38,18 @@ class ParameterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final futureWaterValues = _fetchWaterValues();
     final futureTotalEntries = _fetchTotalEntries();
+    final loc = AppLocalizations.of(context)!;
 
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(parameterName),
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Data'),
-              Tab(text: 'Knowledge'),
-              Tab(text: 'Alerts'),
+              Tab(text: loc.tabData),
+              Tab(text: loc.tabKnowledge),
+              Tab(text: loc.tabAlerts),
             ],
           ),
         ),
