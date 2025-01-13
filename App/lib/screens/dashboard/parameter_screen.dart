@@ -8,7 +8,6 @@ class ParameterScreen extends StatelessWidget {
   final String parameterName;
   final Widget Function(Future<List<WaterValue>>, Future<int>)
       dataScreenBuilder;
-  final Widget knowledgeScreen;
   final Widget alertScreen;
 
   const ParameterScreen({
@@ -16,7 +15,6 @@ class ParameterScreen extends StatelessWidget {
     required this.aquariumId,
     required this.parameterName,
     required this.dataScreenBuilder,
-    required this.knowledgeScreen,
     required this.alertScreen,
   });
 
@@ -41,14 +39,13 @@ class ParameterScreen extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
 
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text(parameterName),
           bottom: TabBar(
             tabs: [
               Tab(text: loc.tabData),
-              Tab(text: loc.tabKnowledge),
               Tab(text: loc.tabAlerts),
             ],
           ),
@@ -56,7 +53,6 @@ class ParameterScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             dataScreenBuilder(futureWaterValues, futureTotalEntries),
-            knowledgeScreen,
             alertScreen,
           ],
         ),

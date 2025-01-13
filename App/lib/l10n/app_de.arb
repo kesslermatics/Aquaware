@@ -223,7 +223,7 @@
   "noParametersLast7Days": "Keine Wasserparameter in den letzten 7 Tagen gefunden. Die angezeigten Daten könnten veraltet sein.",
   "tabData": "Daten",
   "tabKnowledge": "Wissen",
-  "tabAlerts": "Warnungen",
+  "tabAlerts": "Benachrichtigungen",
   "ammonia": "Ammoniak",
   "ammoniaInfo": "Zu hohe Ammoniakwerte können für Ihre Fische gefährlich sein, da sie Stress, Krankheiten und sogar den Tod verursachen können. Idealerweise sollten Ammoniakwerte bei 0 ppm gehalten werden. Eine geeignete Warnung könnte sein, wenn die Ammoniakwerte über 0,1 liegen.",
   "boron": "Bor",

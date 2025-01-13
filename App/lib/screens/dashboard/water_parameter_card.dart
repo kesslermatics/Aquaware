@@ -2,38 +2,6 @@ import 'package:aquaware/models/water_value.dart';
 import 'package:aquaware/screens/dashboard/alert_screen.dart';
 import 'package:aquaware/screens/dashboard/data_screen.dart';
 import 'package:aquaware/screens/dashboard/parameter_screen.dart';
-import 'package:aquaware/screens/parameter_details/ammonia/ammonia_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/boron/boron_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/bromine/bromine_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/calcium/calcium_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/carbon_dioxide/carbon_dioxide_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/carbonate_hardness/carbonate_hardness_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/chloride/chloride_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/chlorine/chlorine_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/conductivity/conductivity_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/copper/copper_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/fluoride/fluoride_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/general_hardness/general_hardness_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/iodine/iodine_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/iron/iron_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/magnesium/magnesium_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/molybdenum/molybdenum_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/nitrate/nitrate_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/nitrite/nitrite_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/organic_carbon/organic_carbon_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/oxygen/oxygen_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/ph/ph_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/phosphate/phosphate_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/potassium/potassium_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/redox_potential/redox_potential_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/salinity/salinity_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/silica/silica_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/strontium/strontium_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/sulfate/sulfate_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/suspended_solids/suspended_solids_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/tds/tds_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/temperature/temperature_knowledge_screen.dart';
-import 'package:aquaware/screens/parameter_details/turbidity/turbidity_knowledge_screen.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/water_parameter_service.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -323,7 +291,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     required int fractionDigits,
     required double lineChartDeviation,
     required String alertInfoText,
-    required Widget knowledgeScreen,
   }) {
     final WaterParameterService waterParameterService = WaterParameterService();
 
@@ -356,7 +323,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
         fractionDigits: fractionDigits,
         lineChartDeviation: lineChartDeviation,
       ),
-      knowledgeScreen: knowledgeScreen,
       alertScreen: AlertScreen(
         infotext: alertInfoText,
         parameterName: parameterName,
@@ -385,7 +351,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.1,
         ),
-        knowledgeScreen: const AmmoniaKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.ammoniaInfo,
           parameterName: loc.ammonia,
@@ -412,7 +377,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.1,
         ),
-        knowledgeScreen: const BoronKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.boronInfo,
           parameterName: loc.boron,
@@ -439,7 +403,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.1,
         ),
-        knowledgeScreen: const BromineKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.bromineInfo,
           parameterName: loc.bromine,
@@ -466,7 +429,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.1,
         ),
-        knowledgeScreen: const CalciumKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.calciumInfo,
           parameterName: loc.calcium,
@@ -493,7 +455,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.1,
         ),
-        knowledgeScreen: const CarbonDioxideKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.carbonDioxideInfo,
           parameterName: loc.carbonDioxide,
@@ -520,7 +481,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 2,
           lineChartDeviation: 0.2,
         ),
-        knowledgeScreen: const CarbonateHardnessKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.carbonateHardnessInfo,
           parameterName: loc.carbonateHardness,
@@ -547,7 +507,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 2,
           lineChartDeviation: 0.2,
         ),
-        knowledgeScreen: const ChlorideKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.chlorideInfo,
           parameterName: loc.chloride,
@@ -574,7 +533,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 2,
           lineChartDeviation: 0.2,
         ),
-        knowledgeScreen: const ChlorineKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.chlorineInfo,
           parameterName: loc.chlorine,
@@ -601,7 +559,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 0,
           lineChartDeviation: 50.0,
         ),
-        knowledgeScreen: const ConductivityKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.conductivityInfo,
           parameterName: loc.conductivity,
@@ -628,7 +585,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.05,
         ),
-        knowledgeScreen: const CopperKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.copperInfo,
           parameterName: loc.copper,
@@ -655,7 +611,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 2,
           lineChartDeviation: 0.2,
         ),
-        knowledgeScreen: const FluorideKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.fluorideInfo,
           parameterName: loc.fluoride,
@@ -682,7 +637,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 1.0,
         ),
-        knowledgeScreen: const GeneralHardnessKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.generalHardnessInfo,
           parameterName: loc.generalHardness,
@@ -709,7 +663,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.05,
         ),
-        knowledgeScreen: const IodineKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.iodineInfo,
           parameterName: loc.iodine,
@@ -736,7 +689,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.05,
         ),
-        knowledgeScreen: const IronKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.ironInfo,
           parameterName: loc.iron,
@@ -763,7 +715,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 0,
           lineChartDeviation: 50.0,
         ),
-        knowledgeScreen: const MagnesiumKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.magnesiumInfo,
           parameterName: loc.magnesium,
@@ -790,7 +741,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.005,
         ),
-        knowledgeScreen: const MolybdenumKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.molybdenumInfo,
           parameterName: loc.molybdenum,
@@ -817,7 +767,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 5.0,
         ),
-        knowledgeScreen: const NitrateKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.nitrateInfo,
           parameterName: loc.nitrate,
@@ -844,7 +793,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.05,
         ),
-        knowledgeScreen: const NitriteKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.nitriteInfo,
           parameterName: loc.nitrite,
@@ -871,7 +819,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 0.5,
         ),
-        knowledgeScreen: const OrganicCarbonKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.organicCarbonInfo,
           parameterName: loc.organicCarbon,
@@ -898,7 +845,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 0.5,
         ),
-        knowledgeScreen: const OxygenKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.oxygenInfo,
           parameterName: loc.oxygen,
@@ -925,7 +871,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 2,
           lineChartDeviation: 0.2,
         ),
-        knowledgeScreen: const PHKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.phInfo,
           parameterName: loc.ph,
@@ -952,7 +897,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 2,
           lineChartDeviation: 0.2,
         ),
-        knowledgeScreen: const PhosphateKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.phosphateInfo,
           parameterName: loc.phosphate,
@@ -979,7 +923,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 5.0,
         ),
-        knowledgeScreen: const PotassiumKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.potassiumInfo,
           parameterName: loc.potassium,
@@ -1006,7 +949,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 0,
           lineChartDeviation: 50.0,
         ),
-        knowledgeScreen: const RedoxPotentialKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.redoxPotentialInfo,
           parameterName: loc.redoxPotential,
@@ -1033,7 +975,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 3,
           lineChartDeviation: 0.005,
         ),
-        knowledgeScreen: const SalinityKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.salinityInfo,
           parameterName: loc.salinity,
@@ -1060,7 +1001,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 0.5,
         ),
-        knowledgeScreen: const SilicaKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.silicaInfo,
           parameterName: loc.silica,
@@ -1087,7 +1027,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 5.0,
         ),
-        knowledgeScreen: const StrontiumKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.strontiumInfo,
           parameterName: loc.strontium,
@@ -1114,7 +1053,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 0,
           lineChartDeviation: 50.0,
         ),
-        knowledgeScreen: const SulfateKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.sulfateInfo,
           parameterName: loc.sulfate,
@@ -1141,7 +1079,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 5.0,
         ),
-        knowledgeScreen: const SuspendedSolidsKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.suspendedSolidsInfo,
           parameterName: loc.suspendedSolids,
@@ -1168,7 +1105,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 0,
           lineChartDeviation: 50.0,
         ),
-        knowledgeScreen: const TDSKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.tdsInfo,
           parameterName: loc.tds,
@@ -1195,7 +1131,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 0.5,
         ),
-        knowledgeScreen: const TemperatureKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.temperatureInfo,
           parameterName: loc.temperature,
@@ -1222,7 +1157,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
           fractionDigits: 1,
           lineChartDeviation: 5.0,
         ),
-        knowledgeScreen: const TurbidityKnowledgeScreen(),
         alertScreen: AlertScreen(
           infotext: loc.turbidityInfo,
           parameterName: loc.turbidity,

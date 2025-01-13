@@ -15,10 +15,7 @@ class TutorialPage extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Obx(() => Text(controller.currentTitle)),
-        centerTitle: true,
-      ),
+      appBar: AppBar(),
       body: Stack(
         children: [
           PageView(

@@ -7,17 +7,6 @@ class TutorialService extends GetxController {
   final pageController = PageController();
   final currentPageIndex = 0.obs;
 
-  final List<String> titles = [
-    "Welcome to Aquaware",
-    "What the App Can Do",
-    "Understanding Environments",
-    "Adding Water Parameters",
-    "Subscription Plans",
-    "Thank You!"
-  ];
-
-  String get currentTitle => titles[currentPageIndex.value];
-
   final int totalSteps = 6;
 
   void updatePageIndicator(int index) {
