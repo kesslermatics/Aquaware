@@ -13,19 +13,24 @@ import io
 import base64
 from .models import DiseaseDetection
 
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def diagnosis_from_image(request):
     user = request.user
+
     # Check if the user has the required subscription tier
-    if user.subscription_tier.id != 3:
+    if user.subscription_tier.id == 1:
         return Response({"detail": "This feature is only available for Premium subscribers."},
                         status=status.HTTP_403_FORBIDDEN)
 
     # Check if an image was uploaded
     if 'image' not in request.FILES:
         return Response({"error": "No image file provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Get the language parameter
+    language = request.data.get('language', 'en')
+    if not language:
+        return Response({"error": "Language parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     # Retrieve the uploaded image
     image = request.FILES['image']
@@ -37,16 +42,16 @@ def diagnosis_from_image(request):
 
         # Define the prompt for diagnosing the fish disease
         prompt = (
-            "You will receive an image of an aquatic animal. Your task is to carefully and thoroughly determine whether the animal has any disease. "
-            "Only provide a diagnosis if you are highly certain of the condition. In case of doubt, carefully review every detail before making a judgment. "
-            "If there is any uncertainty, increase your attention to the smallest visual cues of disease. "
-            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these json-values as a normal text to display:\n"
-            "{\n"
-            '  "animal_detected": true or false,\n'
-            '  "condition": "Healthy" or the identified disease with their name,\n'
-            '  "symptoms": "In two sentences, explain the symptoms of the identified disease",\n'
-            '  "curing": "In two sentences, suggest treatments for the identified disease",\n'
-            "}"
+            f"You will receive an image of an aquatic animal. Your task is to carefully and thoroughly determine whether the animal has any disease. "
+            f"Only provide a diagnosis if you are highly certain of the condition. In case of doubt, carefully review every detail before making a judgment. "
+            f"If there is any uncertainty, increase your attention to the smallest visual cues of disease. "
+            f"Respond **only** in the specified language '{language}' for the values and exclusively in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these JSON values:\n"
+            f"{{\n"
+            f'  "animal_detected": true or false,\n'
+            f'  "condition": "Healthy" or the identified disease with their name,\n'
+            f'  "symptoms": "In two sentences, explain the symptoms of the identified disease",\n'
+            f'  "curing": "In two sentences, suggest treatments for the identified disease",\n'
+            f"}}"
         )
 
         headers = {

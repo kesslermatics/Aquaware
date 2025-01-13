@@ -26,6 +26,11 @@ def identify_animal_from_image(request):
     if 'image' not in request.FILES:
         return Response({"error": "No image file provided."}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Retrieve the language parameter
+    language = request.data.get('language', 'en')
+    if not language:
+        return Response({"error": "Language parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
     # Retrieve the uploaded image
     image = request.FILES['image']
 
@@ -34,21 +39,21 @@ def identify_animal_from_image(request):
         image_data = image.read()
         base64_image = base64.b64encode(image_data).decode('utf-8')
 
-        # Define the prompt for identifying the fish with extended information
+        # Define the prompt for identifying the aquatic animal with extended information
         prompt = (
-            "You will receive an image of an aquatic animal. Your task is to identify the species of the fish in the image. "
-            "If there is an aquatic animal, determine what exact type it is. "
-            "Respond **only** in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these json-values as a normal text to display:\n"            
-            "{\n"
-            '  "animal_detected": true or false,\n'
-            '  "species": "name of the species",\n'
-            '  "habitat": "typical habitat of the fish species",\n'
-            '  "diet": "dietary habits of the fish species",\n'
-            '  "average_size": "average size of the species in cm in the following format (minSize-maxSize cm)",\n'
-            '  "behavior": "common behaviors of the fish",\n'
-            '  "lifespan": "average lifespan of the fish species in the following format (min-max time)",\n'
-            '  "visual_characteristics": "distinct visual features like color patterns, fins, or body shape"\n'
-            "}"
+            f"You will receive an image of an aquatic animal. Your task is to identify the species of the fish in the image. "
+            f"If there is an aquatic animal, determine what exact type it is. "
+            f"Respond **only** in the specified language '{language}' for the values and exclusively in the following JSON format **without any additional text or formatting or explanations as clear text** and start with uppercase in these JSON values:\n"            
+            f"{{\n"
+            f'  "animal_detected": true or false,\n'
+            f'  "species": "name of the species",\n'
+            f'  "habitat": "typical habitat of the fish species",\n'
+            f'  "diet": "dietary habits of the fish species",\n'
+            f'  "average_size": "average size of the species in cm in the following format (minSize-maxSize cm)",\n'
+            f'  "behavior": "common behaviors of the fish",\n'
+            f'  "lifespan": "average lifespan of the fish species in the following format (min-max time)",\n'
+            f'  "visual_characteristics": "distinct visual features like color patterns, fins, or body shape"\n'
+            f"}}"
         )
 
         headers = {
