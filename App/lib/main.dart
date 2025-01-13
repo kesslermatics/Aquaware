@@ -5,6 +5,7 @@ import 'package:aquaware/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/homepage/homepage.dart';
 import 'screens/onboarding/onboarding_screen.dart';
@@ -66,6 +67,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('de'),
+      ],
       debugShowCheckedModeBanner: false,
       title: 'Aquaware',
       theme: ThemeData(
