@@ -2,7 +2,7 @@ import 'dart:ui'; // For BackdropFilter
 import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/services/alert_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlertScreen extends StatefulWidget {
   final String infotext;
@@ -30,22 +30,20 @@ class _AlertScreenState extends State<AlertScreen> {
   final AlertService _alertService = AlertService();
   late Future<Map<String, dynamic>?> _alertSettingsFuture;
   bool isSaving = false;
-  bool isLocked = false; // To check if features are locked for this user
+  bool isLocked = false;
 
   @override
   void initState() {
     super.initState();
     _alertSettingsFuture = _loadAlertSettings();
-    _checkUserSubscription(); // Check the user's subscription status
+    _checkUserSubscription();
   }
 
   void _checkUserSubscription() {
-    // Get the UserProfile instance and check the subscriptionTier
-    UserProfile? userProfile =
-        UserProfile.getInstance(); // Assuming this is the singleton
+    final userProfile = UserProfile.getInstance();
     if (userProfile.subscriptionTier == 1) {
       setState(() {
-        isLocked = true; // Lock the features for subscription tier 1
+        isLocked = true;
       });
     }
   }
@@ -63,7 +61,10 @@ class _AlertScreenState extends State<AlertScreen> {
       return alertSettings;
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to load alert settings')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!
+              .alertSettingsLoadError(error.toString())),
+        ),
       );
       return null;
     }
@@ -88,11 +89,14 @@ class _AlertScreenState extends State<AlertScreen> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Alert settings saved')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.alertSaved)),
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to save alert settings')),
+        SnackBar(
+          content: Text(
+              AppLocalizations.of(context)!.alertSaveError(error.toString())),
+        ),
       );
     } finally {
       setState(() {
@@ -103,18 +107,21 @@ class _AlertScreenState extends State<AlertScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Stack(
         children: [
           FutureBuilder<Map<String, dynamic>?>(
-            // The main content
             future: _alertSettingsFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return const Center(
-                    child: Text('Failed to load alert settings'));
+                return Center(
+                  child: Text(
+                      loc.alertSettingsLoadError(snapshot.error.toString())),
+                );
               } else {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -126,15 +133,15 @@ class _AlertScreenState extends State<AlertScreen> {
                         style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 20),
-                      const Text(
-                        'Notify me per E-Mail when...',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                      Text(
+                        loc.alertNotifyEmail,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Checkbox(
                             value: notifyUnder,
@@ -147,12 +154,7 @@ class _AlertScreenState extends State<AlertScreen> {
                           Expanded(
                             child: Row(
                               children: [
-                                Text(
-                                  '${widget.parameterName} is under ',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
+                                Text('${widget.parameterName} ${loc.isUnder} '),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: TextField(
@@ -166,19 +168,13 @@ class _AlertScreenState extends State<AlertScreen> {
                                   ),
                                 ),
                                 const SizedBox(width: 4),
-                                Text(
-                                  widget.unit,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
+                                Text(widget.unit),
                               ],
                             ),
                           ),
                         ],
                       ),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Checkbox(
                             value: notifyAbove,
@@ -191,12 +187,7 @@ class _AlertScreenState extends State<AlertScreen> {
                           Expanded(
                             child: Row(
                               children: [
-                                Text(
-                                  '${widget.parameterName} is above ',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
+                                Text('${widget.parameterName} ${loc.isAbove} '),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: TextField(
@@ -210,12 +201,7 @@ class _AlertScreenState extends State<AlertScreen> {
                                   ),
                                 ),
                                 const SizedBox(width: 4),
-                                Text(
-                                  widget.unit,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
+                                Text(widget.unit),
                               ],
                             ),
                           ),
@@ -227,7 +213,7 @@ class _AlertScreenState extends State<AlertScreen> {
                             ? const CircularProgressIndicator()
                             : ElevatedButton(
                                 onPressed: _saveAlertSettings,
-                                child: const Text('Save'),
+                                child: Text(loc.save),
                               ),
                       ),
                     ],
@@ -236,26 +222,21 @@ class _AlertScreenState extends State<AlertScreen> {
               }
             },
           ),
-          // Overlay if the user has subscription tier 1
           if (isLocked)
             Positioned.fill(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                 child: Container(
                   color: Colors.black.withOpacity(0.5),
-                  child: const Center(
+                  child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.lock,
-                          size: 60,
-                          color: Colors.white,
-                        ),
-                        SizedBox(height: 20),
+                        const Icon(Icons.lock, size: 60, color: Colors.white),
+                        const SizedBox(height: 20),
                         Text(
-                          'This feature is available only in the Advanced or Business Plan.',
-                          style: TextStyle(
+                          loc.featureLockedMessage,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:aquaware/services/environment_service.dart';
 
 class CreateEnvironmentScreen extends StatefulWidget {
@@ -28,12 +29,14 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
   ];
 
   Future<void> _createEnvironment() async {
+    final loc = AppLocalizations.of(context)!;
+
     if (_nameController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
         _cityController.text.isEmpty) {
       Get.snackbar(
-        'Missing Information',
-        'Please fill out all required fields',
+        loc.missingInfoTitle,
+        loc.missingInfoMessage,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -50,13 +53,13 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
         _nameController.text,
         _descriptionController.text,
         _selectedEnvironmentType,
-        false, // Public is removed, default to false
+        false,
         _cityController.text,
       );
 
       Get.snackbar(
-        'Success',
-        'Environment "${_nameController.text}" created successfully',
+        loc.successTitle,
+        loc.environmentCreated(_nameController.text),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
@@ -68,8 +71,8 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
         _isLoading = false;
       });
       Get.snackbar(
-        'Error',
-        'Failed to create environment: $e',
+        loc.errorTitle,
+        loc.environmentCreateError(e.toString()),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -79,9 +82,11 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Environment'),
+        title: Text(loc.addEnvironment),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -91,33 +96,33 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: loc.name,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: loc.description,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _cityController,
-              decoration: const InputDecoration(
-                labelText: 'City',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: loc.city,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _selectedEnvironmentType,
-              decoration: const InputDecoration(
-                labelText: 'Environment Type',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: loc.environmentType,
+                border: const OutlineInputBorder(),
               ),
               items: ENVIRONMENT_TYPES.map((type) {
                 return DropdownMenuItem<String>(
@@ -146,9 +151,9 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
                     ? const CircularProgressIndicator(
                         color: Colors.white,
                       )
-                    : const Text(
-                        'Create Environment',
-                        style: TextStyle(fontSize: 16),
+                    : Text(
+                        loc.createEnvironment,
+                        style: const TextStyle(fontSize: 16),
                       ),
               ),
             ),

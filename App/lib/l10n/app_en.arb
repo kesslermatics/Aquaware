@@ -174,5 +174,22 @@
   "noPublicEnvironmentsFound": "No public environments found.",
   "errorFetchingEnvironments": "Error fetching public environments: {error}",
   "subscriptionSuccess": "Successfully subscribed!",
-  "subscriptionFailed": "Failed to subscribe: {error}"
+  "subscriptionFailed": "Failed to subscribe: {error}",
+  "alertSettingsLoadError": "Failed to load alert settings: {error}",
+  "alertSaved": "Alert settings saved.",
+  "alertSaveError": "Failed to save alert settings: {error}",
+  "alertNotifyEmail": "Notify me per E-Mail when...",
+  "isUnder": "is under",
+  "isAbove": "is above",
+  "save": "Save",
+  "missingInfoTitle": "Missing Information",
+  "missingInfoMessage": "Please fill out all required fields.",
+  "environmentCreated": "Environment \"{name}\" created successfully.",
+  "environmentCreateError": "Failed to create environment: {error}",
+  "addEnvironment": "Add New Environment",
+  "name": "Name",
+  "description": "Description",
+  "city": "City",
+  "environmentType": "Environment Type",
+  "createEnvironment": "Create Environment"
 }

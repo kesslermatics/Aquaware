@@ -174,7 +174,24 @@
   "noPublicEnvironmentsFound": "Keine öffentlichen Umgebungen gefunden.",
   "errorFetchingEnvironments": "Fehler beim Abrufen öffentlicher Umgebungen: {error}",
   "subscriptionSuccess": "Erfolgreich abonniert!",
-  "subscriptionFailed": "Abonnement fehlgeschlagen: {error}"
+  "subscriptionFailed": "Abonnement fehlgeschlagen: {error}",
+  "alertSettingsLoadError": "Fehler beim Laden der Alarmeinstellungen: {error}",
+  "alertSaved": "Alarmeinstellungen gespeichert.",
+  "alertSaveError": "Fehler beim Speichern der Alarmeinstellungen: {error}",
+  "alertNotifyEmail": "Benachrichtige mich per E-Mail, wenn...",
+  "isUnder": "unter",
+  "isAbove": "über",
+  "save": "Speichern",
+  "missingInfoTitle": "Fehlende Informationen",
+  "missingInfoMessage": "Bitte fülle alle erforderlichen Felder aus.",
+  "environmentCreated": "Umgebung \"{name}\" erfolgreich erstellt.",
+  "environmentCreateError": "Fehler beim Erstellen der Umgebung: {error}",
+  "addEnvironment": "Neue Umgebung hinzufügen",
+  "name": "Name",
+  "description": "Beschreibung",
+  "city": "Stadt",
+  "environmentType": "Umgebungstyp",
+  "createEnvironment": "Umgebung erstellen"
 }
 
   
