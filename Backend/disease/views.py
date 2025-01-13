@@ -54,6 +54,7 @@ def diagnosis_from_image(request):
             f"}}"
         )
 
+        print(prompt)
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {settings.OPENAI_API_KEY_DISEASE_DETECTION}"
