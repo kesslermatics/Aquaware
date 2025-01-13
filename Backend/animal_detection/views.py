@@ -55,7 +55,6 @@ def identify_animal_from_image(request):
             f'  "visual_characteristics": "distinct visual features like color patterns, fins, or body shape"\n'
             f"}}"
         )
-        print(prompt)
 
         headers = {
             "Content-Type": "application/json",
