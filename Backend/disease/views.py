@@ -53,6 +53,7 @@ def diagnosis_from_image(request):
             f'  "curing": "In two sentences, suggest treatments for the identified disease",\n'
             f"}}"
         )
+        print(prompt)
 
         headers = {
             "Content-Type": "application/json",
