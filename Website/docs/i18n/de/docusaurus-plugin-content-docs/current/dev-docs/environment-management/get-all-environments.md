@@ -8,7 +8,7 @@ Um eine Liste aller Umgebungen zu erhalten, die deinem Konto zugeordnet sind, ka
 
 - **URL:** `https://dev.aquaware.cloud/api/environments/`
 - **Methode:** `GET`
-- **Authentifizierung:** Du musst dein JWT **Access Token** in die Header der Anfrage einfügen. Mehr Infos zu [JWT Tokens findest du hier](../user-management/jwt-tokens.md).
+- **Authentifizierung:** Du musst deinen API-Schlüssel mit angeben
 
 ## Antwort
 

@@ -16,13 +16,6 @@ Der Endpunkt **Alle Werte eines Parameters abrufen** ermöglicht es dir, alle Wa
 2. **parameter_name**: Der Name des Wasserparameters, den du abrufen möchtest. Muss ein String sein und mit einem der unterstützten Wasserparameter übereinstimmen.
 3. **number_of_entries**: Die Anzahl der neuesten Einträge, die du für den angegebenen Parameter abrufen möchtest. Erforderlich und sollte eine Ganzzahl sein.
 
-## Header
-
-| Name          | Typ   | Beschreibung                                     |
-| ------------- | ------ | ----------------------------------------------- |
-| Authorization | string | Bearer-Token für Authentifizierung (Access Token). |
-| Content-Type  | string | Muss auf `application/json` gesetzt sein.       |
-
 ## Beispielanfrage
 
 ```bash

@@ -1,28 +1,35 @@
 import 'dart:convert';
-import 'package:aquaware/services/user_service.dart';
+import 'package:aquaware/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlertService {
-  static const String baseUrl =
-      'https://aquaware-production.up.railway.app/api/measurements/environments';
+  Future<String> _getApiKey() async {
+    final prefs = await SharedPreferences.getInstance();
+    final apiKey = prefs.getString('api_key');
+    if (apiKey == null) {
+      throw Exception('API key not found. Please log in again.');
+    }
+    return apiKey;
+  }
 
   Future<void> saveAlertSettings(int aquariumId, String parameter,
       double? underValue, double? aboveValue) async {
-    final response = await UserService().makeAuthenticatedRequest((token) {
-      return http.post(
-        Uri.parse('$baseUrl/$aquariumId/save-alert-settings/'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          'parameter': parameter,
-          'under_value': underValue,
-          'above_value': aboveValue,
-        }),
-      );
-    });
+    final apiKey = await _getApiKey();
+
+    final response = await http.post(
+      Uri.parse(
+          '$baseUrl/api/measurements/environments/$aquariumId/save-alert-settings/'),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+      },
+      body: jsonEncode({
+        'parameter': parameter,
+        'under_value': underValue,
+        'above_value': aboveValue,
+      }),
+    );
 
     if (response.statusCode != 200) {
       throw Exception('Failed to save alert settings');
@@ -31,15 +38,16 @@ class AlertService {
 
   Future<Map<String, dynamic>?> getAlertSettings(
       int aquariumId, String parameter) async {
-    final response = await UserService().makeAuthenticatedRequest((token) {
-      return http.get(
-        Uri.parse('$baseUrl/$aquariumId/get_alerts/$parameter/'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-    });
+    final apiKey = await _getApiKey();
+
+    final response = await http.get(
+      Uri.parse(
+          '$baseUrl/api/measurements/environments/$aquariumId/get_alerts/$parameter/'),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+      },
+    );
 
     if (response.statusCode == 200) {
       return json.decode(response.body);

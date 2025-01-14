@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 3
 ---
 
 # Profil
@@ -12,15 +12,15 @@ Du kannst deine Profildaten mit dem folgenden API-Endpunkt abrufen:
 
 - **URL:** `http://dev.aquaware.cloud/api/users/profile/`
 - **Methode:** `GET`
-- **Autorisierung:** Erfordert ein gültiges JWT-Token im Anfrage-Header.
+- **Autorisierung:** Erfordert einen gültiges API-Key im Anfrage-Header.
 
 ### Beispielanfrage
 
-Um deine Profildetails abzurufen, füge dein JWT-Token in den `Authorization`-Header der Anfrage ein.
+Um deine Profildetails abzurufen, füge deinen API-Schlüssel in den Header der Anfrage ein.
 
 ```bash
 GET http://dev.aquaware.cloud/api/users/profile/
-Authorization: Bearer <your-jwt-token>
+X-API-KEY: <dein-api-key>
 ```
 
 ### Antwort
@@ -49,6 +49,5 @@ Bei einer erfolgreichen Anfrage gibt die API die folgenden Benutzerdetails im JS
 
 ### Hinweise
 
-- Stelle sicher, dass dein JWT-Token gültig ist; abgelaufene oder ungültige Tokens führen zu einem Authentifizierungsfehler.
 - Der `api_key` ist ein sensibler Wert. Teile ihn nicht öffentlich, da er Zugriff auf dein Aquaware-Konto ermöglicht.
 - Der Wert `subscription_tier` kann den Zugriff auf bestimmte Funktionen oder APIs beeinflussen.

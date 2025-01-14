@@ -16,8 +16,8 @@ If you’re a **developer**, make sure to check out our [Developer API Documenta
 
 Getting started is easy, and I am here to guide you every step of the way:
 
-1. [Create Your Account](https://www.aquaware.cloud/signup/): Join our community and start your journey.
-2. [Login](https://www.aquaware.cloud/login/): Access your dashboard and begin exploring what Aquaware can do for you.
+1. [Create Your Account](https://www.dashboard.aquaware.cloud/signup/): Join our community and start your journey.
+2. [Login](https://www.dashboard.aquaware.cloud/login/): Access your dashboard and begin exploring what Aquaware can do for you.
 3. [Discover the Documentation](#): Whether you’re looking for tips, guides, or technical API references, it’s all here.
 
 ## Need Help or Have Questions?

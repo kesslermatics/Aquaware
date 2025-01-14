@@ -18,7 +18,7 @@ POST /api/animal/identify/
 
 ```bash
 curl -X POST https://dev.aquaware.cloud/api/animal/identify/ \
-  -H 'Authorization: Bearer your-access-token' \
+  -H 'X-API-KEY: your-api-key' \
   -F 'image=@/path-to-your-image/animal_image.jpg'
 ```
 

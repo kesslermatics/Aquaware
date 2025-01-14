@@ -8,7 +8,7 @@ To retrieve a list of all publicly available environments, you can use the follo
 
 - **URL:** `https://dev.aquaware.cloud/api/environments/public/`
 - **Method:** `GET`
-- **Authentication:** You must include your JWT **Access Token** in the request headers. Learn more about [JWT tokens here](../user-management/jwt-tokens.md).
+- **Authentication:** You must include your API-Key
 
 ## What You Get
 
@@ -18,7 +18,7 @@ The API will return a list of environments that are publicly available but **do 
 
 ```bash
 GET https://dev.aquaware.cloud/api/environments/public/
-Authorization: Bearer <access_token>
+X-API-KEY: <your-api-key>
 ```
 
 ### Example Response

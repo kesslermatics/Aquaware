@@ -68,11 +68,30 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _checkAuthentication() async {
-    final refreshErrorMessage = await _userService.refreshAccessToken();
-    setState(() {
-      _isAuthenticated = refreshErrorMessage == null;
-      _isLoading = false;
-    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? apiKey = prefs.getString('api_key');
+
+    if (apiKey != null) {
+      try {
+        // Check authentication by making a request to the profile endpoint
+        await _userService.getUserProfile();
+        setState(() {
+          _isAuthenticated = true;
+          _isLoading = false;
+        });
+      } catch (e) {
+        // If the request fails, the user is not authenticated
+        setState(() {
+          _isAuthenticated = false;
+          _isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        _isAuthenticated = false;
+        _isLoading = false;
+      });
+    }
   }
 
   @override

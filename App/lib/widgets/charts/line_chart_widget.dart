@@ -39,6 +39,11 @@ class _LineChartWidgetState extends State<LineChartWidget> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _updateAvailableFilters();
   }
 
@@ -46,17 +51,19 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     DateTime now = DateTime.now();
     availableFilters = [];
 
+    final loc = AppLocalizations.of(context)!;
+
     if (widget.xValues
         .any((date) => date.isAfter(now.subtract(const Duration(hours: 6))))) {
-      availableFilters.add(AppLocalizations.of(context)!.last6Hours);
+      availableFilters.add(loc.last6Hours);
     }
     if (widget.xValues
         .any((date) => date.isAfter(now.subtract(const Duration(hours: 24))))) {
-      availableFilters.add(AppLocalizations.of(context)!.last24Hours);
+      availableFilters.add(loc.last24Hours);
     }
     if (widget.xValues
         .any((date) => date.isAfter(now.subtract(const Duration(days: 7))))) {
-      availableFilters.add(AppLocalizations.of(context)!.lastWeek);
+      availableFilters.add(loc.lastWeek);
     }
 
     if (!availableFilters.contains(_selectedFilter)) {

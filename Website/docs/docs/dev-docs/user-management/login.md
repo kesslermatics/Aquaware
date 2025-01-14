@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Login
 
-To access your Aquaware account, you can log in either through our website, the app or programmatically using our API. After logging in, you'll receive JWT tokens, which are **crucial for future authorization**.
+To access your Aquaware account, you can log in either through our website, the app or programmatically using our API. After logging in, you'll receive an api key, which is **crucial for future authorization**.
 
 ## Logging in via the API
 
@@ -41,13 +41,11 @@ The request body should contain the following fields:
 
 ### Response
 
-Upon successful login, you will receive your JWT tokens, which will be used for future authorization.
+Upon successful login, you will receive your api key, which will be used for future authorization.
 
 ### Managing Your Profile
 
-Once logged in, you can manage your profile by visiting the [Aquaware Profile Management Page](https://aquaware.cloud/login).
-
-For more information on how JWT tokens work and how they are used for authorization, check out the documentation [here](./jwt-tokens).
+Once logged in, you can manage your profile by visiting the [Aquaware Profile Management Page](https://dashboard.aquaware.cloud/login).
 
 ---
 

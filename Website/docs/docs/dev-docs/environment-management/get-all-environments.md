@@ -8,7 +8,7 @@ To retrieve a list of all the environments associated with your account, you can
 
 - **URL:** `https://dev.aquaware.cloud/api/environments/`
 - **Method:** `GET`
-- **Authentication:** You must include your JWT **Access Token** in the request headers. Learn more about [JWT tokens here](../user-management/jwt-tokens.md).
+- **Authentication:** You must include your API-Key
 
 ## Response
 

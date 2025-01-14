@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key});
@@ -29,37 +30,46 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       _isLoading = true;
     });
 
-    final response = await UserService().makeAuthenticatedRequest(
-      (token) {
-        return http.post(
-          Uri.parse('$baseUrl/api/users/feedback/'),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-          body: jsonEncode({
-            'title': _titleController.text,
-            'message': _messageController.text,
-          }),
-        );
-      },
-    );
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? apiKey = prefs.getString('api_key');
 
-    setState(() {
-      _isLoading = false;
-    });
+      if (apiKey == null) {
+        throw Exception('API key is missing');
+      }
 
-    if (response.statusCode == 200) {
-      Get.snackbar(
-        loc.feedbackSuccessTitle,
-        loc.feedbackSuccessMessage,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/users/feedback/'),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        },
+        body: jsonEncode({
+          'title': _titleController.text,
+          'message': _messageController.text,
+        }),
       );
-      _titleController.clear();
-      _messageController.clear();
-    } else {
+
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          loc.feedbackSuccessTitle,
+          loc.feedbackSuccessMessage,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        _titleController.clear();
+        _messageController.clear();
+      } else {
+        Get.snackbar(
+          loc.feedbackErrorTitle,
+          loc.feedbackErrorMessage,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
       Get.snackbar(
         loc.feedbackErrorTitle,
         loc.feedbackErrorMessage,
@@ -67,6 +77,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

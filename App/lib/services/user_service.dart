@@ -33,11 +33,9 @@ class UserService {
 
     if (response.statusCode == 201) {
       var data = jsonDecode(utf8.decode(response.bodyBytes));
-      String accessToken = data['access'];
-      String refreshToken = data['refresh'];
+      String apiKey = data['api_key'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accessToken', accessToken);
-      await prefs.setString('refreshToken', refreshToken);
+      await prefs.setString('api_key', apiKey);
       return null;
     } else if (response.statusCode == 500) {
       return "Server Error. Try again later";
@@ -62,11 +60,9 @@ class UserService {
 
     if (response.statusCode == 201) {
       var data = jsonDecode(utf8.decode(response.bodyBytes));
-      String accessToken = data['access'];
-      String refreshToken = data['refresh'];
+      String apiKey = data['api_key'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accessToken', accessToken);
-      await prefs.setString('refreshToken', refreshToken);
+      await prefs.setString('api_key', apiKey);
       return null;
     } else {
       var errorData = jsonDecode(utf8.decode(response.bodyBytes));
@@ -83,11 +79,9 @@ class UserService {
 
     if (response.statusCode == 202) {
       var data = jsonDecode(utf8.decode(response.bodyBytes));
-      String accessToken = data['access'];
-      String refreshToken = data['refresh'];
+      String apiKey = data['api_key'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accessToken', accessToken);
-      await prefs.setString('refreshToken', refreshToken);
+      await prefs.setString('api_key', apiKey);
       return null; // Erfolgreiches Login
     } else {
       var errorData = jsonDecode(utf8.decode(response.bodyBytes));
@@ -105,11 +99,9 @@ class UserService {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(utf8.decode(response.bodyBytes));
-      String accessToken = data['access'];
-      String refreshToken = data['refresh'];
+      String apiKey = data['api_key'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accessToken', accessToken);
-      await prefs.setString('refreshToken', refreshToken);
+      await prefs.setString('api_key', apiKey);
       return null;
     } else {
       var errorData = jsonDecode(utf8.decode(response.bodyBytes));
@@ -118,14 +110,17 @@ class UserService {
   }
 
   Future<void> getUserProfile() async {
-    final response = await makeAuthenticatedRequest((token) {
-      return http.get(
-        Uri.parse(profileUrl),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final apiKey = prefs.getString('api_key');
+
+    if (apiKey == null) {
+      throw Exception('No API key found. Please log in again.');
+    }
+
+    final response = await http.get(
+      Uri.parse(profileUrl),
+      headers: {'x-api-key': apiKey},
+    );
 
     if (response.statusCode == 200) {
       UserProfile.setFromJson(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -135,20 +130,23 @@ class UserService {
   }
 
   Future<void> updateUserProfile(Map<String, dynamic> updatedData) async {
-    final response = await makeAuthenticatedRequest((token) {
-      return http.put(
-        Uri.parse(updateProfileUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode(updatedData),
-      );
-    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? apiKey = prefs.getString('api_key');
 
-    if (response.statusCode == 200) {
-      // Successfully updated profile
-    } else {
+    if (apiKey == null) {
+      throw Exception('No API key found. Please log in again.');
+    }
+
+    final response = await http.put(
+      Uri.parse(updateProfileUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+      },
+      body: jsonEncode(updatedData),
+    );
+
+    if (response.statusCode != 200) {
       var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       throw Exception(errorData['detail'] ?? 'Failed to update profile');
     }
@@ -156,67 +154,48 @@ class UserService {
 
   Future<void> changePassword(
       String currentPassword, String newPassword) async {
-    final response = await makeAuthenticatedRequest((token) {
-      return http.post(
-        Uri.parse(changePasswordUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          'current_password': currentPassword,
-          'new_password': newPassword,
-        }),
-      );
-    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? apiKey = prefs.getString('api_key');
 
-    if (response.statusCode == 200) {
-      // Successfully changed password
-    } else {
+    if (apiKey == null) {
+      throw Exception('No API key found. Please log in again.');
+    }
+
+    final response = await http.post(
+      Uri.parse(changePasswordUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+      },
+      body: jsonEncode({
+        'current_password': currentPassword,
+        'new_password': newPassword,
+      }),
+    );
+
+    if (response.statusCode != 200) {
       var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       throw Exception(errorData['detail'] ?? 'Failed to change password');
     }
   }
 
-  Future<String?> _getAccessToken() async {
+  Future<void> deleteUserAccount() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('accessToken');
-  }
+    final String? apiKey = prefs.getString('api_key');
 
-  Future<http.Response> makeAuthenticatedRequest(
-      Future<http.Response> Function(String token) request) async {
-    String? token = await _getAccessToken();
-    if (token == null) throw Exception('No access token available');
-
-    http.Response response = await request(token);
-
-    if (response.statusCode == 401) {
-      await refreshAccessToken();
-      token = await _getAccessToken();
-      if (token == null) {
-        throw Exception('No access token available after refresh');
-      }
-
-      response = await request(token);
+    if (apiKey == null) {
+      throw Exception('No API key found. Please log in again.');
     }
 
-    return response;
-  }
-
-  Future<void> deleteUserAccount() async {
-    final response = await makeAuthenticatedRequest((token) {
-      return http.delete(
-        Uri.parse(deleteAccountUrl),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-    });
+    final response = await http.delete(
+      Uri.parse(deleteAccountUrl),
+      headers: {
+        'x-api-key': apiKey,
+      },
+    );
 
     if (response.statusCode == 204) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.remove('accessToken');
-      await prefs.remove('refreshToken');
+      await prefs.remove('api_key');
     } else {
       var errorData = jsonDecode(utf8.decode(response.bodyBytes));
       throw Exception(errorData['detail'] ?? 'Failed to delete user account');
@@ -224,9 +203,8 @@ class UserService {
   }
 
   Future<String?> forgotPassword(String email) async {
-    final url = Uri.parse('$baseUrl/api/users/auth/password/forgot/');
     final response = await http.post(
-      url,
+      Uri.parse('$baseUrl/api/users/auth/password/forgot/'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email}),
     );
@@ -240,62 +218,42 @@ class UserService {
 
   Future<String?> resetPassword(
       String email, String resetCode, String newPassword) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/users/auth/password/reset/'),
-        body: {
-          'email': email,
-          'reset_code': resetCode,
-          'new_password': newPassword,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return null; // Erfolgreich
-      } else {
-        return response.body; // Fehlernachricht
-      }
-    } catch (e) {
-      return 'An error occurred: $e';
-    }
-  }
-
-  Future<String?> refreshAccessToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? refreshToken = prefs.getString('refreshToken');
-    if (refreshToken == null) {
-      return 'No refresh token available';
-    }
-
     final response = await http.post(
-      Uri.parse(refreshTokenUrl),
+      Uri.parse('$baseUrl/api/users/auth/password/reset/'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'refresh': refreshToken}),
+      body: jsonEncode({
+        'email': email,
+        'reset_code': resetCode,
+        'new_password': newPassword,
+      }),
     );
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(utf8.decode(response.bodyBytes));
-      String accessToken = data['access'];
-      await prefs.setString('accessToken', accessToken);
-      return null;
+      return null; // Success
     } else {
-      return 'Failed to refresh access token';
+      return response.body; // Error message
     }
   }
 
-  Future<String> regenerateApiKey() async {
-    final response = await makeAuthenticatedRequest((token) {
-      return http.post(
-        Uri.parse('$baseUrl/api/users/auth/api-key/regenerate/'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-    });
+  Future<void> regenerateApiKey() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? apiKey = prefs.getString('api_key');
+
+    if (apiKey == null) {
+      throw Exception('No API key found. Please log in again.');
+    }
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/users/auth/api-key/regenerate/'),
+      headers: {
+        'x-api-key': apiKey,
+      },
+    );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return data['api_key'];
+      String newApiKey = data['api_key'];
+      await prefs.setString('api_key', newApiKey);
     } else {
       throw Exception('Failed to regenerate API key');
     }

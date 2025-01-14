@@ -222,7 +222,6 @@
   "noParametersFound": "No water parameters found.",
   "noParametersLast7Days": "No water parameters found in the last 7 days. The data shown may be outdated.",
   "tabData": "Data",
-  "tabKnowledge": "Knowledge",
   "tabAlerts": "Alerts",
   "ammonia": "Ammonia",
   "ammoniaInfo": "Ammonia levels that are too high can be dangerous for your fish, leading to stress, illness, and even death. Ideally, ammonia levels should be kept at 0 ppm. An appropriate alert can be to notify when ammonia levels are above 0.1.",

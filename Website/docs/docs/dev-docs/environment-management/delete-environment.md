@@ -8,7 +8,7 @@ To delete an environment, you can use the following API endpoint:
 
 - **URL:** `https://dev.aquaware.cloud/api/environments/<int:id>/`
 - **Method:** `DELETE`
-- **Authentication:** You must include your JWT **Access Token** in the request headers. Learn more about [JWT tokens here](../user-management/jwt-tokens.md).
+- **Authentication:** You must include your API-Key
 
 ## Important Notes
 
@@ -18,7 +18,7 @@ When you delete an environment, **this action cannot be undone**. Make sure you 
 
 ```bash
 DELETE https://dev.aquaware.cloud/api/environments/1/
-Authorization: Bearer <access_token>
+X-API-KEY: <your-api-key>
 ```
 
 ### Example Response

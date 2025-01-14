@@ -8,7 +8,7 @@ Um eine Umgebung zu löschen, kannst du diesen API-Endpunkt verwenden:
 
 - **URL:** `https://dev.aquaware.cloud/api/environments/<int:id>/`
 - **Methode:** `DELETE`
-- **Authentifizierung:** Du musst dein JWT **Access Token** in die Header der Anfrage einfügen. Mehr Infos zu [JWT Tokens findest du hier](../user-management/jwt-tokens.md).
+- **Authentifizierung:** Du musst deinen API-Schlüssel mit angeben
 
 ## Wichtige Hinweise
 
@@ -18,7 +18,7 @@ Wenn du eine Umgebung löschst, **kann diese Aktion nicht rückgängig gemacht w
 
 ```bash
 DELETE https://dev.aquaware.cloud/api/environments/1/
-Authorization: Bearer <access_token>
+X-API-KEY: <dein-api-key>
 ```
 
 ### Beispielantwort

@@ -96,11 +96,6 @@
               "sidebar": "devDocSidebar"
             },
             {
-              "id": "dev-docs/user-management/jwt-tokens",
-              "path": "/de/docs/dev-docs/user-management/jwt-tokens",
-              "sidebar": "devDocSidebar"
-            },
-            {
               "id": "dev-docs/user-management/login",
               "path": "/de/docs/dev-docs/user-management/login",
               "sidebar": "devDocSidebar"
@@ -108,11 +103,6 @@
             {
               "id": "dev-docs/user-management/profile",
               "path": "/de/docs/dev-docs/user-management/profile",
-              "sidebar": "devDocSidebar"
-            },
-            {
-              "id": "dev-docs/user-management/refresh-access-token",
-              "path": "/de/docs/dev-docs/user-management/refresh-access-token",
               "sidebar": "devDocSidebar"
             },
             {

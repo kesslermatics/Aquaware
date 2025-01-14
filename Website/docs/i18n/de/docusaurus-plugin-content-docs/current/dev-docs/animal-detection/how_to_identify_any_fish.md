@@ -18,7 +18,9 @@ POST /api/animal/identify/
 ### Beispielanfrage (mit cURL):
 
 ```bash
-curl -X POST https://dev.aquaware.cloud/api/animal/identify/   -H 'Authorization: Bearer your-access-token'   -F 'image=@/path-to-your-image/animal_image.jpg'
+curl -X POST https://dev.aquaware.cloud/api/animal/identify/ \
+  -H 'X-API-KEY: dein-api-key' \
+  -F 'image=@/path-to-your-image/animal_image.jpg'
 ```
 
 ### Abonnementvoraussetzung:

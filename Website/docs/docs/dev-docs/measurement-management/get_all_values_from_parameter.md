@@ -16,12 +16,6 @@ The **Get All Values From Parameter** endpoint allows you to retrieve all water 
 2. **parameter_name**: The name of the water parameter you want to retrieve. This must be a string and match one of the supported water parameters listed below.
 3. **number_of_entries**: The number of latest entries you want to retrieve for the specified parameter. This is required and should be an integer.
 
-## Headers
-
-| Name          | Type   | Description                                     |
-| ------------- | ------ | ----------------------------------------------- |
-| Authorization | string | Bearer token for authentication (Access Token). |
-| Content-Type  | string | Must be set to `application/json`.              |
 
 ## Example Request
 

@@ -24,15 +24,15 @@ export default [
   },
   {
     path: '/de/docs',
-    component: ComponentCreator('/de/docs', '4bf'),
+    component: ComponentCreator('/de/docs', 'd5e'),
     routes: [
       {
         path: '/de/docs',
-        component: ComponentCreator('/de/docs', '557'),
+        component: ComponentCreator('/de/docs', '958'),
         routes: [
           {
             path: '/de/docs',
-            component: ComponentCreator('/de/docs', '975'),
+            component: ComponentCreator('/de/docs', 'c3f'),
             routes: [
               {
                 path: '/de/docs/dev-docs/animal-detection/how_to_identify_any_fish',
@@ -137,12 +137,6 @@ export default [
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/dev-docs/user-management/jwt-tokens',
-                component: ComponentCreator('/de/docs/dev-docs/user-management/jwt-tokens', 'a0e'),
-                exact: true,
-                sidebar: "devDocSidebar"
-              },
-              {
                 path: '/de/docs/dev-docs/user-management/login',
                 component: ComponentCreator('/de/docs/dev-docs/user-management/login', 'c73'),
                 exact: true,
@@ -151,12 +145,6 @@ export default [
               {
                 path: '/de/docs/dev-docs/user-management/profile',
                 component: ComponentCreator('/de/docs/dev-docs/user-management/profile', '76a'),
-                exact: true,
-                sidebar: "devDocSidebar"
-              },
-              {
-                path: '/de/docs/dev-docs/user-management/refresh-access-token',
-                component: ComponentCreator('/de/docs/dev-docs/user-management/refresh-access-token', '69c'),
                 exact: true,
                 sidebar: "devDocSidebar"
               },

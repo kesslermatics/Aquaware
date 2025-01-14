@@ -18,7 +18,7 @@ POST /api/diseases/diagnosis/
 
 ```bash
 curl -X POST https://dev.aquaware.cloud/api/diseases/diagnosis/ \
-  -H 'Authorization: Bearer your-access-token' \
+  -H 'X-API-KEY: your-api-key' \
   -F 'image=@/path-to-your-image/fish_image.jpg'
 ```
 

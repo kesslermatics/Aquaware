@@ -8,7 +8,7 @@ To update an environment that you have previously created, you can use the follo
 
 - **URL:** `https://dev.aquaware.cloud/api/environments/<int:id>/`
 - **Method:** `PUT`
-- **Authentication:** You must include your JWT **Access Token** in the request headers. Learn more about [JWT tokens here](../user-management/jwt-tokens.md).
+- **Authentication:** You must include your API-Key
 
 ## What You Can Update
 
@@ -25,7 +25,7 @@ You do not need to provide all fields in the request body; you can update only t
 
 ```bash
 PUT https://dev.aquaware.cloud/api/environments/1/
-Authorization: Bearer <access_token>
+X-API-KEY: <your-api-key>
 Content-Type: application/json
 ```
 

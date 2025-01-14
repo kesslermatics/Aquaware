@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Anmeldung
 
-Um auf dein Aquaware-Konto zuzugreifen, kannst du dich entweder über unsere Website, die App oder programmatisch über unsere API anmelden. Nach der Anmeldung erhältst du JWT-Tokens, die **für zukünftige Autorisierungen entscheidend** sind.
+Um auf dein Aquaware-Konto zuzugreifen, kannst du dich entweder über unsere Website, die App oder programmatisch über unsere API anmelden. Nach der Anmeldung erhältst du deinen API-Schlüssel, die **für zukünftige Autorisierungen entscheidend** sind.
 
 ## Anmeldung über die API
 
@@ -41,13 +41,11 @@ Der Anfrage-Body sollte die folgenden Felder enthalten:
 
 ### Antwort
 
-Nach einer erfolgreichen Anmeldung erhältst du deine JWT-Tokens, die für zukünftige Autorisierungen verwendet werden.
+Nach einer erfolgreichen Anmeldung erhältst du deinen API-Schlüssel, welcher für zukünftige Autorisierungen verwendet werden.
 
 ### Profilverwaltung
 
 Nach der Anmeldung kannst du dein Profil auf der [Aquaware-Profilverwaltungsseite](https://dashboard.aquaware.cloud) verwalten.
-
-Weitere Informationen darüber, wie JWT-Tokens funktionieren und für die Autorisierung verwendet werden, findest du [hier](./jwt-tokens).
 
 ---
 

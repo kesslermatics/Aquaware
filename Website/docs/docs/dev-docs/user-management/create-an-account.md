@@ -8,7 +8,7 @@ Creating an account with Aquaware is simple and can be done in just a few steps.
 
 ## How to Create an Account
 
-To create an account, head over to the [Aquaware Signup Page](https://aquaware.cloud/signup). Alternatively, you can create an account programmatically by sending a request to our API.
+To create an account, head over to the [Aquaware Signup Page](https://dashboard.aquaware.cloud/signup). Alternatively, you can create an account programmatically by sending a request to our API.
 
 ### API Signup
 

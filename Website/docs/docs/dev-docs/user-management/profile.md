@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 3
 ---
 
 # Profile
@@ -12,15 +12,15 @@ You can retrieve your profile information using the following API endpoint:
 
 - **URL:** `http://dev.aquaware.cloud/api/users/profile/`
 - **Method:** `GET`
-- **Authorization:** Requires a valid JWT token in the request header.
+- **Authorization:** Erfordert dein API-Schlüssel
 
 ### Example Request
 
-To fetch your profile details, include your JWT token in the `Authorization` header of the request.
+To fetch your profile details, include your API key in the X-API-KEY header of the request.
 
 ```bash
 GET http://dev.aquaware.cloud/api/users/profile/
-Authorization: Bearer <your-jwt-token>
+X-API-KEY: <your-api-key>
 ```
 
 ### Response
@@ -49,6 +49,5 @@ Upon a successful request, the API will return the following user details in JSO
 
 ### Notes
 
-- Ensure your JWT token is valid; expired or invalid tokens will result in an authentication error.
 - The `api_key` is a sensitive value. Do not share it publicly, as it provides access to your Aquaware account.
 - The `subscription_tier` value may affect access to certain features or APIs.

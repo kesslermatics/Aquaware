@@ -16,8 +16,8 @@ Wenn du **Entwickler** bist, schau dir unbedingt unsere [Entwickler-API-Dokument
 
 Der Einstieg ist ganz einfach, und ich begleite dich bei jedem Schritt:
 
-1. [Erstelle deinen Account](https://www.aquaware.cloud/signup/): Werde Teil unserer Community und starte deine Reise.
-2. [Anmelden](https://www.aquaware.cloud/login/): Greife auf dein Dashboard zu und entdecke, was Aquaware für dich tun kann.
+1. [Erstelle deinen Account](https://www.dashboard.aquaware.cloud/signup/): Werde Teil unserer Community und starte deine Reise.
+2. [Anmelden](https://www.dashboard.aquaware.cloud/login/): Greife auf dein Dashboard zu und entdecke, was Aquaware für dich tun kann.
 3. [Dokumentation entdecken](#): Egal, ob du Tipps, Anleitungen oder technische API-Referenzen suchst – hier findest du alles.
 
 ## Brauchst du Hilfe oder hast Fragen?

@@ -37,17 +37,17 @@
     },
     "content": "393be207"
   },
-  "/de/docs-4bf": {
+  "/de/docs-d5e": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "aba21aa0"
     }
   },
-  "/de/docs-557": {
+  "/de/docs-958": {
     "__comp": "a7bd4aaa",
     "__props": "cd523b67"
   },
-  "/de/docs-975": {
+  "/de/docs-c3f": {
     "__comp": "a94703ab"
   },
   "/de/docs/dev-docs/animal-detection/how_to_identify_any_fish-39a": {
@@ -118,10 +118,6 @@
     "__comp": "17896441",
     "content": "196ba24c"
   },
-  "/de/docs/dev-docs/user-management/jwt-tokens-a0e": {
-    "__comp": "17896441",
-    "content": "9742a89c"
-  },
   "/de/docs/dev-docs/user-management/login-c73": {
     "__comp": "17896441",
     "content": "64d8e7e3"
@@ -129,10 +125,6 @@
   "/de/docs/dev-docs/user-management/profile-76a": {
     "__comp": "17896441",
     "content": "d769a92c"
-  },
-  "/de/docs/dev-docs/user-management/refresh-access-token-69c": {
-    "__comp": "17896441",
-    "content": "6fe03c7e"
   },
   "/de/docs/getting-started/adding-water-values-ca3": {
     "__comp": "17896441",

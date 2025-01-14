@@ -8,7 +8,7 @@ Willkommen bei Aquaware! Die Erstellung eines Kontos ist der erste Schritt, um d
 
 ## So meldest du dich an
 
-1. Gehe zur [Registrierungsseite](https://www.aquaware.cloud/signup/).
+1. Gehe zur [Registrierungsseite](https://www.dashboard.aquaware.cloud/signup/).
 2. Fülle die folgenden Felder aus:
 
    - **Vorname**: Gib deinen Vornamen ein.

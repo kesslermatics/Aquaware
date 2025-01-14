@@ -8,7 +8,7 @@ Welcome to Aquaware! Creating an account is the first step to unlocking the full
 
 ## How to Sign Up
 
-1. Go to the [Sign Up Page](https://www.aquaware.cloud/signup/).
+1. Go to the [Sign Up Page](https://www.dashboard.aquaware.cloud/signup/).
 2. Fill out the following fields:
 
    - **First Name**: Enter your first name.

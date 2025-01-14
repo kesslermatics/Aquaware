@@ -17,7 +17,7 @@ Wenn du eine Umgebung lieber programmatisch erstellen möchtest, kannst du unser
 - **URL:** `https://dev.aquaware.cloud/api/environments/`
 - **Methode:** `POST`
 - **Content-Type:** `application/json`
-- **Authentifizierung:** Du musst dein JWT **Access Token** in die Header der Anfrage einfügen. Mehr Infos zu [JWT Tokens findest du hier](../user-management/jwt-tokens).
+- **Authentifizierung:** Du musst deinen API-Schlüssel mit angeben
 
 ### Erforderliche Felder
 
@@ -51,7 +51,7 @@ So kannst du eine Umgebung mithilfe der API erstellen:
 
 ```bash
 POST https://dev.aquaware.cloud/api/environments/
-Authorization: Bearer <access_token>
+X-API-KEY: <dein-api-key>
 Content-Type: application/json
 ```
 

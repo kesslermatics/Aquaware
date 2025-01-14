@@ -8,7 +8,7 @@ Um eine Liste aller öffentlich verfügbaren Umgebungen zu erhalten, kannst du d
 
 - **URL:** `https://dev.aquaware.cloud/api/environments/public/`
 - **Methode:** `GET`
-- **Authentifizierung:** Du musst dein JWT **Access Token** in die Header der Anfrage einfügen. Mehr Infos zu [JWT Tokens findest du hier](../user-management/jwt-tokens.md).
+- **Authentifizierung:** Du musst deinen API-Schlüssel mit angeben
 
 ## Was du bekommst
 
@@ -18,7 +18,7 @@ Die API liefert eine Liste von Umgebungen, die öffentlich verfügbar sind, aber
 
 ```bash
 GET https://dev.aquaware.cloud/api/environments/public/
-Authorization: Bearer <access_token>
+X-API-KEY: <dein-api-key>
 ```
 
 ### Beispielantwort
