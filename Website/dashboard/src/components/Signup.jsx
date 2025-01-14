@@ -53,8 +53,7 @@ const Signup = () => {
     const data = await response.json();
 
     if (response.ok) {
-      Cookies.set("access_token", data.access, { expires: 1 });
-      Cookies.set("refresh_token", data.refresh, { expires: 7 });
+      Cookies.set("api_key", data.api_key);
       window.location.href = "/";
     } else if (response.status === 409) {
       setError(t("signup.emailInUse"));
@@ -83,8 +82,7 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        Cookies.set("access_token", data.access, { expires: 1 });
-        Cookies.set("refresh_token", data.refresh, { expires: 7 });
+        Cookies.set("api_key", data.api_key);
         window.location.href = "/";
       } else {
         console.error("Google signup failed:", data);

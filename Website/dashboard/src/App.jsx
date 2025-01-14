@@ -16,9 +16,9 @@ const App = () => {
 
   useEffect(() => {
     const publicRoutes = ["/login", "/signup"];
-    const refreshToken = Cookies.get("refresh_token");
+    const apiKey = Cookies.get("api_key");
 
-    if (!refreshToken && !publicRoutes.includes(location.pathname)) {
+    if (!apiKey && !publicRoutes.includes(location.pathname)) {
       navigate("/login");
     }
   }, [navigate, location]);

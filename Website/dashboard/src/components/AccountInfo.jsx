@@ -27,24 +27,20 @@ const AccountInfo = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        await ensureAccessToken();
-        const accessToken = Cookies.get("access_token");
-
-        const response = await fetch(
-          "https://dev.aquaware.cloud/api/users/profile/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
+        const apiKey = Cookies.get("api_key"); // API-Schlüssel aus Cookies holen
+    
+        const response = await fetch("https://dev.aquaware.cloud/api/users/profile/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+          },
+        });
+    
         if (!response.ok) {
           throw new Error(t("accountInfo.fetchError"));
         }
-
+    
         const data = await response.json();
         setUserData(data);
         setLoading(false);
@@ -56,41 +52,6 @@ const AccountInfo = () => {
 
     fetchUserProfile();
   }, [t]);
-
-  const ensureAccessToken = async () => {
-    const refreshToken = Cookies.get("refresh_token");
-    if (!refreshToken) {
-      throw new Error(t("accountInfo.noRefreshToken"));
-    }
-
-    await refreshAccessToken(refreshToken);
-  };
-
-  const refreshAccessToken = async (refreshToken) => {
-    try {
-      const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/auth/token/refresh/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refresh: refreshToken }),
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        Cookies.set("access_token", data.access);
-        return true;
-      } else {
-        throw new Error(t("accountInfo.tokenRefreshError"));
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(userData.api_key);
@@ -126,7 +87,7 @@ const AccountInfo = () => {
     ensureAccessToken();
     setIsDeleting(true);
     try {
-      const accessToken = Cookies.get("access_token");
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
         "https://dev.aquaware.cloud/api/users/profile/",
@@ -134,14 +95,14 @@ const AccountInfo = () => {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            "x-api-key": apiKey,
           },
         }
       );
 
       if (response.ok) {
         alert(t("accountInfo.deleted_successfully"));
-        Cookies.remove("access_token");
-        Cookies.remove("refresh_token");
+        Cookies.remove("api_key");
         window.location.href = "/";
       } else {
         const data = await response.json();
@@ -161,7 +122,7 @@ const AccountInfo = () => {
     setSuccessMessage("");
     try {
       await ensureAccessToken();
-      const accessToken = Cookies.get("access_token");
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
         "https://dev.aquaware.cloud/api/users/profile/",
@@ -169,7 +130,7 @@ const AccountInfo = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            "x-api-key": apiKey,
           },
           body: JSON.stringify({
             first_name: userData.first_name,
@@ -200,7 +161,7 @@ const AccountInfo = () => {
   const handleRegenerateApiKey = async () => {
     try {
       await ensureAccessToken();
-      const accessToken = Cookies.get("access_token");
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
         "https://dev.aquaware.cloud/api/users/auth/api-key/regenerate/",
@@ -208,7 +169,7 @@ const AccountInfo = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            "x-api-key": apiKey,
           },
         }
       );

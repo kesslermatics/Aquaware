@@ -18,7 +18,7 @@ from django.contrib.auth import get_user_model, authenticate, logout
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_exempt
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.conf import settings
@@ -182,7 +182,7 @@ def google_login(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([APIKeyAuthentication])
+@authentication_classes([APIKeyAuthentication])
 def profile_views(request):
     if request.method == 'GET':
         return get_user_profile(request)
@@ -218,7 +218,7 @@ def delete_account(request):
     return Response({"detail": "Your account has been deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])
-@permission_classes([APIKeyAuthentication])
+@authentication_classes([APIKeyAuthentication])
 def change_password(request):
     user = request.user
     current_password = request.data.get("current_password")
@@ -327,7 +327,7 @@ def reset_password(request):
 
 
 @api_view(['POST'])
-@permission_classes([APIKeyAuthentication])
+@authentication_classes([APIKeyAuthentication])
 def send_feedback(request):
     title = request.data.get('title')
     message = request.data.get('message')
@@ -454,7 +454,7 @@ def remove_user_subscription(email):
         print("Hobby subscription tier does not exist.")
 
 @api_view(['POST'])
-@permission_classes([APIKeyAuthentication])
+@authentication_classes([APIKeyAuthentication])
 def regenerate_api_key(request):
     user = request.user
     user.regenerate_api_key()

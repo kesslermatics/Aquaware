@@ -22,46 +22,10 @@ const EnvironmentInfo = () => {
     city: "",
   });
 
-  const ensureAccessToken = async () => {
-    const refreshToken = Cookies.get("refresh_token");
-    if (!refreshToken) {
-      throw new Error(t("accountInfo.noRefreshToken"));
-    }
-
-    await refreshAccessToken(refreshToken);
-  };
-
-  const refreshAccessToken = async (refreshToken) => {
-    try {
-      const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/auth/token/refresh/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refresh: refreshToken }),
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        Cookies.set("access_token", data.access);
-        return true;
-      } else {
-        throw new Error(t("environment.tokenRefreshError"));
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-
   const fetchEnvironments = async () => {
     try {
       setIsLoading(true);
-      await ensureAccessToken();
-      const accessToken = Cookies.get("access_token");
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
         "https://dev.aquaware.cloud/api/environments/",
@@ -69,7 +33,7 @@ const EnvironmentInfo = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            "x-api-key": apiKey,
           },
         }
       );
@@ -90,8 +54,7 @@ const EnvironmentInfo = () => {
 
   const handleCreateEnvironment = async () => {
     try {
-      await ensureAccessToken();
-      const accessToken = Cookies.get("access_token");
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
         "https://dev.aquaware.cloud/api/environments/",
@@ -99,7 +62,7 @@ const EnvironmentInfo = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            "x-api-key": apiKey,
           },
           body: JSON.stringify(formData),
         }
@@ -118,8 +81,7 @@ const EnvironmentInfo = () => {
 
   const handleUpdateEnvironment = async (id) => {
     try {
-      await ensureAccessToken();
-      const accessToken = Cookies.get("access_token");
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
         `https://dev.aquaware.cloud/api/environments/${id}/`,
@@ -127,7 +89,7 @@ const EnvironmentInfo = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            "x-api-key": apiKey,
           },
           body: JSON.stringify(formData),
         }
@@ -146,15 +108,14 @@ const EnvironmentInfo = () => {
 
   const handleDeleteEnvironment = async (id) => {
     try {
-      await ensureAccessToken();
-      const accessToken = Cookies.get("access_token");
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
         `https://dev.aquaware.cloud/api/environments/${id}/`,
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            "x-api-key": apiKey,
           },
         }
       );

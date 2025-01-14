@@ -11,80 +11,34 @@ const PricingPlanInfo = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const refreshAccessToken = async () => {
-    try {
-      const refreshToken = Cookies.get("refresh_token");
-      const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/auth/token/refresh/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refresh: refreshToken }),
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        Cookies.set("access_token", data.access);
-        return data.access;
-      } else {
-        throw new Error(t("pricingPlanInfo.errors.tokenRefresh"));
-      }
-    } catch (error) {
-      console.error(t("pricingPlanInfo.errors.tokenRefreshError"), error);
-      throw error;
-    }
-  };
-
-  const fetchWithTokenRefresh = async (url, options) => {
-    try {
-      let accessToken = Cookies.get("access_token");
-      options.headers = {
-        ...options.headers,
-        Authorization: `Bearer ${accessToken}`,
-      };
-
-      let response = await fetch(url, options);
-
-      if (response.status === 401) {
-        accessToken = await refreshAccessToken();
-        options.headers.Authorization = `Bearer ${accessToken}`;
-        response = await fetch(url, options);
-      }
-
-      return response;
-    } catch (error) {
-      console.error(t("pricingPlanInfo.errors.fetchError"), error);
-    }
-  };
 
   useEffect(() => {
     const fetchUserPlan = async () => {
       try {
-        const response = await fetchWithTokenRefresh(
-          "https://dev.aquaware.cloud/api/users/profile/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-
+        const apiKey = Cookies.get("api_key");
+  
+        const response = await fetch("https://dev.aquaware.cloud/api/users/profile/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+          },
+        });
+  
         if (response.ok) {
           const data = await response.json();
           setUserPlan(data.subscription_tier);
+        } else {
+          throw new Error(t("pricingPlanInfo.errors.fetchPlanError"));
         }
       } catch (error) {
         console.error(t("pricingPlanInfo.errors.fetchPlanError"), error);
       }
     };
-
+  
     fetchUserPlan();
   }, [t]);
+  
 
   const handlePlanClick = (plan) => {
     const stripeLinks = {

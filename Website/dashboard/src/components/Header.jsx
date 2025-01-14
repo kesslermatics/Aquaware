@@ -15,8 +15,7 @@ const Header = () => {
 
   const handleLogout = () => {
     // Entferne Cookies
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
+    Cookies.remove("api_key");
 
     // Weiterleitung zur Login-Seite
     navigate("/login");

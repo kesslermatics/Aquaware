@@ -12,45 +12,17 @@ const Dashboard = () => {
   const [progress, setProgress] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState(t("dashboard.loading"));
 
-  const refreshAccessToken = async () => {
-    try {
-      const refreshToken = Cookies.get("refresh_token");
-      if (!refreshToken) throw new Error(t("dashboard.errors.missingToken"));
-
-      const response = await fetch("https://dev.aquaware.cloud/api/users/auth/token/refresh/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ refresh: refreshToken }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        Cookies.set("access_token", data.access, { secure: true });
-        return data.access;
-      } else {
-        throw new Error(t("dashboard.errors.refreshFailed"));
-      }
-    } catch (error) {
-      console.error(t("dashboard.errors.refreshError"), error);
-      throw error;
-    }
-  };
 
   const fetchUserData = async () => {
     try {
       setLoadingMessage(t("dashboard.loadingProfile"));
-      let accessToken = Cookies.get("access_token");
-      if (!accessToken) {
-        accessToken = await refreshAccessToken();
-      }
+      let apiKey = Cookies.get("api_key");
 
       const response = await fetch("https://dev.aquaware.cloud/api/users/profile/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+          "x-api-key": apiKey,
         },
       });
 
@@ -69,14 +41,13 @@ const Dashboard = () => {
   const fetchEnvironments = async () => {
     try {
       setLoadingMessage(t("dashboard.loadingEnvironments"));
-      const accessToken = Cookies.get("access_token");
-      if (!accessToken) throw new Error(t("dashboard.errors.missingToken"));
+      const apiKey = Cookies.get("api_key");
 
       const response = await fetch("https://dev.aquaware.cloud/api/environments/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+          "x-api-key": apiKey,
         },
       });
 
@@ -90,7 +61,7 @@ const Dashboard = () => {
                 method: "GET",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${accessToken}`,
+                  "x-api-key": apiKey,
                 },
               }
             );
@@ -133,7 +104,7 @@ const Dashboard = () => {
 
     loadData();
   }, [t]);
-
+  console.log(userData);
   return (
     <div className="flex flex-col min-h-screen bg-n-8">
       {loading ? (
