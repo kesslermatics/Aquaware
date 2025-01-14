@@ -26,6 +26,10 @@ urlpatterns = [
     # API Key Management
     path('auth/api-key/regenerate/', user_views.regenerate_api_key, name='auth-api-key-regenerate'),  # POST
 
+    # Dev API Key Management
+    path('auth/dev-api-key/create/', user_views.create_dev_api_key, name='auth-api-key-create'),  # POST
+    path('auth/dev-api-key/delete/<int:key_id>/', user_views.delete_dev_api_key, name='auth-api-key-delete'),  # DELETE
+
     # CSRF Token
     path('auth/csrf-token/', user_views.get_csrf_token, name='auth-csrf-token'),  # GET
 

@@ -28,7 +28,7 @@ import random
 from datetime import timedelta
 from django.utils.timezone import now
 
-from .models import SubscriptionTier
+from .models import SubscriptionTier, DeveloperAPIKey
 from .serializers import UserSerializer, RegisterSerializer, CustomTokenObtainPairSerializer
 
 from aquaware import settings
@@ -195,6 +195,48 @@ def refresh_access_token(request):
     except TokenError as e:
         return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_dev_api_key(request):
+    """
+    Create a new Developer API Key for the authenticated user.
+    """
+    user = request.user
+    name = request.data.get('name', 'Default API Key')
+    description = request.data.get('description', '')
+
+    # Erstelle einen neuen API Key
+    api_key = DeveloperAPIKey.objects.create(
+        user=user,
+        name=name,
+        description=description
+    )
+
+    return Response({
+        "key": api_key.key,
+        "name": api_key.name,
+        "description": api_key.description,
+        "created_at": api_key.created_at
+    }, status=status.HTTP_201_CREATED)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_dev_api_key(request, key_id):
+    """
+    Delete an existing Developer API Key by its ID.
+    """
+    user = request.user
+
+    try:
+        # Finde den API Key basierend auf der ID und dem Benutzer
+        api_key = DeveloperAPIKey.objects.get(id=key_id, user=user)
+        api_key.delete()
+
+        return Response({"detail": "API Key deleted successfully"}, status=status.HTTP_200_OK)
+    except DeveloperAPIKey.DoesNotExist:
+        return Response({"error": "API Key not found or does not belong to the user"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
