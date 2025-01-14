@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2"; // Für Dialoge
 import backgroundVideo from "../assets/bg-aquarium2.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -48,6 +49,146 @@ const Login = () => {
       setIsLoadingLogin(false);
     }
   };
+
+const handleForgotPassword = async () => {
+  let userEmail = "";
+  let resetCode = "";
+  let newPassword = "";
+  let showPassword = false;
+
+  const renderPasswordDialog = async () => {
+    const { value: formData } = await Swal.fire({
+      title: t("login.enterResetCodeTitle"),
+      html: `
+        <input id="resetCode" class="swal2-input" placeholder="${t(
+          "login.resetCodePlaceholder"
+        )}" value="${resetCode}">
+        <div style="position: relative;">
+          <input id="newPassword" type="${
+            showPassword ? "text" : "password"
+          }" class="swal2-input" placeholder="${t(
+            "login.newPasswordPlaceholder"
+          )}" value="${newPassword}">
+          <button type="button" id="toggleVisibility" style="
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+          ">${showPassword ? "🙈" : "👁️"}</button>
+        </div>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: t("login.resetPasswordButton"),
+      cancelButtonText: t("common.cancel"),
+      preConfirm: () => {
+        resetCode = document.getElementById("resetCode").value;
+        newPassword = document.getElementById("newPassword").value;
+        return { resetCode, newPassword };
+      },
+      didOpen: () => {
+        const toggleVisibility = document.getElementById("toggleVisibility");
+        const newPasswordInput = document.getElementById("newPassword");
+        toggleVisibility.addEventListener("click", () => {
+          showPassword = !showPassword;
+          newPasswordInput.type = showPassword ? "text" : "password";
+          toggleVisibility.textContent = showPassword ? "🙈" : "👁️";
+        });
+      },
+    });
+
+    if (formData) {
+      try {
+        Swal.showLoading();
+        const responseReset = await fetch(
+          "https://dev.aquaware.cloud/api/users/auth/password/reset/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: userEmail,
+              reset_code: resetCode,
+              new_password: newPassword,
+            }),
+          }
+        );
+
+        if (responseReset.ok) {
+          Swal.fire({
+            title: t("login.passwordResetSuccessTitle"),
+            text: t("login.passwordResetSuccessMessage"),
+            icon: "success",
+            confirmButtonText: t("common.ok"),
+          }).then(() => {
+            window.location.href = "/login";
+          });
+        } else {
+          const errorData = await responseReset.json();
+          throw new Error(errorData.detail || t("login.passwordResetErrorMessage"));
+        }
+      } catch (error) {
+        Swal.fire({
+          title: t("login.errorTitle"),
+          text: error.message,
+          icon: "error",
+          confirmButtonText: t("common.ok"),
+        }).then(() => renderPasswordDialog());
+      }
+    }
+  };
+
+  const renderEmailDialog = async () => {
+    const { value: email } = await Swal.fire({
+      title: t("login.forgotPasswordTitle"),
+      text: t("login.forgotPasswordMessage"),
+      input: "email",
+      inputPlaceholder: t("login.emailPlaceholder"),
+      showCancelButton: true,
+      confirmButtonText: t("login.sendCodeButton"),
+      cancelButtonText: t("common.cancel"),
+      preConfirm: async (emailInput) => {
+        if (!emailInput) {
+          Swal.showValidationMessage(t("login.emailRequired"));
+          return false;
+        }
+        Swal.showLoading();
+        try {
+          const response = await fetch(
+            "https://dev.aquaware.cloud/api/users/auth/password/forgot/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email: emailInput }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(t("login.forgotPasswordError"));
+          }
+          userEmail = emailInput; // Speichere die E-Mail für den nächsten Dialog
+          return true;
+        } catch (error) {
+          Swal.showValidationMessage(error.message);
+          return false;
+        }
+      },
+    });
+
+    if (email) {
+      await renderPasswordDialog();
+    }
+  };
+
+  await renderEmailDialog();
+};
+
 
   const handleGoogleLogin = async (tokenResponse) => {
     setIsLoadingLogin(true);
@@ -133,9 +274,12 @@ const Login = () => {
             </button>
           </div>
           <div className="text-right mt-2">
-            <a href="/forgot-password" className="text-blue-500 font-semibold">
+            <button
+              onClick={handleForgotPassword}
+              className="text-blue-500 font-semibold cursor-pointer"
+            >
               {t("login.forgotPassword")}
-            </a>
+            </button>
           </div>
         </div>
 

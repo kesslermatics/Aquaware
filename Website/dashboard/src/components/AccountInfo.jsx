@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FaEye, FaEyeSlash, FaClipboard, FaSpinner } from "react-icons/fa";
+import Swal from "sweetalert2"; 
 
 const AccountInfo = () => {
   const { t } = useTranslation();
@@ -120,7 +121,6 @@ const AccountInfo = () => {
     e.preventDefault();
     setSuccessMessage("");
     try {
-      await ensureAccessToken();
       const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
@@ -160,25 +160,36 @@ const AccountInfo = () => {
   const handleRegenerateApiKey = async () => {
     try {
       const apiKey = Cookies.get("api_key");
-
-      const response = await fetch(
-        "https://dev.aquaware.cloud/api/users/auth/api-key/regenerate/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-          },
+  
+      const result = await Swal.fire({
+        title: t("accountInfo.regenerateApiKeyWarningTitle"), 
+        text: t("accountInfo.regenerateApiKeyWarningMessage"), 
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: t("common.confirm"),
+        cancelButtonText: t("common.cancel"), 
+      });
+  
+      if (result.isConfirmed) {
+        const response = await fetch(
+          "https://dev.aquaware.cloud/api/users/auth/api-key/regenerate/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": apiKey,
+            },
+          }
+        );
+  
+        if (response.ok) {
+          const data = await response.json();
+          Cookies.set("api_key", data.api_key);
+          setUserData((prevData) => ({ ...prevData, api_key: data.api_key }));
+          setSuccessMessage(t("accountInfo.regenerateApiKeySuccess"));
+        } else {
+          throw new Error(t("accountInfo.regenerateApiKeyError"));
         }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        Cookies.set("api_key", data.api_key);
-        setUserData((prevData) => ({ ...prevData, api_key: data.api_key }));
-        setSuccessMessage(t("accountInfo.regenerateApiKeySuccess"));
-      } else {
-        throw new Error(t("accountInfo.regenerateApiKeyError"));
       }
     } catch (error) {
       setError(error.message);

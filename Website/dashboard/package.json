@@ -42,7 +42,8 @@
     "react-snap": "^1.23.0",
     "react-use": "^17.5.1",
     "rehype-raw": "^7.0.0",
-    "scroll-lock": "^2.1.5"
+    "scroll-lock": "^2.1.5",
+    "sweetalert2": "^11.15.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
