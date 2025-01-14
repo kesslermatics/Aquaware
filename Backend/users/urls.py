@@ -8,7 +8,6 @@ urlpatterns = [
     path('auth/signup/google/', user_views.google_signup, name='auth-google-signup'),  # POST
     path('auth/login/', user_views.login, name='auth-login'),  # POST
     path('auth/login/google/', user_views.google_login, name='auth-google-login'),  # POST
-    path('auth/token/refresh/', user_views.refresh_access_token, name='auth-token-refresh'),  # POST
 
     # User Profile
     path('profile/', user_views.profile_views, name='profile-views'),  # GET and PUT
