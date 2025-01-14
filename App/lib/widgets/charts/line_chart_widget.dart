@@ -2,6 +2,7 @@ import 'package:aquaware/services/color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LineChartWidget extends StatefulWidget {
   final List<DateTime> xValues;
@@ -30,7 +31,7 @@ class LineChartWidget extends StatefulWidget {
 
 class _LineChartWidgetState extends State<LineChartWidget> {
   String lastDate = '';
-  String _selectedFilter = 'Last 6 hours';
+  String _selectedFilter = '';
   late List<DateTime> usedXValues;
   late List<double> usedYValues;
   List<String> availableFilters = [];
@@ -47,15 +48,15 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
     if (widget.xValues
         .any((date) => date.isAfter(now.subtract(const Duration(hours: 6))))) {
-      availableFilters.add('Last 6 hours');
+      availableFilters.add(AppLocalizations.of(context)!.last6Hours);
     }
     if (widget.xValues
         .any((date) => date.isAfter(now.subtract(const Duration(hours: 24))))) {
-      availableFilters.add('Last 24 hours');
+      availableFilters.add(AppLocalizations.of(context)!.last24Hours);
     }
     if (widget.xValues
         .any((date) => date.isAfter(now.subtract(const Duration(days: 7))))) {
-      availableFilters.add('Last week');
+      availableFilters.add(AppLocalizations.of(context)!.lastWeek);
     }
 
     if (!availableFilters.contains(_selectedFilter)) {
@@ -66,6 +67,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     DateTime now = DateTime.now();
     DateTime filterTime;
 
@@ -112,9 +114,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
               ),
             Row(
               children: [
-                const Text(
-                  "Filter: ",
-                  style: TextStyle(
+                Text(
+                  "${loc.filter}: ",
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: ColorProvider.n1,
                   ),

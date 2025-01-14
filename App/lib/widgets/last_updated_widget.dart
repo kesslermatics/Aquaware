@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/models/water_value.dart';
 import 'package:intl/intl.dart'; // Package to format date strings
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LastUpdatedWidget extends StatelessWidget {
   final WaterValue lastWaterValue;
@@ -14,6 +15,8 @@ class LastUpdatedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,7 +25,7 @@ class LastUpdatedWidget extends StatelessWidget {
             const Icon(Icons.circle, color: Colors.blue),
             const SizedBox(width: 8),
             Text(
-              'Last updated on ${_formatDate(lastWaterValue.measuredAt)}',
+              loc.lastUpdated(_formatDate(lastWaterValue.measuredAt)),
               style: const TextStyle(color: ColorProvider.n1),
             ),
           ],

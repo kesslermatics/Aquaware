@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aquaware/services/color_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TotalEntriesWidget extends StatelessWidget {
   final int totalEntries;
@@ -8,11 +9,15 @@ class TotalEntriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text('Total number of entries: $totalEntries',
-            style: const TextStyle(color: ColorProvider.n1)),
+        child: Text(
+          loc.totalEntries(totalEntries), // Lokalisierter Text
+          style: const TextStyle(color: ColorProvider.n1),
+        ),
       ),
     );
   }

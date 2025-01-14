@@ -287,5 +287,11 @@
   "temperature": "Temperatur",
   "temperatureInfo": "Zu hohe oder zu niedrige Temperaturen können thermischen Stress, ein geschwächtes Immunsystem und den Tod verursachen. Verschiedene Arten haben unterschiedliche Temperaturanforderungen. Eine geeignete Warnung könnte sein, wenn die Temperatur außerhalb des Bereichs von 24-28°C liegt, abhängig von der Art.",
   "turbidity": "Trübung",
-  "turbidityInfo": "Eine hohe Trübung kann die Lichtdurchlässigkeit verringern, die Photosynthese stören und Fische durch Verstopfen ihrer Kiemen belasten. Eine geeignete Warnung könnte sein, wenn die Trübung 5 NTU überschreitet."
+  "turbidityInfo": "Eine hohe Trübung kann die Lichtdurchlässigkeit verringern, die Photosynthese stören und Fische durch Verstopfen ihrer Kiemen belasten. Eine geeignete Warnung könnte sein, wenn die Trübung 5 NTU überschreitet.",
+  "totalEntries": "Gesamtanzahl der Wasserwerte: {totalEntries}",
+  "lastUpdated": "Zuletzt aktualisiert am {formattedDate}",
+  "last6Hours": "Letzte 6 Stunden",
+  "last24Hours": "Letzte 24 Stunden",
+  "lastWeek": "Letzte Woche",
+  "filter": "Filter"
 }

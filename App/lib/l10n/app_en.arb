@@ -287,5 +287,11 @@
   "temperature": "Temperature",
   "temperatureInfo": "Temperature that is too high or too low can cause thermal stress, weaken immune systems, and lead to death. Different species have different temperature requirements. An appropriate alert can be to notify when temperature is outside the range of 24-28°C, depending on species.",
   "turbidity": "Turbidity",
-  "turbidityInfo": "High turbidity can reduce light penetration, disrupt photosynthesis, and stress fish by clogging their gills. An appropriate alert can be to notify when turbidity exceeds 5 NTU."
+  "turbidityInfo": "High turbidity can reduce light penetration, disrupt photosynthesis, and stress fish by clogging their gills. An appropriate alert can be to notify when turbidity exceeds 5 NTU.",
+  "totalEntries": "Total number of entries: {totalEntries}",
+  "lastUpdated": "Last updated on {formattedDate}",
+  "last6Hours": "Last 6 hours",
+  "last24Hours": "Last 24 hours",
+  "lastWeek": "Last week",
+  "filter": "Filter"
 }
