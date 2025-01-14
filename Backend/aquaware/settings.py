@@ -15,6 +15,7 @@ from pathlib import Path
 
 from django.conf.global_settings import DATABASES, DEBUG
 from dotenv import load_dotenv
+from corsheaders.defaults import default_headers
 
 import dj_database_url
 
@@ -31,7 +32,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 SECURE_SSL_REDIRECT = False
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://aquaware-production.up.railway.app',
     'https://dev.aquaware.cloud',
 ]
 
@@ -103,10 +103,6 @@ INSTALLED_APPS = [
     "animal_detection"
 ]
 
-SIMPLE_JWT = {
-    'UPDATE_LAST_LOGIN': True,
-}
-
 STATIC_URL = "/static/"
 
 MIDDLEWARE = [
@@ -125,6 +121,10 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-api-key',
+]
 
 ROOT_URLCONF = 'aquaware.urls'
 
@@ -153,23 +153,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-}
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUDIENCE': None,
-    'ISSUER': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
 INTERNAL_IPS = [
