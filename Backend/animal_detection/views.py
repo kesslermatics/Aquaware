@@ -11,9 +11,10 @@ from PIL import Image
 import io
 import base64
 from .models import AnimalDetection
+from users.authentication import APIKeyAuthentication
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def identify_animal_from_image(request):
     user = request.user
 

@@ -6,10 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Environment, UserEnvironmentSubscription
 from .serializers import EnvironmentSerializer
+from users.authentication import APIKeyAuthentication
 
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def environment_views(request):
     if request.method == 'GET':
         return get_user_environments(request)
@@ -18,7 +19,7 @@ def environment_views(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def environment_id_views(request, id):
     if request.method == 'GET':
         return get_environment(request, id)
@@ -90,7 +91,7 @@ def delete_environment(request, id):
         return Response({'error': f'An error occurred: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def get_public_environments(request):
     public_environments = Environment.objects.filter(public=True).exclude(user=request.user)
     serializer = EnvironmentSerializer(public_environments, many=True)

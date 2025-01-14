@@ -28,9 +28,10 @@ import random
 from datetime import timedelta
 from django.utils.timezone import now
 
-from .models import SubscriptionTier, DeveloperAPIKey
+from .models import SubscriptionTier
 from .serializers import UserSerializer, RegisterSerializer, CustomTokenObtainPairSerializer
 
+from users.authentication import APIKeyAuthentication
 from aquaware import settings
 
 User = get_user_model()
@@ -65,8 +66,7 @@ def signup(request):
             # Return a response with the tokens and a success message
             return Response({
                 'detail': 'User created successfully',
-                'access': access_token,
-                'refresh': refresh_token,
+                'api_key': user.api_key,
             }, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -103,9 +103,8 @@ def google_signup(request):
             # Create JWT tokens
             refresh = RefreshToken.for_user(user)
             return Response({
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
-                'detail': 'Google signup successful'
+                'detail': 'User created successfully',
+                'api_key': user.api_key,
             }, status=status.HTTP_201_CREATED)
 
         except ValueError:
@@ -137,9 +136,8 @@ def login(request):
         user.save(update_fields=['last_login'])
 
         return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            "user": serializer.data
+            "api_key": user.api_key,
+            "user": serializer.data,
         }, status=status.HTTP_202_ACCEPTED)
     else:
         return Response({'message': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
@@ -163,15 +161,17 @@ def google_login(request):
             if not user:
                 return Response({"error": "User not found, please sign up first"}, status=status.HTTP_404_NOT_FOUND)
 
+            # Update last login timestamp
             user.last_login = timezone.now()
             user.save(update_fields=['last_login'])
 
-            # Generate JWT tokens
-            refresh = RefreshToken.for_user(user)
+            # Ensure the user has an API Key
+            if not user.api_key:
+                user.regenerate_api_key()
+
             return Response({
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
-                'detail': 'Google login successful'
+                "api_key": user.api_key,
+                "detail": "Google login successful",
             }, status=status.HTTP_200_OK)
 
         except ValueError:
@@ -181,65 +181,8 @@ def google_login(request):
         return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['POST'])
-def refresh_access_token(request):
-    refresh_token = request.data.get('refresh')
-
-    if refresh_token is None:
-        return Response({'error': 'Refresh token is required'}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        refresh = RefreshToken(refresh_token)
-        new_access_token = refresh.access_token
-        return Response({'access': str(new_access_token)}, status=status.HTTP_200_OK)
-    except TokenError as e:
-        return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_dev_api_key(request):
-    """
-    Create a new Developer API Key for the authenticated user.
-    """
-    user = request.user
-    name = request.data.get('name', 'Default API Key')
-    description = request.data.get('description', '')
-
-    # Erstelle einen neuen API Key
-    api_key = DeveloperAPIKey.objects.create(
-        user=user,
-        name=name,
-        description=description
-    )
-
-    return Response({
-        "key": api_key.key,
-        "name": api_key.name,
-        "description": api_key.description,
-        "created_at": api_key.created_at
-    }, status=status.HTTP_201_CREATED)
-
-
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def delete_dev_api_key(request, key_id):
-    """
-    Delete an existing Developer API Key by its ID.
-    """
-    user = request.user
-
-    try:
-        # Finde den API Key basierend auf der ID und dem Benutzer
-        api_key = DeveloperAPIKey.objects.get(id=key_id, user=user)
-        api_key.delete()
-
-        return Response({"detail": "API Key deleted successfully"}, status=status.HTTP_200_OK)
-    except DeveloperAPIKey.DoesNotExist:
-        return Response({"error": "API Key not found or does not belong to the user"}, status=status.HTTP_404_NOT_FOUND)
-
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def profile_views(request):
     if request.method == 'GET':
         return get_user_profile(request)
@@ -275,7 +218,7 @@ def delete_account(request):
     return Response({"detail": "Your account has been deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def change_password(request):
     user = request.user
     current_password = request.data.get("current_password")
@@ -384,7 +327,7 @@ def reset_password(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def send_feedback(request):
     title = request.data.get('title')
     message = request.data.get('message')
@@ -511,7 +454,7 @@ def remove_user_subscription(email):
         print("Hobby subscription tier does not exist.")
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def regenerate_api_key(request):
     user = request.user
     user.regenerate_api_key()

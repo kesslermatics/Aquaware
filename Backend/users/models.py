@@ -95,18 +95,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-
-class DeveloperAPIKey(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="developer_api_keys"
-    )
-    key = models.CharField(max_length=40, unique=True, default=secrets.token_hex(20))
-    name = models.CharField(max_length=100, help_text="Name of the API key, e.g., 'My App'")
-    description = models.TextField(blank=True, null=True, help_text="Purpose or additional information about this API key")
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.name} - {self.key[:10]} (User: {self.user.email})"

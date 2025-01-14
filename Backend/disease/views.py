@@ -13,8 +13,10 @@ import io
 import base64
 from .models import DiseaseDetection
 
+from users.authentication import APIKeyAuthentication
+
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([APIKeyAuthentication])
 def diagnosis_from_image(request):
     user = request.user
 
