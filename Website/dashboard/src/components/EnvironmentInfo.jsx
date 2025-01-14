@@ -40,7 +40,6 @@ const EnvironmentInfo = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Environments:", data);
         setEnvironments(data);
       } else {
         throw new Error(t("environment.fetchError"));

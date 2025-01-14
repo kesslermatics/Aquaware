@@ -104,7 +104,7 @@ const Dashboard = () => {
 
     loadData();
   }, [t]);
-  console.log(userData);
+  
   return (
     <div className="flex flex-col min-h-screen bg-n-8">
       {loading ? (

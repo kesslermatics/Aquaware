@@ -84,7 +84,6 @@ const AccountInfo = () => {
   }
 
   const handleDeleteAccount = async () => {
-    ensureAccessToken();
     setIsDeleting(true);
     try {
       const apiKey = Cookies.get("api_key");
@@ -160,7 +159,6 @@ const AccountInfo = () => {
 
   const handleRegenerateApiKey = async () => {
     try {
-      await ensureAccessToken();
       const apiKey = Cookies.get("api_key");
 
       const response = await fetch(
@@ -176,6 +174,7 @@ const AccountInfo = () => {
 
       if (response.ok) {
         const data = await response.json();
+        Cookies.set("api_key", data.api_key);
         setUserData((prevData) => ({ ...prevData, api_key: data.api_key }));
         setSuccessMessage(t("accountInfo.regenerateApiKeySuccess"));
       } else {
