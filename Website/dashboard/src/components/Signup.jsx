@@ -191,6 +191,7 @@ const Signup = () => {
           {t("signup.signupButton")}
         </button>
 
+        {/*
         <div className="w-full flex items-center justify-center relative mb-4">
           <div className="w-full h-[1px] bg-gray-300"></div>
           <p className="absolute bg-white px-4 text-gray-500">
@@ -212,6 +213,7 @@ const Signup = () => {
             {t("signup.loginLink")}
           </a>
         </p>
+        */}
       </div>
     </div>
   );

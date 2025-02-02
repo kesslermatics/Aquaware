@@ -63,13 +63,9 @@ class _DataScreenState extends State<DataScreen> {
       _progress = 0.2;
       _statusText = loc.fetchingWaterValues;
     });
-    await widget.futureWaterValues;
 
-    setState(() {
-      _progress = 0.6;
-      _statusText = loc.fetchingTotalEntries;
-    });
-    await widget.futureTotalEntries;
+    // Warte auf beide FutureBuilder-Datenquellen gleichzeitig
+    await Future.wait([widget.futureWaterValues, widget.futureTotalEntries]);
 
     setState(() {
       _progress = 1.0;
@@ -83,17 +79,22 @@ class _DataScreenState extends State<DataScreen> {
       body: FutureBuilder<List<WaterValue>>(
         future: widget.futureWaterValues,
         builder: (context, snapshot) {
-          if (_progress < 1.0) {
+          if (_progress < 1.0 ||
+              snapshot.connectionState == ConnectionState.waiting) {
             return _buildLoadingWidget();
           }
 
           if (snapshot.hasError) {
             return Center(
-                child: Text(
-                    AppLocalizations.of(context)!.failedToLoadWaterValues));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              child:
+                  Text(AppLocalizations.of(context)!.failedToLoadWaterValues),
+            );
+          } else if (!snapshot.hasData ||
+              snapshot.data == null ||
+              snapshot.data!.isEmpty) {
             return Center(
-                child: Text(AppLocalizations.of(context)!.noWaterValuesFound));
+              child: Text(AppLocalizations.of(context)!.noWaterValuesFound),
+            );
           } else {
             List<WaterValue> waterValues = snapshot.data!.reversed.toList();
             WaterValue lastWaterValue = waterValues.last;

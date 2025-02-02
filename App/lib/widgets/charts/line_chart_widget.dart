@@ -92,8 +92,18 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
     usedXValues =
         widget.xValues.where((date) => date.isAfter(filterTime)).toList();
-    usedYValues =
-        widget.yValues.sublist(widget.xValues.indexOf(usedXValues.first));
+
+    if (usedXValues.isEmpty) {
+      usedXValues = widget.xValues;
+    }
+
+    int firstIndex = widget.xValues.indexOf(usedXValues.first);
+
+    if (firstIndex == -1) {
+      firstIndex = 0;
+    }
+
+    usedYValues = widget.yValues.sublist(firstIndex);
 
     List<FlSpot> spots = [];
     for (int i = 0; i < usedXValues.length; i++) {
@@ -119,32 +129,33 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                   textAlign: TextAlign.center,
                 ),
               ),
-            Row(
-              children: [
-                Text(
-                  "${loc.filter}: ",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: ColorProvider.n1,
+            if (availableFilters.isNotEmpty)
+              Row(
+                children: [
+                  Text(
+                    "${loc.filter}: ",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: ColorProvider.n1,
+                    ),
                   ),
-                ),
-                DropdownButton<String>(
-                  value: _selectedFilter.isNotEmpty ? _selectedFilter : null,
-                  items: availableFilters.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedFilter = newValue!;
-                      _updateAvailableFilters();
-                    });
-                  },
-                ),
-              ],
-            ),
+                  DropdownButton<String>(
+                    value: _selectedFilter.isNotEmpty ? _selectedFilter : null,
+                    items: availableFilters.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedFilter = newValue!;
+                        _updateAvailableFilters();
+                      });
+                    },
+                  ),
+                ],
+              ),
             const SizedBox(
               height: 16,
             ),
@@ -191,7 +202,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                             .roundToDouble()
                             .clamp(1, double.infinity),
                         showTitles: true,
-                        reservedSize: 80,
+                        reservedSize: 100,
                         getTitlesWidget: (value, meta) {
                           if (value < 0 || value >= usedXValues.length) {
                             return Container();

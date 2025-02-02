@@ -216,7 +216,7 @@
   "xAxisLabel": "Time",
   "yAxisLabel": "{parameterName} ({unit})",
   "heatmapTitle": "{parameterName} Level Heatmap",
-  "histogramTitle": "Distribution in the last 24h",
+  "histogramTitle": "Value Distribution",
   "gettingAllParameters": "Getting all parameters...",
   "errorLoadingParameters": "Error: There was an error loading the water parameters.",
   "noParametersFound": "No water parameters found.",

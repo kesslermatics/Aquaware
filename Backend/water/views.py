@@ -5,7 +5,8 @@ from datetime import timedelta, datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
-from django.db.models import OuterRef, Subquery, Count, Max, Q
+from django.db.models import OuterRef, Subquery, Count, Max, Q, Window, F
+from django.db.models.functions import RowNumber
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -153,32 +154,35 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
         ).first()
 
         if not environment:
-            return Response({'detail': 'Environment not found or not accessible by this user.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'Environment not found or not accessible by this user.'},
+                            status=status.HTTP_404_NOT_FOUND)
 
-        subquery = WaterValue.objects.filter(
-            environment_id=environment_id,
-            parameter_id=OuterRef('parameter_id')
-        ).order_by('-measured_at')[:number_of_entries]
-
-        water_values = WaterValue.objects.filter(
-            environment_id=environment_id,
-            id__in=Subquery(subquery.values('id'))
-        ).select_related('parameter').order_by('parameter_id', '-measured_at')
+        water_values = (
+            WaterValue.objects.filter(environment_id=environment_id)
+            .annotate(row_number=Window(
+                expression=RowNumber(),
+                partition_by=[F("parameter_id")],
+                order_by=F("measured_at").desc()
+            ))
+            .filter(row_number__lte=number_of_entries)
+            .values("parameter__name", "parameter__unit", "measured_at", "value")
+            .order_by("parameter__name", "-measured_at")
+        )
 
         measurements = {}
-        for water_value in water_values:
-            parameter_name = water_value.parameter.name
-            if parameter_name not in measurements:
-                measurements[parameter_name] = []
-            measurements[parameter_name].append({
-                'measured_at': water_value.measured_at.isoformat(),
-                'value': water_value.value,
-                'unit': water_value.parameter.unit
+        for value in water_values:
+            param = value["parameter__name"]
+            if param not in measurements:
+                measurements[param] = []
+            measurements[param].append({
+                "measured_at": value["measured_at"].isoformat(),
+                "value": value["value"],
+                "unit": value["parameter__unit"]
             })
 
         response_data = [{'parameter': param, 'values': values} for param, values in measurements.items()]
-
         return Response(response_data, status=status.HTTP_200_OK)
+
     except Exception as e:
         return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
 

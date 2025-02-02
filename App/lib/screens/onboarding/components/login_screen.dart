@@ -15,10 +15,7 @@ class LoginController extends GetxController {
   final passwordController = TextEditingController();
   final isPasswordVisible = false.obs;
   final isRememberMeChecked = false.obs;
-  final GoogleSignIn googleSignIn = GoogleSignIn(
-    clientId:
-        "191107134677-vo049j2kfoho5v5hjtfmiug3i2tafdtv.apps.googleusercontent.com",
-  );
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
   final UserService userService = UserService();
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
@@ -469,6 +466,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              /*
               const SizedBox(height: 10),
               // Divider
               const Row(
@@ -506,7 +504,7 @@ class LoginScreen extends StatelessWidget {
                     },
                   ),
                 ],
-              ),
+              ), */
             ],
           ),
         ),

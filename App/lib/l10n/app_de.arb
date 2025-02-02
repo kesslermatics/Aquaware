@@ -216,7 +216,7 @@
   "xAxisLabel": "Zeit",
   "yAxisLabel": "{parameterName} ({unit})",
   "heatmapTitle": "Heatmap der {parameterName}-Werte",
-  "histogramTitle": "Verteilung in den letzten 24 Stunden",
+  "histogramTitle": "Werte-Verteilung",
   "gettingAllParameters": "Alle Parameter werden abgerufen...",
   "errorLoadingParameters": "Fehler: Beim Laden der Wasserparameter ist ein Fehler aufgetreten.",
   "noParametersFound": "Keine Wasserparameter gefunden.",

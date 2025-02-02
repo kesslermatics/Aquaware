@@ -292,22 +292,6 @@ class _WaterParameterCardState extends State<WaterParameterCard> {
     required double lineChartDeviation,
     required String alertInfoText,
   }) {
-    final WaterParameterService waterParameterService = WaterParameterService();
-
-    // Lade die Daten und die Gesamtanzahl der Einträge vorab
-    final Future<List<WaterValue>> futureWaterValues =
-        waterParameterService.fetchSingleWaterParameter(
-      aquariumId,
-      parameterName,
-      numberOfEntries: 100,
-    );
-
-    final Future<int> futureTotalEntries =
-        waterParameterService.fetchTotalEntries(
-      aquariumId,
-      parameterName,
-    );
-
     return ParameterScreen(
       aquariumId: aquariumId,
       parameterName: parameterName,

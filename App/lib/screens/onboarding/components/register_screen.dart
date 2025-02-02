@@ -21,7 +21,7 @@ class RegisterController extends GetxController {
 
   final GoogleSignIn googleSignIn = GoogleSignIn(
     clientId:
-        "191107134677-vo049j2kfoho5v5hjtfmiug3i2tafdtv.apps.googleusercontent.com",
+        "191107134677-732oj9b8vkpgctrac6bnvs814rscjdt8.apps.googleusercontent.com",
   );
 
   final UserService userService = UserService();
@@ -286,7 +286,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-
+              /*
               // Divider
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -324,7 +324,7 @@ class RegisterScreen extends StatelessWidget {
                     },
                   ),
                 ],
-              ),
+              ), */
             ],
           ),
         ),
