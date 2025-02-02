@@ -191,58 +191,70 @@ def get_latest_from_all_parameters(request, environment_id, number_of_entries):
 @authentication_classes([APIKeyAuthentication])
 def get_all_values_from_parameter(request, environment_id, parameter_name, number_of_entries):
     try:
-        # Check if user owns the environment or is subscribed
+        # Ensure the user has access to the environment
         environment = Environment.objects.filter(
             Q(id=environment_id, user=request.user) |
             Q(id=environment_id, subscribed_users__user=request.user)
-        ).first()
+        ).only('id').first()
 
         if not environment:
             return Response({'detail': 'Environment not found or not accessible by this user.'}, status=status.HTTP_404_NOT_FOUND)
 
-        parameter = WaterParameter.objects.get(name=parameter_name)
-        water_values = WaterValue.objects.filter(
-            environment_id=environment_id,
-            parameter=parameter
-        ).order_by('-measured_at')[:number_of_entries]
+        # Get the parameter efficiently
+        parameter = WaterParameter.objects.filter(name=parameter_name).only('id', 'unit').first()
+        if not parameter:
+            return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
+        # Use Window Function instead of slicing for better performance
+        water_values = (
+            WaterValue.objects.filter(environment_id=environment_id, parameter=parameter)
+            .annotate(row_number=Window(
+                expression=RowNumber(),
+                order_by=F("measured_at").desc()
+            ))
+            .filter(row_number__lte=number_of_entries)
+            .values("measured_at", "value", unit=F("parameter__unit"))
+            .order_by("-measured_at")
+        )
+
+        # Format response data
         measurements = [{
-            'measured_at': water_value.measured_at.isoformat(),
-            'value': water_value.value,
-            'unit': water_value.parameter.unit
-        } for water_value in water_values]
+            'measured_at': value["measured_at"].isoformat(),
+            'value': value["value"],
+            'unit': value["unit"]
+        } for value in water_values]
 
         return Response(measurements, status=status.HTTP_200_OK)
-    except WaterParameter.DoesNotExist:
-        return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
     except Exception as e:
-        return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': f'An error occurred: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
 @authentication_classes([APIKeyAuthentication])
 def get_total_entries(request, environment_id, parameter_name):
     try:
-        # Check if user owns the environment or is subscribed
+        # Ensure the user has access to the environment
         environment = Environment.objects.filter(
             Q(id=environment_id, user=request.user) |
             Q(id=environment_id, subscribed_users__user=request.user)
-        ).first()
+        ).only('id').first()
 
         if not environment:
             return Response({'detail': 'Environment not found or not accessible by this user.'}, status=status.HTTP_404_NOT_FOUND)
 
-        parameter = WaterParameter.objects.get(name=parameter_name)
-        total_entries = WaterValue.objects.filter(
-            environment_id=environment_id,
-            parameter=parameter
-        ).count()
+        # Get the parameter efficiently
+        parameter = WaterParameter.objects.filter(name=parameter_name).only('id').first()
+        if not parameter:
+            return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Count total entries efficiently
+        total_entries = WaterValue.objects.filter(environment_id=environment_id, parameter=parameter).count()
 
         return Response({'total_entries': total_entries}, status=status.HTTP_200_OK)
-    except WaterParameter.DoesNotExist:
-        return Response({'detail': 'Parameter does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
     except Exception as e:
-        return Response({'detail': 'An error occurred: {}'.format(str(e))}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': f'An error occurred: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
