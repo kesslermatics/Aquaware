@@ -408,6 +408,9 @@ def stripe_webhook(request):
     elif event['type'] == 'customer.subscription.deleted':
         handle_subscription_deleted(event['data']['object'])
 
+    elif event['type'] == 'invoice.payment_failed':
+        handle_payment_failed(event['data']['object'])
+
     return JsonResponse({'status': 'success'})
 
 def handle_subscription_created(subscription):
@@ -422,8 +425,18 @@ def handle_subscription_deleted(subscription):
     customer_email = get_email_from_subscription(subscription)
     remove_user_subscription(customer_email)
 
+def handle_payment_failed(invoice):
+    customer_email = get_email_from_invoice(invoice)
+    remove_user_subscription(customer_email)
+    print(f"Payment failed for {customer_email}. Subscription downgraded.")
+
 def get_email_from_subscription(subscription):
     customer_id = subscription['customer']
+    customer = stripe.Customer.retrieve(customer_id)
+    return customer['email']
+
+def get_email_from_invoice(invoice):
+    customer_id = invoice['customer']
     customer = stripe.Customer.retrieve(customer_id)
     return customer['email']
 
