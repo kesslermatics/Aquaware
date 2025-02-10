@@ -4,6 +4,11 @@
 #include <DNSServer.h>
 #include <WebServer.h>
 #include <Preferences.h>
+#include "DFRobot_LcdDisplay.h"
+
+// LCD Display Configuration
+DFRobot_Lcd_IIC lcd(&Wire, 0x2c);
+uint8_t labelId = 0;
 
 const char* apSSID = "Aquaware_Setup";
 const char* apPassword = "12345678";
@@ -16,8 +21,9 @@ void startAccessPoint();
 bool validateApiKey(String apiKey, String envId);
 void clearPreferences();
 void connectToWiFiAndValidate();
+void updateDisplay(String message);
 
-// HTML configuration page
+// HTML Configuration Page
 const char* configPage = R"rawliteral(
 <!DOCTYPE html>
 <html lang="de">
@@ -48,7 +54,9 @@ const char* configPage = R"rawliteral(
 
 // Starts the ESP32 Access Point
 void startAccessPoint() {
+    updateDisplay("Starting AP...");
     Serial.println("Starting Access Point...");
+    
     WiFi.softAP(apSSID, apPassword);
     dnsServer.start(53, "*", WiFi.softAPIP());
 
@@ -63,6 +71,7 @@ void startAccessPoint() {
             String apiKey = server.arg("apikey");
             String envId = server.arg("envid");
 
+            updateDisplay("Connecting WiFi...");
             Serial.println("Received credentials, trying to connect to WiFi...");
             WiFi.begin(ssid.c_str(), password.c_str());
 
@@ -73,9 +82,13 @@ void startAccessPoint() {
             }
 
             if (WiFi.status() == WL_CONNECTED) {
+                updateDisplay("WiFi Connected!");
                 Serial.println("\nConnected to WiFi! Validating API Key...");
+
                 if (validateApiKey(apiKey, envId)) {
+                    updateDisplay("API Key valid! Saving...");
                     Serial.println("API Key is valid, saving preferences...");
+
                     preferences.begin("wifi", false);
                     preferences.putString("ssid", ssid);
                     preferences.putString("password", password);
@@ -87,15 +100,18 @@ void startAccessPoint() {
                     delay(2000);
                     ESP.restart();
                 } else {
+                    updateDisplay("API Key Invalid!");
                     Serial.println("API Key validation failed!");
                     server.send(403, "text/html", "<h3>Invalid API Key or Environment ID!</h3>");
                 }
             } else {
+                updateDisplay("WiFi Failed!");
                 Serial.println("WiFi connection failed. Restarting Access Point...");
                 clearPreferences();
                 startAccessPoint();
             }
         } else {
+            updateDisplay("Missing Data!");
             server.send(400, "text/html", "<h3>Missing Data!</h3>");
         }
     });
@@ -104,9 +120,10 @@ void startAccessPoint() {
     Serial.println("Access Point started.");
 }
 
-// Validates the API Key by making a request
+// Validates the API Key
 bool validateApiKey(String apiKey, String envId) {
     if (WiFi.status() != WL_CONNECTED) {
+        updateDisplay("WiFi Not Connected!");
         Serial.println("Not connected to WiFi!");
         return false;
     }
@@ -118,10 +135,12 @@ bool validateApiKey(String apiKey, String envId) {
 
     http.begin(client, url);
     http.addHeader("x-api-key", apiKey);
-    
+
     int httpResponseCode = http.GET();
     Serial.print("API Response Code: ");
     Serial.println(httpResponseCode);
+
+    updateDisplay("API Response: " + String(httpResponseCode));
 
     bool isValid = httpResponseCode == 200;
     http.end();
@@ -129,15 +148,16 @@ bool validateApiKey(String apiKey, String envId) {
     return isValid;
 }
 
-// Clears stored preferences and resets configuration
+// Clears stored preferences
 void clearPreferences() {
+    updateDisplay("Clearing Preferences...");
     Serial.println("Clearing stored preferences...");
     preferences.begin("wifi", false);
     preferences.clear();
     preferences.end();
 }
 
-// Attempts to connect to WiFi and validate stored credentials
+// Connects to WiFi and validates stored credentials
 void connectToWiFiAndValidate() {
     preferences.begin("wifi", true);
     String ssid = preferences.getString("ssid", "");
@@ -147,6 +167,7 @@ void connectToWiFiAndValidate() {
     preferences.end();
 
     if (ssid != "" && password != "" && apiKey != "" && envId != "") {
+        updateDisplay("Connecting to WiFi...");
         Serial.println("Connecting to stored WiFi...");
         WiFi.begin(ssid.c_str(), password.c_str());
 
@@ -157,29 +178,43 @@ void connectToWiFiAndValidate() {
         }
 
         if (WiFi.status() == WL_CONNECTED) {
+            updateDisplay("Validating API...");
             Serial.println("\nConnected to WiFi. Validating API Key...");
             if (validateApiKey(apiKey, envId)) {
+                updateDisplay("Device Ready!");
                 Serial.println("API Key is valid. Device ready.");
                 return;
             } else {
+                updateDisplay("Invalid API Key!");
                 Serial.println("API Key validation failed. Restarting setup...");
                 clearPreferences();
             }
         } else {
+            updateDisplay("WiFi Failed!");
             Serial.println("WiFi connection failed. Restarting setup...");
             clearPreferences();
         }
     } else {
+        updateDisplay("No Credentials Found!");
         Serial.println("No valid stored credentials found.");
     }
 
     startAccessPoint();
 }
 
+// Updates LCD Display
+void updateDisplay(String message) {
+    lcd.cleanScreen();
+    labelId = lcd.drawString(10, 10, message.c_str(), 1, BLUE);
+}
+
 // Setup function
 void setup() {
     Serial.begin(115200);
-    Serial.println("Starting ESP32...");
+    lcd.begin();
+    lcd.cleanScreen();
+    lcd.setBackgroundColor(WHITE);
+    updateDisplay("Starting ESP32...");
 
     connectToWiFiAndValidate();
 }
