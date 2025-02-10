@@ -111,7 +111,7 @@ bool validateApiKey(String apiKey, String envId) {
         return false;
     }
 
-    String url = "https://dev.aquaware.cloud/api/environments/" + envId;
+    String url = "https://dev.aquaware.cloud/api/environments/";
     HTTPClient http;
     WiFiClientSecure client;
     client.setInsecure();
