@@ -31,7 +31,7 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.api_key = secrets.token_hex(20)  # Generate API key at creation
+        user.api_key = secrets.token_hex(6)  # Generate API key at creation
         user.save(using=self._db)
         return user
 
@@ -56,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     api_key = models.CharField(
         max_length=40,
         unique=True,
-        default=secrets.token_hex(20)
+        default=secrets.token_hex(6)
     )
 
     groups = models.ManyToManyField(
@@ -84,7 +84,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def regenerate_api_key(self):
         """Regenerate the API key for the user."""
-        self.api_key = secrets.token_hex(20)
+        self.api_key = secrets.token_hex(6)
         self.save(update_fields=['api_key'])
 
     def clear_reset_code(self):
