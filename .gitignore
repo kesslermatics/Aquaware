@@ -36,3 +36,11 @@ Website/index.html
 /Backend/environments/__pycache__
 /Backend/environments/__pycache__
 /Website/dashboard/public
+/NewBackend/__pycache__
+/NewBackend/app/__pycache__
+/NewBackend/app/core/__pycache__
+/NewBackend/app/modules/users/__pycache__
+/NewBackend/tests/__pycache__
+/NewBackend/tests/users/__pycache__
+/NewBackend/venv
+NewBackend/.env
