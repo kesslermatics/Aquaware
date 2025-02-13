@@ -34,5 +34,4 @@ urlpatterns = [
 
     # Webhooks
     path('webhooks/stripe/', user_views.stripe_webhook, name='webhook-stripe'),  # POST
-    path('webhooks/shopify/customer-creation/', user_views.shopify_customer_creation_webhook, name='webhook-shopify'),  # POST
 ]
