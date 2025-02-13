@@ -1,3 +1,4 @@
+import json
 from tokenize import TokenError
 
 import stripe
@@ -481,4 +482,15 @@ def shopify_customer_creation_webhook(request):
     """Handles Shopify Customer Creation Webhook"""
     print("Shopify Customer Creation Webhook received.")
 
-    print(request)
+    try:
+        # Shopify sendet die Daten als JSON
+        body_unicode = request.body.decode('utf-8')  # Dekodiert den Body
+        payload = json.loads(body_unicode)  # In JSON umwandeln
+
+        print("Received Shopify Payload:", json.dumps(payload, indent=4))  # Pretty-Print JSON
+
+        return JsonResponse({"message": "Webhook received"}, status=200)
+
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON payload")
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
