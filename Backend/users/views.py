@@ -475,3 +475,10 @@ def regenerate_api_key(request):
         {"message": "API key successfully regenerated.", "api_key": user.api_key},
         status=status.HTTP_200_OK
     )
+
+@csrf_exempt
+def shopify_customer_creation_webhook(request):
+    """Handles Shopify Customer Creation Webhook"""
+    print("Shopify Customer Creation Webhook received.")
+
+    print(request)
