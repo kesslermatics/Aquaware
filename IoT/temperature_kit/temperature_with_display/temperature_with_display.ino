@@ -35,6 +35,9 @@ const char* configPage = R"rawliteral(
         body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #061626; color: #5277F5; }
         .input-container { position: relative; width: 80%; margin: 10px auto; }
         input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #5277F5; background: white; color: #061626; border-radius: 5px; outline: none; font-size: 16px; }
+        .password-container { display: flex; align-items: center; position: relative; }
+        .password-container input { flex: 1; padding-right: 40px; }
+        .toggle-password { position: absolute; right: 10px; cursor: pointer; color: #5277F5; }
         button { padding: 10px 20px; margin-top: 15px; background: #5277F5; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
         button:hover { background: #405ecf; }
     </style>
@@ -43,11 +46,28 @@ const char* configPage = R"rawliteral(
     <h2>Aquaware Configuration</h2>
     <form action="/save" method="POST">
         <div class="input-container"><input type="text" name="ssid" placeholder="WiFi Name" required></div>
-        <div class="input-container"><input type="password" name="password" placeholder="WiFi Password" required></div>
+        
+        <div class="input-container password-container">
+            <input type="password" name="password" id="password" placeholder="WiFi Password" required>
+            <span class="toggle-password" onclick="togglePassword()">👁️</span>
+        </div>
+        
         <div class="input-container"><input type="text" name="apikey" placeholder="API Key" required></div>
         <div class="input-container"><input type="text" name="envid" placeholder="Environment ID" required></div>
+        
         <button type="submit">Save</button>
     </form>
+
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+    </script>
 </body>
 </html>
 )rawliteral";
@@ -96,7 +116,8 @@ void startAccessPoint() {
                     preferences.putString("env-id", envId);
                     preferences.end();
 
-                    server.send(200, "text/html", "<h3>Saved! Restarting ESP32...</h3>");
+                    // server.send(200, "text/html", "<h3>Saved! Restarting ESP32...</h3>");
+                    server.close();
                     delay(2000);
                     ESP.restart();
                 } else {
