@@ -476,3 +476,26 @@ def regenerate_api_key(request):
         {"message": "API key successfully regenerated.", "api_key": user.api_key},
         status=status.HTTP_200_OK
     )
+
+
+@api_view(['GET'])
+@authentication_classes([APIKeyAuthentication])
+def get_update_frequency(request):
+    """Returns the user's update frequency in minutes, seconds, milliseconds, and hours."""
+
+    user = request.user  # Get the authenticated user
+
+    if not user.subscription_tier:
+        return Response({"error": "User does not have a subscription tier"}, status=400)
+
+    update_frequency_minutes = user.subscription_tier.upload_frequency_minutes
+
+    response_data = {
+        "minutes": update_frequency_minutes,
+        "seconds": update_frequency_minutes * 60,
+        "milliseconds": update_frequency_minutes * 60 * 1000,
+        "hours": round(update_frequency_minutes / 60, 2)
+    }
+
+    return Response(response_data, status=200)
+

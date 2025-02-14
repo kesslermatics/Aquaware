@@ -11,6 +11,7 @@ urlpatterns = [
 
     # User Profile
     path('profile/', user_views.profile_views, name='profile-views'),  # GET and PUT
+    path("update-frequency/", user_views.get_update_frequency, name="user-update-frequency"),
 
     # Password Management
     path('auth/password/change/', user_views.change_password, name='auth-password-change'),  # POST
