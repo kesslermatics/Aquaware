@@ -9,19 +9,35 @@ import Signup from "./components/Signup";
 import Cookies from "js-cookie";
 import Header from "./components/Header";
 import Success from "./components/Success";
+import { useTranslation } from "react-i18next";
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const publicRoutes = ["/login", "/signup"];
     const apiKey = Cookies.get("api_key");
 
+    const savedLanguage = Cookies.get("language");
+    if (!savedLanguage) {
+      const systemLanguage = navigator.language.split("-")[0];
+      const supportedLanguages = ["en", "de"]; 
+      const defaultLanguage = supportedLanguages.includes(systemLanguage)
+        ? systemLanguage
+        : "en"; 
+
+      i18n.changeLanguage(defaultLanguage); 
+      Cookies.set("language", defaultLanguage, { secure: true }); 
+    } else {
+      i18n.changeLanguage(savedLanguage);
+    }
+
     if (!apiKey && !publicRoutes.includes(location.pathname)) {
       navigate("/login");
     }
-  }, [navigate, location]);
+  }, [navigate, location, i18n]);
 
   // Check if the current route is a public route
   const isPublicRoute = ["/login", "/signup"].includes(location.pathname);
