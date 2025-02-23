@@ -43,7 +43,7 @@ Preferences preferences;
 // We now fix the refresh interval to 30 seconds (30,000 ms),
 // even if the server returns a different interval.
 unsigned long updateInterval = 30000;  // 30-second refresh
-unsigned long lastUpdate      = 0;
+unsigned long lastUpdate      = 29000;
 
 // ----------------------------------------------------------------------------
 // HTML configuration page
@@ -138,19 +138,11 @@ void setup() {
   preferences.end();
 
   // Show environment name at the top-left
-  envNameLabel = lcd.drawString(10, 10, envName.c_str(), 2, WHITE);
+  envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
 
   // Create labels for sensor values
-  tempLabel = lcd.drawString(20,  45, "0°C",    0, ORANGE);
-  tdsLabel  = lcd.drawString(20,  95, "0 mg/L", 0, BLUE);
-
-  // Some example icons at the bottom
-  lcd.drawIcon(0,   190, "/botany icon/Potted plant flower.png", 256);
-  lcd.drawIcon(53,  190, "/botany icon/cactus3.png",             256);
-  lcd.drawIcon(106, 190, "/botany icon/grass.png",               256);
-  lcd.drawIcon(159, 190, "/botany icon/grass1.png",              256);
-  lcd.drawIcon(212, 190, "/botany icon/cactus1.png",             256);
-  lcd.drawIcon(265, 190, "/botany icon/cactus2.png",             256);
+  tempLabel = lcd.drawString(20,  45, "",    0, ORANGE);
+  tdsLabel  = lcd.drawString(20,  95, "", 0, BLUE);
 
   // Set up web server routes
   server.on("/", HTTP_GET, []() {
@@ -219,8 +211,8 @@ void loop() {
 // Update LCD display with sensor values
 // ----------------------------------------------------------------------------
 void updateDisplay(float temperature, float tds) {
-  lcd.updateString(tempLabel, 20, 45, String(temperature) + "°C", 0, ORANGE);
-  lcd.updateString(tdsLabel, 20, 95, String(tds) + " mg/L", 0, BLUE);
+  lcd.updateString(tempLabel, 20, 50, "TEMPERATURE: " + String(temperature) + "°C", 1, ORANGE);
+  lcd.updateString(tdsLabel, 20, 80, "TDS: " + String(tds) + " mg/L", 1, BLUE);
 }
 
 // ----------------------------------------------------------------------------
