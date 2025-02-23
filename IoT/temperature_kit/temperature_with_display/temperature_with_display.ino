@@ -19,7 +19,6 @@ DFRobot_Lcd_IIC lcd(&Wire, 0x2c);
 // ----------------------------------------------------------------------------
 #define TEMP_PIN  13  // e.g., "D7" on some boards = GPIO13
 #define TDS_PIN   36  // e.g., "A0" on some ESP32 boards = GPIO36
-#define TSS_PIN   39  // e.g., "A2" on some ESP32 boards = GPIO39
 
 // ----------------------------------------------------------------------------
 // OneWire & DallasTemperature
@@ -30,8 +29,8 @@ DallasTemperature tempSensor(&oneWire);
 // ----------------------------------------------------------------------------
 // Bar & label IDs
 // ----------------------------------------------------------------------------
-uint8_t tempBar, tdsBar, tssBar;
-uint8_t tempLabel, tdsLabel, tssLabel;
+uint8_t tempBar, tdsBar;
+uint8_t tempLabel, tdsLabel;
 
 // Display the environment name at the top-left
 uint8_t envNameLabel;
@@ -117,7 +116,7 @@ const char* configPage = R"rawliteral(
 void connectToWiFiAndValidate();
 void fetchEnvironmentName(const String& envId);
 void fetchUpdateFrequency();
-void updateDisplay(float temperature, float tds, float tss);
+void updateDisplay(float temperature, float tds);
 
 void setup() {
   Serial.begin(115200);
@@ -149,17 +148,14 @@ void setup() {
   // Draw sensor icons on the left side
   lcd.drawIcon(10,  40, "/sensor icon/thermometer.png", 120); // Temperature
   lcd.drawIcon(10,  90, "/sensor icon/raindrops.png",   120); // TDS
-  lcd.drawIcon(10, 140, "/sensor icon/pressure.png",    120); // TSS
 
   // Create smaller bars (e.g., width=100, height=10)
   tempBar = lcd.creatBar(140, 45, 100, 10, ORANGE);
   tdsBar  = lcd.creatBar(140, 95, 100, 10, BLUE);
-  tssBar  = lcd.creatBar(140,145,100, 10, GREEN);
 
   // Create labels for sensor values
   tempLabel = lcd.drawString(250,  45, "0°C",    0, ORANGE);
   tdsLabel  = lcd.drawString(250,  95, "0 mg/L", 0, BLUE);
-  tssLabel  = lcd.drawString(250, 145, "0 mg/L", 0, GREEN);
 
   // Some example icons at the bottom
   lcd.drawIcon(0,   190, "/botany icon/Potted plant flower.png", 256);
@@ -214,14 +210,12 @@ void loop() {
 
     // Read TDS/TSS from analog inputs
     int tdsRaw = analogRead(TDS_PIN);
-    int tssRaw = analogRead(TSS_PIN);
 
     // Convert raw values to mg/L (example scaling)
     float tdsValue = (tdsRaw / 4095.0f) * 1000;
-    float tssValue = (tssRaw / 4095.0f) * 500;
 
     // Update LCD
-    updateDisplay(temperature, tdsValue, tssValue);
+    updateDisplay(temperature, tdsValue);
 
     // Print data to Serial
     Serial.print("[Sensors] Temperature: ");
@@ -230,9 +224,6 @@ void loop() {
     Serial.print("[Sensors] TDS: ");
     Serial.print(tdsValue);
     Serial.println(" mg/L");
-    Serial.print("[Sensors] TSS: ");
-    Serial.print(tssValue);
-    Serial.println(" mg/L");
     Serial.println("-----------------------------");
   }
 }
@@ -240,7 +231,7 @@ void loop() {
 // ----------------------------------------------------------------------------
 // Update LCD display with sensor values
 // ----------------------------------------------------------------------------
-void updateDisplay(float temperature, float tds, float tss) {
+void updateDisplay(float temperature, float tds) {
   // Update temperature bar & label
   lcd.setBarValue(tempBar, temperature);
   lcd.updateString(tempLabel, 250, 45, String(temperature) + "°C", 0, ORANGE);
@@ -248,10 +239,6 @@ void updateDisplay(float temperature, float tds, float tss) {
   // Update TDS bar & label
   lcd.setBarValue(tdsBar, tds);
   lcd.updateString(tdsLabel, 250, 95, String(tds) + " mg/L", 0, BLUE);
-
-  // Update TSS bar & label
-  lcd.setBarValue(tssBar, tss);
-  lcd.updateString(tssLabel, 250,145, String(tss) + " mg/L", 0, GREEN);
 }
 
 // ----------------------------------------------------------------------------
