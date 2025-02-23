@@ -26,13 +26,8 @@ DFRobot_Lcd_IIC lcd(&Wire, 0x2c);
 OneWire oneWire(TEMP_PIN);
 DallasTemperature tempSensor(&oneWire);
 
-// ----------------------------------------------------------------------------
-// Bar & label IDs
-// ----------------------------------------------------------------------------
-uint8_t tempBar, tdsBar;
 uint8_t tempLabel, tdsLabel;
 
-// Display the environment name at the top-left
 uint8_t envNameLabel;
 
 // ----------------------------------------------------------------------------
@@ -143,19 +138,11 @@ void setup() {
   preferences.end();
 
   // Show environment name at the top-left
-  envNameLabel = lcd.drawString(10, 10, envName.c_str(), 1, WHITE);
-
-  // Draw sensor icons on the left side
-  lcd.drawIcon(10,  40, "/sensor icon/thermometer.png", 120); // Temperature
-  lcd.drawIcon(10,  90, "/sensor icon/raindrops.png",   120); // TDS
-
-  // Create smaller bars (e.g., width=100, height=10)
-  tempBar = lcd.creatBar(140, 45, 100, 10, ORANGE);
-  tdsBar  = lcd.creatBar(140, 95, 100, 10, BLUE);
+  envNameLabel = lcd.drawString(10, 10, envName.c_str(), 2, WHITE);
 
   // Create labels for sensor values
-  tempLabel = lcd.drawString(250,  45, "0°C",    0, ORANGE);
-  tdsLabel  = lcd.drawString(250,  95, "0 mg/L", 0, BLUE);
+  tempLabel = lcd.drawString(20,  45, "0°C",    0, ORANGE);
+  tdsLabel  = lcd.drawString(20,  95, "0 mg/L", 0, BLUE);
 
   // Some example icons at the bottom
   lcd.drawIcon(0,   190, "/botany icon/Potted plant flower.png", 256);
@@ -232,13 +219,8 @@ void loop() {
 // Update LCD display with sensor values
 // ----------------------------------------------------------------------------
 void updateDisplay(float temperature, float tds) {
-  // Update temperature bar & label
-  lcd.setBarValue(tempBar, temperature);
-  lcd.updateString(tempLabel, 250, 45, String(temperature) + "°C", 0, ORANGE);
-
-  // Update TDS bar & label
-  lcd.setBarValue(tdsBar, tds);
-  lcd.updateString(tdsLabel, 250, 95, String(tds) + " mg/L", 0, BLUE);
+  lcd.updateString(tempLabel, 20, 45, String(temperature) + "°C", 0, ORANGE);
+  lcd.updateString(tdsLabel, 20, 95, String(tds) + " mg/L", 0, BLUE);
 }
 
 // ----------------------------------------------------------------------------
@@ -282,7 +264,7 @@ void connectToWiFiAndValidate() {
   String envName = preferences.getString("env-name", "Unknown");
   preferences.end();
   // Overwrite old text
-  lcd.updateString(envNameLabel, 10, 10, envName, 1, WHITE);
+  lcd.updateString(envNameLabel, 10, 10, envName, 2, WHITE);
 }
 
 // ----------------------------------------------------------------------------
