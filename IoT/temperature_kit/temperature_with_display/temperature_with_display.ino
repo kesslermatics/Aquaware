@@ -43,7 +43,7 @@ Preferences preferences;
 // We now fix the refresh interval to 30 seconds (30,000 ms),
 // even if the server returns a different interval.
 unsigned long updateInterval = 30000;  // 30-second refresh
-unsigned long lastUpdate      = 29000;
+unsigned long lastUpdate      = 20000;
 
 // ----------------------------------------------------------------------------
 // HTML configuration page
@@ -141,8 +141,11 @@ void setup() {
   envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
 
   // Create labels for sensor values
-  tempLabel = lcd.drawString(20,  45, "",    0, ORANGE);
-  tdsLabel  = lcd.drawString(20,  95, "", 0, BLUE);
+  tempLabel = lcd.drawString(100,  45, "",    0, ORANGE);
+  tdsLabel  = lcd.drawString(100,  95, "", 0, BLUE);
+
+  lcd.drawString(20, 50, "TEMP: ", 1, ORANGE);
+  lcd.drawString(20, 80, "TDS: ", 1, BLUE);
 
   // Set up web server routes
   server.on("/", HTTP_GET, []() {
@@ -211,8 +214,8 @@ void loop() {
 // Update LCD display with sensor values
 // ----------------------------------------------------------------------------
 void updateDisplay(float temperature, float tds) {
-  lcd.updateString(tempLabel, 20, 50, "TEMPERATURE: " + String(temperature) + "°C", 1, ORANGE);
-  lcd.updateString(tdsLabel, 20, 80, "TDS: " + String(tds) + " mg/L", 1, BLUE);
+  lcd.updateString(tempLabel, 100, 50, String(temperature) + "°C", 1, ORANGE);
+  lcd.updateString(tdsLabel, 100, 80, String(tds) + " mg/L", 1, BLUE);
 }
 
 // ----------------------------------------------------------------------------
