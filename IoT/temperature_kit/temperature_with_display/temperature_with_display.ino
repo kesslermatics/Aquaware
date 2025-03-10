@@ -31,7 +31,7 @@ Preferences preferences;
 
 unsigned long updateInterval = 1800000;  // 30 Minutes (30 * 60 * 1000 ms)
 unsigned long lastUpload     = 0;
-unsigned long lastDisplayUpdate = 0;
+unsigned long lastDisplayUpdate = 25000;
 
 void connectToWiFiAndValidate();
 void fetchEnvironmentName(const String& envId);
@@ -123,163 +123,101 @@ void loop() {
     }
 }
 
-// ----------------------------------------------------------------------------
-// Update LCD display with sensor values
-// ----------------------------------------------------------------------------
 void updateDisplay(float temperature, float tds) {
-    // Retrieve environment name from Preferences
     preferences.begin("wifi", true);
     String envName = preferences.getString("env-name", "");
+    String language = preferences.getString("language", "en");
     preferences.end();
 
-    // Only update the screen if an environment is set
-    if (envName.length() > 0) {
-      lcd.drawIcon(30, 40, "/sensor icon/thermometer.png", 120);
-      lcd.drawIcon(20, 90, "/sensor icon/raindrops.png", 120);
+    bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
 
-        // Update environment name
-        lcd.updateString(envNameLabel, 10, 10, envName, 2, WHITE);
+    lcd.cleanScreen();
 
-        // Update temperature & TDS values
-        lcd.updateString(tempLabel, 100, 60, String(temperature) + "°C", 1, ORANGE);
-        lcd.updateString(tdsLabel, 100, 110, String(tds) + " mg/L", 1, BLUE);
+    // Zeige nur den Environment-Namen, wenn WiFi verbunden ist
+    if (isWiFiConnected && envName.length() > 0) {
+        lcd.drawString(10, 10, envName, 2, WHITE);
+    }
+
+    // Position der Sensorwerte
+    int iconX = 30;
+    int valueX = 100;
+    int tempY = 40;
+    int tdsY = 90;
+
+    // Temperaturanzeige
+    lcd.drawIcon(iconX, tempY, "/sensor icon/thermometer.png", 120);
+    lcd.drawString(valueX, tempY + 20, String(temperature) + "°C", 1, ORANGE);
+
+    // TDS-Anzeige
+    lcd.drawIcon(iconX, tdsY, "/sensor icon/raindrops.png", 120);
+    lcd.drawString(valueX, tdsY + 20, String(tds) + " mg/L", 1, BLUE);
+
+    // WiFi-Statusanzeige am unteren Rand
+    if (language == "de") {
+        lcd.drawString(30, 200, isWiFiConnected ? "WLAN verbunden" : "WLAN nicht verbunden", 2, ORANGE);
+    } else {
+        lcd.drawString(30, 200, isWiFiConnected ? "WiFi Connected" : "WiFi Not Connected", 2, ORANGE);
     }
 }
 
-
-// ----------------------------------------------------------------------------
-// Connect to WiFi and fetch environment data
-// ----------------------------------------------------------------------------
 void connectToWiFiAndValidate() {
-  preferences.begin("wifi", true);
-  String ssid     = preferences.getString("ssid", "");
-  String password = preferences.getString("password", "");
-  String apiKey   = preferences.getString("api-key", "");
-  String envId    = preferences.getString("env-id", "");
-  preferences.end();
+    preferences.begin("wifi", true);
+    String ssid = preferences.getString("ssid", "");
+    String password = preferences.getString("password", "");
+    String apiKey = preferences.getString("api-key", "");
+    String envId = preferences.getString("env-id", "");
+    String language = preferences.getString("language", "en");
+    preferences.end();
 
-  // If any required field is empty, start AP
-  if (ssid == "" || password == "" || apiKey == "" || envId == "") {
-    Serial.println("[WiFi] Starting Access Point...");
-
+    // AP bleibt IMMER aktiv für Konfiguration
     WiFi.softAP(apSSID, apPassword);
     IPAddress apIP = WiFi.softAPIP();
     Serial.print("[WiFi] AP IP Address: ");
     Serial.println(apIP);
 
-    lcd.cleanScreen();
-    lcd.drawString(10, 50, "Verbinde mit WLAN:", 1, WHITE);
-    lcd.drawString(10, 70, "Aquaware_Setup", 1, WHITE);
-    lcd.drawString(10, 90, "Passwort: 12345678", 1, WHITE);
-
-    lcd.drawString(10, 140, "Connect to WiFi:", 1, WHITE);
-    lcd.drawString(10, 160, "Aquaware_Setup", 1, WHITE);
-    lcd.drawString(10, 180, "Password: 12345678", 1, WHITE);
-
-    // Start DNS Server to redirect all requests to the ESP32
     dnsServer.start(53, "*", apIP);
-
-    // Handle all unknown routes by serving the configuration page
     server.onNotFound([]() {
         server.send(200, "text/html", configPage);
     });
-
     server.begin();
-    Serial.println("[WiFi] Captive Portal ready. Connect to the AP and it should open automatically.");
+    Serial.println("[WiFi] Captive Portal running...");
 
-    return;
-  }
-
-  // Retrieve the saved language preference
-  preferences.begin("wifi", true);
-  String language = preferences.getString("language", "en"); // Default to English
-  preferences.end();
-
-  lcd.cleanScreen();
-
-  if (language == "de") {
-    lcd.drawString(10, 20, "Verbinde mit WLAN...", 2, WHITE);
-    lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
-  } else {  // Default: English
-    lcd.drawString(10, 20, "Connecting to WiFi...", 2, WHITE);
-    lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
-  }
-
-
-  // Connect as station
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid.c_str(), password.c_str());
-  Serial.print("[WiFi] Connecting to: ");
-  Serial.println(ssid);
-
-  unsigned long startAttemptTime = millis();
-  while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 10000) {  // 10 Sekunden Timeout
-      delay(500);
-      Serial.print(".");
-  }
-  Serial.println("\n[WiFi] Connected!");
-
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n[WiFi] Connected!");
-
-    preferences.begin("wifi", true);
-    String language = preferences.getString("language", "en"); // Default to English
-    preferences.end();
-
-    lcd.cleanScreen();
-    Serial.println(language);
-    if (language == "de") {
-        lcd.drawString(10, 30, "WLAN verbunden!", 2, WHITE);
-        lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
-        lcd.drawString(10, 80, "Warte auf Messung...", 1, WHITE);
-    } else {  // Default: English
-        lcd.drawString(10, 30, "WiFi connected!", 2, WHITE);
-        lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
-        lcd.drawString(10, 80, "Waiting for measurement...", 1, WHITE);
-    }
-    delay(5000);
-    lcd.cleanScreen();
-
-    // Fetch environment name and update interval
-    fetchEnvironmentName(envId);
-    fetchUpdateFrequency();
-
-    // Update environment name in the display
-    preferences.begin("wifi", true);
-    String envName = preferences.getString("env-name", "Unknown");
-    preferences.end();
-
-  } else {
-    Serial.println("\n[WiFi] Connection failed! Restarting AP...");
-
-    lcd.cleanScreen();
-
-    if (language == "de") {
-        lcd.drawString(10, 20, "WLAN fehlgeschlagen!", 2, WHITE);
-        lcd.drawString(10, 50, "Starte AP-Modus...", 1, WHITE);
-    } else {  // Default: English
-        lcd.drawString(10, 20, "WiFi failed!", 2, WHITE);
-        lcd.drawString(10, 50, "Starting AP mode...", 1, WHITE);
+    // Falls keine gespeicherten WiFi-Daten, bleibt nur der AP aktiv
+    if (ssid == "" || password == "" || apiKey == "" || envId == "") {
+        Serial.println("[WiFi] Keine gespeicherten Daten, nur AP läuft.");
+        return;
     }
 
-    delay(3000);
-    preferences.begin("wifi", false);
-    preferences.end();
-    ESP.restart();
-  }
+    // Versuche, sich mit WiFi zu verbinden
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid.c_str(), password.c_str());
+    Serial.print("[WiFi] Connecting to: ");
+    Serial.println(ssid);
 
-  // Fetch environment name and update frequency
-  fetchEnvironmentName(envId);
-  fetchUpdateFrequency();
+    unsigned long startAttemptTime = millis();
+    while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 10000) {
+        delay(500);
+        Serial.print(".");
+    }
 
-  // After fetching environment name, update the top-left label on the LCD
-  preferences.begin("wifi", true);
-  String envName = preferences.getString("env-name", "Unknown");
-  preferences.end();
-  
-  // Overwrite old text
-  lcd.updateString(envNameLabel, 10, 10, envName, 2, WHITE);
+    bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
+    Serial.println(isWiFiConnected ? "\n[WiFi] Connected!" : "\n[WiFi] Connection failed!");
+
+    // **WiFi-Statusanzeige unten aktualisieren**
+    lcd.cleanScreen();
+    if (language == "de") {
+        lcd.drawString(30, 200, isWiFiConnected ? "WLAN verbunden" : "WLAN nicht verbunden", 2, ORANGE);
+    } else {
+        lcd.drawString(30, 200, isWiFiConnected ? "WiFi Connected" : "WiFi Not Connected", 2, ORANGE);
+    }
+
+    // Falls WiFi verbunden, abrufen von envName und Update-Frequency
+    if (isWiFiConnected) {
+        fetchEnvironmentName(envId);
+        fetchUpdateFrequency();
+    }
 }
+
 
 // ----------------------------------------------------------------------------
 // Fetch environment name from server (handles 301 redirects)
@@ -324,11 +262,9 @@ void fetchEnvironmentName(const String& envId) {
         Serial.println("[EnvName] Extracted: " + envName);
       }
     }
-    
-    lcd.drawString(30, 150, "Error while fetching env-name", 2, ORANGE);  
   } else {
     Serial.println("[EnvName] Error or non-200 code.");
-    lcd.drawString(30, 150, "Error while fetching env-name", 2, ORANGE);  
+    lcd.drawString(30, 200, "Error while fetching env-name", 2, ORANGE);  
     setup();
   }
   http.end();
@@ -395,7 +331,7 @@ void fetchUpdateFrequency() {
     }
   } else {
     Serial.println("[UpdateFreq] Error or non-200 code.");
-    lcd.drawString(30, 150, "Error while fetching frequency", 2, ORANGE);  
+    lcd.drawString(30, 200, "Error while fetching frequency", 2, ORANGE);  
     setup();
   }
   http.end();
@@ -433,13 +369,13 @@ void sendSensorData(float temperature, float tds) {
     if (httpResponseCode != 201) {
         Serial.println("[ERROR] API request failed! Resetting device...");
         preferences.begin("wifi", false);
-        lcd.drawString(30, 120, "Error while uploading", 1, ORANGE);  
+        lcd.drawString(30, 200, "Error while uploading", 1, ORANGE);  
 
         preferences.end();
         ESP.restart();
     } else {
         Serial.println("[API] Data successfully sent!");
-        lcd.drawString(30, 150, "Error while sending data", 2, ORANGE);  
+        lcd.drawString(30, 200, "Error while sending data", 2, ORANGE);  
     }
 
     http.end();
