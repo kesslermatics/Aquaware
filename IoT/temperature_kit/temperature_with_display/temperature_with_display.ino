@@ -11,8 +11,9 @@
 #include "configPage.h"
 
 DFRobot_Lcd_IIC lcd(&Wire, 0x2c);
-#define TEMP_PIN  13  // e.g., "D7" on some boards = GPIO13
-#define TDS_PIN   36  // e.g., "A0" on some ESP32 boards = GPIO36
+#define TEMP_PIN  D7  // e.g., "D7" on some boards = GPIO13
+#define TDS_PIN A0 
+#define VREF 3.3  
 
 OneWire oneWire(TEMP_PIN);
 DallasTemperature tempSensor(&oneWire);
@@ -21,7 +22,7 @@ uint8_t tempLabel, tdsLabel;
 uint8_t envNameLabel;
 uint8_t hour = 0, minute = 0;
 
-const char* apSSID     = "Aquaware_Setup";
+const char* apSSID     = "Aquaware Setup";
 const char* apPassword = "12345678";
 
 DNSServer dnsServer;
@@ -37,51 +38,29 @@ void fetchEnvironmentName(const String& envId);
 void fetchUpdateFrequency();
 void updateDisplay(float temperature, float tds);
 void sendSensorData(float temperature, float tds);
+float readTDS(float temperature);
 
 void setup() {
   delay(2000);
   Serial.begin(115200);
   Serial.println("\n[Setup] Starting ESP32 Sensor Display...");
 
-  // Initialize LCD
   if (lcd.begin()) {
     lcd.cleanScreen();
     lcd.setBackgroundColor(BLACK);
     Serial.println("[LCD] Successfully initialized.");
-} else {
+  } else {
     Serial.println("[LCD] Error initializing! Check I2C address/wiring.");
-    
-    // Überprüfe, ob das I2C-Device gefunden wird
-    Serial.println("[I2C] Scanning for I2C devices...");
-    Wire.begin();
-    bool deviceFound = false;
-
-    for (uint8_t address = 1; address < 127; address++) {
-        Wire.beginTransmission(address);
-        if (Wire.endTransmission() == 0) {
-            Serial.print("[I2C] Device found at 0x");
-            Serial.println(address, HEX);
-            deviceFound = true;
-        }
-    }
-
-    if (!deviceFound) {
-        Serial.println("[I2C] No I2C devices found! Check connections (SDA/SCL).");
-    }
-}
-
+  }
 
   envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
   tempLabel = lcd.drawString(100, 60, "", 1, ORANGE);
   tdsLabel = lcd.drawString(100, 110, "", 1, BLUE);
 
-  // Initialize temperature sensor
   tempSensor.begin();
 
-  // Connect to WiFi and fetch environment info
   connectToWiFiAndValidate();
 
-  // Set up web server routes
   server.on("/", HTTP_GET, []() {
     server.send(200, "text/html", configPage);
   });
@@ -101,7 +80,6 @@ void setup() {
     preferences.putString("language", language); 
     preferences.end();
 
-    // Reconnect and refetch environment info
     connectToWiFiAndValidate();
 
     server.send(200, "text/html", "<h2>Saved! The device will attempt to reconnect.</h2>");
@@ -113,41 +91,18 @@ void setup() {
 void loop() {
   dnsServer.processNextRequest();
   server.handleClient();
-
   unsigned long currentTime = millis();
 
-  // Read and update sensor data in display every 'updateInterval' ms (currently 30 seconds)
   if (currentTime - lastDisplayUpdate >= 30000) {
 
     lastDisplayUpdate = currentTime;
-    minute++;
-    if (minute >= 60) {
-        minute = 0;
-        hour++;
-    }
 
-    // Read temperature
     tempSensor.requestTemperatures();
     float temperature = tempSensor.getTempCByIndex(0);
-    if (temperature == DEVICE_DISCONNECTED_C) {
-      Serial.println("[Sensors] Temperature sensor not found!");
-      temperature = -99; // dummy error value
-    }
+    float tdsValue = readTDS(temperature);
 
-    // Read TDS/TSS from analog inputs
-    int tdsRaw = analogRead(TDS_PIN);
-    // Convert raw values to mg/L (example scaling)
-    float tdsValue = (tdsRaw / 4095.0f) * 1000;
-
-    // Update LCD
     updateDisplay(temperature, tdsValue);
 
-    Serial.print("[DISPLAY] Updated: ");
-    Serial.print(hour);
-    Serial.print(":");
-    Serial.println(minute);
-
-    // Print data to Serial
     Serial.print("[Sensors] Temperature: ");
     Serial.print(temperature);
     Serial.println(" °C");
@@ -162,8 +117,7 @@ void loop() {
 
         tempSensor.requestTemperatures();
         float temperature = tempSensor.getTempCByIndex(0);
-        int tdsRaw = analogRead(TDS_PIN);
-        float tdsValue = (tdsRaw / 4095.0f) * 1000;
+        float tdsValue = readTDS(temperature);
 
         sendSensorData(temperature, tdsValue);
     }
@@ -283,7 +237,7 @@ void connectToWiFiAndValidate() {
         lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
         lcd.drawString(10, 80, "Waiting for measurement...", 1, WHITE);
     }
-    delay(2000);
+    delay(5000);
     lcd.cleanScreen();
 
     // Fetch environment name and update interval
@@ -322,15 +276,9 @@ void connectToWiFiAndValidate() {
   preferences.begin("wifi", true);
   String envName = preferences.getString("env-name", "Unknown");
   preferences.end();
+  
   // Overwrite old text
   lcd.updateString(envNameLabel, 10, 10, envName, 2, WHITE);
-}
-
-void clearPreferences() {
-    Serial.println("[System] Clearing stored preferences and resetting to Access Point mode...");
-    preferences.begin("wifi", false);
-    preferences.clear();
-    preferences.end();
 }
 
 // ----------------------------------------------------------------------------
@@ -376,9 +324,11 @@ void fetchEnvironmentName(const String& envId) {
         Serial.println("[EnvName] Extracted: " + envName);
       }
     }
+    
+    lcd.drawString(30, 150, "Error while fetching env-name", 2, ORANGE);  
   } else {
     Serial.println("[EnvName] Error or non-200 code.");
-    lcd.drawString(30, 120, "Error while fetching env-name", 1, ORANGE);  
+    lcd.drawString(30, 150, "Error while fetching env-name", 2, ORANGE);  
     setup();
   }
   http.end();
@@ -445,7 +395,7 @@ void fetchUpdateFrequency() {
     }
   } else {
     Serial.println("[UpdateFreq] Error or non-200 code.");
-    lcd.drawString(30, 120, "Error while fetching frequ", 1, ORANGE);  
+    lcd.drawString(30, 150, "Error while fetching frequency", 2, ORANGE);  
     setup();
   }
   http.end();
@@ -489,8 +439,21 @@ void sendSensorData(float temperature, float tds) {
         ESP.restart();
     } else {
         Serial.println("[API] Data successfully sent!");
+        lcd.drawString(30, 150, "Error while sending data", 2, ORANGE);  
     }
 
     http.end();
-}
+}   
 
+float readTDS(float temperature) {
+    int rawADC = analogRead(TDS_PIN);
+    float voltage = (rawADC / 4095.0) * VREF;
+
+    float compensationCoefficient = 1.0 + 0.02 * (temperature - 25.0);
+    float compensationVoltage = voltage / compensationCoefficient;
+
+    float tdsValue = (133.42 * pow(compensationVoltage, 3)
+                     - 255.86 * pow(compensationVoltage, 2)
+                     + 857.39 * compensationVoltage) * 0.5;
+    return tdsValue;
+}
