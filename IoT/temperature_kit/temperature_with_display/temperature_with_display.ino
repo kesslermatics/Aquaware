@@ -8,31 +8,19 @@
 #include "DFRobot_LcdDisplay.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include "configPage.h"
 
-// ----------------------------------------------------------------------------
-// LCD setup (I2C address: 0x2c)
-// ----------------------------------------------------------------------------
 DFRobot_Lcd_IIC lcd(&Wire, 0x2c);
-
-// ----------------------------------------------------------------------------
-// Sensor pins (adjust according to your board)
-// ----------------------------------------------------------------------------
 #define TEMP_PIN  13  // e.g., "D7" on some boards = GPIO13
 #define TDS_PIN   36  // e.g., "A0" on some ESP32 boards = GPIO36
 
-// ----------------------------------------------------------------------------
-// OneWire & DallasTemperature
-// ----------------------------------------------------------------------------
 OneWire oneWire(TEMP_PIN);
 DallasTemperature tempSensor(&oneWire);
 
 uint8_t tempLabel, tdsLabel;
-
 uint8_t envNameLabel;
+uint8_t hour = 0, minute = 0;
 
-// ----------------------------------------------------------------------------
-// WiFi / Server / Preferences
-// ----------------------------------------------------------------------------
 const char* apSSID     = "Aquaware_Setup";
 const char* apPassword = "12345678";
 
@@ -40,199 +28,18 @@ DNSServer dnsServer;
 WebServer server(80);
 Preferences preferences;
 
-// We now fix the refresh interval to 30 seconds (30,000 ms),
-// even if the server returns a different interval.
-unsigned long updateInterval = 30000;  // 30-second refresh
-unsigned long lastUpdate      = 20000;
+unsigned long updateInterval = 1800000;  // 30 Minutes (30 * 60 * 1000 ms)
+unsigned long lastUpload     = 0;
+unsigned long lastDisplayUpdate = 0;
 
-// ----------------------------------------------------------------------------
-// HTML configuration page
-// ----------------------------------------------------------------------------
-const char* configPage = R"rawliteral(
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aquaware Setup</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif; 
-            text-align: center; 
-            margin: 0; 
-            padding: 20px; 
-            background-color: #061626; 
-            color: #5277F5;
-        }
-        .input-container {
-            position: relative; 
-            width: 80%; 
-            margin: 10px auto;
-        }
-        input {
-            width: 100%; 
-            padding: 10px; 
-            margin: 5px 0; 
-            border: 1px solid #5277F5; 
-            background: white; 
-            color: #061626; 
-            border-radius: 5px; 
-            outline: none; 
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px; 
-            margin-top: 15px; 
-            background: #5277F5; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            border-radius: 5px; 
-            font-size: 16px;
-        }
-        .language-selector {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        select {
-            padding: 5px;
-            font-size: 16px;
-            border: 1px solid #5277F5;
-            background-color: white;
-            color: #061626;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .faq {
-            margin-top: 30px;
-            text-align: left;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 5px;
-        }
-        .faq h3 {
-            color: #FFFFFF;
-            font-size: 18px;
-        }
-        .faq p {
-            font-size: 16px;
-            color: #B0C4DE;
-        }
-        .faq a {
-            color: #FFD700;
-            text-decoration: none;
-        }
-        .faq a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <!-- Language Selector -->
-    <div class="language-selector">
-        <select id="language" onchange="changeLanguage()">
-            <option value="en" selected>English</option>
-            <option value="de">Deutsch</option>
-        </select>
-    </div>
-
-    <h2 id="title">Aquaware Configuration</h2>
-    <form action="/save" method="POST">
-        <div class="input-container"><input type="text" name="ssid" id="ssid" placeholder="WiFi Name" required></div>
-        <div class="input-container"><input type="password" name="password" id="password" placeholder="WiFi Password" required></div>
-        <div class="input-container"><input type="text" name="apikey" id="apikey" placeholder="API Key" required></div>
-        <div class="input-container"><input type="text" name="envid" id="envid" placeholder="Environment ID" required></div>
-        <button type="submit" id="submit-btn">Save</button>
-    </form>
-
-    <!-- FAQ Section -->
-    <div class="faq">
-        <h3 id="faq-title">Where can I find my API Key and Environment ID?</h3>
-
-        <h3 id="faq-api-title">API Key</h3>
-        <p id="faq-api-text">
-            You can find your API Key in your account settings on the Aquaware Dashboard:
-            <a href="https://dashboard.aquaware.cloud/account" target="_blank">https://dashboard.aquaware.cloud/account</a>.
-            Make sure you are logged in.
-        </p>
-
-        <h3 id="faq-env-title">Environment ID</h3>
-        <p id="faq-env-text">
-            The Environment ID can be found under the "Environments" section of the dashboard. 
-            You need to create or select an environment first:
-            <a href="https://dashboard.aquaware.cloud/environments" target="_blank">https://dashboard.aquaware.cloud/environments</a>.
-        </p>
-    </div>
-
-    <script>
-        function changeLanguage() {
-            const language = document.getElementById("language").value;
-
-            const translations = {
-                "en": {
-                    "title": "Aquaware Configuration",
-                    "ssid": "WiFi Name",
-                    "password": "WiFi Password",
-                    "apikey": "API Key",
-                    "envid": "Environment ID",
-                    "submit-btn": "Save",
-                    "faq-title": "Where can I find my API Key and Environment ID?",
-                    "faq-api-title": "API Key",
-                    "faq-api-text": "You can find your API Key in your account settings on the Aquaware Dashboard: ",
-                    "faq-env-title": "Environment ID",
-                    "faq-env-text": "The Environment ID can be found under the 'Environments' section of the dashboard. You need to create or select an environment first: "
-                },
-                "de": {
-                    "title": "Aquaware Konfiguration",
-                    "ssid": "WLAN-Name",
-                    "password": "WLAN-Passwort",
-                    "apikey": "API-Schlüssel",
-                    "envid": "Umgebungs-ID",
-                    "submit-btn": "Speichern",
-                    "faq-title": "Wo finde ich meinen API-Schlüssel und die Umgebungs-ID?",
-                    "faq-api-title": "API-Schlüssel",
-                    "faq-api-text": "Du findest deinen API-Schlüssel in den Kontoeinstellungen auf dem Aquaware-Dashboard: ",
-                    "faq-env-title": "Umgebungs-ID",
-                    "faq-env-text": "Die Umgebungs-ID findest du im Bereich 'Umgebungen' des Dashboards. Du musst zuerst eine Umgebung erstellen oder auswählen: "
-                }
-            };
-
-            document.getElementById("title").textContent = translations[language]["title"];
-            document.getElementById("ssid").placeholder = translations[language]["ssid"];
-            document.getElementById("password").placeholder = translations[language]["password"];
-            document.getElementById("apikey").placeholder = translations[language]["apikey"];
-            document.getElementById("envid").placeholder = translations[language]["envid"];
-            document.getElementById("submit-btn").textContent = translations[language]["submit-btn"];
-            
-            document.getElementById("faq-title").textContent = translations[language]["faq-title"];
-            document.getElementById("faq-api-title").textContent = translations[language]["faq-api-title"];
-            document.getElementById("faq-env-title").textContent = translations[language]["faq-env-title"];
-            
-            document.getElementById("faq-api-text").innerHTML = translations[language]["faq-api-text"] +
-                '<a href="https://dashboard.aquaware.cloud/account" target="_blank">https://dashboard.aquaware.cloud/account</a>.';
-            document.getElementById("faq-env-text").innerHTML = translations[language]["faq-env-text"] +
-                '<a href="https://dashboard.aquaware.cloud/environments" target="_blank">https://dashboard.aquaware.cloud/environments</a>.';
-        }
-    </script>
-</body>
-</html>
-
-)rawliteral";
-
-// ----------------------------------------------------------------------------
-// Function prototypes
-// ----------------------------------------------------------------------------
 void connectToWiFiAndValidate();
 void fetchEnvironmentName(const String& envId);
 void fetchUpdateFrequency();
 void updateDisplay(float temperature, float tds);
+void sendSensorData(float temperature, float tds);
 
 void setup() {
+  delay(2000);
   Serial.begin(115200);
   Serial.println("\n[Setup] Starting ESP32 Sensor Display...");
 
@@ -241,30 +48,38 @@ void setup() {
     lcd.cleanScreen();
     lcd.setBackgroundColor(BLACK);
     Serial.println("[LCD] Successfully initialized.");
-  } else {
+} else {
     Serial.println("[LCD] Error initializing! Check I2C address/wiring.");
-  }
+    
+    // Überprüfe, ob das I2C-Device gefunden wird
+    Serial.println("[I2C] Scanning for I2C devices...");
+    Wire.begin();
+    bool deviceFound = false;
+
+    for (uint8_t address = 1; address < 127; address++) {
+        Wire.beginTransmission(address);
+        if (Wire.endTransmission() == 0) {
+            Serial.print("[I2C] Device found at 0x");
+            Serial.println(address, HEX);
+            deviceFound = true;
+        }
+    }
+
+    if (!deviceFound) {
+        Serial.println("[I2C] No I2C devices found! Check connections (SDA/SCL).");
+    }
+}
+
+
+  envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
+  tempLabel = lcd.drawString(100, 60, "", 1, ORANGE);
+  tdsLabel = lcd.drawString(100, 110, "", 1, BLUE);
 
   // Initialize temperature sensor
   tempSensor.begin();
 
   // Connect to WiFi and fetch environment info
   connectToWiFiAndValidate();
-
-  // Retrieve environment name from Preferences
-  preferences.begin("wifi", true);
-  String envName = preferences.getString("env-name", "Unknown");
-  preferences.end();
-
-  // Show environment name at the top-left
-  envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
-
-  // Create labels for sensor values
-  tempLabel = lcd.drawString(100,  45, "",    0, ORANGE);
-  tdsLabel  = lcd.drawString(100,  95, "", 0, BLUE);
-
-  lcd.drawString(20, 50, "TEMP: ", 1, ORANGE);
-  lcd.drawString(20, 80, "TDS: ", 1, BLUE);
 
   // Set up web server routes
   server.on("/", HTTP_GET, []() {
@@ -299,9 +114,17 @@ void loop() {
   dnsServer.processNextRequest();
   server.handleClient();
 
-  // Read and update sensor data every 'updateInterval' ms (currently 30 seconds)
-  if (millis() - lastUpdate >= updateInterval) {
-    lastUpdate = millis();
+  unsigned long currentTime = millis();
+
+  // Read and update sensor data in display every 'updateInterval' ms (currently 30 seconds)
+  if (currentTime - lastDisplayUpdate >= 30000) {
+
+    lastDisplayUpdate = currentTime;
+    minute++;
+    if (minute >= 60) {
+        minute = 0;
+        hour++;
+    }
 
     // Read temperature
     tempSensor.requestTemperatures();
@@ -313,12 +136,16 @@ void loop() {
 
     // Read TDS/TSS from analog inputs
     int tdsRaw = analogRead(TDS_PIN);
-
     // Convert raw values to mg/L (example scaling)
     float tdsValue = (tdsRaw / 4095.0f) * 1000;
 
     // Update LCD
     updateDisplay(temperature, tdsValue);
+
+    Serial.print("[DISPLAY] Updated: ");
+    Serial.print(hour);
+    Serial.print(":");
+    Serial.println(minute);
 
     // Print data to Serial
     Serial.print("[Sensors] Temperature: ");
@@ -329,15 +156,42 @@ void loop() {
     Serial.println(" mg/L");
     Serial.println("-----------------------------");
   }
+
+  if (currentTime - lastUpload >= updateInterval) {
+        lastUpload = currentTime;
+
+        tempSensor.requestTemperatures();
+        float temperature = tempSensor.getTempCByIndex(0);
+        int tdsRaw = analogRead(TDS_PIN);
+        float tdsValue = (tdsRaw / 4095.0f) * 1000;
+
+        sendSensorData(temperature, tdsValue);
+    }
 }
 
 // ----------------------------------------------------------------------------
 // Update LCD display with sensor values
 // ----------------------------------------------------------------------------
 void updateDisplay(float temperature, float tds) {
-  lcd.updateString(tempLabel, 100, 50, String(temperature) + "°C", 1, ORANGE);
-  lcd.updateString(tdsLabel, 100, 80, String(tds) + " mg/L", 1, BLUE);
+    // Retrieve environment name from Preferences
+    preferences.begin("wifi", true);
+    String envName = preferences.getString("env-name", "");
+    preferences.end();
+
+    // Only update the screen if an environment is set
+    if (envName.length() > 0) {
+      lcd.drawIcon(30, 40, "/sensor icon/thermometer.png", 120);
+      lcd.drawIcon(20, 90, "/sensor icon/raindrops.png", 120);
+
+        // Update environment name
+        lcd.updateString(envNameLabel, 10, 10, envName, 2, WHITE);
+
+        // Update temperature & TDS values
+        lcd.updateString(tempLabel, 100, 60, String(temperature) + "°C", 1, ORANGE);
+        lcd.updateString(tdsLabel, 100, 110, String(tds) + " mg/L", 1, BLUE);
+    }
 }
+
 
 // ----------------------------------------------------------------------------
 // Connect to WiFi and fetch environment data
@@ -359,6 +213,15 @@ void connectToWiFiAndValidate() {
     Serial.print("[WiFi] AP IP Address: ");
     Serial.println(apIP);
 
+    lcd.cleanScreen();
+    lcd.drawString(10, 50, "Verbinde mit WLAN:", 1, WHITE);
+    lcd.drawString(10, 70, "Aquaware_Setup", 1, WHITE);
+    lcd.drawString(10, 90, "Passwort: 12345678", 1, WHITE);
+
+    lcd.drawString(10, 140, "Connect to WiFi:", 1, WHITE);
+    lcd.drawString(10, 160, "Aquaware_Setup", 1, WHITE);
+    lcd.drawString(10, 180, "Password: 12345678", 1, WHITE);
+
     // Start DNS Server to redirect all requests to the ESP32
     dnsServer.start(53, "*", apIP);
 
@@ -373,17 +236,83 @@ void connectToWiFiAndValidate() {
     return;
   }
 
+  // Retrieve the saved language preference
+  preferences.begin("wifi", true);
+  String language = preferences.getString("language", "en"); // Default to English
+  preferences.end();
+
+  lcd.cleanScreen();
+
+  if (language == "de") {
+    lcd.drawString(10, 20, "Verbinde mit WLAN...", 2, WHITE);
+    lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
+  } else {  // Default: English
+    lcd.drawString(10, 20, "Connecting to WiFi...", 2, WHITE);
+    lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
+  }
+
+
   // Connect as station
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid.c_str(), password.c_str());
   Serial.print("[WiFi] Connecting to: ");
   Serial.println(ssid);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  unsigned long startAttemptTime = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 10000) {  // 10 Sekunden Timeout
+      delay(500);
+      Serial.print(".");
   }
   Serial.println("\n[WiFi] Connected!");
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("\n[WiFi] Connected!");
+
+    preferences.begin("wifi", true);
+    String language = preferences.getString("language", "en"); // Default to English
+    preferences.end();
+
+    lcd.cleanScreen();
+    Serial.println(language);
+    if (language == "de") {
+        lcd.drawString(10, 30, "WLAN verbunden!", 2, WHITE);
+        lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
+        lcd.drawString(10, 80, "Warte auf Messung...", 1, WHITE);
+    } else {  // Default: English
+        lcd.drawString(10, 30, "WiFi connected!", 2, WHITE);
+        lcd.drawString(10, 50, ssid.c_str(), 1, WHITE);
+        lcd.drawString(10, 80, "Waiting for measurement...", 1, WHITE);
+    }
+    delay(2000);
+    lcd.cleanScreen();
+
+    // Fetch environment name and update interval
+    fetchEnvironmentName(envId);
+    fetchUpdateFrequency();
+
+    // Update environment name in the display
+    preferences.begin("wifi", true);
+    String envName = preferences.getString("env-name", "Unknown");
+    preferences.end();
+
+  } else {
+    Serial.println("\n[WiFi] Connection failed! Restarting AP...");
+
+    lcd.cleanScreen();
+
+    if (language == "de") {
+        lcd.drawString(10, 20, "WLAN fehlgeschlagen!", 2, WHITE);
+        lcd.drawString(10, 50, "Starte AP-Modus...", 1, WHITE);
+    } else {  // Default: English
+        lcd.drawString(10, 20, "WiFi failed!", 2, WHITE);
+        lcd.drawString(10, 50, "Starting AP mode...", 1, WHITE);
+    }
+
+    delay(3000);
+    preferences.begin("wifi", false);
+    preferences.end();
+    ESP.restart();
+  }
 
   // Fetch environment name and update frequency
   fetchEnvironmentName(envId);
@@ -449,7 +378,7 @@ void fetchEnvironmentName(const String& envId) {
     }
   } else {
     Serial.println("[EnvName] Error or non-200 code.");
-    clearPreferences();   
+    lcd.drawString(30, 120, "Error while fetching env-name", 1, ORANGE);  
     setup();
   }
   http.end();
@@ -516,8 +445,52 @@ void fetchUpdateFrequency() {
     }
   } else {
     Serial.println("[UpdateFreq] Error or non-200 code.");
-    clearPreferences();   
+    lcd.drawString(30, 120, "Error while fetching frequ", 1, ORANGE);  
     setup();
   }
   http.end();
 }
+
+void sendSensorData(float temperature, float tds) {
+    preferences.begin("wifi", true);
+    String apiKey = preferences.getString("api-key", "");
+    String envId = preferences.getString("env-id", "");
+    preferences.end();
+
+    if (WiFi.status() != WL_CONNECTED || apiKey == "" || envId == "") {
+        Serial.println("[API] No WiFi or missing credentials. Skipping data send.");
+        return;
+    }
+
+    String url = "https://dev.aquaware.cloud/api/environments/" + envId + "/values/";
+    
+    HTTPClient http;
+    WiFiClientSecure client;
+    client.setInsecure();
+
+    http.begin(client, url);
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("x-api-key", apiKey);
+
+    // JSON Payload erstellen
+    String payload = "{\"Temperature\": " + String(temperature) + ", \"TDS\": " + String(tds) + "}";
+
+    Serial.println("[API] Sending data: " + payload);
+
+    int httpResponseCode = http.POST(payload);
+    Serial.println("[API] Response Code: " + String(httpResponseCode));
+
+    if (httpResponseCode != 201) {
+        Serial.println("[ERROR] API request failed! Resetting device...");
+        preferences.begin("wifi", false);
+        lcd.drawString(30, 120, "Error while uploading", 1, ORANGE);  
+
+        preferences.end();
+        ESP.restart();
+    } else {
+        Serial.println("[API] Data successfully sent!");
+    }
+
+    http.end();
+}
+
