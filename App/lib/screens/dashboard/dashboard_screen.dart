@@ -2,7 +2,7 @@ import 'package:aquaware/models/environment.dart';
 import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/screens/dashboard/add_public_environment_screen.dart';
 import 'package:aquaware/screens/dashboard/create_environment_screen.dart';
-import 'package:aquaware/screens/dashboard/tutorial/tutorial_page.dart';
+import 'package:aquaware/screens/dashboard/setup/setup_question_screen.dart';
 import 'package:aquaware/services/color_provider.dart';
 import 'package:aquaware/services/environment_service.dart';
 import 'package:flutter/material.dart';
@@ -204,12 +204,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Get.to(() => const TutorialPage());
-                                  },
-                                  child: Text(loc.gettingStarted),
-                                ),
                               ],
                             ),
                           )
@@ -323,8 +317,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 20),
               FloatingActionButton.small(
                 heroTag: null,
-                onPressed: () => Get.to(() => const CreateEnvironmentScreen())
-                    ?.then((result) {
+                onPressed: () =>
+                    Get.to(() => const SetupQuestionScreen())?.then((result) {
                   if (result == true) {
                     _fetchEnvironments();
                   }

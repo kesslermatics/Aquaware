@@ -16,7 +16,7 @@ class OnboardingService extends GetxController {
   }
 
   void nextPage() {
-    if (currentPageIndex.value == 2) {
+    if (currentPageIndex.value == 0) {
       Get.offAll(LoginScreen());
     } else {
       int page = currentPageIndex.value + 1;

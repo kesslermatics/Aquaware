@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:aquaware/services/environment_service.dart';
 
@@ -31,11 +32,12 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
     final loc = AppLocalizations.of(context)!;
 
     if (_nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(loc.missingInfoMessage),
-          backgroundColor: Colors.red,
-        ),
+      Get.snackbar(
+        loc.missingInfoTitle,
+        loc.missingInfoMessage,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
       return;
     }
@@ -55,11 +57,12 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
         _cityController.text.isEmpty ? null : _cityController.text,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(loc.environmentCreated(_nameController.text)),
-          backgroundColor: Colors.green,
-        ),
+      Get.snackbar(
+        loc.successTitle,
+        loc.environmentCreated(_nameController.text),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
       );
 
       Navigator.pop(context, true);
@@ -67,11 +70,12 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
       setState(() {
         _isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(loc.environmentCreateError(e.toString())),
-          backgroundColor: Colors.red,
-        ),
+      Get.snackbar(
+        loc.errorTitle,
+        loc.environmentCreateError(e.toString()),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
     }
   }

@@ -26,17 +26,7 @@ class OnboardingScreen extends StatelessWidget {
                 title: AppLocalizations.of(context)!.welcomeToAquaware,
                 paragraph: AppLocalizations.of(context)!.chooseLanguage,
                 showLanguageDropdown: true,
-              ),
-              OnboardingPage(
-                imagePath: 'assets/images/onboarding_2.png',
-                title: AppLocalizations.of(context)!.smartAndEfficient,
-                paragraph: AppLocalizations.of(context)!.uploadParameters,
-              ),
-              OnboardingPage(
-                imagePath: 'assets/images/onboarding_3.png',
-                title: AppLocalizations.of(context)!.visualizeAndControl,
-                paragraph: AppLocalizations.of(context)!.getStarted,
-              ),
+              )
             ],
           ),
           // Skip Button
@@ -63,7 +53,7 @@ class OnboardingScreen extends StatelessWidget {
               ),
               controller: controller.pageController,
               onDotClicked: controller.dotNavigationClick,
-              count: 3,
+              count: 1,
             ),
           ),
           // Next Button

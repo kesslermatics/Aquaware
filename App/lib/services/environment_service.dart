@@ -16,7 +16,7 @@ class EnvironmentService {
 
   Future<Environment> createEnvironment(
     String name,
-    String description,
+    String? description,
     String environmentType,
     bool public,
     String? city,
