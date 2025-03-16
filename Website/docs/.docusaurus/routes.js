@@ -24,15 +24,15 @@ export default [
   },
   {
     path: '/de/docs',
-    component: ComponentCreator('/de/docs', 'd5e'),
+    component: ComponentCreator('/de/docs', '49b'),
     routes: [
       {
         path: '/de/docs',
-        component: ComponentCreator('/de/docs', '958'),
+        component: ComponentCreator('/de/docs', 'd85'),
         routes: [
           {
             path: '/de/docs',
-            component: ComponentCreator('/de/docs', 'c3f'),
+            component: ComponentCreator('/de/docs', '7c4'),
             routes: [
               {
                 path: '/de/docs/dev-docs/animal-detection/how_to_identify_any_fish',
@@ -149,8 +149,8 @@ export default [
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/adding-water-values',
-                component: ComponentCreator('/de/docs/getting-started/adding-water-values', 'ca3'),
+                path: '/de/docs/getting-started/activate-the-hardware-kit',
+                component: ComponentCreator('/de/docs/getting-started/activate-the-hardware-kit', '943'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },

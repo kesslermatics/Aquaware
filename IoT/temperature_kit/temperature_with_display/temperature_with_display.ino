@@ -4,223 +4,392 @@
 #include <DNSServer.h>
 #include <WebServer.h>
 #include <Preferences.h>
+#include <Wire.h>
 #include "DFRobot_LcdDisplay.h"
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include "configPage.h"
 
-// LCD Display Configuration
 DFRobot_Lcd_IIC lcd(&Wire, 0x2c);
-uint8_t labelId = 0;
+#define TEMP_PIN  D7  // e.g., "D7" on some boards = GPIO13
+#define TDS_PIN A0 
+#define VREF 3.3  
 
-const char* apSSID = "Aquaware_Setup";
+OneWire oneWire(TEMP_PIN);
+DallasTemperature tempSensor(&oneWire);
+
+uint8_t tempLabel, tdsLabel;
+uint8_t envNameLabel;
+uint8_t hour = 0, minute = 0;
+
+const char* apSSID     = "Aquaware Setup";
 const char* apPassword = "12345678";
 
 DNSServer dnsServer;
 WebServer server(80);
 Preferences preferences;
 
-void startAccessPoint();
-bool validateApiKey(String apiKey, String envId);
-void clearPreferences();
+unsigned long updateInterval = 1800000;  // 30 Minutes (30 * 60 * 1000 ms)
+unsigned long lastUpload     = 0;
+unsigned long lastDisplayUpdate = 25000;
+
 void connectToWiFiAndValidate();
-void updateDisplay(String message);
+void fetchEnvironmentName(const String& envId);
+void fetchUpdateFrequency();
+void updateDisplay(float temperature, float tds);
+void sendSensorData(float temperature, float tds);
+float readTDS(float temperature);
 
-// HTML Configuration Page
-const char* configPage = R"rawliteral(
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aquaware Setup</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px; background-color: #061626; color: #5277F5; }
-        .input-container { position: relative; width: 80%; margin: 10px auto; }
-        input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #5277F5; background: white; color: #061626; border-radius: 5px; outline: none; font-size: 16px; }
-        button { padding: 10px 20px; margin-top: 15px; background: #5277F5; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
-        button:hover { background: #405ecf; }
-    </style>
-</head>
-<body>
-    <h2>Aquaware Configuration</h2>
-    <form action="/save" method="POST">
-        <div class="input-container"><input type="text" name="ssid" placeholder="WiFi Name" required></div>
-        <div class="input-container"><input type="password" name="password" placeholder="WiFi Password" required></div>
-        <div class="input-container"><input type="text" name="apikey" placeholder="API Key" required></div>
-        <div class="input-container"><input type="text" name="envid" placeholder="Environment ID" required></div>
-        <button type="submit">Save</button>
-    </form>
-</body>
-</html>
-)rawliteral";
+void setup() {
+  delay(2000);
+  Serial.begin(115200);
+  Serial.println("\n[Setup] Starting ESP32 Sensor Display...");
 
-// Starts the ESP32 Access Point
-void startAccessPoint() {
-    updateDisplay("Starting AP...");
-    Serial.println("Starting Access Point...");
-    
-    WiFi.softAP(apSSID, apPassword);
-    dnsServer.start(53, "*", WiFi.softAPIP());
+  if (lcd.begin()) {
+    lcd.cleanScreen();
+    lcd.setBackgroundColor(BLACK);
+    Serial.println("[LCD] Successfully initialized.");
+  } else {
+    Serial.println("[LCD] Error initializing! Check I2C address/wiring.");
+  }
 
-    server.on("/", HTTP_GET, []() {
-        server.send(200, "text/html", configPage);
-    });
+  envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
+  tempLabel = lcd.drawString(100, 60, "", 1, ORANGE);
+  tdsLabel = lcd.drawString(100, 110, "", 1, BLUE);
 
-    server.on("/save", HTTP_POST, []() {
-        if (server.hasArg("ssid") && server.hasArg("password") && server.hasArg("apikey") && server.hasArg("envid")) {
-            String ssid = server.arg("ssid");
-            String password = server.arg("password");
-            String apiKey = server.arg("apikey");
-            String envId = server.arg("envid");
+  tempSensor.begin();
 
-            updateDisplay("Connecting WiFi...");
-            Serial.println("Received credentials, trying to connect to WiFi...");
-            WiFi.begin(ssid.c_str(), password.c_str());
+  connectToWiFiAndValidate();
 
-            unsigned long startTime = millis();
-            while (WiFi.status() != WL_CONNECTED && millis() - startTime < 10000) {
-                delay(500);
-                Serial.print(".");
-            }
+  server.on("/", HTTP_GET, []() {
+    server.send(200, "text/html", configPage);
+  });
 
-            if (WiFi.status() == WL_CONNECTED) {
-                updateDisplay("WiFi Connected!");
-                Serial.println("\nConnected to WiFi! Validating API Key...");
+  server.on("/save", HTTP_POST, []() {
+    String ssid     = server.arg("ssid");
+    String password = server.arg("password");
+    String apiKey   = server.arg("apikey");
+    String envId    = server.arg("envid");
+    String language = server.arg("language");
 
-                if (validateApiKey(apiKey, envId)) {
-                    updateDisplay("API Key valid! Saving...");
-                    Serial.println("API Key is valid, saving preferences...");
+    preferences.begin("wifi", false);
+    preferences.putString("ssid", ssid);
+    preferences.putString("password", password);
+    preferences.putString("api-key", apiKey);
+    preferences.putString("env-id", envId);
+    preferences.putString("language", language); 
+    preferences.end();
 
-                    preferences.begin("wifi", false);
-                    preferences.putString("ssid", ssid);
-                    preferences.putString("password", password);
-                    preferences.putString("api-key", apiKey);
-                    preferences.putString("env-id", envId);
-                    preferences.end();
+    connectToWiFiAndValidate();
 
-                    server.send(200, "text/html", "<h3>Saved! Restarting ESP32...</h3>");
-                    delay(2000);
-                    ESP.restart();
-                } else {
-                    updateDisplay("API Key Invalid!");
-                    Serial.println("API Key validation failed!");
-                    server.send(403, "text/html", "<h3>Invalid API Key or Environment ID!</h3>");
-                }
-            } else {
-                updateDisplay("WiFi Failed!");
-                Serial.println("WiFi connection failed. Restarting Access Point...");
-                clearPreferences();
-                startAccessPoint();
-            }
-        } else {
-            updateDisplay("Missing Data!");
-            server.send(400, "text/html", "<h3>Missing Data!</h3>");
-        }
-    });
+    server.send(200, "text/html", "<h2>Saved! The device will attempt to reconnect.</h2>");
+  });
 
-    server.begin();
-    Serial.println("Access Point started.");
+  server.begin();
 }
 
-// Validates the API Key
-bool validateApiKey(String apiKey, String envId) {
-    if (WiFi.status() != WL_CONNECTED) {
-        updateDisplay("WiFi Not Connected!");
-        Serial.println("Not connected to WiFi!");
-        return false;
+void loop() {
+  dnsServer.processNextRequest();
+  server.handleClient();
+  unsigned long currentTime = millis();
+
+  if (currentTime - lastDisplayUpdate >= 30000) {
+
+    lastDisplayUpdate = currentTime;
+
+    tempSensor.requestTemperatures();
+    float temperature = tempSensor.getTempCByIndex(0);
+    float tdsValue = readTDS(temperature);
+
+    updateDisplay(temperature, tdsValue);
+
+    Serial.print("[Sensors] Temperature: ");
+    Serial.print(temperature);
+    Serial.println(" °C");
+    Serial.print("[Sensors] TDS: ");
+    Serial.print(tdsValue);
+    Serial.println(" mg/L");
+    Serial.println("-----------------------------");
+  }
+
+  if (currentTime - lastUpload >= updateInterval) {
+        lastUpload = currentTime;
+
+        tempSensor.requestTemperatures();
+        float temperature = tempSensor.getTempCByIndex(0);
+        float tdsValue = readTDS(temperature);
+
+        sendSensorData(temperature, tdsValue);
+    }
+}
+
+void updateDisplay(float temperature, float tds) {
+    preferences.begin("wifi", true);
+    String envName = preferences.getString("env-name", "");
+    String language = preferences.getString("language", "en");
+    preferences.end();
+
+    bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
+
+    lcd.cleanScreen();
+
+    // Zeige nur den Environment-Namen, wenn WiFi verbunden ist
+    if (isWiFiConnected && envName.length() > 0) {
+        lcd.drawString(10, 10, envName, 2, WHITE);
     }
 
-    String url = "https://dev.aquaware.cloud/api/environments/";
-    HTTPClient http;
-    WiFiClientSecure client;
-    client.setInsecure();
+    // Position der Sensorwerte
+    int iconX = 30;
+    int valueX = 100;
+    int tempY = 40;
+    int tdsY = 90;
 
-    http.begin(client, url);
-    http.addHeader("x-api-key", apiKey);
+    // Temperaturanzeige
+    lcd.drawIcon(iconX, tempY, "/sensor icon/thermometer.png", 120);
+    lcd.drawString(valueX, tempY + 20, String(temperature) + "°C", 1, ORANGE);
 
-    int httpResponseCode = http.GET();
-    Serial.print("API Response Code: ");
-    Serial.println(httpResponseCode);
+    // TDS-Anzeige
+    lcd.drawIcon(iconX, tdsY, "/sensor icon/raindrops.png", 120);
+    lcd.drawString(valueX, tdsY + 20, String(tds) + " mg/L", 1, BLUE);
 
-    updateDisplay("API Response: " + String(httpResponseCode));
-
-    bool isValid = httpResponseCode == 200;
-    http.end();
-    
-    return isValid;
+    // WiFi-Statusanzeige am unteren Rand
+    if (language == "de") {
+        lcd.drawString(30, 200, isWiFiConnected ? "WLAN verbunden" : "WLAN nicht verbunden", 2, ORANGE);
+    } else {
+        lcd.drawString(30, 200, isWiFiConnected ? "WiFi Connected" : "WiFi Not Connected", 2, ORANGE);
+    }
 }
 
-// Clears stored preferences
-void clearPreferences() {
-    updateDisplay("Clearing Preferences...");
-    Serial.println("Clearing stored preferences...");
-    preferences.begin("wifi", false);
-    preferences.clear();
-    preferences.end();
-}
-
-// Connects to WiFi and validates stored credentials
 void connectToWiFiAndValidate() {
     preferences.begin("wifi", true);
     String ssid = preferences.getString("ssid", "");
     String password = preferences.getString("password", "");
     String apiKey = preferences.getString("api-key", "");
     String envId = preferences.getString("env-id", "");
+    String language = preferences.getString("language", "en");
     preferences.end();
 
-    if (ssid != "" && password != "" && apiKey != "" && envId != "") {
-        updateDisplay("Connecting to WiFi...");
-        Serial.println("Connecting to stored WiFi...");
-        WiFi.begin(ssid.c_str(), password.c_str());
+    // AP bleibt IMMER aktiv für Konfiguration
+    WiFi.softAP(apSSID, apPassword);
+    IPAddress apIP = WiFi.softAPIP();
+    Serial.print("[WiFi] AP IP Address: ");
+    Serial.println(apIP);
 
-        unsigned long startTime = millis();
-        while (WiFi.status() != WL_CONNECTED && millis() - startTime < 10000) {
-            delay(500);
-            Serial.print(".");
-        }
+    dnsServer.start(53, "*", apIP);
+    server.onNotFound([]() {
+        server.send(200, "text/html", configPage);
+    });
+    server.begin();
+    Serial.println("[WiFi] Captive Portal running...");
 
-        if (WiFi.status() == WL_CONNECTED) {
-            updateDisplay("Validating API...");
-            Serial.println("\nConnected to WiFi. Validating API Key...");
-            if (validateApiKey(apiKey, envId)) {
-                updateDisplay("Device Ready!");
-                Serial.println("API Key is valid. Device ready.");
-                return;
-            } else {
-                updateDisplay("Invalid API Key!");
-                Serial.println("API Key validation failed. Restarting setup...");
-                clearPreferences();
-            }
-        } else {
-            updateDisplay("WiFi Failed!");
-            Serial.println("WiFi connection failed. Restarting setup...");
-            clearPreferences();
-        }
-    } else {
-        updateDisplay("No Credentials Found!");
-        Serial.println("No valid stored credentials found.");
+    // Falls keine gespeicherten WiFi-Daten, bleibt nur der AP aktiv
+    if (ssid == "" || password == "" || apiKey == "" || envId == "") {
+        Serial.println("[WiFi] Keine gespeicherten Daten, nur AP läuft.");
+        return;
     }
 
-    startAccessPoint();
-}
+    // Versuche, sich mit WiFi zu verbinden
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid.c_str(), password.c_str());
+    Serial.print("[WiFi] Connecting to: ");
+    Serial.println(ssid);
 
-// Updates LCD Display
-void updateDisplay(String message) {
+    unsigned long startAttemptTime = millis();
+    while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 10000) {
+        delay(500);
+        Serial.print(".");
+    }
+
+    bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
+    Serial.println(isWiFiConnected ? "\n[WiFi] Connected!" : "\n[WiFi] Connection failed!");
+
+    // **WiFi-Statusanzeige unten aktualisieren**
     lcd.cleanScreen();
-    labelId = lcd.drawString(10, 10, message.c_str(), 1, BLUE);
+    if (language == "de") {
+        lcd.drawString(30, 200, isWiFiConnected ? "WLAN verbunden" : "WLAN nicht verbunden", 2, ORANGE);
+    } else {
+        lcd.drawString(30, 200, isWiFiConnected ? "WiFi Connected" : "WiFi Not Connected", 2, ORANGE);
+    }
+
+    // Falls WiFi verbunden, abrufen von envName und Update-Frequency
+    if (isWiFiConnected) {
+        fetchEnvironmentName(envId);
+        fetchUpdateFrequency();
+    }
 }
 
-// Setup function
-void setup() {
-    Serial.begin(115200);
-    lcd.begin();
-    lcd.cleanScreen();
-    lcd.setBackgroundColor(WHITE);
-    updateDisplay("Starting ESP32...");
 
-    connectToWiFiAndValidate();
+// ----------------------------------------------------------------------------
+// Fetch environment name from server (handles 301 redirects)
+// ----------------------------------------------------------------------------
+void fetchEnvironmentName(const String& envId) {
+  preferences.begin("wifi", true);
+  String apiKey = preferences.getString("api-key", "");
+  preferences.end();
+
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  String url = "https://dev.aquaware.cloud/api/environments/" + envId + "/";
+
+  HTTPClient http;
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  // Force follow redirects
+  http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
+
+  http.begin(client, url);
+  http.addHeader("x-api-key", apiKey);
+
+  int httpResponseCode = http.GET();
+  Serial.println("[EnvName] HTTP code: " + String(httpResponseCode));
+
+  if (httpResponseCode == 200) {
+    String response = http.getString();
+    Serial.println("[EnvName] Response: " + response);
+
+    int nameIndex = response.indexOf("\"name\":");
+    if (nameIndex != -1) {
+      int start = response.indexOf("\"", nameIndex + 7) + 1;
+      int end   = response.indexOf("\"", start);
+      if (start > 0 && end > start) {
+        String envName = response.substring(start, end);
+
+        preferences.begin("wifi", false);
+        preferences.putString("env-name", envName);
+        preferences.end();
+
+        Serial.println("[EnvName] Extracted: " + envName);
+      }
+    }
+  } else {
+    Serial.println("[EnvName] Error or non-200 code.");
+    lcd.drawString(30, 200, "Error while fetching env-name", 2, ORANGE);  
+    setup();
+  }
+  http.end();
 }
 
-// Main loop
-void loop() {
-    dnsServer.processNextRequest();
-    server.handleClient();
+// ----------------------------------------------------------------------------
+// Fetch update frequency and store it without using it (server might return
+// e.g. {"milliseconds":43200000,...})
+// ----------------------------------------------------------------------------
+void fetchUpdateFrequency() {
+  preferences.begin("wifi", true);
+  String apiKey = preferences.getString("api-key", "");
+  preferences.end();
+
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  String url = "https://dev.aquaware.cloud/api/users/update-frequency/";
+  HTTPClient http;
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  // Follow redirects
+  http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
+
+  http.begin(client, url);
+  http.addHeader("x-api-key", apiKey);
+
+  int httpResponseCode = http.GET();
+  Serial.println("[UpdateFreq] HTTP code: " + String(httpResponseCode));
+
+  if (httpResponseCode == 200) {
+    String response = http.getString();
+    Serial.println("[UpdateFreq] Response: " + response);
+
+    // Look for the "milliseconds" key
+    int msIndex = response.indexOf("\"milliseconds\":");
+    if (msIndex != -1) {
+      int colonIndex = response.indexOf(':', msIndex);
+      if (colonIndex != -1) {
+        int start = colonIndex + 1;
+        // The value might end at a comma or '}'.
+        int commaIndex = response.indexOf(',', start);
+        if (commaIndex == -1) {
+          commaIndex = response.indexOf('}', start);
+        }
+        if (commaIndex == -1) {
+          commaIndex = response.length();
+        }
+        String msValueStr = response.substring(start, commaIndex);
+        msValueStr.trim();
+
+        unsigned long newInterval = msValueStr.toInt();
+        if (newInterval > 0) {
+          // Store the interval in preferences, but do not use it
+          preferences.begin("wifi", false);
+          preferences.putULong("server-interval", newInterval);
+          preferences.end();
+
+          Serial.println("[UpdateFreq] Stored server interval: " + String(newInterval) + " ms (NOT applied)");
+        } else {
+          Serial.println("[UpdateFreq] Could not parse 'milliseconds' properly.");
+        }
+      }
+    }
+  } else {
+    Serial.println("[UpdateFreq] Error or non-200 code.");
+    lcd.drawString(30, 200, "Error while fetching frequency", 2, ORANGE);  
+    setup();
+  }
+  http.end();
+}
+
+void sendSensorData(float temperature, float tds) {
+    preferences.begin("wifi", true);
+    String apiKey = preferences.getString("api-key", "");
+    String envId = preferences.getString("env-id", "");
+    preferences.end();
+
+    if (WiFi.status() != WL_CONNECTED || apiKey == "" || envId == "") {
+        Serial.println("[API] No WiFi or missing credentials. Skipping data send.");
+        return;
+    }
+
+    String url = "https://dev.aquaware.cloud/api/environments/" + envId + "/values/";
+    
+    HTTPClient http;
+    WiFiClientSecure client;
+    client.setInsecure();
+
+    http.begin(client, url);
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("x-api-key", apiKey);
+
+    // JSON Payload erstellen
+    String payload = "{\"Temperature\": " + String(temperature) + ", \"TDS\": " + String(tds) + "}";
+
+    Serial.println("[API] Sending data: " + payload);
+
+    int httpResponseCode = http.POST(payload);
+    Serial.println("[API] Response Code: " + String(httpResponseCode));
+
+    if (httpResponseCode != 201) {
+        Serial.println("[ERROR] API request failed! Resetting device...");
+        preferences.begin("wifi", false);
+        lcd.drawString(30, 200, "Error while uploading", 1, ORANGE);  
+
+        preferences.end();
+        ESP.restart();
+    } else {
+        Serial.println("[API] Data successfully sent!");
+        lcd.drawString(30, 200, "Error while sending data", 2, ORANGE);  
+    }
+
+    http.end();
+}   
+
+float readTDS(float temperature) {
+    int rawADC = analogRead(TDS_PIN);
+    float voltage = (rawADC / 4095.0) * VREF;
+
+    float compensationCoefficient = 1.0 + 0.02 * (temperature - 25.0);
+    float compensationVoltage = voltage / compensationCoefficient;
+
+    float tdsValue = (133.42 * pow(compensationVoltage, 3)
+                     - 255.86 * pow(compensationVoltage, 2)
+                     + 857.39 * compensationVoltage) * 0.5;
+    return tdsValue;
 }
