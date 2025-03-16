@@ -31,17 +31,17 @@ class EnvironmentService {
       },
       body: jsonEncode({
         'name': name,
-        'description': description,
+        'description': description!.isEmpty ? "-" : description,
         "environment_type": environmentType,
         "public": public,
-        "city": city,
+        "city": city!.isEmpty ? "-" : city,
       }),
     );
 
     if (response.statusCode == 201) {
       return Environment.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
-      throw Exception('Failed to create environment: ${response.body}');
+      throw Exception("Failed");
     }
   }
 
