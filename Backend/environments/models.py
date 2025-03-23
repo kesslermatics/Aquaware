@@ -24,6 +24,8 @@ class Environment(models.Model):
     public = models.BooleanField(default=False)
     city = models.CharField(max_length=255, blank=True, null=True)
 
+    is_setup = models.BooleanField(default=False)
+
     class Meta:
         unique_together = ('user', 'name')
 

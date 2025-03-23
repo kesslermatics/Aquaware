@@ -13,13 +13,12 @@ class AlertService {
     return apiKey;
   }
 
-  Future<void> saveAlertSettings(int aquariumId, String parameter,
+  Future<void> saveAlertSettings(int environmentId, String parameter,
       double? underValue, double? aboveValue) async {
     final apiKey = await _getApiKey();
 
     final response = await http.post(
-      Uri.parse(
-          '$baseUrl/api/measurements/environments/$aquariumId/save-alert-settings/'),
+      Uri.parse('$baseUrl/api/environments/$environmentId/values/alerts/'),
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
@@ -37,12 +36,12 @@ class AlertService {
   }
 
   Future<Map<String, dynamic>?> getAlertSettings(
-      int aquariumId, String parameter) async {
+      int environmentId, String parameter) async {
     final apiKey = await _getApiKey();
 
     final response = await http.get(
       Uri.parse(
-          '$baseUrl/api/measurements/environments/$aquariumId/get_alerts/$parameter/'),
+          '$baseUrl/api/environments/$environmentId/values/alerts/$parameter/'),
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,

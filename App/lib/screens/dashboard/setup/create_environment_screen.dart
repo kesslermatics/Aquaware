@@ -49,12 +49,10 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
     try {
       await _environmentService.createEnvironment(
         _nameController.text,
-        _descriptionController.text.isEmpty
-            ? null
-            : _descriptionController.text,
+        _descriptionController.text.isEmpty ? "" : _descriptionController.text,
         _selectedEnvironmentType,
         false,
-        _cityController.text.isEmpty ? null : _cityController.text,
+        _cityController.text.isEmpty ? "" : _cityController.text,
       );
 
       Get.snackbar(

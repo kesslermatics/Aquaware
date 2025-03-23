@@ -47,12 +47,10 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
     try {
       await _environmentService.createEnvironment(
         _nameController.text,
-        _descriptionController.text.isEmpty
-            ? null
-            : _descriptionController.text,
+        _descriptionController.text.isEmpty ? "" : _descriptionController.text,
         _selectedEnvironmentType,
         false,
-        _cityController.text.isEmpty ? null : _cityController.text,
+        _cityController.text.isEmpty ? "" : _cityController.text,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +60,7 @@ class _CreateEnvironmentScreenState extends State<CreateEnvironmentScreen> {
         ),
       );
 
-      Navigator.pop(context, true);
+      Navigator.popAndPushNamed(context, "/");
     } catch (e) {
       setState(() {
         _isLoading = false;
