@@ -19,6 +19,10 @@ class UserService {
 
   Future<String?> signup(String email, String password, String password2,
       String firstName, String lastName) async {
+    email = email.trim();
+    password = password.trim();
+    password2 = password2.trim();
+
     final response = await http.post(
       Uri.parse(signupUrl),
       headers: {'Content-Type': 'application/json'},
@@ -47,7 +51,7 @@ class UserService {
           errors.addAll(List<String>.from(value.map((msg) => msg.toString())));
         }
       });
-      return errors.join('\n'); // Fehlermeldungen zurückgeben
+      return errors.join('\n');
     }
   }
 
@@ -71,6 +75,9 @@ class UserService {
   }
 
   Future<String?> login(String email, String password) async {
+    email = email.trim();
+    password = password.trim();
+
     final response = await http.post(
       Uri.parse(loginUrl),
       headers: {'Content-Type': 'application/json'},
@@ -82,11 +89,10 @@ class UserService {
       String apiKey = data['api_key'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('api_key', apiKey);
-      return null; // Erfolgreiches Login
+      return null;
     } else {
       var errorData = jsonDecode(utf8.decode(response.bodyBytes));
-      return errorData['message'] ??
-          'Failed to log in'; // Fehlermeldung zurückgeben
+      return errorData['message'] ?? 'Failed to log in';
     }
   }
 
