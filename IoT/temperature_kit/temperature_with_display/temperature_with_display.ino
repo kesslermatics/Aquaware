@@ -55,49 +55,69 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
 class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic* pCharacteristic) {
-        String value = String(pCharacteristic->getValue().c_str());
-        if (value.length() > 0) {
-            Serial.println(F("[BLE] Daten empfangen:"));
-            Serial.println(value.c_str());
+    String value = String(pCharacteristic->getValue().c_str());
+    if (value.length() > 0) {
+        Serial.println(F("[BLE] Daten empfangen:"));
+        Serial.println(value.c_str());
 
-            int index = 0;
-            String values[5];
-            String data = String(value.c_str());
+        int index = 0;
+        String values[5];
+        String data = String(value.c_str());
 
-            while (data.length() > 0 && index < 5) {
-                int commaIndex = data.indexOf(',');
-                if (commaIndex == -1) { // Kein Komma mehr -> Letzter Wert
-                    values[index] = data;
-                    data = "";
-                } else {
-                    values[index] = data.substring(0, commaIndex);
-                    data = data.substring(commaIndex + 1);
-                }
-                index++;
+        while (data.length() > 0 && index < 5) {
+            int commaIndex = data.indexOf(',');
+            if (commaIndex == -1) {
+                values[index] = data;
+                data = "";
+            } else {
+                values[index] = data.substring(0, commaIndex);
+                data = data.substring(commaIndex + 1);
             }
+            index++;
+        }
 
-            // Werte in Preferences speichern
-            preferences.begin("wifi", false);
-            preferences.putString("ssid", values[0]);
-            preferences.putString("password", values[1]);
-            preferences.putString("api-key", values[2]);
-            preferences.putString("env-id", values[3]);
-            preferences.putString("language", values[4]);
-            preferences.end();
+        // Werte speichern
+        preferences.begin("wifi", false);
+        preferences.putString("ssid", values[0]);
+        preferences.putString("password", values[1]);
+        preferences.putString("api-key", values[2]);
+        preferences.putString("env-id", values[3]);
+        preferences.putString("language", values[4]);
+        preferences.end();
 
-            Serial.println(F("[BLE] WiFi Daten gespeichert!"));
+        // WLAN verbinden
+        connectToWiFiAndValidate();
 
-            delay(500);
+        if (WiFi.status() == WL_CONNECTED) {
+            Serial.println("\n[WiFi] Connected!");
 
-            pCharacteristic->setValue("ACK");
-            pCharacteristic->notify();
+            // Setup markieren
+            String apiKey = values[2];
+            String envId  = values[3];
+            String url = "https://dev.aquaware.cloud/api/environments/" + envId + "/mark-setup/";
 
-            delay(20000);
+            WiFiClientSecure client;
+            client.setInsecure();
+            HTTPClient http;
+            http.begin(client, url);
+            http.addHeader("Content-Type", "application/json");
+            http.addHeader("x-api-key", apiKey);
 
-            // BLE abschalten (optional)
-            BLEDevice::deinit();
+            int responseCode = http.POST("{}");
+
+            if (responseCode == 200) {
+                Serial.println("[HTTP] Setup marked successfully.");
+            } else {
+                Serial.print("[HTTP] Failed to mark setup. Code: ");
+                Serial.println(responseCode);
+            }
+            http.end();
+        } else {
+            Serial.println("\n[WiFi] Connection failed.");
         }
     }
+}
+
 };
 
 
@@ -108,33 +128,48 @@ void setup() {
 
   esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
 
-  BLEDevice::init("Aquaware BLE");
-  pServer = BLEDevice::createServer();
-  pServer->setCallbacks(new MyServerCallbacks());
+  // 🔍 Check for stored WiFi config
+  preferences.begin("wifi", true);
+  String ssid = preferences.getString("ssid", "");
+  String password = preferences.getString("password", "");
+  String apiKey = preferences.getString("api-key", "");
+  String envId = preferences.getString("env-id", "");
+  preferences.end();
 
-  // BLE-Dienst hinzufügen
+  bool hasCredentials = (ssid.length() > 0 && password.length() > 0 && apiKey.length() > 0 && envId.length() > 0);
+
+  // 🔄 Init BLE only if no credentials found
+  if (!hasCredentials) {
+    Serial.println(F("[BLE] No credentials found. Starting BLE setup..."));
+
+    BLEDevice::init("Aquaware BLE");
+    pServer = BLEDevice::createServer();
+    pServer->setCallbacks(new MyServerCallbacks());
+
     BLEService* pService = pServer->createService(SERVICE_UUID);
     BLEDevice::setPower(ESP_PWR_LVL_N12);
 
-    // Charakteristik für Datenempfang
     pCharacteristic = pService->createCharacteristic(
-    CHARACTERISTIC_UUID,
-    BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_INDICATE
-);
+      CHARACTERISTIC_UUID,
+      BLECharacteristic::PROPERTY_READ |
+      BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_INDICATE
+    );
     pCharacteristic->addDescriptor(new BLE2902());
-
     pCharacteristic->setCallbacks(new MyCharacteristicCallbacks());
     pService->start();
 
-    // BLE-Advertising starten (Gerät sichtbar machen)
     BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(SERVICE_UUID);
-    pAdvertising->setScanResponse(false);
+    pAdvertising->setScanResponse(true);
     pAdvertising->setMinPreferred(0x06);
     BLEDevice::startAdvertising();
 
-    Serial.println(F("[BLE] Bereit zur Verbindung."));
+    Serial.println(F("[BLE] BLE advertising started. Waiting for connection."));
+  } else {
+    Serial.println("Credentials found. No BLE needed");
+  }
 
+  // 🖥️ Init LCD
   if (lcd.begin()) {
     lcd.cleanScreen();
     lcd.setBackgroundColor(BLACK);
@@ -149,8 +184,10 @@ void setup() {
 
   tempSensor.begin();
 
+  // 🌐 WiFi Setup
   connectToWiFiAndValidate();
 }
+
 
 void loop() {
   unsigned long currentTime = millis();
@@ -230,6 +267,9 @@ void connectToWiFiAndValidate() {
     String envId = preferences.getString("env-id", "");
     String language = preferences.getString("language", "en");
     preferences.end();
+
+    Serial.println(ssid);
+    Serial.println(password);
 
     // Versuche, sich mit WiFi zu verbinden
     WiFi.mode(WIFI_STA);
