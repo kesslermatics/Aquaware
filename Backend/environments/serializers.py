@@ -4,10 +4,10 @@ from .models import Environment
 
 class EnvironmentSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
-    description = serializers.CharField(required=True)
+    description = serializers.CharField(default="")
     environment_type = serializers.ChoiceField(choices=Environment.ENVIRONMENT_TYPES)
     public = serializers.BooleanField(default=False)
-    city = serializers.CharField(required=False)
+    city = serializers.CharField(default="")
 
     class Meta:
         model = Environment
