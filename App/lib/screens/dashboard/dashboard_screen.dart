@@ -207,90 +207,95 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ],
                             ),
                           )
-                        : ListView.builder(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                            itemCount: _environments.length,
-                            itemBuilder: (context, index) {
-                              final environment = _environments[index];
-                              return GestureDetector(
-                                onTap: () =>
-                                    widget.onEnvironmentTapped(environment),
-                                onLongPress: () {
-                                  _deleteEnvironment(context, environment);
-                                },
-                                child: Card(
-                                  color: ColorProvider.n6,
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 8,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                loc.environmentId(
-                                                    environment.id),
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white54,
+                        : RefreshIndicator(
+                            onRefresh: _fetchEnvironments,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: _environments.length,
+                              itemBuilder: (context, index) {
+                                final environment = _environments[index];
+                                return GestureDetector(
+                                  onTap: () =>
+                                      widget.onEnvironmentTapped(environment),
+                                  onLongPress: () {
+                                    _deleteEnvironment(context, environment);
+                                  },
+                                  child: Card(
+                                    color: ColorProvider.n6,
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 8,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  loc.environmentId(
+                                                      environment.id),
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white54,
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                environment.name,
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              if (environment.description
-                                                  .trim()
-                                                  .isNotEmpty) ...[
                                                 const SizedBox(height: 8),
                                                 Text(
-                                                  environment.description,
+                                                  environment.name,
                                                   style: const TextStyle(
-                                                    color: Colors.white70,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
                                                   ),
                                                 ),
-                                              ],
-                                              if (environment.city
-                                                  .trim()
-                                                  .isNotEmpty) ...[
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  environment.city,
-                                                  style: const TextStyle(
-                                                    color: Colors.white38,
-                                                    fontStyle: FontStyle.italic,
+                                                if (environment.description
+                                                    .trim()
+                                                    .isNotEmpty) ...[
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    environment.description,
+                                                    style: const TextStyle(
+                                                      color: Colors.white70,
+                                                    ),
                                                   ),
-                                                ),
+                                                ],
+                                                if (environment.city
+                                                    .trim()
+                                                    .isNotEmpty) ...[
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    environment.city,
+                                                    style: const TextStyle(
+                                                      color: Colors.white38,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                    ),
+                                                  ),
+                                                ],
                                               ],
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Colors.white54,
-                                          size: 18,
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16.0),
+                                          child: Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.white54,
+                                            size: 18,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
           ),
         ],

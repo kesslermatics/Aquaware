@@ -42,11 +42,19 @@ class DataScreen extends StatefulWidget {
 class _DataScreenState extends State<DataScreen> {
   double _progress = 0.0;
   String _statusText = "";
+  late Future<List<WaterValue>> _futureWaterValues;
+  late Future<int> _futureTotalEntries;
 
   @override
   void initState() {
     super.initState();
     _progress = 0.2; // Initial progress
+    _loadFutures();
+  }
+
+  void _loadFutures() {
+    _futureWaterValues = widget.futureWaterValues;
+    _futureTotalEntries = widget.futureTotalEntries;
   }
 
   @override
@@ -73,78 +81,87 @@ class _DataScreenState extends State<DataScreen> {
     });
   }
 
+  Future<void> _refreshData() async {
+    _loadFutures();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<WaterValue>>(
-        future: widget.futureWaterValues,
-        builder: (context, snapshot) {
-          if (_progress < 1.0 ||
-              snapshot.connectionState == ConnectionState.waiting) {
-            return _buildLoadingWidget();
-          }
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: FutureBuilder<List<WaterValue>>(
+          future: _futureWaterValues,
+          builder: (context, snapshot) {
+            if (_progress < 1.0 ||
+                snapshot.connectionState == ConnectionState.waiting) {
+              return _buildLoadingWidget();
+            }
 
-          if (snapshot.hasError) {
-            return Center(
-              child:
-                  Text(AppLocalizations.of(context)!.failedToLoadWaterValues),
-            );
-          } else if (!snapshot.hasData ||
-              snapshot.data == null ||
-              snapshot.data!.isEmpty) {
-            return Center(
-              child: Text(AppLocalizations.of(context)!.noWaterValuesFound),
-            );
-          } else {
-            List<WaterValue> waterValues = snapshot.data!.reversed.toList();
-            WaterValue lastWaterValue = waterValues.last;
+            if (snapshot.hasError) {
+              return Center(
+                child:
+                    Text(AppLocalizations.of(context)!.failedToLoadWaterValues),
+              );
+            } else if (!snapshot.hasData ||
+                snapshot.data == null ||
+                snapshot.data!.isEmpty) {
+              return Center(
+                child: Text(AppLocalizations.of(context)!.noWaterValuesFound),
+              );
+            } else {
+              List<WaterValue> waterValues = snapshot.data!.reversed.toList();
+              WaterValue lastWaterValue = waterValues.last;
 
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  LastUpdatedWidget(lastWaterValue: lastWaterValue),
-                  FutureBuilder<int>(
-                    future: widget.futureTotalEntries,
-                    builder: (context, totalEntriesSnapshot) {
-                      if (totalEntriesSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: ColorProvider.n17,
-                          ),
-                        );
-                      } else if (totalEntriesSnapshot.hasError) {
-                        return Center(
-                            child: Text(AppLocalizations.of(context)!
-                                .failedToLoadTotalEntries));
-                      } else if (!totalEntriesSnapshot.hasData) {
-                        return Center(
-                            child: Text(AppLocalizations.of(context)!
-                                .noTotalEntriesFound));
-                      } else {
-                        int totalEntries = totalEntriesSnapshot.data!;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            TotalEntriesWidget(totalEntries: totalEntries),
-                            if (widget.isLineChartVisible)
-                              _makeLineChartWidget(waterValues),
-                            if (widget.isHeatmapVisible)
-                              _makeHeatmapWidget(waterValues),
-                            if (widget.isHistogrammVisible)
-                              _makeHistogramWidget(waterValues),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            );
-          }
-        },
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    LastUpdatedWidget(lastWaterValue: lastWaterValue),
+                    FutureBuilder<int>(
+                      future: _futureTotalEntries,
+                      builder: (context, totalEntriesSnapshot) {
+                        if (totalEntriesSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: ColorProvider.n17,
+                            ),
+                          );
+                        } else if (totalEntriesSnapshot.hasError) {
+                          return Center(
+                              child: Text(AppLocalizations.of(context)!
+                                  .failedToLoadTotalEntries));
+                        } else if (!totalEntriesSnapshot.hasData) {
+                          return Center(
+                              child: Text(AppLocalizations.of(context)!
+                                  .noTotalEntriesFound));
+                        } else {
+                          int totalEntries = totalEntriesSnapshot.data!;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              TotalEntriesWidget(totalEntries: totalEntries),
+                              if (widget.isLineChartVisible)
+                                _makeLineChartWidget(waterValues),
+                              if (widget.isHeatmapVisible)
+                                _makeHeatmapWidget(waterValues),
+                              if (widget.isHistogrammVisible)
+                                _makeHistogramWidget(waterValues),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
