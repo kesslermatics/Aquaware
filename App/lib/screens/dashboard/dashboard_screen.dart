@@ -250,21 +250,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   color: Colors.white,
                                                 ),
                                               ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                environment.description,
-                                                style: const TextStyle(
-                                                  color: Colors.white70,
+                                              if (environment.description
+                                                  .trim()
+                                                  .isNotEmpty) ...[
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  environment.description,
+                                                  style: const TextStyle(
+                                                    color: Colors.white70,
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 4),
-                                              Text(
-                                                environment.city,
-                                                style: const TextStyle(
-                                                  color: Colors.white38,
-                                                  fontStyle: FontStyle.italic,
+                                              ],
+                                              if (environment.city
+                                                  .trim()
+                                                  .isNotEmpty) ...[
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  environment.city,
+                                                  style: const TextStyle(
+                                                    color: Colors.white38,
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ],
                                           ),
                                         ),
