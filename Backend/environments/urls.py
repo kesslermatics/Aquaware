@@ -13,4 +13,7 @@ urlpatterns = [
 
     # Subscription management
     path('<int:environment_id>/subscribe/', environment_views.subscribe_to_environment, name='subscribe-environment'),  # POST
+
+    path("environments/<int:environment_id>/mark-setup/", mark_environment_as_setup, name="mark-environment-setup"),
+
 ]

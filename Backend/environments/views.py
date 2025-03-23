@@ -123,3 +123,17 @@ def get_user_environments(request):
     environments = owned_environments | subscribed_environments
     serializer = EnvironmentSerializer(environments, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([APIKeyAuthentication])
+def mark_environment_as_setup(request, environment_id):
+    try:
+        environment = Environment.objects.get(id=environment_id, user=request.user)
+
+        environment.is_setup = True
+        environment.save(update_fields=["is_setup"])
+
+        return Response({"detail": "Environment marked as set up."}, status=status.HTTP_200_OK)
+
+    except Environment.DoesNotExist:
+        return Response({"error": "Environment not found or not owned by user."}, status=status.HTTP_404_NOT_FOUND)
