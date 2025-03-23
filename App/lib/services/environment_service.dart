@@ -16,7 +16,7 @@ class EnvironmentService {
 
   Future<Environment> createEnvironment(
     String name,
-    String? description,
+    String description,
     String environmentType,
     bool public,
     String? city,
@@ -31,10 +31,10 @@ class EnvironmentService {
       },
       body: jsonEncode({
         'name': name,
-        'description': description!.isEmpty ? "-" : description,
+        'description': description,
         "environment_type": environmentType,
         "public": public,
-        "city": city!.isEmpty ? "-" : city,
+        "city": city,
       }),
     );
 
