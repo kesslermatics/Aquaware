@@ -85,12 +85,16 @@ class _SetupHardwareScreenState extends State<SetupHardwareScreen> {
   /// Retrieves the currently connected WiFi SSID.
   Future<void> _getCurrentWifi() async {
     String? ssid = await NetworkInfo().getWifiName();
+    if (ssid != null && ssid.startsWith('"') && ssid.endsWith('"')) {
+      ssid = ssid.substring(1, ssid.length - 1);
+    }
     setState(() => currentSsid = ssid ?? "Unknown");
   }
 
   /// Completes the setup process and sends data via BLE.
   void _finishSetup() async {
     final loc = AppLocalizations.of(context)!;
+
     if (selectedDevice == null ||
         currentSsid == null ||
         _passwordController.text.isEmpty ||
@@ -104,10 +108,17 @@ class _SetupHardwareScreenState extends State<SetupHardwareScreen> {
       return;
     }
 
-    // Ladeindikator anzeigen
     setState(() => isLoading = true);
 
     try {
+      Get.snackbar(
+        loc.infoTitle,
+        loc.setupMightTakeTime, // z. B. „Dies kann bis zu einer Minute dauern – bitte habe Geduld.“
+        backgroundColor: Colors.blue,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 6),
+      );
+
       EnvironmentService service = EnvironmentService();
       String description = _descriptionController.text.isEmpty
           ? ""
@@ -122,12 +133,8 @@ class _SetupHardwareScreenState extends State<SetupHardwareScreen> {
         city,
       );
 
-      var apiKey = UserProfile.getInstance().apiKey;
-
-      // Überprüfen, ob die Umgebung erfolgreich erstellt wurde
-      String environmentId = environment.id.toString();
-
-      // Daten für BLE vorbereiten
+      int environmentId = environment.id;
+      String apiKey = UserProfile.getInstance().apiKey;
       String bleData =
           "$currentSsid,${_passwordController.text},$apiKey,$environmentId";
 
@@ -136,23 +143,39 @@ class _SetupHardwareScreenState extends State<SetupHardwareScreen> {
 
       if (characteristic != null) {
         await characteristic.setNotifyValue(true);
-        await characteristic.write(
-          bleData.codeUnits,
-          timeout: 60,
-          withoutResponse: false,
-        );
 
-        Get.snackbar(
-          loc.successTitle,
-          loc.deviceSetupComplete,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+        await characteristic.write(bleData.codeUnits, withoutResponse: false);
 
-        _confettiController.play();
+        // Warte 30 Sekunden, bis Controller Setup abschließt
+        await Future.delayed(const Duration(seconds: 30));
 
-        await Future.delayed(const Duration(seconds: 3));
-        Get.offAllNamed('/homepage');
+        // Setup-Status prüfen
+        bool isSetup = false;
+        try {
+          var checkResponse = await service.checkSetupStatus(environmentId);
+          isSetup = checkResponse;
+        } catch (e) {
+          print("Fehler beim Setup-Check: $e");
+        }
+
+        if (isSetup) {
+          Get.snackbar(
+            loc.successTitle,
+            loc.deviceSetupComplete,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          _confettiController.play();
+          Get.offAllNamed('/homepage');
+        } else {
+          await service.deleteEnvironment(environmentId);
+          Get.snackbar(
+            loc.errorTitle,
+            loc.deviceSetupFailed,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
       } else {
         Get.snackbar(
           loc.errorTitle,

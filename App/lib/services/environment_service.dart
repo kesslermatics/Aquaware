@@ -98,6 +98,24 @@ class EnvironmentService {
     }
   }
 
+  Future<bool> checkSetupStatus(int id) async {
+    final apiKey = await _getApiKey();
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/environments/$id/check-setup/'),
+      headers: {
+        'x-api-key': apiKey,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['is_setup'] == true;
+    } else {
+      throw Exception('Failed to check setup status: ${response.body}');
+    }
+  }
+
   Future<List<Environment>> getPublicEnvironments() async {
     final apiKey = await _getApiKey();
 
