@@ -16,4 +16,6 @@ urlpatterns = [
 
     path("environments/<int:environment_id>/mark-setup/", mark_environment_as_setup, name="mark-environment-setup"),
 
+    path("environments/<int:environment_id>/check-setup/", check_environment_setup, name="check-environment-setup"),
+
 ]
