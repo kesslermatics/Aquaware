@@ -3,6 +3,7 @@ import 'package:aquaware/models/user_profile.dart';
 import 'package:aquaware/services/alert_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class AlertScreen extends StatefulWidget {
   final String infotext;
@@ -60,11 +61,12 @@ class _AlertScreenState extends State<AlertScreen> {
       }
       return alertSettings;
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!
-              .alertSettingsLoadError(error.toString())),
-        ),
+      Get.snackbar(
+        'Error',
+        AppLocalizations.of(context)!.alertSettingsLoadError(error.toString()),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
       return null;
     }
@@ -88,15 +90,20 @@ class _AlertScreenState extends State<AlertScreen> {
         aboveValue,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.alertSaved)),
+      Get.snackbar(
+        'Success',
+        AppLocalizations.of(context)!.alertSaved,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
       );
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              AppLocalizations.of(context)!.alertSaveError(error.toString())),
-        ),
+      Get.snackbar(
+        'Error',
+        AppLocalizations.of(context)!.alertSaveError(error.toString()),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
     } finally {
       setState(() {
