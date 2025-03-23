@@ -125,7 +125,7 @@ def get_user_environments(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([APIKeyAuthentication])
+@authentication_classes([APIKeyAuthentication])
 def mark_environment_as_setup(request, environment_id):
     try:
         environment = Environment.objects.get(id=environment_id, user=request.user)
@@ -139,7 +139,7 @@ def mark_environment_as_setup(request, environment_id):
         return Response({"error": "Environment not found or not owned by user."}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
-@permission_classes([APIKeyAuthentication])
+@authentication_classes([APIKeyAuthentication])
 def check_environment_setup(request, environment_id):
     try:
         environment = Environment.objects.get(id=environment_id, user=request.user)
