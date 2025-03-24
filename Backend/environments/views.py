@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from .models import Environment, UserEnvironmentSubscription
 from .serializers import EnvironmentSerializer
 from users.authentication import APIKeyAuthentication
-
+import paho.mqtt.publish as publish
 
 @api_view(['GET', 'POST'])
 @authentication_classes([APIKeyAuthentication])
@@ -34,6 +34,7 @@ def create_environment(request):
         serializer = EnvironmentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
+            publish_reset_topic(environment.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -41,6 +42,10 @@ def create_environment(request):
         print(f"Error in create_environment view: {e}")
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+def publish_reset_topic(env_id):
+    topic = f"env/{env_id}/reset"
+    payload = "ready"
+    publish.single(topic, payload=payload, hostname="mqtt.aquaware.cloud", port=1883)
 
 def get_environment(request, id):
     try:
