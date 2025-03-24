@@ -45,7 +45,7 @@ def create_environment(request):
 def publish_reset_topic(env_id):
     topic = f"env/{env_id}/reset"
     payload = "ready"
-    publish.single(topic, payload=payload, hostname="emqx.railway.internal", port=1883)
+    publish.single(topic, payload=payload, hostname="emqx", port=1883)
 
 def get_environment(request, id):
     try:
