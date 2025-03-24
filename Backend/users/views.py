@@ -506,10 +506,10 @@ def mqtt_auth(request):
     Authenticates the MQTT client via API key.
     """
     api_key = request.data.get("username")
-    print("API KEY: " + api_key)
 
     try:
         user = User.objects.get(api_key=api_key)
+        print("Dingle")
         return JsonResponse({"result": "allow"})
     except User.DoesNotExist:
         return JsonResponse({"result": "deny"})
@@ -523,10 +523,12 @@ def mqtt_acl(request):
     """
     api_key = request.data.get("username")
     topic = request.data.get("topic")
+    print(api_key)
 
     try:
         user = User.objects.get(api_key=api_key)
 
+        print(user)
         if not topic.startswith("env/"):
             return JsonResponse({"result": "deny"})
 
