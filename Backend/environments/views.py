@@ -33,7 +33,7 @@ def create_environment(request):
     try:
         serializer = EnvironmentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            environment = serializer.save(user=request.user)
             publish_reset_topic(environment.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
