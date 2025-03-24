@@ -509,7 +509,7 @@ def mqtt_auth(request):
 
     try:
         user = User.objects.get(api_key=api_key)
-        print("Dingle")
+        print(user)
         return JsonResponse({"result": "allow"})
     except User.DoesNotExist:
         return JsonResponse({"result": "deny"})
