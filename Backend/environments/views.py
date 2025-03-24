@@ -34,7 +34,7 @@ def create_environment(request):
         serializer = EnvironmentSerializer(data=request.data)
         if serializer.is_valid():
             environment = serializer.save(user=request.user)
-            publish_reset_topic(environment.id)
+            publish_reset_topic(environment.id, request)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -42,10 +42,21 @@ def create_environment(request):
         print(f"Error in create_environment view: {e}")
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-def publish_reset_topic(env_id):
+def publish_reset_topic(env_id, request):
     topic = f"env/{env_id}/reset"
     payload = "ready"
-    publish.single(topic, payload=payload, hostname="emqx", port=1883)
+
+    publish.single(
+        topic=topic,
+        payload=payload,
+        hostname="emqx",
+        port=1883,
+        auth={
+            "username": request.user.api_key,
+            "password": ""  # wird ignoriert
+        }
+    )
+
 
 def get_environment(request, id):
     try:
