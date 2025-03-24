@@ -49,7 +49,7 @@ def publish_reset_topic(env_id, request):
     publish.single(
         topic=topic,
         payload=payload,
-        hostname="emqx",
+        hostname="crossover.proxy.rlwy.net",
         port=1883,
         auth={
             "username": request.user.api_key,
