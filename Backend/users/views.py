@@ -499,3 +499,42 @@ def get_update_frequency(request):
 
     return Response(response_data, status=200)
 
+@csrf_exempt
+@api_view(['POST'])
+def mqtt_auth(request):
+    """
+    Authenticates the MQTT client via API key.
+    """
+    api_key = request.data.get("username")
+
+    try:
+        user = User.objects.get(api_key=api_key)
+        return JsonResponse({"result": "allow"})
+    except User.DoesNotExist:
+        return JsonResponse({"result": "deny"})
+
+@csrf_exempt
+@api_view(['POST'])
+def mqtt_acl(request):
+    """
+    Authorizes topic access for the given API key.
+    Only allows access to topics for environments owned by the user.
+    """
+    api_key = request.data.get("username")
+    topic = request.data.get("topic")
+
+    try:
+        user = User.objects.get(api_key=api_key)
+
+        if not topic.startswith("env/"):
+            return JsonResponse({"result": "deny"})
+
+        env_id = topic.split("/")[1]
+        if Environment.objects.filter(id=env_id, user=user).exists():
+            return JsonResponse({"result": "allow"})
+        else:
+            return JsonResponse({"result": "deny"})
+
+    except Exception:
+        return JsonResponse({"result": "deny"})
+

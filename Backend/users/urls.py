@@ -35,4 +35,7 @@ urlpatterns = [
 
     # Webhooks
     path('webhooks/stripe/', user_views.stripe_webhook, name='webhook-stripe'),  # POST
+
+    path("mqtt/auth/", user_views.mqtt_auth, name="mqtt-auth"),
+    path("mqtt/acl/", user_views.mqtt_acl, name="mqtt-acl"),
 ]
