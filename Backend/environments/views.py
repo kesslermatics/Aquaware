@@ -42,11 +42,20 @@ def create_environment(request):
         print(f"Error in create_environment view: {e}")
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+def on_connect(client, userdata, flags, rc):
+    print('CONNACK received with code %d.' % (rc))
+
+
+
 def publish_reset_topic(env_id, request):
     topic = f"env/{env_id}/reset"
     payload = "ready"
 
-    publish.single(
+    client = paho.Client()
+    client.on_connect = on_connect
+    client.connect('emqx', 1883)
+
+    client.publish(
         topic=topic,
         payload=payload,
         hostname="emqx.railway.internal",
