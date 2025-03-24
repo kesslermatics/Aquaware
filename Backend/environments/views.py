@@ -53,7 +53,7 @@ def publish_reset_topic(env_id, request):
         port=1883,
         auth={
             "username": request.user.api_key,
-            "password": ""  # wird ignoriert
+            "password": "dummy"  # wird ignoriert
         }
     )
 
