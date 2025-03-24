@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from .models import Environment, UserEnvironmentSubscription
 from .serializers import EnvironmentSerializer
 from users.authentication import APIKeyAuthentication
-import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
+import paho.mqtt.client as mqtt
 
 @api_view(['GET', 'POST'])
 @authentication_classes([APIKeyAuthentication])
@@ -42,29 +43,17 @@ def create_environment(request):
         print(f"Error in create_environment view: {e}")
         return Response({'detail': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-def on_connect(client, userdata, flags, rc):
-    print('CONNACK received with code %d.' % (rc))
-
-
-
-def publish_reset_topic(env_id, request):
+def publish_reset_topic(env_id, api_key):
     topic = f"env/{env_id}/reset"
     payload = "ready"
 
-    client = paho.Client()
-    client.on_connect = on_connect
-    client.connect('emqx', 1883)
+    client = mqtt.Client(client_id=f"aquaware-env-{env_id}")
+    client.username_pw_set(username=api_key, password="dummy")
+    client.on_log = lambda c, u, l, s: print(f"[MQTT LOG] {s}")
 
-    client.publish(
-        topic=topic,
-        payload=payload,
-        hostname="emqx.railway.internal",
-        port=1883,
-        auth={
-            "username": request.user.api_key,
-            "password": "dummy"  # wird ignoriert
-        }
-    )
+    client.connect("emqx", 1883, 60)
+    client.publish(topic, payload)
+    client.disconnect()
 
 
 def get_environment(request, id):
