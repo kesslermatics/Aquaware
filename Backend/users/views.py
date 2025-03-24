@@ -525,12 +525,10 @@ def mqtt_acl(request):
     print("test")
     api_key = request.data.get("username")
     topic = request.data.get("topic")
-    print(api_key)
 
     try:
         user = User.objects.get(api_key=api_key)
 
-        print(user)
         if not topic.startswith("env/"):
             return JsonResponse({"result": "deny"})
 
