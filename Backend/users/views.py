@@ -521,6 +521,7 @@ def mqtt_acl(request):
     Authorizes topic access for the given API key.
     Only allows access to topics for environments owned by the user.
     """
+    print("test")
     api_key = request.data.get("username")
     topic = request.data.get("topic")
     print(api_key)
