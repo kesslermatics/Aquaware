@@ -45,7 +45,7 @@ def create_environment(request):
 def publish_reset_topic(env_id, request):
     topic = f"env/{env_id}/reset"
     payload = "ready"
-    print(request.user.api_key)
+
     publish.single(
         topic=topic,
         payload=payload,
