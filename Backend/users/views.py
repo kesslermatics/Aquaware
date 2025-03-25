@@ -28,7 +28,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 import random
 from datetime import timedelta
 from django.utils.timezone import now
-
+from users.models import User
+from water.models import Environment
 from .models import SubscriptionTier
 from .serializers import UserSerializer, RegisterSerializer, CustomTokenObtainPairSerializer
 
@@ -509,8 +510,6 @@ def mqtt_auth(request):
 
     try:
         user = User.objects.get(api_key=api_key)
-        print("Auth worked")
-        print(request.data)
         return JsonResponse({"result": "allow"})
     except User.DoesNotExist:
         return JsonResponse({"result": "deny"})
@@ -522,22 +521,55 @@ def mqtt_acl(request):
     Authorizes topic access for the given API key.
     Only allows access to topics for environments owned by the user.
     """
-    print("test")
+    print("📥 [ACL] Incoming ACL request")
+
+    # Log raw request data
+    print(f"📦 Raw request data: {request.data}")
+
     api_key = request.data.get("username")
     topic = request.data.get("topic")
+    action = request.data.get("action")
+
+    print(f"🔑 Username (API Key): {api_key}")
+    print(f"📍 Topic: {topic}")
+    print(f"🛠️ Action: {action}")
+
+    if not api_key or not topic:
+        print("❌ Missing username or topic in request")
+        return JsonResponse({"result": "deny"})
 
     try:
         user = User.objects.get(api_key=api_key)
-
-        if not topic.startswith("env/"):
-            return JsonResponse({"result": "deny"})
-
-        env_id = topic.split("/")[1]
-        if Environment.objects.filter(id=env_id, user=user).exists():
-            return JsonResponse({"result": "allow"})
-        else:
-            return JsonResponse({"result": "deny"})
-
-    except Exception:
+        print(f"✅ Found user: {user.email}")
+    except User.DoesNotExist:
+        print("❌ No user found with this API key")
         return JsonResponse({"result": "deny"})
 
+    # Check if topic is valid
+    if not topic.startswith("env/"):
+        print("❌ Topic does not start with 'env/' – access denied")
+        return JsonResponse({"result": "deny"})
+
+    try:
+        env_id = int(topic.split("/")[1])
+        print(f"🔍 Extracted Environment ID from topic: {env_id}")
+    except IndexError:
+        print("❌ Failed to extract environment ID from topic")
+        return JsonResponse({"result": "deny"})
+
+    print(f"🔎 Checking ownership: env_id = {env_id} (type: {type(env_id)}), user = {user.email}")
+
+    if Environment.objects.filter(id=env_id, user=user).exists():
+        print(f"✅ Access GRANTED → User '{user.email}' owns Environment ID {env_id}")
+        return JsonResponse({"result": "allow"})
+    else:
+        print(f"❌ Access DENIED → No match found for Environment ID {env_id} owned by User '{user.email}'")
+
+        # Debug: zeigen, ob Environment überhaupt existiert
+        if Environment.objects.filter(id=env_id).exists():
+            print("ℹ️ Environment exists, but belongs to a different user.")
+        else:
+            print("⚠️ Environment with this ID does NOT exist at all.")
+            return JsonResponse({"result": "allow"})
+
+        return JsonResponse({"result": "deny"})
