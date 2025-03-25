@@ -44,13 +44,51 @@ def create_environment(request):
 def publish_reset_topic(env_id, api_key):
     topic = f"env/{env_id}/reset"
     payload = "ready"
+    client_id = f"aquaware-env-{env_id}"
 
-    client = mqtt.Client(client_id=f"aquaware-env-{env_id}")
+    print("🔧 MQTT Publish – Reset Topic")
+    print(f"📍 Topic: {topic}")
+    print(f"📦 Payload: {payload}")
+    print(f"🔑 Using API Key: {api_key}")
+    print(f"🆔 Client ID: {client_id}")
+    print(f"🌐 Broker: emqx:1883")
+
+    def on_connect(client, userdata, flags, rc):
+        print(f"✅ Connected to broker with result code: {rc}")
+
+    def on_publish(client, userdata, mid):
+        print(f"📨 Published message. Message ID: {mid}")
+
+    def on_log(client, userdata, level, buf):
+        print(f"📘 [MQTT LOG]: {buf}")
+
+    client = mqtt.Client(client_id=client_id)
     client.username_pw_set(username=api_key, password="dummy")
 
-    client.connect("emqx", 1883, 60)
-    client.publish(topic, payload)
-    client.disconnect()
+    client.on_connect = on_connect
+    client.on_publish = on_publish
+    client.on_log = on_log
+
+    try:
+        print("🚀 Connecting to broker...")
+        client.connect("emqx", 1883, 60)
+
+        print("📡 Starting MQTT loop...")
+        client.loop_start()
+
+        print("📤 Publishing...")
+        result = client.publish(topic, payload)
+
+        result.wait_for_publish()
+
+        print("🛑 Disconnecting...")
+        client.loop_stop()
+        client.disconnect()
+
+        print("✅ Done.")
+
+    except Exception as e:
+        print(f"❌ Error during MQTT publish: {e}")
 
 
 def get_environment(request, id):
