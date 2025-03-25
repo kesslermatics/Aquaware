@@ -43,7 +43,7 @@ def create_environment(request):
 
 def publish_reset_topic(env_id, api_key):
     topic = f"env/{env_id}/reset"
-    payload = "ready"
+    payload = "reset"
     client_id = f"aquaware-env-{env_id}"
 
     print("🔧 MQTT Publish – Reset Topic")
