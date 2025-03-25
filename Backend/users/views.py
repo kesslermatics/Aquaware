@@ -551,15 +551,13 @@ def mqtt_acl(request):
         return JsonResponse({"result": "deny"})
 
     try:
-        env_id = topic.split("/")[1]
+        env_id = int(topic.split("/")[1])
         print(f"🔍 Extracted Environment ID from topic: {env_id}")
     except IndexError:
         print("❌ Failed to extract environment ID from topic")
         return JsonResponse({"result": "deny"})
 
-    environment = Environment.objects.get(id=env_id, user=user)
-
-    if environment:
+    if Environment.objects.filter(id=env_id, user=user).exists():
         print(f"✅ User owns environment {env_id} – access allowed")
         return JsonResponse({"result": "allow"})
     else:
