@@ -557,9 +557,18 @@ def mqtt_acl(request):
         print("❌ Failed to extract environment ID from topic")
         return JsonResponse({"result": "deny"})
 
+    print(f"🔎 Checking ownership: env_id = {env_id} (type: {type(env_id)}), user = {user.email}")
+
     if Environment.objects.filter(id=env_id, user=user).exists():
-        print(f"✅ User owns environment {env_id} – access allowed")
+        print(f"✅ Access GRANTED → User '{user.email}' owns Environment ID {env_id}")
         return JsonResponse({"result": "allow"})
     else:
-        print(f"❌ User does NOT own environment {env_id} – access denied")
+        print(f"❌ Access DENIED → No match found for Environment ID {env_id} owned by User '{user.email}'")
+
+        # Debug: zeigen, ob Environment überhaupt existiert
+        if Environment.objects.filter(id=env_id).exists():
+            print("ℹ️ Environment exists, but belongs to a different user.")
+        else:
+            print("⚠️ Environment with this ID does NOT exist at all.")
+
         return JsonResponse({"result": "deny"})
