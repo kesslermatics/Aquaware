@@ -144,7 +144,7 @@ class _SetupHardwareScreenState extends State<SetupHardwareScreen> {
       if (characteristic != null) {
         await characteristic.setNotifyValue(true);
 
-        await characteristic.write(bleData.codeUnits, withoutResponse: false);
+        await characteristic.write(bleData.codeUnits, withoutResponse: true);
 
         // Warte 30 Sekunden, bis Controller Setup abschließt
         await Future.delayed(const Duration(seconds: 30));
