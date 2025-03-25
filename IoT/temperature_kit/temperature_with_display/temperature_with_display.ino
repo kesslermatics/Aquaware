@@ -11,6 +11,7 @@
 #include <BLEServer.h>
 #include "esp_bt.h"
 #include <BLE2902.h>
+#include <PubSubClient.h>
 
 DFRobot_Lcd_IIC lcd(&Wire, 0x2c);
 #define TEMP_PIN  D7  // e.g., "D7" on some boards = GPIO13
@@ -23,6 +24,9 @@ DallasTemperature tempSensor(&oneWire);
 BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristic = NULL;
 bool deviceConnected = false;
+
+WiFiClient espClient;
+PubSubClient client(espClient);
 
 uint8_t tempLabel, tdsLabel;
 uint8_t envNameLabel;
@@ -37,12 +41,18 @@ unsigned long updateInterval = 1800000;  // 30 Minutes (30 * 60 * 1000 ms)
 unsigned long lastUpload     = 0;
 unsigned long lastDisplayUpdate = 25000;
 
+const char* mqttServer = "crossover.proxy.rlwy.net";
+const int mqttPort = 12112;
+
 void connectToWiFiAndValidate();
 void fetchEnvironmentName(const String& envId);
 void fetchUpdateFrequency();
 void updateDisplay(float temperature, float tds);
 void sendSensorData(float temperature, float tds);
 float readTDS(float temperature);
+void callback(char* topic, byte* payload, unsigned int length);
+void connectToMQTT();
+void startBLESetup();
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -106,6 +116,8 @@ class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
             int responseCode = http.POST("{}");
 
             if (responseCode == 200) {
+              
+                connectToMQTT();
                 Serial.println("[HTTP] Setup marked successfully.");
             } else {
                 Serial.print("[HTTP] Failed to mark setup. Code: ");
@@ -138,35 +150,14 @@ void setup() {
 
   bool hasCredentials = (ssid.length() > 0 && password.length() > 0 && apiKey.length() > 0 && envId.length() > 0);
 
+
   // 🔄 Init BLE only if no credentials found
   if (!hasCredentials) {
-    Serial.println(F("[BLE] No credentials found. Starting BLE setup..."));
-
-    BLEDevice::init("Aquaware BLE");
-    pServer = BLEDevice::createServer();
-    pServer->setCallbacks(new MyServerCallbacks());
-
-    BLEService* pService = pServer->createService(SERVICE_UUID);
-    BLEDevice::setPower(ESP_PWR_LVL_N12);
-
-    pCharacteristic = pService->createCharacteristic(
-      CHARACTERISTIC_UUID,
-      BLECharacteristic::PROPERTY_READ |
-      BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_INDICATE
-    );
-    pCharacteristic->addDescriptor(new BLE2902());
-    pCharacteristic->setCallbacks(new MyCharacteristicCallbacks());
-    pService->start();
-
-    BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
-    pAdvertising->addServiceUUID(SERVICE_UUID);
-    pAdvertising->setScanResponse(true);
-    pAdvertising->setMinPreferred(0x06);
-    BLEDevice::startAdvertising();
-
-    Serial.println(F("[BLE] BLE advertising started. Waiting for connection."));
+    startBLESetup();
   } else {
     Serial.println("Credentials found. No BLE needed");
+    
+    connectToWiFiAndValidate();
   }
 
   // 🖥️ Init LCD
@@ -183,13 +174,17 @@ void setup() {
   tdsLabel = lcd.drawString(100, 110, "", 1, BLUE);
 
   tempSensor.begin();
-
-  // 🌐 WiFi Setup
-  connectToWiFiAndValidate();
 }
 
 
 void loop() {
+  if (WiFi.status() == WL_CONNECTED) {
+  if (!client.connected()) {
+    connectToMQTT();  // Reconnect falls nötig
+  }
+    client.loop(); // Wichtig für eingehende Nachrichten
+  }
+
   unsigned long currentTime = millis();
 
   if (currentTime - lastDisplayUpdate >= 30000) {
@@ -221,6 +216,89 @@ void loop() {
         sendSensorData(temperature, tdsValue);
     }
 }
+
+void startBLESetup() {
+  Serial.println(F("[BLE] Starte BLE Setup..."));
+
+  BLEDevice::init("Aquaware BLE");
+  pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+
+  BLEService* pService = pServer->createService(SERVICE_UUID);
+  BLEDevice::setPower(ESP_PWR_LVL_N12);
+
+  pCharacteristic = pService->createCharacteristic(
+    CHARACTERISTIC_UUID,
+    BLECharacteristic::PROPERTY_READ |
+    BLECharacteristic::PROPERTY_WRITE | 
+    BLECharacteristic::PROPERTY_WRITE_NR |
+    BLECharacteristic::PROPERTY_NOTIFY |
+    BLECharacteristic::PROPERTY_INDICATE
+  );
+
+  pCharacteristic->addDescriptor(new BLE2902());
+  pCharacteristic->setCallbacks(new MyCharacteristicCallbacks());
+  pService->start();
+
+  BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->setScanResponse(true);
+  pAdvertising->setMinPreferred(0x06);
+  BLEDevice::startAdvertising();
+
+  Serial.println(F("[BLE] Advertising aktiv."));
+}
+
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("[MQTT] Message received on topic: ");
+  Serial.println(topic);
+
+  String message;
+  for (int i = 0; i < length; i++) {
+    message += (char)payload[i];
+  }
+
+  Serial.print("[MQTT] Payload: ");
+  Serial.println(message);
+
+  if (message == "reset") {
+    preferences.begin("wifi", false);
+    preferences.clear();
+    preferences.end();
+    ESP.restart();
+} else if (message == "calibrate") {
+    // z.B. Kalibrierung starten
+    Serial.println("[MQTT] Starting calibration...");
+}
+}
+
+void connectToMQTT() {
+  preferences.begin("wifi", true);
+  String apiKey = preferences.getString("api-key", "");
+  String envId = preferences.getString("env-id", "");
+  preferences.end();
+
+  client.setServer(mqttServer, mqttPort);
+  client.setCallback(callback);
+
+  while (!client.connected()) {
+    Serial.println("[MQTT] Connecting to broker...");
+    if (client.connect("esp32_client", apiKey.c_str(), "dummy")) {
+      Serial.println("[MQTT] Connected!");
+      String topic = "env/" + envId + "/reset";
+      client.subscribe(topic.c_str());
+      Serial.print("[MQTT] Subscribed to: ");
+      Serial.println(topic);
+    } else {
+      Serial.print("[MQTT] Failed. State: ");
+      Serial.println(client.state());
+      delay(2000);
+    }
+  }
+}
+
+
 
 void updateDisplay(float temperature, float tds) {
     preferences.begin("wifi", true);
@@ -275,11 +353,25 @@ void connectToWiFiAndValidate() {
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid.c_str(), password.c_str());
 
-    unsigned long startAttemptTime = millis();
-    while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 10000) {
+    int maxAttempts = 20;
+    int attempts = 0;
+
+    while (WiFi.status() != WL_CONNECTED && attempts < maxAttempts) {
         delay(500);
         Serial.print(".");
+        attempts++;
     }
+
+    if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("\n[WiFi] Verbindung fehlgeschlagen. Setze Preferences zurück...");
+
+    preferences.begin("wifi", false);
+    preferences.clear();
+    preferences.end();
+
+    delay(1000);
+    setup(); // Neustart der Konfiguration
+}
 
     bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
 
@@ -293,7 +385,7 @@ void connectToWiFiAndValidate() {
 
     // Falls WiFi verbunden, abrufen von envName und Update-Frequency
     if (isWiFiConnected) {
-        fetchEnvironmentName(envId);
+        fetchEnvironmentName(envId);   
     }
 }
 
@@ -320,7 +412,7 @@ void fetchEnvironmentName(const String& envId) {
   http.addHeader("x-api-key", apiKey);
 
   int httpResponseCode = http.GET();
-
+  
   if (httpResponseCode == 200) {
     String response = http.getString();
 
@@ -338,9 +430,16 @@ void fetchEnvironmentName(const String& envId) {
     }
   } else {
     Serial.println(F("[EnvName] Error or non-200 code."));
-    lcd.drawString(30, 200, "Error while fetching env-name", 2, ORANGE);  
-    setup();
-  }
+    lcd.drawString(30, 200, "Error while fetching env-name", 2, ORANGE);
+
+    // ⚠️ Alle gespeicherten Credentials löschen
+    preferences.begin("wifi", false);
+    preferences.clear();
+    preferences.end();
+
+    delay(2000);
+    ESP.restart();  // Neustart erzwingen
+}
   http.end();
 }
 
