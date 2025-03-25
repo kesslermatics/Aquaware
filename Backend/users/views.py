@@ -522,22 +522,45 @@ def mqtt_acl(request):
     Authorizes topic access for the given API key.
     Only allows access to topics for environments owned by the user.
     """
-    print("test")
+    print("📥 [ACL] Incoming ACL request")
+
+    # Log raw request data
+    print(f"📦 Raw request data: {request.data}")
+
     api_key = request.data.get("username")
     topic = request.data.get("topic")
+    action = request.data.get("action")
+
+    print(f"🔑 Username (API Key): {api_key}")
+    print(f"📍 Topic: {topic}")
+    print(f"🛠️ Action: {action}")
+
+    if not api_key or not topic:
+        print("❌ Missing username or topic in request")
+        return JsonResponse({"result": "deny"})
 
     try:
         user = User.objects.get(api_key=api_key)
-
-        if not topic.startswith("env/"):
-            return JsonResponse({"result": "deny"})
-
-        env_id = topic.split("/")[1]
-        if Environment.objects.filter(id=env_id, user=user).exists():
-            return JsonResponse({"result": "allow"})
-        else:
-            return JsonResponse({"result": "deny"})
-
-    except Exception:
+        print(f"✅ Found user: {user.email}")
+    except User.DoesNotExist:
+        print("❌ No user found with this API key")
         return JsonResponse({"result": "deny"})
 
+    # Check if topic is valid
+    if not topic.startswith("env/"):
+        print("❌ Topic does not start with 'env/' – access denied")
+        return JsonResponse({"result": "deny"})
+
+    try:
+        env_id = topic.split("/")[1]
+        print(f"🔍 Extracted Environment ID from topic: {env_id}")
+    except IndexError:
+        print("❌ Failed to extract environment ID from topic")
+        return JsonResponse({"result": "deny"})
+
+    if Environment.objects.filter(id=env_id, user=user).exists():
+        print(f"✅ User owns environment {env_id} – access allowed")
+        return JsonResponse({"result": "allow"})
+    else:
+        print(f"❌ User does NOT own environment {env_id} – access denied")
+        return JsonResponse({"result": "deny"})
