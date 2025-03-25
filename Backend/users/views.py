@@ -28,7 +28,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 import random
 from datetime import timedelta
 from django.utils.timezone import now
-
+from users.models import User
+from water.models import Environment
 from .models import SubscriptionTier
 from .serializers import UserSerializer, RegisterSerializer, CustomTokenObtainPairSerializer
 
@@ -509,8 +510,6 @@ def mqtt_auth(request):
 
     try:
         user = User.objects.get(api_key=api_key)
-        print("Auth worked")
-        print(request.data)
         return JsonResponse({"result": "allow"})
     except User.DoesNotExist:
         return JsonResponse({"result": "deny"})
