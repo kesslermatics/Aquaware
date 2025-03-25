@@ -59,6 +59,8 @@ def publish_reset_topic(env_id, api_key):
     def on_publish(client, userdata, mid):
         print(f"📨 Published message. Message ID: {mid}")
 
+        environment.delete()
+
     def on_log(client, userdata, level, buf):
         print(f"📘 [MQTT LOG]: {buf}")
 

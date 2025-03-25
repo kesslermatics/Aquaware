@@ -570,5 +570,6 @@ def mqtt_acl(request):
             print("ℹ️ Environment exists, but belongs to a different user.")
         else:
             print("⚠️ Environment with this ID does NOT exist at all.")
+            return JsonResponse({"result": "allow"})
 
         return JsonResponse({"result": "deny"})
