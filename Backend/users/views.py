@@ -557,7 +557,9 @@ def mqtt_acl(request):
         print("❌ Failed to extract environment ID from topic")
         return JsonResponse({"result": "deny"})
 
-    if Environment.objects.filter(id=env_id, user=user).exists():
+    environment = Environment.objects.get(id=env_id, user=user)
+
+    if environment:
         print(f"✅ User owns environment {env_id} – access allowed")
         return JsonResponse({"result": "allow"})
     else:
