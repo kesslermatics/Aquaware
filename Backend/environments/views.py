@@ -121,8 +121,8 @@ def delete_environment(request, id):
         # Check if the environment belongs to the user (ownership)
         environment = Environment.objects.get(id=id, user=user)
         # If the user is the owner, delete the environment
-        environment.delete()
         publish_reset_topic(environment.id, request.user.api_key)
+        environment.delete()
         return Response({'message': 'Environment deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
     except Environment.DoesNotExist:
