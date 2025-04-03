@@ -30,8 +30,7 @@ PubSubClient client(espClient);
 
 uint8_t tempLabel, tdsLabel;
 uint8_t envNameLabel;
-uint8_t hour = 0, minute = 0;
-
+uint8_t statusLabel;  // Für untere Statuszeile
 Preferences preferences;
 
 #define SERVICE_UUID        "12345678-1234-5678-1234-56789abcdef0"
@@ -53,6 +52,7 @@ float readTDS(float temperature);
 void callback(char* topic, byte* payload, unsigned int length);
 void connectToMQTT();
 void startBLESetup();
+void updateStatus(String messageDe, String messageEn);
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -172,6 +172,7 @@ void setup() {
   envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
   tempLabel = lcd.drawString(100, 60, "", 1, ORANGE);
   tdsLabel = lcd.drawString(100, 110, "", 1, BLUE);
+  statusLabel = lcd.drawString(30, 200, "", 2, ORANGE);
 
   tempSensor.begin();
 }
@@ -247,6 +248,7 @@ void startBLESetup() {
   BLEDevice::startAdvertising();
 
   Serial.println(F("[BLE] Advertising aktiv."));
+  updateStatus("Bereit für App", "Ready for app");
 }
 
 
@@ -298,43 +300,45 @@ void connectToMQTT() {
   }
 }
 
-
-
 void updateDisplay(float temperature, float tds) {
-    preferences.begin("wifi", true);
-    String envName = preferences.getString("env-name", "");
-    String language = preferences.getString("language", "en");
-    preferences.end();
+  preferences.begin("wifi", true);
+  String envName = preferences.getString("env-name", "");
+  String language = preferences.getString("language", "en");
+  preferences.end();
 
-    bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
+  bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
 
-    lcd.cleanScreen();
+  // ENV-Name nur anzeigen, wenn verbunden
+  if (isWiFiConnected && envName.length() > 0) {
+    lcd.updateString(envNameLabel, 10, 10, envName, 2, WHITE);
+    updateStatus("WLAN verbunden", "WiFi Connected");
+  } else {
+    updateStatus("Einrichten per App", "Setup required via app");
+  }
 
-    // Zeige nur den Environment-Namen, wenn WiFi verbunden ist
-    if (isWiFiConnected && envName.length() > 0) {
-        lcd.drawString(10, 10, envName, 2, WHITE);
-    }
+  // Temperaturanzeige
+  String tempStr = String(temperature) + "°C";
+  lcd.drawIcon(30, 40, "/sensor icon/thermometer.png", 120);
+  lcd.updateString(tempLabel, 100, 60, tempStr, 1, ORANGE);
+  
 
-    // Position der Sensorwerte
-    int iconX = 30;
-    int valueX = 100;
-    int tempY = 40;
-    int tdsY = 90;
+  // TDS-Anzeige
+  String tdsStr = String(tds) + " mg/L";
+  lcd.drawIcon(30, 90, "/sensor icon/raindrops.png", 120);
+  lcd.updateString(tdsLabel, 100, 110, tdsStr, 1, BLUE);
+  
+}
 
-    // Temperaturanzeige
-    lcd.drawIcon(iconX, tempY, "/sensor icon/thermometer.png", 120);
-    lcd.drawString(valueX, tempY + 20, String(temperature) + "°C", 1, ORANGE);
 
-    // TDS-Anzeige
-    lcd.drawIcon(iconX, tdsY, "/sensor icon/raindrops.png", 120);
-    lcd.drawString(valueX, tdsY + 20, String(tds) + " mg/L", 1, BLUE);
+void updateStatus(String messageDe, String messageEn) {
+  preferences.begin("wifi", true);
+  String language = preferences.getString("language", "en");
+  preferences.end();
 
-    // WiFi-Statusanzeige am unteren Rand
-    if (language == "de") {
-        lcd.drawString(30, 200, isWiFiConnected ? "WLAN verbunden" : "WLAN nicht verbunden", 2, ORANGE);
-    } else {
-        lcd.drawString(30, 200, isWiFiConnected ? "WiFi Connected" : "WiFi Not Connected", 2, ORANGE);
-    }
+  String msg = (language == "de") ? messageDe : messageEn;
+
+  lcd.updateString(statusLabel, 30, 200, msg, 2, ORANGE);
+  
 }
 
 void connectToWiFiAndValidate() {
@@ -363,29 +367,26 @@ void connectToWiFiAndValidate() {
     }
 
     if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("\n[WiFi] Verbindung fehlgeschlagen. Setze Preferences zurück...");
+      Serial.println("\n[WiFi] Verbindung fehlgeschlagen. Setze Preferences zurück...");
 
-    preferences.begin("wifi", false);
-    preferences.clear();
-    preferences.end();
+      preferences.begin("wifi", false);
+      preferences.clear();
+      preferences.end();
 
-    delay(1000);
-    setup(); // Neustart der Konfiguration
-}
+      delay(1000);
+      setup(); // Neustart der Konfiguration
+    }
 
     bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
 
     // **WiFi-Statusanzeige unten aktualisieren**
     lcd.cleanScreen();
-    if (language == "de") {
-        lcd.drawString(30, 200, isWiFiConnected ? "WLAN verbunden" : "WLAN nicht verbunden", 2, ORANGE);
-    } else {
-        lcd.drawString(30, 200, isWiFiConnected ? "WiFi Connected" : "WiFi Not Connected", 2, ORANGE);
-    }
-
     // Falls WiFi verbunden, abrufen von envName und Update-Frequency
     if (isWiFiConnected) {
         fetchEnvironmentName(envId);   
+    }
+    else {
+      updateStatus("Einrichten per App", "Setup required via app");
     }
 }
 
@@ -430,7 +431,6 @@ void fetchEnvironmentName(const String& envId) {
     }
   } else {
     Serial.println(F("[EnvName] Error or non-200 code."));
-    lcd.drawString(30, 200, "Error while fetching env-name", 2, ORANGE);
 
     // ⚠️ Alle gespeicherten Credentials löschen
     preferences.begin("wifi", false);
@@ -472,13 +472,11 @@ void sendSensorData(float temperature, float tds) {
     if (httpResponseCode != 201) {
         Serial.println(F("[ERROR] API request failed! Resetting device..."));
         preferences.begin("wifi", false);
-        lcd.drawString(30, 200, "Error while uploading", 1, ORANGE);  
 
         preferences.end();
         ESP.restart();
     } else {
-        Serial.println(F("[API] Data successfully sent!"));
-        lcd.drawString(30, 200, "Error while sending data", 2, ORANGE);  
+        Serial.println(F("[API] Data successfully sent!")); 
     }
 
     http.end();

@@ -106,33 +106,18 @@
               "sidebar": "devDocSidebar"
             },
             {
-              "id": "getting-started/activate-the-hardware-kit",
-              "path": "/de/docs/getting-started/activate-the-hardware-kit",
+              "id": "getting-started/confirmation",
+              "path": "/de/docs/getting-started/confirmation",
               "sidebar": "gettingStartedSidebar"
             },
             {
-              "id": "getting-started/create-an-account",
-              "path": "/de/docs/getting-started/create-an-account",
+              "id": "getting-started/dashboard",
+              "path": "/de/docs/getting-started/dashboard",
               "sidebar": "gettingStartedSidebar"
             },
             {
-              "id": "getting-started/create-new-environment",
-              "path": "/de/docs/getting-started/create-new-environment",
-              "sidebar": "gettingStartedSidebar"
-            },
-            {
-              "id": "getting-started/explore-the-dashboard",
-              "path": "/de/docs/getting-started/explore-the-dashboard",
-              "sidebar": "gettingStartedSidebar"
-            },
-            {
-              "id": "getting-started/thank-you",
-              "path": "/de/docs/getting-started/thank-you",
-              "sidebar": "gettingStartedSidebar"
-            },
-            {
-              "id": "getting-started/use-the-app",
-              "path": "/de/docs/getting-started/use-the-app",
+              "id": "getting-started/kit-setup",
+              "path": "/de/docs/getting-started/kit-setup",
               "sidebar": "gettingStartedSidebar"
             },
             {

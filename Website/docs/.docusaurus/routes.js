@@ -24,15 +24,15 @@ export default [
   },
   {
     path: '/de/docs',
-    component: ComponentCreator('/de/docs', '49b'),
+    component: ComponentCreator('/de/docs', '8cb'),
     routes: [
       {
         path: '/de/docs',
-        component: ComponentCreator('/de/docs', 'd85'),
+        component: ComponentCreator('/de/docs', '9ef'),
         routes: [
           {
             path: '/de/docs',
-            component: ComponentCreator('/de/docs', '7c4'),
+            component: ComponentCreator('/de/docs', 'ad1'),
             routes: [
               {
                 path: '/de/docs/dev-docs/animal-detection/how_to_identify_any_fish',
@@ -149,38 +149,20 @@ export default [
                 sidebar: "devDocSidebar"
               },
               {
-                path: '/de/docs/getting-started/activate-the-hardware-kit',
-                component: ComponentCreator('/de/docs/getting-started/activate-the-hardware-kit', '943'),
+                path: '/de/docs/getting-started/confirmation',
+                component: ComponentCreator('/de/docs/getting-started/confirmation', 'bcd'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/de/docs/getting-started/create-an-account',
-                component: ComponentCreator('/de/docs/getting-started/create-an-account', 'e1d'),
+                path: '/de/docs/getting-started/dashboard',
+                component: ComponentCreator('/de/docs/getting-started/dashboard', '310'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },
               {
-                path: '/de/docs/getting-started/create-new-environment',
-                component: ComponentCreator('/de/docs/getting-started/create-new-environment', 'a90'),
-                exact: true,
-                sidebar: "gettingStartedSidebar"
-              },
-              {
-                path: '/de/docs/getting-started/explore-the-dashboard',
-                component: ComponentCreator('/de/docs/getting-started/explore-the-dashboard', 'a25'),
-                exact: true,
-                sidebar: "gettingStartedSidebar"
-              },
-              {
-                path: '/de/docs/getting-started/thank-you',
-                component: ComponentCreator('/de/docs/getting-started/thank-you', 'cba'),
-                exact: true,
-                sidebar: "gettingStartedSidebar"
-              },
-              {
-                path: '/de/docs/getting-started/use-the-app',
-                component: ComponentCreator('/de/docs/getting-started/use-the-app', '15e'),
+                path: '/de/docs/getting-started/kit-setup',
+                component: ComponentCreator('/de/docs/getting-started/kit-setup', '728'),
                 exact: true,
                 sidebar: "gettingStartedSidebar"
               },

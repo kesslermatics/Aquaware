@@ -2,30 +2,27 @@
 sidebar_position: 1
 ---
 
-# Welcome to Aquaware
+# Welcome to Aquaware 🌊
 
-I am thrilled to have you here! Aquaware is a platform created with love and care to make water monitoring and management simple, powerful, and accessible for everyone. Whether you’re a hobbyist, a researcher, professional, an organisation or someone just getting started, I am here to support your journey.
+This guide helps you set up your Aquaware Sensor Kit in just a few minutes – directly via the **Aquaware App**, no Wi-Fi setup required!
 
-## What is Aquaware?
+## 1. Download the App 📱
 
-Aquaware helps you keep track of your water environments with ease. From monitoring key water parameters to setting up custom alerts and exploring data insights, it’s all designed to empower you and your projects.
+Install the app **"Aquaware"** from the Google Play Store:  
 
-If you’re a **developer**, make sure to check out our [Developer API Documentation](../dev-docs/quick-start-guide). Here, you can integrate your own systems, build custom tools, or even contribute to our open-source platform.
+[➡️ Open in Play Store](https://play.google.com/store/apps/details?id=kesslermatics.aquaware&hl=en-US)
 
-## Let’s Get Started!
+<img src={require("/static/img/en/playstore_aquaware.png").default} width="150"/>
 
-Getting started is easy, and I am here to guide you every step of the way:
+## 2. Select Language 🌍
 
-1. [Create Your Account](https://www.dashboard.aquaware.cloud/signup/): Join our community and start your journey.
-2. [Login](https://www.dashboard.aquaware.cloud/login/): Access your dashboard and begin exploring what Aquaware can do for you.
-3. [Discover the Documentation](#): Whether you’re looking for tips, guides, or technical API references, it’s all here.
+After starting te application, you'll be asked to select your preferred language.  
+> ⚠️ This language will also be applied to your sensor kit.
 
-## Need Help or Have Questions?
+Choose either **English or German**.
 
-We’re here for you! If you need support or just want to learn more, check out these resources:
+## 3. Sign in 🔐
 
-- [Contact Us](mailto:info@kesslermatics.com): Reach out anytime; we’d love to hear from you.
+Once the app starts, you’ll be asked to sign in with your email and password or register for a new account.
 
----
 
-Let's get us going with the first step: **Creating an account**
