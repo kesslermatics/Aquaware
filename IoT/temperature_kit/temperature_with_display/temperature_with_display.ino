@@ -160,18 +160,18 @@ void setup() {
     connectToWiFiAndValidate();
   }
 
-  // 🖥️ Init LCD
-  if (lcd.begin()) {
-    lcd.cleanScreen();
+    while (!lcd.begin()) {
+        delay(1000);
+        Serial.print(F("[LCD] ."));
+    }
+    
+lcd.cleanScreen();
     lcd.setBackgroundColor(BLACK);
     Serial.println(F("[LCD] Successfully initialized."));
-  } else {
-    Serial.println(F("[LCD] Error initializing! Check I2C address/wiring."));
-  }
 
   envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
-  tempLabel = lcd.drawString(100, 60, "", 1, ORANGE);
-  tdsLabel = lcd.drawString(100, 110, "", 1, BLUE);
+  tempLabel = lcd.drawString(30, 60, "TEM: ", 1, ORANGE);
+  tdsLabel = lcd.drawString(30, 110, "TDS: ", 1, BLUE);
   statusLabel = lcd.drawString(30, 200, "", 2, ORANGE);
 
   tempSensor.begin();
@@ -286,7 +286,8 @@ void connectToMQTT() {
 
   while (!client.connected()) {
     Serial.println("[MQTT] Connecting to broker...");
-    if (client.connect("esp32_client", apiKey.c_str(), "dummy")) {
+    String clientId = apiKey + "-" + envId;
+    if (client.connect(clientId.c_str(), apiKey.c_str(), "dummy")) {      
       Serial.println("[MQTT] Connected!");
       String topic = "env/" + envId + "/reset";
       client.subscribe(topic.c_str());
@@ -310,22 +311,20 @@ void updateDisplay(float temperature, float tds) {
 
   // ENV-Name nur anzeigen, wenn verbunden
   if (isWiFiConnected && envName.length() > 0) {
-    lcd.updateString(envNameLabel, 10, 10, envName, 2, WHITE);
+    lcd.updateString(envNameLabel, 30, 10, envName, 2, WHITE);
     updateStatus("WLAN verbunden", "WiFi Connected");
   } else {
     updateStatus("Einrichten per App", "Setup required via app");
   }
 
   // Temperaturanzeige
-  String tempStr = String(temperature) + "°C";
-  lcd.drawIcon(30, 40, "/sensor icon/thermometer.png", 120);
-  lcd.updateString(tempLabel, 100, 60, tempStr, 1, ORANGE);
+  String tempStr = "TEM: " + String(temperature) + "°C";
+  lcd.updateString(tempLabel, 30, 60, tempStr, 1, WHITE);
   
 
   // TDS-Anzeige
-  String tdsStr = String(tds) + " mg/L";
-  lcd.drawIcon(30, 90, "/sensor icon/raindrops.png", 120);
-  lcd.updateString(tdsLabel, 100, 110, tdsStr, 1, BLUE);
+  String tdsStr = "TDS: " + String(tds) + " mg/L";
+  lcd.updateString(tdsLabel, 30, 90, tdsStr, 1, WHITE);
   
 }
 
