@@ -28,7 +28,7 @@ bool deviceConnected = false;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-uint8_t tempLabel, tdsLabel;
+uint8_t tempLabel, tdsLabel, phLabel, ecLabel, orpLabel, doLabel;
 uint8_t envNameLabel;
 uint8_t statusLabel;  // Für untere Statuszeile
 Preferences preferences;
@@ -46,13 +46,14 @@ const int mqttPort = 12112;
 void connectToWiFiAndValidate();
 void fetchEnvironmentName(const String& envId);
 void fetchUpdateFrequency();
-void updateDisplay(float temperature, float tds);
+void updateDisplay(float temperature, float tds, float ph, float ec, float orp, float doVal);
 void sendSensorData(float temperature, float tds);
 float readTDS(float temperature);
 void callback(char* topic, byte* payload, unsigned int length);
 void connectToMQTT();
 void startBLESetup();
 void updateStatus(String messageDe, String messageEn);
+String replaceUmlauts(String input);
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -170,9 +171,13 @@ lcd.cleanScreen();
     Serial.println(F("[LCD] Successfully initialized."));
 
   envNameLabel = lcd.drawString(10, 10, "", 2, WHITE);
-  tempLabel = lcd.drawString(30, 60, "TEM: ", 1, ORANGE);
-  tdsLabel = lcd.drawString(30, 110, "TDS: ", 1, BLUE);
-  statusLabel = lcd.drawString(30, 200, "", 2, ORANGE);
+  tempLabel = lcd.drawString(30, 60, "", 1, WHITE);
+  tdsLabel = lcd.drawString(30, 90, "", 1, WHITE);
+  phLabel = lcd.drawString(30, 120, "", 1, WHITE);
+  ecLabel = lcd.drawString(30, 110, "", 1, WHITE);
+  orpLabel = lcd.drawString(30, 110, "", 1, WHITE);
+  doLabel = lcd.drawString(30, 110, "", 1, WHITE);
+  statusLabel = lcd.drawString(30, 220, "", 2, ORANGE);
 
   tempSensor.begin();
 }
@@ -196,7 +201,7 @@ void loop() {
     float temperature = tempSensor.getTempCByIndex(0);
     float tdsValue = readTDS(temperature);
 
-    updateDisplay(temperature, tdsValue);
+    updateDisplay(30, 430, 7.1, 0, 0, 87);
 
     Serial.print("[Sensors] Temperature: ");
     Serial.print(temperature);
@@ -301,33 +306,65 @@ void connectToMQTT() {
   }
 }
 
-void updateDisplay(float temperature, float tds) {
-  preferences.begin("wifi", true);
-  String envName = preferences.getString("env-name", "");
-  String language = preferences.getString("language", "en");
-  preferences.end();
+void updateDisplay(float temperature, float tds, float ph, float ec, float orp, float doVal) {
+    preferences.begin("wifi", true);
+    String envName = preferences.getString("env-name", "");
+    String language = preferences.getString("language", "en");
+    preferences.end();
 
-  bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
+    bool isWiFiConnected = (WiFi.status() == WL_CONNECTED);
 
-  // ENV-Name nur anzeigen, wenn verbunden
-  if (isWiFiConnected && envName.length() > 0) {
-    lcd.updateString(envNameLabel, 30, 10, envName, 2, WHITE);
-    updateStatus("WLAN verbunden", "WiFi Connected");
-  } else {
-    updateStatus("Einrichten per App", "Setup required via app");
-  }
+    int yPos = 60;  // Startposition für erste Zeile
 
-  // Temperaturanzeige
-  String tempStr = "TEM: " + String(temperature) + "°C";
-  lcd.updateString(tempLabel, 30, 60, tempStr, 1, WHITE);
-  
+    // ENV-Name nur anzeigen, wenn verbunden
+    if (isWiFiConnected && envName.length() > 0) {
+        lcd.updateString(envNameLabel, 30, 10, replaceUmlauts(envName), 2, WHITE);
+        updateStatus("WLAN verbunden", "WiFi Connected");
+    } else {
+        updateStatus("Einrichten per App", "Setup required via app");
+    }
 
-  // TDS-Anzeige
-  String tdsStr = "TDS: " + String(tds) + " mg/L";
-  lcd.updateString(tdsLabel, 30, 90, tdsStr, 1, WHITE);
-  
+    // Temperaturanzeige (nur wenn gültig)
+    if (temperature != -127.0) {
+        String tempStr = "TEM: " + String(temperature, 1) + "°C";
+        lcd.updateString(tempLabel, 30, yPos, tempStr, 1, WHITE);
+        yPos += 30;
+    }
+
+    // TDS-Anzeige
+    if (tds != 0) {
+        String tdsStr = "TDS: " + String(tds, 1) + " mg/L";
+        lcd.updateString(tdsLabel, 30, yPos, tdsStr, 1, WHITE);
+        yPos += 30;
+    }
+
+    // pH-Anzeige
+    if (ph != 0) {
+        String phStr = "pH : " + String(ph, 2);
+        lcd.updateString(phLabel, 30, yPos, phStr, 1, WHITE);
+        yPos += 30;
+    }
+
+    // EC-Anzeige
+    if (ec != 0) {
+        String ecStr = "EC : " + String(ec, 2) + " mS/cm";
+        lcd.updateString(ecLabel, 30, yPos, ecStr, 1, WHITE);
+        yPos += 30;
+    }
+
+    // ORP-Anzeige
+    if (orp != 0) {
+        String orpStr = "ORP: " + String(orp, 1) + " mV";
+        lcd.updateString(orpLabel, 30, yPos, orpStr, 1, WHITE);
+        yPos += 30;
+    }
+
+    // DO-Anzeige
+    if (doVal != 0) {
+        String doStr = "DO : " + String(doVal, 1) + " mg/L";
+        lcd.updateString(doLabel, 30, yPos, doStr, 1, WHITE);
+    }
 }
-
 
 void updateStatus(String messageDe, String messageEn) {
   preferences.begin("wifi", true);
@@ -338,6 +375,17 @@ void updateStatus(String messageDe, String messageEn) {
 
   lcd.updateString(statusLabel, 30, 200, msg, 2, ORANGE);
   
+}
+
+String replaceUmlauts(String input) {
+    input.replace("ä", "ae");
+    input.replace("ö", "oe");
+    input.replace("ü", "ue");
+    input.replace("Ä", "Ae");
+    input.replace("Ö", "Oe");
+    input.replace("Ü", "Ue");
+    input.replace("ß", "ss");
+    return input;
 }
 
 void connectToWiFiAndValidate() {
